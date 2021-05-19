@@ -13,6 +13,18 @@
 </head>
 <body>
  <div uk-height-viewport="expand: true" uk-width-viewport="expand: true" class="uk-section">
+    <div class="uk-container uk-position-right">
+        <a class="uk-icon-button uk-margin-medium-top uk-dark" uk-toggle="target: #modal-close-default" uk-icon="info"></a>
+    </div>
+    <div id="modal-close-default" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">Info</h2>
+            <p>Hey there,</p>
+            <p>As you could probably tell the login function doesn't work, I'll get around to that eventually, I actually don't know JavaScript very well, I'm currently working on finishing the design for the panel itself, Stay tuned.</p>
+            <p>-Stefmmm</p>
+        </div>
+    </div>
     <div class="uk-container uk-container-small uk-width-large">
         <div class="uk-child-width-expand uk-grid-small uk-text-center uk-align-center" uk-grid>
             <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-slide-bottom-medium">
