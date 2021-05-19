@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="/custom.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
+    <title>MCSS | Panel</title>
+    
+</head>
+<body>
+ <div uk-height-viewport="expand: true" class="uk-section">
+    <div class="uk-container uk-container-expand uk-padding-large uk-padding-remove-top">
+        <div class="uk-child-width-expand uk-grid-small uk-text-center" uk-grid>
+            
+            <div>
+                <div class="uk-card uk-card-secondary uk-card-large uk-card-body uk-height-large">
+                    <img class="uk-margin-remove uk-padding-remove" src="logo.png" alt="" width="50" height="50">                  
+                    <div>             
+                        <div uk-grid>
+                            <div class="uk-width-auto@m">
+                                
+                                <ul class="uk-tab-left" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
+                                    <li><a href="#">Server 1</a></li>
+                                    <li><a href="#">Server 2</a></li>
+                                    <li><a href="#">Server 3</a></li>
+                                </ul>
+                            </div>
+                            <div class="uk-width-expand@m">
+                                <ul id="component-tab-left" class="uk-switcher"> 
+                                    <li class="uk-align-right">
+                                        <div class="uk-button-group">
+                                            <button class="uk-button uk-button-default">Offline</button>
+                                            <div class="uk-inline">
+                                                <button class="uk-button uk-button-default" type="button"><span uk-icon="icon:  triangle-down"></span></button>
+                                                <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
+                                                    <ul class="uk-nav uk-dropdown-nav">
+                                                        <li><a href="#">Start</a></li>
+                                                        <li><a href="#">Stop</a></li>
+                                                        <li><a href="#">Restart</a></li>
+                                                        <li><a href="#">Kill</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form>
+
+                                            <div class="uk-margin uk-padding">
+                                                <div class="uk-inline">
+                                                    <a class="uk-form-icon" href="#" uk-icon="icon: pencil"></a>
+                                                    <input class="uk-input uk-form-small" type="text">
+                                                </div>
+                                            </div>
+                                        
+                                        </form>
+                                    </li>
+                                    <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+                                    <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ <footer class="uk-section uk-section-transparent uk-section-xsmall">
+    <div class="uk-container uk-text-white uk-width-medium">
+        <div class="uk-text-center">
+            <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
+            <p>MCSS Panel UIkit Version</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+</body>
+</html>

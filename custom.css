@@ -1,0 +1,36 @@
+.uk-section-secondary {
+	background: #393939;
+}
+
+.uk-section-transparant {
+	background: #39393900;
+}
+
+body {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+
+.uk-text-white {
+	color: #e5e5e5 !important;
+}
+
+.uk-card-secondary {
+	background: #212529;
+	color: #fff;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.315);
+	border-radius: 10px 10px 10px 10px;
+}
+
+.uk-dropdown {
+	display: none;
+	position: absolute;
+	z-index: 1020;
+	box-sizing: border-box;
+	min-width: 200px;
+	padding: 25px;
+	background: #212529;
+	color: rgb(168, 168, 168);
+	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
+}
