@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="">
             <span uk-icon="icon: warning; ratio: 2"></span>
             <p>Unable to reach the API</p>
-            <a class="uk-text-success" href="#">Why?</a>
+            <a class="uk-text-success" href="#" uk-toggle="target: #modal-close-default2">Why?</a>
         </div>  
     </div>
         `);
