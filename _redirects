@@ -1,5 +1,0 @@
-# This rule will trigger at /
-/index.html   /
-
-# This rule will never trigger because the previous rule triggers first
-/panel.html  /panel

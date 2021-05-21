@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/panel.html"
+  to = "/panel"
+  status = 200
+  force = true

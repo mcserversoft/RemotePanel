@@ -1,28 +1,23 @@
 .uk-section-secondary {
 	background: #393939;
 }
-
 .uk-section-transparant {
 	background: #39393900;
 }
-
 body {
 	background: #134e5e;
 	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
 	background: linear-gradient(to left,#71b280,#134e5e);
 }
-
 .uk-text-white {
 	color: #e5e5e5 !important;
 }
-
 .uk-card-secondary {
 	background: #212529;
 	color: #fff;
 	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.315);
 	border-radius: 10px 10px 10px 10px;
 }
-
 .uk-dropdown {
 	display: none;
 	position: absolute;
@@ -34,7 +29,6 @@ body {
 	color: rgb(168, 168, 168);
 	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
 }
-
 .zerosize {
     visibility: hidden;
     padding: 0px;
@@ -42,4 +36,9 @@ body {
     border: 0px;
     width: 0px;
     height: 0px;
+}
+
+.uk-card-primary.uk-card-body .uk-tab > .uk-active > a, .uk-card-primary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-card-secondary.uk-card-body .uk-tab > .uk-active > a, .uk-card-secondary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-light .uk-tab > .uk-active > a, .uk-offcanvas-bar .uk-tab > .uk-active > a, .uk-overlay-primary .uk-tab > .uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a {
+
+	border-color: #7ba63f;
 }
