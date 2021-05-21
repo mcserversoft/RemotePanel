@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
         $("#login-card").replaceWith(`
         <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-shake">
         <h1 class="uk-card-title uk-text-bold">MCSS Login</h1>
-        <img class="uk-margin-medium-bottom" src="logo.png" alt="" width="100" height="100">
+        <img class="uk-margin-medium-bottom" src="/assets/img/logo.png" alt="" width="100" height="100">
         <div class="">
             <span uk-icon="icon: warning; ratio: 2"></span>
             <p>Unable to reach the API</p>
