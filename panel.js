@@ -43,8 +43,8 @@ document.addEventListener("DOMContentLoaded", function() {
         `);
       })
     }).catch(err => {
-
-        UIkit.notification({message: '<span uk-icon=\'icon: warning\'></span> Unable to fetch servers.', status: 'danger', timeout: 0});
+        sessionStorage.removeItem("token")
+        window.location.href = "/index.html"
     });
   });
 
