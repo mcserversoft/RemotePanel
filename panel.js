@@ -19,6 +19,12 @@ document.addEventListener("DOMContentLoaded", function() {
             server.rColor = `style="color: #71b280"`
         } else if (server.Status === 2) {
             server.rStatus = "Placeholder";
+        } else if (server.Status === 3) {
+            server.rStatus = "Starting";
+            server.rColor = `style="color: #eda60e"`
+        } else if (server.Status === 4) {
+            server.rStatus = "Stopping";
+            server.rColor = `style="color: #eda60e"`
         } else {
             server.rStatus = "Unknown";
         }
