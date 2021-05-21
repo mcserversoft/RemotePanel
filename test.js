@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		<div class="" id="cred-status">
 
         </div>
-        <form action="#" onsubmit="return login();">
+        <form">
         <div class="uk-margin uk-width-expand">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -18,8 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <input class="uk-input" id="password" type="password" placeholder="Password">
             </div>
         </div>
-        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-4-5  uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>
-        <input class="zerosize uk-padding-remove uk-margin-remove" type="submit" value="">       
+        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-4-5  uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
     </form>
         `);
       }
