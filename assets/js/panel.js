@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (server.Status === 0) {
             server.rStatus = "Offline";
-            server.rColor = `style="color: #c61717;"`
+            server.rColor = `style="color: #d65554;"`
         } else if (server.Status === 1) {
             server.rStatus = "Online";
             server.rColor = `style="color: #71b280"`
