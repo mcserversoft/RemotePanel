@@ -18,47 +18,24 @@
             
             <div>
                 <div class="uk-card uk-card-secondary uk-card-large uk-card-body uk-height-large">
-                    <img class="uk-margin-remove uk-padding-remove" src="logo.png" alt="" width="50" height="50">                  
+                    <div uk-grid>
+                        <div class="uk-width-auto">
+                            <img class="uk-margin-medium-bottom uk-margin-small-left" src="logo.png" alt="" width="80" height="80">
+                        </div>
+                        <div class="uk-width-expand">
+                            <button uk-icon="sign-out" class="uk-button uk-button-default uk-align-right" onclick="forget()">Logout</button>
+                        </div>
+                    </div>           
                     <div>             
                         <div uk-grid>
                             <div class="uk-width-auto@m">
                                 
-                                <ul class="uk-tab-left" uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
-                                    <li><a href="#">Server 1</a></li>
-                                    <li><a href="#">Server 2</a></li>
-                                    <li><a href="#">Server 3</a></li>
+                                <ul class="uk-tab-left" uk-tab="connect: #component-tab-left; animation: uk-animation-fade" id="server-list">
                                 </ul>
                             </div>
                             <div class="uk-width-expand@m">
-                                <ul id="component-tab-left" class="uk-switcher"> 
-                                    <li class="uk-align-right">
-                                        <div class="uk-button-group">
-                                            <button class="uk-button uk-button-default">Offline</button>
-                                            <div class="uk-inline">
-                                                <button class="uk-button uk-button-default" type="button"><span uk-icon="icon:  triangle-down"></span></button>
-                                                <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
-                                                    <ul class="uk-nav uk-dropdown-nav">
-                                                        <li><a href="#">Start</a></li>
-                                                        <li><a href="#">Stop</a></li>
-                                                        <li><a href="#">Restart</a></li>
-                                                        <li><a href="#">Kill</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <form>
+                                <ul id="component-tab-left" class="uk-switcher server-control">
 
-                                            <div class="uk-margin uk-padding">
-                                                <div class="uk-inline">
-                                                    <a class="uk-form-icon" href="#" uk-icon="icon: pencil"></a>
-                                                    <input class="uk-input uk-form-small" type="text">
-                                                </div>
-                                            </div>
-                                        
-                                        </form>
-                                    </li>
-                                    <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                                    <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
                                 </ul>
                             </div>
                         </div>
@@ -77,5 +54,10 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="./panel.js"></script>
+<script src="./forget.js"></script>
+
 </body>
 </html>
