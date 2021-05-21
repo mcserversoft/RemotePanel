@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="uk-inline">
                 <span class="uk-form-icon uk-form-icon" uk-icon="icon: lock"></span>
                 <input class="uk-input" id="password" type="password" placeholder="Password">
-                <input class="zerosize" type="submit" value="">
             </div>
         </div>
-        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-4-5  uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>         
+        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-4-5  uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>
+        <input class="zerosize uk-padding-remove uk-margin-remove" type="submit" value="">       
     </form>
         `);
       }
