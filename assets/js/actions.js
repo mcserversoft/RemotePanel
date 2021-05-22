@@ -56,6 +56,6 @@ function updatestatus() {
         `);
       })
     }).catch(err => {
-        UIkit.notification('My message');
+        UIkit.notification({message: '<span uk-icon=\'icon: ban\'></span> Failed to fetch server status.', status: 'danger'});
     });
   }
