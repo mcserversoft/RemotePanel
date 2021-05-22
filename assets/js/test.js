@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		<div class="" id="cred-status">
 
         </div>
-        <form">
+        <form>
         <div class="uk-margin uk-width-expand">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <input class="uk-input" id="password" type="password" placeholder="Password">
             </div>
         </div>
-        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-4-5  uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
+        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-5-6 uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
     </form>
         `);
       }
@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
             <span uk-icon="icon: warning; ratio: 2"></span>
             <p>Unable to reach the API</p>
             <a class="uk-text-success" href="#" uk-toggle="target: #modal-close-default2">Why?</a>
-        </div>  
+        </div>
+        <a class="uk-icon-button uk-margin-medium-top uk-hidden@s" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>  
     </div>
         `);
       });
