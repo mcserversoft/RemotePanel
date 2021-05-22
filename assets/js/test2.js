@@ -31,7 +31,7 @@ function login() {
                         console.log(response.status)
                         console.log("bad credentials")
                         $("#cred-status").replaceWith(`<div class="" id="cred-status">
-                        <p style="color: rgb(255, 0, 0);">Bad Password</p>
+                        <p style="color: rgb(255, 0, 0);">Wrong Password</p>
                         </div>`)
                     } else if (response.status === 500) {
                         console.log("we done broke something")
