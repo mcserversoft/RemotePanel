@@ -1,30 +1,45 @@
+var apiurl = sessionStorage.getItem('apiurl')
+
+if (apiurl == null || apiurl == '') {
+    apiurl = "http://localhost:25560"
+}
+
 function start(server, token) {
-    axios.post('http://localhost:25560/api/server/execute/action', { "Guid": server, "Action": "1" }, {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Start Signal.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "1" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
 function stop(server, token) {
-    axios.post('http://localhost:25560/api/server/execute/action', { "Guid": server, "Action": "2" }, {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Stop Signal.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "2" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
 function restart(server, token) {
-    axios.post('http://localhost:25560/api/server/execute/action', { "Guid": server, "Action": "3" }, {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Restart Signal.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "3" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
 function kill(server, token) {
-    axios.post('http://localhost:25560/api/server/execute/action', { "Guid": server, "Action": "4" }, {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent kill Signal.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "4" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
+function updateapiurl() {
+    sessionStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
+    window.location.reload()
+}
+
 function updatestatus() {
     let token = sessionStorage.getItem('token')
-    axios.get("http://localhost:25560/api/servers", {
+    axios.get(`${apiurl}/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }

@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    axios.get("http://localhost:25560/mcss").then(() =>{
+    var apiurl = sessionStorage.getItem('apiurl')
+
+    if (apiurl == null || apiurl == '') {
+        apiurl = "http://localhost:25560"
+    }
+
+    axios.get(`${apiurl}/mcss`).then(() =>{
         $("#login-card2").replaceWith(`
 		<div class="" id="cred-status">
 

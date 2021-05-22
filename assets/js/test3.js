@@ -1,10 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
-        if (token != null) {
-            console.log("Token found")
-            window.location.href = "/panel.html";
+    var apiurl = sessionStorage.getItem('apiurl')
 
-        } else {
-            console.log("Token NOT found")
+    if (apiurl == null || apiurl == '') {
+        apiurl = "http://localhost:25560"
+    }
+
+    axios.get(`${apiurl}/mcss`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
         }
+    }).then(function (response) {
+        if (response.status == 200 && token != null) {
+            console.log("Conditions Met")
+            window.location.href = "/panel.html";
+        } else {
+            console.log("Conditions Not Met")}
+    });
+ 
 });

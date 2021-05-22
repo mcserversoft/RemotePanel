@@ -1,9 +1,14 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
+    var apiurl = sessionStorage.getItem('apiurl')
+
+    if (apiurl == null || apiurl == '') {
+        apiurl = "http://localhost:25560"
+    }
 
     setInterval(updatestatus, 3000);
 
-    axios.get("http://localhost:25560/api/servers", {
+    axios.get(`${apiurl}/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -60,8 +65,12 @@ document.addEventListener("DOMContentLoaded", function() {
         `);
       })
     }).catch(err => {
-        sessionStorage.removeItem("token")
-        window.location.href = "/index.html"
+        if (err.status === 401) {
+            sessionStorage.removeItem("token")
+            window.location.href = "/index.html"
+        } else {
+            window.location.href = "/index.html" 
+        }
     });
   });
 
