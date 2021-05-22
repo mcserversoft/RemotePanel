@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
+
+    setInterval(updatestatus, 3000);
+
     axios.get("http://localhost:25560/api/servers", {
         headers: {
             "Authorization": `Bearer ${token}`
@@ -16,32 +19,40 @@ document.addEventListener("DOMContentLoaded", function() {
             server.rColor = `style="color: #d65554;"`
         } else if (server.Status === 1) {
             server.rStatus = "Online";
-            server.rColor = `style="color: #71b280"`
+            server.rColor = `style="color: #71b280;"`
         } else if (server.Status === 2) {
             server.rStatus = "Placeholder";
         } else if (server.Status === 3) {
             server.rStatus = "Starting";
-            server.rColor = `style="color: #eda60e"`
+            server.rColor = `style="color: #eda60e;"`
         } else if (server.Status === 4) {
             server.rStatus = "Stopping";
-            server.rColor = `style="color: #eda60e"`
+            server.rColor = `style="color: #eda60e;"`
         } else {
             server.rStatus = "Unknown";
         }
 
+        const guid = server.Guid.toString()
+
         $(".server-control").append(`
-        <li class="uk-align-right">
-            <div class="uk-button-group">
-                <button ${server.rColor} class="uk-button uk-button-default">${server.rStatus}</button>
-                <div class="uk-inline">
-                    <button class="uk-button uk-button-default" type="button"><span uk-icon="icon:  triangle-down"></span></button>
-                    <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
-                        <ul class="uk-nav uk-dropdown-nav">
-                            <li><a href="#">Start</a></li>
-                            <li><a href="#">Stop</a></li>
-                            <li><a href="#">Restart</a></li>
-                            <li><a href="#">Kill</a></li>
-                        </ul>
+        <li>
+            <div class="uk-align-left uk-text-left">
+            <p>Guid: ${server.Guid}</p>
+            <p>Auto Start: ${server.IsSetToAutoStart}</p>
+            </div>
+            <div class="uk-align-right">
+                <div class="uk-button-group server-status">
+                        <button ${server.rColor} class="uk-button uk-button-default" id="${server.Guid}">${server.rStatus}</button>
+                    <div class="uk-inline">
+                        <button class="uk-button uk-button-default" type="button"><span uk-icon="icon:  triangle-down"></span></button>
+                        <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
+                            <ul class="uk-nav uk-dropdown-nav">
+                                <li><a href="#" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
+                                <li><a href="#" onclick="stop('${guid}', '${token}')" style="color: #d65554;">Stop</a></li>
+                                <li><a href="#" onclick="restart('${guid}', '${token}')" style="color: #eda60e;">Restart</a></li>
+                                <li><a href="#" onclick="kill('${guid}', '${token}')" style="color: #888;">Kill</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
