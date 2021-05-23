@@ -1,24 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
     var apiurl = sessionStorage.getItem('apiurl')
-
     if (apiurl == null || apiurl == '') {
         apiurl = "http://localhost:25560"
     }
-
     setInterval(updatestatus, 3000);
-
     axios.get(`${apiurl}/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
-    }).then((data) => {
-        
+    }).then((data) => { 
       data.data.forEach(server => {
         $("#server-list").append(`
         <li><a href="#">${server.Name}</a></li>
         `);
-
         if (server.Status === 0) {
             server.rStatus = "Offline";
             server.rColor = `style="color: #d65554;"`
@@ -36,9 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             server.rStatus = "Unknown";
         }
-
         const guid = server.Guid.toString()
-
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
@@ -73,4 +66,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
   });
-

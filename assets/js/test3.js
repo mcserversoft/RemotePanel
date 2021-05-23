@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
     var apiurl = sessionStorage.getItem('apiurl')
-
     if (apiurl == null || apiurl == '') {
         apiurl = "http://localhost:25560"
     }
-
     axios.get(`${apiurl}/mcss`, {
         headers: {
             "Authorization": `Bearer ${token}`
@@ -17,5 +15,4 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             console.log("Conditions Not Met")}
     });
- 
 });

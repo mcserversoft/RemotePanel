@@ -1,7 +1,4 @@
-
-
 function login() {
-
     let token = localStorage.getItem('token')
     var apiurl = sessionStorage.getItem('apiurl')
 
@@ -12,7 +9,6 @@ function login() {
     if (token != null) {
         console.log("Token found")
     }
-
     else {
         console.log("No token found locally")
         let username = document.getElementById("username").value;
