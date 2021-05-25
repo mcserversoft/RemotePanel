@@ -28,7 +28,10 @@ document.addEventListener("DOMContentLoaded", function() {
     ).catch(err => {
         $("#login-card").replaceWith(`
         <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-shake">
-        <h1 class="uk-card-title uk-text-bold">MCSS Login</h1>
+        <div class="uk-overlay uk-margin-remove-bottom uk-padding-remove-bottom uk-position-top-right uk-visible@s">
+            <a href="" class="uk-icon-button" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>
+        </div>
+        <h1 class="uk-card-title uk-text-bold uk-margin-remove-top uk-padding-remove-top">MCSS Login</h1>
         <img class="uk-margin-medium-bottom" src="/assets/img/logo.png" alt="" width="100" height="100">
         <div class="">
             <span uk-icon="icon: warning; ratio: 2"></span>
