@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = sessionStorage.getItem('token')
-    var apiurl = sessionStorage.getItem('apiurl')
-    if (apiurl == null || apiurl == '') {
+    let apiurl = sessionStorage.getItem('apiurl')
+    if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
     setInterval(updatestatus, 3000);
