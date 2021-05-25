@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var apiurl = sessionStorage.getItem('apiurl')
-    if (apiurl == null || apiurl == '') {
+    let apiurl = sessionStorage.getItem('apiurl')
+    if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
     axios.get(`${apiurl}/mcss`).then(() =>{
