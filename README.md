@@ -1,11 +1,13 @@
-![Netlify Status](https://img.shields.io/netlify/150725f6-a33d-4813-b722-0c32f4a19469)
-![Discord](https://img.shields.io/discord/335560186930659328?label=Discord)
-![Maintained](https://img.shields.io/maintenance/yes/2021)
+[![Netlify Status](https://img.shields.io/netlify/150725f6-a33d-4813-b722-0c32f4a19469)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+[![Discord](https://img.shields.io/discord/335560186930659328?label=Discord)](https://discord.gg/BntAUH5Tnw)
+
+[![Maintained](https://img.shields.io/maintenance/yes/2021)](#)
 
 # MCSS control panel
 
 
-## <span style="color:red">DISCLAIMER </span>: This is an early version of the project and may not be stable
+## DISCLAIMER: This is an early version of the project and may not be stable
 
 <p>&nbsp;</p>
 
