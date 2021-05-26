@@ -20,4 +20,4 @@
 ### Feel free to report any issues [here.](https://github.com/stefmmm/MCSS-Panel/issues)
 
 
-### If you want to follow future development and features, checkout [the trello board.](https://github.com/stefmmm/MCSS-Panel/projects/1)
+### If you want to follow future development and features, checkout [the trello board.](https://trello.com/b/AuA0MAIU/mcss-panel)
