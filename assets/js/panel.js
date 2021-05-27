@@ -35,8 +35,15 @@ document.addEventListener("DOMContentLoaded", function() {
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
+            <form onsubmit="return false">
+            <div class="uk-margin">
+                <div class="uk-inline">
+                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>
+                    <input id="${server.Guid + 'abc123'}" class="uk-input" type="text" placeholder="Server Command">
+                </div>
+            </div>
+            </form>
             <p>Guid: ${server.Guid}</p>
-            <p>Auto Start: ${server.IsSetToAutoStart}</p>
             </div>
             <div class="uk-align-right">
                 <div class="uk-button-group server-status">
@@ -53,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                     </div>
                 </div>
+                <p>Auto Start: ${server.IsSetToAutoStart}</p>
             </div>
         </li>
         `);

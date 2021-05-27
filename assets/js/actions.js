@@ -26,6 +26,13 @@ function kill(server, token) {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
+function sendcommand(server, token) {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Command Sent.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/command`, { "Guid": server, "Command": document.getElementById(server + 'abc123').value }, {
+        headers: { "Authorization": `Bearer ${token}` }
+    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    document.getElementById(server + 'abc123').value=''
+}
 function updateapiurl() {
     sessionStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
     window.location.reload()
