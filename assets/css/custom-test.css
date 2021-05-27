@@ -1,0 +1,94 @@
+.uk-section-secondary {
+	background: #212529;
+}
+.uk-section-transparant {
+	background: #39393900;
+}
+
+.uk-section-gradient {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+.uk-section-green {
+	background: #6aab7e;
+}
+
+body {
+	background: #212529;
+}
+.uk-text-white {
+	color: #e5e5e5 !important;
+}
+.uk-card-secondary {
+	background: #212529;
+	color: #fff;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.315);
+	border-radius: 10px 10px 10px 10px;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+.uk-dropdown {
+	display: none;
+	position: absolute;
+	z-index: 1020;
+	box-sizing: border-box;
+	min-width: 200px;
+	padding: 25px;
+	background: #212529;
+	color: rgb(168, 168, 168);
+	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
+}
+.zerosize {
+    visibility: hidden;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    width: 0px;
+    height: 0px;
+}
+.uk-card-primary.uk-card-body .uk-tab > .uk-active > a, .uk-card-primary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-card-secondary.uk-card-body .uk-tab > .uk-active > a, .uk-card-secondary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-light .uk-tab > .uk-active > a, .uk-offcanvas-bar .uk-tab > .uk-active > a, .uk-overlay-primary .uk-tab > .uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a {
+	border-color: #fff;
+}
+.uk-divider-vertical {
+	width: 1px;
+	height: 36px;
+	margin-left: auto;
+	margin-right: auto;
+	border-left: 1px solid #e5e5e5;
+}
+.uk-margin-smaller-top {
+	margin-top: 5px !important;
+}
+.uk-margin-smallerr-top {
+	margin-top: 0px !important;
+}
+.uk-modal-dialog {
+	background: #212529;
+}
+.uk-modal-header {
+	display: flow-root;
+	padding: 15px 30px;
+	background: #212529;
+	border-bottom: 1px solid #888888;
+}
+.uk-modal-footer {
+	display: flow-root;
+	padding: 15px 30px;
+	background: #212529;
+	border-top: 1px solid #888888;
+}
+.uk-button-green {
+	background-color: #3b786c;
+	color: #fff;
+	border: 1px solid transparent;
+}
+.uk-button-green:focus, .uk-button-green:hover {
+	background-color: #33685d;
+	color: #fff;
+	outline: 0;
+}
