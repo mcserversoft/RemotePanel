@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/index.html"
-  to = "/panel/login"
+  to = "/"
   status = 301
   force = true
 
