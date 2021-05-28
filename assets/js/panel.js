@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
-            <form onsubmit="return false">
+            <form action="#" onsubmit="sendcommand('${guid}', '${token}'); return false;">
             <div class="uk-margin">
                 <div class="uk-inline">
                     <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>

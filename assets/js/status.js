@@ -6,9 +6,8 @@ document.addEventListener("DOMContentLoaded", function() {
     axios.get(`${apiurl}/mcss`).then(() =>{
         $("#login-card2").replaceWith(`
 		<div class="" id="cred-status">
-
         </div>
-        <form>
+        <form action="#" onsubmit="login(); return false;">
         <div class="uk-margin uk-width-expand">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -19,9 +18,10 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="uk-inline">
                 <span class="uk-form-icon uk-form-icon" uk-icon="icon: lock"></span>
                 <input class="uk-input" id="password" type="password" placeholder="Password">
+                <input class="uk-hidden" type="submit">
             </div>
         </div>
-        <a type="button" id="login" onclick="login()" class="uk-button uk-button-default uk-width-5-6 uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
+        <a type="submit" onclick="login()" class="uk-button uk-button-default uk-width-5-6 uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
     </form>
         `);
       }
