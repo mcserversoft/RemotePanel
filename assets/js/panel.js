@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="uk-margin">
                 <div class="uk-inline">
                     <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>
-                    <input id="${server.Guid + 'abc123'}" class="uk-input" type="text" placeholder="Server Command">
+                    <input id="${server.Guid + 'abc123'}" class="uk-input uk-form-width-medium2" type="text" placeholder="Server Command">
                 </div>
             </div>
             </form>

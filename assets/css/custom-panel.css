@@ -13,7 +13,9 @@
 .uk-section-green {
 	background: #6aab7e;
 }
-
+.uk-form-width-medium2 {
+	width: 340px;
+}
 body {
 	background: #212529;
 }
@@ -42,14 +44,6 @@ body {
 	background: #212529;
 	color: rgb(168, 168, 168);
 	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
-}
-.zerosize {
-    visibility: hidden;
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    width: 0px;
-    height: 0px;
 }
 .uk-card-primary.uk-card-body .uk-tab > .uk-active > a, .uk-card-primary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-card-secondary.uk-card-body .uk-tab > .uk-active > a, .uk-card-secondary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-light .uk-tab > .uk-active > a, .uk-offcanvas-bar .uk-tab > .uk-active > a, .uk-overlay-primary .uk-tab > .uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a {
 	border-color: #fff;
