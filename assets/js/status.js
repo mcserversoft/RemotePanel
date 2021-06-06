@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let apiurl = sessionStorage.getItem('apiurl')
+    let apiurl = localStorage.getItem('apiurl')
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }

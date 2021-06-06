@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let token = sessionStorage.getItem('token')
-    let apiurl = sessionStorage.getItem('apiurl')
+    let token = localStorage.getItem('token')
+    let apiurl = localStorage.getItem('apiurl')
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
       })
     }).catch(err => {
         if (err.status === 401) {
-            sessionStorage.removeItem("token")
+            localStorage.removeItem("token")
             window.location.href = "/index.html"
         } else {
             window.location.href = "/index.html" 

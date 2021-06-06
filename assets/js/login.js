@@ -1,6 +1,6 @@
 function login() {
     let token = localStorage.getItem('token')
-    let apiurl = sessionStorage.getItem('apiurl')
+    let apiurl = localStorage.getItem('apiurl')
 
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
@@ -25,7 +25,7 @@ function login() {
                             JSON.stringify(result)
                             let token = result["access_token"]
                             console.log(token);
-                            sessionStorage.setItem("token",token)
+                            localStorage.setItem("token",token)
                             window.location.href = "/panel.html";
                         })
                     } else if (response.status === 401) {

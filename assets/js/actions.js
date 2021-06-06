@@ -1,4 +1,4 @@
-let apiurl = sessionStorage.getItem('apiurl')
+let apiurl = localStorage.getItem('apiurl')
 if (apiurl == null || apiurl === '') {
     apiurl = "http://localhost:25560"
 }
@@ -34,11 +34,11 @@ function sendcommand(server, token) {
     document.getElementById(server + 'abc123').value=''
 }
 function updateapiurl() {
-    sessionStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
+    localStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
     window.location.reload()
 }
 function updatestatus() {
-    let token = sessionStorage.getItem('token')
+    let token = localStorage.getItem('token')
     axios.get(`${apiurl}/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
