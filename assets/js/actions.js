@@ -1,4 +1,4 @@
-let apiurl = sessionStorage.getItem('apiurl')
+let apiurl = localStorage.getItem('apiurl')
 if (apiurl == null || apiurl === '') {
     apiurl = "http://localhost:25560"
 }
@@ -26,12 +26,19 @@ function kill(server, token) {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
+function sendcommand(server, token) {
+    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Command Sent.', status: 'info'});
+    axios.post(`${apiurl}/api/server/execute/command`, { "Guid": server, "Command": document.getElementById(server + 'abc123').value }, {
+        headers: { "Authorization": `Bearer ${token}` }
+    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    document.getElementById(server + 'abc123').value=''
+}
 function updateapiurl() {
-    sessionStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
+    localStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
     window.location.reload()
 }
 function updatestatus() {
-    let token = sessionStorage.getItem('token')
+    let token = localStorage.getItem('token')
     axios.get(`${apiurl}/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`

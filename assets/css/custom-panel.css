@@ -1,13 +1,23 @@
 .uk-section-secondary {
-	background: #393939;
+	background: #212529;
 }
 .uk-section-transparant {
 	background: #39393900;
 }
-body {
+
+.uk-section-gradient {
 	background: #134e5e;
 	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
 	background: linear-gradient(to left,#71b280,#134e5e);
+}
+.uk-section-green {
+	background: #6aab7e;
+}
+.uk-form-width-medium2 {
+	width: 340px;
+}
+body {
+	background: #212529;
 }
 .uk-text-white {
 	color: #e5e5e5 !important;
@@ -15,8 +25,14 @@ body {
 .uk-card-secondary {
 	background: #212529;
 	color: #fff;
-	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.315);
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.315);
 	border-radius: 10px 10px 10px 10px;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
 }
 .uk-dropdown {
 	display: none;
@@ -28,14 +44,6 @@ body {
 	background: #212529;
 	color: rgb(168, 168, 168);
 	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
-}
-.zerosize {
-    visibility: hidden;
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    width: 0px;
-    height: 0px;
 }
 .uk-card-primary.uk-card-body .uk-tab > .uk-active > a, .uk-card-primary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-card-secondary.uk-card-body .uk-tab > .uk-active > a, .uk-card-secondary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-light .uk-tab > .uk-active > a, .uk-offcanvas-bar .uk-tab > .uk-active > a, .uk-overlay-primary .uk-tab > .uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a {
 	border-color: #fff;
@@ -49,6 +57,9 @@ body {
 }
 .uk-margin-smaller-top {
 	margin-top: 5px !important;
+}
+.uk-margin-smallerr-top {
+	margin-top: 0px !important;
 }
 .uk-modal-dialog {
 	background: #212529;

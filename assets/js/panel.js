@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let token = sessionStorage.getItem('token')
-    let apiurl = sessionStorage.getItem('apiurl')
+    let token = localStorage.getItem('token')
+    let apiurl = localStorage.getItem('apiurl')
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
@@ -35,8 +35,15 @@ document.addEventListener("DOMContentLoaded", function() {
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
+            <form action="#" onsubmit="sendcommand('${guid}', '${token}'); return false;">
+            <div class="uk-margin">
+                <div class="uk-inline">
+                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>
+                    <input id="${server.Guid + 'abc123'}" class="uk-input uk-form-width-medium2" type="text" placeholder="Server Command">
+                </div>
+            </div>
+            </form>
             <p>Guid: ${server.Guid}</p>
-            <p>Auto Start: ${server.IsSetToAutoStart}</p>
             </div>
             <div class="uk-align-right">
                 <div class="uk-button-group server-status">
@@ -53,13 +60,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                     </div>
                 </div>
+                <p>Auto Start: ${server.IsSetToAutoStart}</p>
             </div>
         </li>
         `);
       })
     }).catch(err => {
         if (err.status === 401) {
-            sessionStorage.removeItem("token")
+            localStorage.removeItem("token")
             window.location.href = "/index.html"
         } else {
             window.location.href = "/index.html" 
