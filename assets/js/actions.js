@@ -4,6 +4,7 @@ if (apiurl == null || apiurl === '') {
 }
 function start(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Start Signal.', status: 'info'});
+    UIkit.dropdown($('#uk-dropdown').removeClass('uk-open'));
     axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "1" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
