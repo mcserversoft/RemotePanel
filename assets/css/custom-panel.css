@@ -4,7 +4,6 @@
 .uk-section-transparant {
 	background: #39393900;
 }
-
 .uk-section-gradient {
 	background: #134e5e;
 	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
@@ -28,7 +27,6 @@ body {
 	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.315);
 	border-radius: 10px 10px 10px 10px;
 }
-
 .uk-navbar-container:not(.uk-navbar-transparent) {
 	background: #134e5e;
 	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
