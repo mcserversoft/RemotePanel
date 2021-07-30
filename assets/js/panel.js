@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "Authorization": `Bearer ${token}`
         }
     }).then((data) => { 
-      data.data.forEach(server => {
+    data.data.forEach(server => {
         $("#server-list").append(`
         <li><a href="#">${server.Name}</a></li>
         `);
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </li>
         `);
-      })
+    })
     }).catch(err => {
         if (err.status === 401) {
             localStorage.removeItem("token")
@@ -73,4 +73,4 @@ document.addEventListener("DOMContentLoaded", function() {
             window.location.href = "/index.html" 
         }
     });
-  });
+});

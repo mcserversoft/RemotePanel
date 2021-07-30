@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <a type="submit" onclick="login()" class="uk-button uk-button-default uk-width-5-6 uk-width-3-4@s uk-width-3-4@m uk-width-1-1@l">Login</a>    
     </form>
         `);
-      }
+    }
     ).catch(err => {
         $("#login-card").replaceWith(`
         <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-shake">
@@ -41,5 +41,5 @@ document.addEventListener("DOMContentLoaded", function() {
         <a class="uk-icon-button uk-margin-medium-top uk-hidden@s" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>  
     </div>
         `);
-      });
-  });
+    });
+});
