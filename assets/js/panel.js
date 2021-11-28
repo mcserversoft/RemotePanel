@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }).then((data) => { 
     data.data.forEach(server => {
         $("#server-list").append(`
-        <li><a href="#">${server.Name}</a></li>
+        <li class="uk-text-truncate"><a href="#">${server.Name}</a></li>
         `);
         if (server.Status === 0) {
             server.rStatus = "Offline";
