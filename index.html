@@ -10,6 +10,7 @@
     <script src="assets/js/status.js"></script>
     <script src="assets/js/login.js"></script>
     <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
+    <link rel="manifest" href="./manifest.json">
     <title>MCSS | Login</title>
 </head>
 <body>
@@ -28,13 +29,13 @@
         <div class="uk-modal-dialog uk-modal-body uk-light">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">Info & Credits</h2>
-            <p>MCSS Panel v1.0.4 <a href="https://github.com/stefmmm/MCSS-Panel" class="uk-icon-link" uk-icon="github"></a></p>
-            <p>Created by <a href="https://github.com/stefmmm">Stefmmm</a></p>
+            <p>MCSS Panel v1.0.4 <a href="https://github.com/stefmmm/MCSS-Panel" target="_blank" class="uk-icon-link" uk-icon="github"></a></p>
+            <p>Created by <a href="https://github.com/stefmmm" target="_blank">Stefmmm</a></p>
             <p>Made possible by these wonderful people:</p>
             <ul class="uk-list uk-list-bullet">
-                <li><a href="https://github.com/Fiahblade">Fiahblade</a> / Created MCSS and the API.</li>
-                <li><a href="https://github.com/PouletteMC">Poulette</a> / Lend me JavaScript & Inspired me to make this.</li>
-                <li><a href="https://github.com/gaycookie">Gaycookie</a> / Helped me immensely with JavaScript.</li>
+                <li><a href="https://github.com/Fiahblade" target="_blank">Fiahblade</a> / Created MCSS and the API.</li>
+                <li><a href="https://github.com/PouletteMC" target="_blank">Poulette</a> / Lend me JavaScript & Inspired me to make this.</li>
+                <li><a href="https://github.com/gaycookie" target="_blank">Gaycookie</a> / Helped me immensely with JavaScript.</li>
             </ul>
         </div>
     </div>
@@ -100,5 +101,17 @@
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
 <script src="assets/js/test3.js" defer></script>
 <script src="assets/js/actions.js" defer></script>
+<script>
+    // register service worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('SW registered: ', registration);
+            }).catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+        });
+    }
+</script>
 </body>
 </html>
