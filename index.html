@@ -10,14 +10,15 @@
     <script src="assets/js/status.js"></script>
     <script src="assets/js/login.js"></script>
     <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
+    <link rel="manifest" href="./manifest.json">
     <title>MCSS | Login</title>
 </head>
 <body>
- <div uk-height-viewport="expand: true" uk-width-viewport="expand: true" class="uk-section">
+<div uk-height-viewport="expand: true" uk-width-viewport="expand: true" class="uk-section">
     <div class="uk-container uk-position-right uk-visible@s uk-margin-medium-top uk-margin-medium-right" uk-grid>
         <div class="uk-margin-medium-right uk-light uk-margin-smaller-top">
             <a class="uk-link-text uk-margin-small-right" href="https://mcserversoft.github.io/documentation/" target="_blank">Documentation</a>
-            <a class="uk-link-text" href="https://mcss.app/discord" target="_blank">Discord</a>
+            <a class="uk-link-text" href="https://discord.gg/QTRx2CEQkS" target="_blank">Discord</a>
         </div>
         <hr class="uk-divider-vertical uk-margin-remove uk-padding-remove">
         <div>
@@ -28,13 +29,13 @@
         <div class="uk-modal-dialog uk-modal-body uk-light">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <h2 class="uk-modal-title">Info & Credits</h2>
-            <p>MCSS Panel v1.0.4 <a href="https://github.com/stefmmm/MCSS-Panel" class="uk-icon-link" uk-icon="github"></a></p>
-            <p>Created by <a href="https://github.com/stefmmm">Stefmmm</a></p>
+            <p>MCSS Panel v1.0.4 <a href="https://github.com/stefmmm/MCSS-Panel" target="_blank" class="uk-icon-link" uk-icon="github"></a></p>
+            <p>Created by <a href="https://github.com/stefmmm" target="_blank">Stefmmm</a></p>
             <p>Made possible by these wonderful people:</p>
             <ul class="uk-list uk-list-bullet">
-                <li><a href="https://github.com/Fiahblade">Fiahblade</a> / Created MCSS and the API.</li>
-                <li><a href="https://github.com/PouletteMC">Poulette</a> / Lend me JavaScript & Inspired me to make this.</li>
-                <li><a href="https://github.com/gaycookie">Gaycookie</a> / Helped me immensely with JavaScript.</li>
+                <li><a href="https://github.com/Fiahblade" target="_blank">Fiahblade</a> / Created MCSS and the API.</li>
+                <li><a href="https://github.com/PouletteMC" target="_blank">Poulette</a> / Lend me JavaScript & Inspired me to make this.</li>
+                <li><a href="https://github.com/gaycookie" target="_blank">Gaycookie</a> / Helped me immensely with JavaScript.</li>
             </ul>
         </div>
     </div>
@@ -72,7 +73,7 @@
     <div class="uk-container uk-container-small uk-width-large uk-margin-large">
         <div class="uk-child-width-expand uk-grid-small uk-text-center uk-align-center" uk-grid>
             <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-slide-bottom-medium" id="login-card">
-                <div class="uk-overlay uk-margin-remove-bottom uk-padding-remove-bottom uk-position-top-right uk-visible@s">
+                <div class="uk-overlay uk-margin-remove-bottom uk-padding-remove-bottom uk-margin-small-medium-right uk-position-top-right">
                     <a href="" class="uk-icon-button" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>
                 </div>
                 <h1 class="uk-card-title uk-text-bold uk-margin-remove-top uk-padding-remove-top">MCSS Login</h1>
@@ -86,8 +87,8 @@
             </div>
         </div>
     </div>
- </div>
- <footer class="uk-section uk-section-transparent uk-section-xsmall">
+</div>
+<footer class="uk-section uk-section-transparent uk-section-xsmall">
     <div class="uk-container uk-text-white uk-width-medium">
         <div class="uk-text-center">
             <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
@@ -98,7 +99,19 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
-<script src="assets/js/test3.js"></script>
-<script src="assets/js/actions.js"></script>
+<script src="assets/js/test3.js" defer></script>
+<script src="assets/js/actions.js" defer></script>
+<script>
+    // register service worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('SW registered: ', registration);
+            }).catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+        });
+    }
+</script>
 </body>
 </html>

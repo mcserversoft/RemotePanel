@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", function() {
             "Authorization": `Bearer ${token}`
         }
     }).then((data) => { 
-      data.data.forEach(server => {
+    data.data.forEach(server => {
         $("#server-list").append(`
-        <li><a href="#">${server.Name}</a></li>
+        <li class="uk-text-truncate"><a href="#">${server.Name}</a>
+        <hr class="uk-margin-small-left uk-margin-small-right uk-margin-remove-top uk-margin-remove-bottom"></li>
         `);
         if (server.Status === 0) {
             server.rStatus = "Offline";
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="uk-button-group server-status">
                         <button ${server.rColor} class="uk-button uk-button-default" id="${server.Guid}">${server.rStatus}</button>
                     <div class="uk-inline">
-                        <button class="uk-button uk-button-default" type="button"><span uk-icon="icon:  triangle-down"></span></button>
+                        <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down"></span></button>
                         <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                             <ul class="uk-nav uk-dropdown-nav">
                                 <li><a href="#" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </li>
         `);
-      })
+    })
     }).catch(err => {
         if (err.status === 401) {
             localStorage.removeItem("token")
@@ -73,4 +74,4 @@ document.addEventListener("DOMContentLoaded", function() {
             window.location.href = "/index.html" 
         }
     });
-  });
+});

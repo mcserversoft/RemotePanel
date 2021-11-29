@@ -11,34 +11,41 @@
     <title>MCSS | Panel</title>
 </head>
 <body>
-    <nav class="uk-navbar-container uk-padding-medium uk-padding-remove-vertical uk-padding" uk-navbar>
-        <a class="uk-navbar-item uk-logo" href="#">
-            <img class="" src="assets/img/logo.png" alt="" width="50" height="50">
-        </a>
-        <p class="uk-text-large uk-text-white uk-visible@s">MCSS Control Panel</p>
-        <div class="uk-navbar-right">
-            <div class="uk-margin-medium-right uk-light uk-margin-smallerr-top uk-visible@s">
-                <a class="uk-link-text uk-margin-small-right" href="https://mcserversoft.github.io/documentation/" target="_blank">Documentation</a>
-                <a class="uk-link-text" href="https://mcss.app/discord" target="_blank">Discord</a>
-            </div>
-            <hr class="uk-divider-vertical uk-margin-remove uk-padding-remove ">
-            <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="forget()"></button>
+    <!--Navbar-Container-->
+    <div class="uk-navbar-container">
+        <div class="uk-navbar-expand">
+            <nav class="uk-padding-medium uk-padding-remove-vertical uk-padding" uk-navbar>
+                <a class="uk-navbar-item uk-logo" href="#">
+                    <img class="" src="assets/img/logo.png" alt="" width="50" height="50">
+                </a>
+                <p class="uk-text-large uk-text-white uk-visible@s">MCSS Control Panel</p>
+                <div class="uk-navbar-right">
+                    <div class="uk-margin-medium-right uk-light uk-margin-smallerr-top uk-visible@s">
+                        <a class="uk-link-text uk-margin-small-right" href="https://mcserversoft.github.io/documentation/" target="_blank">Documentation</a>
+                        <a class="uk-link-text" href="https://mcss.app/discord" target="_blank">Discord</a>
+                    </div>
+                    <hr class="uk-divider-vertical">
+                    <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="forget()"></button>
+                </div>
+            </nav>
         </div>
-    </nav>
- <div uk-height-viewport="expand: true" class="uk-section uk-section-secondary">
-    <div class="uk-container uk-padding-large uk-padding-remove-top">
-        <div class="uk-child-width-expand uk-grid-small uk-text-center" uk-grid>
-            <div>
-                <div class="" uk-height-viewport="expand: true">          
-                    <div>             
-                        <div>
-                            <div class="uk-width-auto@m">
-                                <ul uk-tab="connect: #component-tab-left; animation: uk-animation-fade" id="server-list">
-                                </ul>
-                            </div>
-                            <div class="uk-width-expand@m uk-margin-medium-top">
-                                <ul id="component-tab-left" class="uk-switcher server-control">
-                                </ul>
+    </div>
+    <!--Main-Container-->
+    <div uk-height-viewport="expand: true" class="uk-section uk-section-secondary">
+        <div class="uk-container uk-padding-large uk-padding-remove-top">
+            <div class="uk-child-width-expand uk-grid-small uk-text-center" uk-grid>
+                <div>
+                    <div class="" uk-height-viewport="expand: true">          
+                        <div>             
+                            <div>
+                                <div class="uk-width-auto@m">
+                                    <ul class="uk-align-left uk-width-1-6 uk-tab-left" uk-tab="connect: #component-tab-left; animation: uk-animation-slide-top-small" id="server-list">
+                                    </ul>
+                                </div>
+                                <div class="uk-width-expand@m uk-margin-medium-top">
+                                    <ul id="component-tab-left" class="uk-switcher  server-control">
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -46,21 +53,21 @@
             </div>
         </div>
     </div>
- </div>
- <footer class="uk-section uk-section-transparent uk-section-xsmall">
-    <div class="uk-container uk-text-white uk-width-medium">
-        <div class="uk-text-center">
-            <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
-            <p>MCSS Panel / UIkit Version</p>
+    <!--Footer-->
+    <footer class="uk-section uk-section-transparent uk-section-xsmall">
+        <div class="uk-container uk-text-white uk-width-medium">
+            <div class="uk-text-center">
+                <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
+                <p>MCSS Panel / UIkit Version</p>
+            </div>
         </div>
-    </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="assets/js/panel.js"></script>
-<script src="assets/js/forget.js"></script>
-<script src="assets/js/test4.js"></script>
-<script src="assets/js/actions.js"></script>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"w></script>
+    <script src="assets/js/panel.js" defer></script>
+    <script src="assets/js/forget.js" defer></script>
+    <script src="assets/js/test4.js" defer></script>
+    <script src="assets/js/actions.js" defer></script>
 </body>
 </html>
