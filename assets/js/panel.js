@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }).then((data) => { 
     data.data.forEach(server => {
         $("#server-list").append(`
-        <li class="uk-text-truncate"><a href="#">${server.Name}</a>
+        <li><a class="uk-text-truncate" href="#">${server.Name}</a>
         <hr class="uk-margin-small-left uk-margin-small-right uk-margin-remove-top uk-margin-remove-bottom"></li>
         `);
         if (server.Status === 0) {
