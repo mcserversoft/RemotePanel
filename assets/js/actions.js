@@ -82,6 +82,9 @@ async function updatestatus() {
         $(`#${server.Guid}`).replaceWith(`
             <button ${server.rColor} class="uk-button uk-button-default" id="${server.Guid}">${server.rStatus}</button>
         `);
+        $(`#${'icon' + server.Guid}`).replaceWith(`
+            <div id="${'icon' + server.Guid}" ${server.rColor} class="uk-position-left"><span uk-icon="icon: triangle-right; ratio: 1"></span></div>
+        `);
     })
     }).catch(err => {
         UIkit.notification({message: '<span uk-icon=\'icon: ban\'></span> Failed to fetch server status.', status: 'danger'});
