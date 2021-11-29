@@ -11,10 +11,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }).then((data) => { 
     data.data.forEach(server => {
-        $("#server-list").append(`
-        <li class="uk-text-truncate"><a href="#">${server.Name}</a>
-        <hr class="uk-margin-small-left uk-margin-small-right uk-margin-remove-top uk-margin-remove-bottom"></li>
-        `);
         if (server.Status === 0) {
             server.rStatus = "Offline";
             server.rColor = `style="color: #d65554;"`
@@ -32,6 +28,13 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             server.rStatus = "Unknown";
         }
+        $(".server-list").append(`
+        <li>
+        <a class="uk-text-truncate uk-margin-small-left" href="#">${server.Name}</a>
+        <div id="${'icon' + server.Guid}" ${server.rColor} class="uk-position-left"><span uk-icon="icon: triangle-right; ratio: 1"></span></div>
+        <hr class="uk-margin-small-left uk-margin-small-right uk-margin-remove-top uk-margin-remove-bottom">
+        </li>
+        `);
         const guid = server.Guid.toString()
         $(".server-control").append(`
         <li>
