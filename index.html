@@ -14,7 +14,7 @@
     <script src="assets/js/status.js"></script>
     <script src="assets/js/login.js"></script>
     <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json">
     <title>MCSS | Login</title>
 </head>
 <body>
@@ -105,14 +105,15 @@
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
 <script src="assets/js/test3.js" defer></script>
 <script src="assets/js/actions.js" defer></script>
+<script src="assets/js/cookies.js" defer></script>
 <script>
     // register service worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').then(registration => {
-                console.log('SW registered: ', registration);
+            navigator.serviceWorker.register('sw.js').then(registration => {
+                console.log('Service Worker registered. You can now install the panel on your computer !');
             }).catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
+                console.log('The Service Worker could not be registered. Please report this issue');
             });
         });
     }
