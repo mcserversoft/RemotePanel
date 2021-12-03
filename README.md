@@ -1,6 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/150725f6-a33d-4813-b722-0c32f4a19469/deploy-status)](https://app.netlify.com/sites/mcss-panel/deploys)
 [![Discord](https://img.shields.io/discord/335560186930659328?label=Discord)](https://discord.gg/BntAUH5Tnw)
 [![Maintained](https://img.shields.io/maintenance/yes/2021)](https://github.com/stefmmm/MCSS-Panel)
+[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/9f9t.svg)](https://betteruptime.com/?utm_source=status_badge)
 
 # MCSS control panel
 
