@@ -7,7 +7,7 @@
 
 ### DISCLAIMER: This is an early version of the project and may not be stable
 
-We offer a [hosted panel](https://mcss.fast.moe/) for you to use, but if you want to host your own version you will find all the code you need here.  
+We offer a [hosted panel](https://mcss.app/) for you to use, but if you want to host your own version you will find all the code you need here.  
 To get started all you need is something that can serve html and javascript (a webserver works too)
 
 Feel free to report any issues [here.](https://github.com/stefmmm/MCSS-Panel/issues)
