@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
-    axios.get(`${apiurl}/mcss`).then(() =>{
+    axios.get(`${apiurl}`).then(() =>{
         $("#login-card2").replaceWith(`
 		<div class="" id="cred-status">
         </div>

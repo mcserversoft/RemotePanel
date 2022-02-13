@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (apiurl == null || apiurl === '') {
         apiurl = "http://localhost:25560"
     }
-    axios.get(`${apiurl}/mcss`, {
+    axios.get(`${apiurl}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
