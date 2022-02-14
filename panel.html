@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/uikit/css/uikit.min.css" />
     <link rel="stylesheet" href="assets/css/custom-panel.css" />
-    <script src="assets/uikit/js/uikit.min.js"></script>
     <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
     <link rel="manifest" href="manifest.json">
     <title>MCSS | Panel</title>
@@ -19,14 +18,14 @@
                 <a class="uk-navbar-item uk-logo" href="#">
                     <img class="" src="assets/img/logo.png" alt="" width="50" height="50">
                 </a>
-                <p class="uk-text-large uk-text-white uk-visible@s">MCSS Panel</p>
+                <p class="uk-text-large uk-text-white uk-visible@s">MCSS Remote Panel</p>
                 <div class="uk-navbar-right">
                     <div class="uk-margin-medium-right uk-light uk-margin-smallerr-top uk-visible@s">
                         <a class="uk-link-text uk-margin-small-right" href="https://mcserversoft.github.io/documentation/" target="_blank">Documentation</a>
                         <a class="uk-link-text" href="https://mcss.app/discord" target="_blank">Discord</a>
                     </div>
                     <hr class="uk-divider-vertical">
-                    <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="forget()"></button>
+                    <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="logout()"></button>
                 </div>
             </nav>
         </div>
@@ -63,12 +62,13 @@
             </div>
         </div>
     </footer>
+
+    <script src="assets/uikit/js/uikit.min.js"></script>
     <script src="assets/uikit/js/uikit-icons.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"w></script>
+    <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/panel.js" defer></script>
-    <script src="assets/js/forget.js" defer></script>
-    <script src="assets/js/test4.js" defer></script>
     <script src="assets/js/actions.js" defer></script>
     <script src="assets/js/cookies.js"></script>
 </body>
