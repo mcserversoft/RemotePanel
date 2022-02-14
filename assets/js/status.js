@@ -1,9 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let apiurl = localStorage.getItem('apiurl')
-    if (apiurl == null || apiurl === '') {
-        apiurl = "http://localhost:25560"
-    }
-    axios.get(`${apiurl}`).then(() =>{
+
+    axios.get(`/`).then(() =>{
         $("#login-card2").replaceWith(`
 		<div class="" id="cred-status">
         </div>

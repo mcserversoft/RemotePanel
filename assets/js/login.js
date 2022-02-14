@@ -1,9 +1,6 @@
 function login() {
     let token = localStorage.getItem('token')
-    let apiurl = localStorage.getItem('apiurl')
-    if (apiurl == null || apiurl === '') {
-        apiurl = "http://localhost:25560"
-    }
+
     if (token != null) {
         console.log("Token found")
     }
@@ -11,7 +8,7 @@ function login() {
         console.log("No token found locally")
         let username = document.getElementById("username").value;
         let password = document.getElementById("password").value;
-        const request = new Request(`${apiurl}/api/token`, {method: 'POST', body: new URLSearchParams({'username': username, 'password': password})})
+        const request = new Request(`/api/token`, {method: 'POST', body: new URLSearchParams({'username': username, 'password': password})})
         fetch(request).then(function (response) {
             try {
                 if (response.status === 200) {

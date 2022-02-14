@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = localStorage.getItem('token')
-    let apiurl = localStorage.getItem('apiurl')
-    if (apiurl == null || apiurl === '') {
-        apiurl = "http://localhost:25560"
-    }
-    axios.get(`${apiurl}`, {
+
+    axios.get(`/`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }

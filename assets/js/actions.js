@@ -1,13 +1,7 @@
-let apiurl = localStorage.getItem('apiurl')
-if (apiurl == null || apiurl === '') {
-    apiurl = "http://localhost:25560"
-}
-
-
 async function start(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Start Signal.', status: 'info'});
     UIkit.dropdown($('#uk-dropdown').removeClass('uk-open'));
-    await axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "1" }, {
+    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "1" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
@@ -15,7 +9,7 @@ async function start(server, token) {
 
 async function stop(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Stop Signal.', status: 'info'});
-    await axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "2" }, {
+    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "2" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
@@ -23,7 +17,7 @@ async function stop(server, token) {
 
 async function restart(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent Restart Signal.', status: 'info'});
-    await axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "3" }, {
+    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "3" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
@@ -31,7 +25,7 @@ async function restart(server, token) {
 
 async function kill(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Sent kill Signal.', status: 'info'});
-    await axios.post(`${apiurl}/api/server/execute/action`, { "Guid": server, "Action": "4" }, {
+    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "4" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
@@ -39,22 +33,15 @@ async function kill(server, token) {
 
 async function sendcommand(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Command Sent.', status: 'info'});
-    await axios.post(`${apiurl}/api/server/execute/command`, { "Guid": server, "Command": document.getElementById(server + 'abc123').value }, {
+    await axios.post(`/api/server/execute/command`, { "Guid": server, "Command": document.getElementById(server + 'abc123').value }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
     document.getElementById(server + 'abc123').value=''
 }
 
-
-function updateapiurl() {
-    localStorage.setItem("apiurl", document.getElementById("apiurlinput").value)
-    window.location.reload()
-}
-
-
 async function updatestatus() {
     let token = localStorage.getItem('token')
-    await axios.get(`${apiurl}/api/servers`, {
+    await axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }

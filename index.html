@@ -43,22 +43,6 @@
             </ul>
         </div>
     </div>
-    <div id="modal-api-url" uk-modal>
-        <div class="uk-modal-dialog uk-light">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="uk-modal-header">
-                <h2 class="uk-modal-title">MCSS API URL</h2>
-            </div>
-            <div class="uk-modal-body">
-                <p>Enter the api url below:</p>
-                <input id="apiurlinput" class="uk-input" type="text" placeholder="https://api.example.com:25560">
-            </div>
-            <div class="uk-modal-footer uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-green" type="button" onclick="updateapiurl()">Save & Reload</button>
-            </div>
-        </div>
-    </div>
     <div id="modal-close-default2" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-light">
             <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -77,9 +61,6 @@
     <div class="uk-container uk-container-small uk-width-large uk-margin-large">
         <div class="uk-child-width-expand uk-grid-small uk-text-center uk-align-center" uk-grid>
             <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-slide-bottom-medium" id="login-card">
-                <div class="uk-overlay uk-margin-remove-bottom uk-padding-remove-bottom uk-margin-small-medium-right uk-position-top-right">
-                    <a href="" class="uk-icon-button" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>
-                </div>
                 <h1 class="uk-card-title uk-text-bold uk-margin-remove-top uk-padding-remove-top">MCSS Login</h1>
                 <img class="uk-margin-medium-bottom" src="assets/img/logo.png" alt="" width="100" height="100">
                 <div class="" id="login-card2">
@@ -87,7 +68,6 @@
                     <p>Connecting...</p>
                     <noscript><p>Seems like you have javascript disabled, This site won't really work without it. ¯\_(ツ)_/¯</p></noscript>
                 </div>
-                <a class="uk-icon-button uk-margin-medium-top uk-hidden@s" uk-toggle="target: #modal-api-url" uk-icon="cog"></a>
             </div>
         </div>
     </div>
