@@ -31,7 +31,7 @@ async function kill(server, token) {
 }
 
 
-async function sendcommand(server, token) {
+async function sendCommand(server, token) {
     UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Command Sent.', status: 'info'});
     await axios.post(`/api/server/execute/command`, { "Guid": server, "Command": document.getElementById(server + 'abc123').value }, {
         headers: { "Authorization": `Bearer ${token}` }
@@ -39,7 +39,7 @@ async function sendcommand(server, token) {
     document.getElementById(server + 'abc123').value=''
 }
 
-async function updatestatus() {
+async function updateStatus() {
     let token = localStorage.getItem('token')
     await axios.get(`/api/servers`, {
         headers: {

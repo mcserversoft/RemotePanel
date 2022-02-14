@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = localStorage.getItem('token')
 
-    setInterval(updatestatus, 3000);
+    setInterval(updateStatus, 3000);
     axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", function() {
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
-            <form action="#" onsubmit="sendcommand('${guid}', '${token}'); return false;">
+            <form action="#" onsubmit="sendCommand('${guid}', '${token}'); return false;">
             <div class="uk-margin">
                 <div class="uk-inline">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendCommand('${guid}', '${token}')"></a>
                     <input id="${server.Guid + 'abc123'}" class="uk-input uk-form-width-medium2" type="text" placeholder="Server Command">
                 </div>
             </div>

@@ -1,13 +1,22 @@
+body {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+h2 {
+	color: #fff;
+}
+a, a:hover, .uk-icon-link {
+    color: #abd037;
+}
+p {
+	color: rgba(255,255,255,.7);
+}
 .uk-section-secondary {
 	background: #393939;
 }
 .uk-section-transparant {
 	background: #39393900;
-}
-body {
-	background: #134e5e;
-	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
-	background: linear-gradient(to left,#71b280,#134e5e);
 }
 .uk-text-white {
 	color: #e5e5e5 !important;
