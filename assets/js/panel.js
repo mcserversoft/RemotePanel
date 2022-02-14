@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down"></span></button>
                         <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                             <ul class="uk-nav uk-dropdown-nav">
-                                <li><a href="#" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
-                                <li><a href="#" onclick="stop('${guid}', '${token}')" style="color: #d65554;">Stop</a></li>
-                                <li><a href="#" onclick="restart('${guid}', '${token}')" style="color: #eda60e;">Restart</a></li>
-                                <li><a href="#" onclick="kill('${guid}', '${token}')" style="color: #888;">Kill</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="stop('${guid}', '${token}')" style="color: #d65554;">Stop</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="restart('${guid}', '${token}')" style="color: #eda60e;">Restart</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="kill('${guid}', '${token}')" style="color: #888;">Kill</a></li>
                             </ul>
                         </div>
                     </div>
