@@ -1,11 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     let token = localStorage.getItem('token')
-    let apiurl = localStorage.getItem('apiurl')
-    if (apiurl == null || apiurl === '') {
-        apiurl = "http://localhost:25560"
-    }
-    setInterval(updatestatus, 3000);
-    axios.get(`${apiurl}/api/servers`, {
+
+    setInterval(updateStatus, 3000);
+    axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -39,10 +36,10 @@ document.addEventListener("DOMContentLoaded", function() {
         $(".server-control").append(`
         <li>
             <div class="uk-align-left uk-text-left">
-            <form action="#" onsubmit="sendcommand('${guid}', '${token}'); return false;">
+            <form action="#" onsubmit="sendCommand('${guid}', '${token}'); return false;">
             <div class="uk-margin">
                 <div class="uk-inline">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendcommand('${guid}', '${token}')"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendCommand('${guid}', '${token}')"></a>
                     <input id="${server.Guid + 'abc123'}" class="uk-input uk-form-width-medium2" type="text" placeholder="Server Command">
                 </div>
             </div>
@@ -56,10 +53,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down"></span></button>
                         <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                             <ul class="uk-nav uk-dropdown-nav">
-                                <li><a href="#" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
-                                <li><a href="#" onclick="stop('${guid}', '${token}')" style="color: #d65554;">Stop</a></li>
-                                <li><a href="#" onclick="restart('${guid}', '${token}')" style="color: #eda60e;">Restart</a></li>
-                                <li><a href="#" onclick="kill('${guid}', '${token}')" style="color: #888;">Kill</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="start('${guid}', '${token}')" style="color: #71b280;">Start</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="stop('${guid}', '${token}')" style="color: #d65554;">Stop</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="restart('${guid}', '${token}')" style="color: #eda60e;">Restart</a></li>
+                                <li><a href="#" class="uk-dropdown-close" onclick="kill('${guid}', '${token}')" style="color: #888;">Kill</a></li>
                             </ul>
                         </div>
                     </div>

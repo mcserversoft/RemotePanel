@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
-    <link rel="stylesheet" href="assets/css/custom-panel.css" />
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
+    <link rel="stylesheet" href="assets/core/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" href="assets/css/panel.css" />
     <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
     <link rel="manifest" href="manifest.json">
-    <title>MCSS | Panel</title>
+    <title>MCSS Remote Panel | Home</title>
 </head>
 <body>
     <!--Navbar-Container-->
@@ -19,14 +18,9 @@
                 <a class="uk-navbar-item uk-logo" href="#">
                     <img class="" src="assets/img/logo.png" alt="" width="50" height="50">
                 </a>
-                <p class="uk-text-large uk-text-white uk-visible@s">MCSS Panel</p>
+                <p class="uk-text-large uk-text-white uk-visible@s">MCSS Remote Panel</p>
                 <div class="uk-navbar-right">
-                    <div class="uk-margin-medium-right uk-light uk-margin-smallerr-top uk-visible@s">
-                        <a class="uk-link-text uk-margin-small-right" href="https://mcserversoft.github.io/documentation/" target="_blank">Documentation</a>
-                        <a class="uk-link-text" href="https://mcss.app/discord" target="_blank">Discord</a>
-                    </div>
-                    <hr class="uk-divider-vertical">
-                    <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="forget()"></button>
+                   <button uk-icon="sign-out" uk-tooltip="Log Out" class="uk-icon-button uk-margin-medium-left" onclick="logout()"></button>
                 </div>
             </nav>
         </div>
@@ -36,9 +30,11 @@
         <div class="uk-container uk-padding-large uk-padding-remove-top">
             <div class="uk-child-width-expand uk-grid-small uk-text-center" uk-grid>
                 <div>
-                    <div class="" uk-height-viewport="expand: true">          
-                        <div class="uk-animation-scale-down uk-transform-origin-bottom-center">             
-                            <div>
+                    <div class="" uk-height-viewport="expand: true">
+                        <div class="uk-animation-slide-top-medium uk-transform-origin-bottom-center">              
+                            <div><div class="uk-alert-primary" uk-alert>
+                                <p>This panel and API are in early development, UI/features are limited. More will be added in the near future. Thank you for trying it out!</p>
+                            </div>
                                 <div class="uk-width-auto@m">
                                     <ul class="uk-align-left uk-width-1-6 uk-tab-left server-list" uk-tab="connect: #component-tab-left; animation: uk-animation-slide-top-small">
                                     </ul>
@@ -54,21 +50,23 @@
             </div>
         </div>
     </div>
-    <!--Footer-->
+
     <footer class="uk-section uk-section-transparent uk-section-xsmall">
-        <div class="uk-container uk-text-white uk-width-medium">
+        <div class="uk-container uk-text-white uk-width-large">
             <div class="uk-text-center">
                 <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
-                <p>MCSS Panel / UIkit Version</p>
+                <p>MCSS Remote Panel / Made with ❤<br/>
+                    <a href="https://mcserversoft.com" target="_blank" >Website</a> | <a href="https://mcserversoft.com/discord" target="_blank" >Discord</a> | <a href="https://github.com/mcserversoft/RemotePanel" target="_blank" >Github</a> | <a href="https://mcserversoft.com/donate" target="_blank" >Donate</a></p>
             </div>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"w></script>
+
+    <script src="assets/core/uikit/js/uikit.min.js"></script>
+    <script src="assets/core/uikit/js/uikit-icons.min.js"></script>
+    <script src="assets/core/jquery.min.js"></script>
+    <script src="assets/core/axios.min.js"></script>
+    <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/panel.js" defer></script>
-    <script src="assets/js/forget.js" defer></script>
-    <script src="assets/js/test4.js" defer></script>
     <script src="assets/js/actions.js" defer></script>
     <script src="assets/js/cookies.js"></script>
 </body>

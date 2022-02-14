@@ -1,3 +1,9 @@
+body {
+	background: #212529;
+}
+a, a:hover, .uk-icon-link {
+    color: #abd037;
+}
 .uk-section-secondary {
 	background: #212529;
 }
@@ -14,9 +20,6 @@
 }
 .uk-form-width-medium2 {
 	width: 340px;
-}
-body {
-	background: #212529;
 }
 .uk-text-white {
 	color: #e5e5e5 !important;
