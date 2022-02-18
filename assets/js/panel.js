@@ -46,7 +46,6 @@ function loadDashboard(control) {
     let server = JSON.parse(decodeURIComponent(data.server))
 
     $(".serverDashboard").html(`
-    <li>
         <div class="uk-align-left uk-text-left">
         <form action="#" onsubmit="sendCommand('${server.Guid}'); return false;">
         <div class="uk-margin">
@@ -75,7 +74,6 @@ function loadDashboard(control) {
             </div>
             <p>Auto Start: ${server.IsSetToAutoStart}</p>
         </div>
-    </li>
     `);
 }
 
