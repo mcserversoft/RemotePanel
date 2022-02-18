@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,89 +9,109 @@
     <meta content="Remote Panel for MCSS" property="og:description" />
     <meta content="#7ca740" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="assets/core/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" href="assets/css/global.css" />
     <link rel="stylesheet" href="assets/css/login.css" />
-    <link rel="icon" type="image/jpg" href="assets/img/favicon.ico"/>
+    <link rel="icon" type="image/jpg" href="assets/img/favicon.ico" />
     <link rel="manifest" href="manifest.json">
     <title>MCSS Remote Panel | Login</title>
 </head>
-<body>
-<div uk-height-viewport="expand: true" uk-width-viewport="expand: true" class="uk-section">
-    <div class="uk-container uk-position-right uk-visible@s uk-margin-medium-top uk-margin-medium-right" uk-grid>
-        <div>
-            <a class="uk-icon-button" uk-toggle="target: #modal-close-default" uk-icon="info"></a>
+
+<body class="gradient">
+    <div uk-height-viewport="expand: true" uk-width-viewport="expand: true" class="uk-section">
+        <div class="uk-container uk-position-right uk-visible@s uk-margin-medium-top uk-margin-medium-right" uk-grid>
+            <div>
+                <a class="uk-icon-button" uk-toggle="target: #modal-close-default" uk-icon="info"></a>
+            </div>
         </div>
-    </div>
-    <div id="modal-close-default" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Info & Credits</h2>
-            <p>MCSS Remote Panel v2.0.0 <a href="https://github.com/mcserversoft/RemotePanel" target="_blank" class="uk-icon-link" uk-icon="github"></a></p>
-            <p>Created by <a href="https://github.com/stefmmm" target="_blank">Stefmmm</a> and <a href="https://github.com/mcserversoft/RemotePanel/graphs/contributors" target="_blank">contributors</a>.</p>
-            <p>Made possible by these wonderful people:</p>
-            <ul class="uk-list uk-list-bullet">
-                <li><p><a href="https://github.com/Fiahblade" target="_blank">Fiahblade</a> / Created MC Server Soft and its API.</p></li>
-                <li><p><a href="https://github.com/PouletteMC" target="_blank">Poulette</a> / Lend me JavaScript & Inspired me to make this.</p></li>
-                <li><p><a href="https://github.com/gaycookie" target="_blank">Gaycookie</a> / Helped me immensely with JavaScript.</p></li>
-            </ul>
+        <div id="modal-close-default" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <h2 class="uk-modal-title">Info & Credits</h2>
+                <p>MCSS Remote Panel v2.0.0 <a href="https://github.com/mcserversoft/RemotePanel" target="_blank"
+                        class="uk-icon-link" uk-icon="github"></a></p>
+                <p>Created by <a href="https://github.com/stefmmm" target="_blank">Stefmmm</a> and <a
+                        href="https://github.com/mcserversoft/RemotePanel/graphs/contributors"
+                        target="_blank">contributors</a>.</p>
+                <p>Made possible by these wonderful people:</p>
+                <ul class="uk-list uk-list-bullet">
+                    <li>
+                        <p><a href="https://github.com/Fiahblade" target="_blank">Fiahblade</a> / Created MC Server Soft and its API.</p>
+                    </li>
+                    <li>
+                        <p><a href="https://github.com/PouletteMC" target="_blank">Poulette</a> / Lend me JavaScript & Inspired me to make this.</p>
+                    </li>
+                    <li>
+                        <p><a href="https://github.com/gaycookie" target="_blank">Gaycookie</a> / Helped me immensely with JavaScript.</p>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div id="modal-close-default2" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title">Unable to reach API</h2>
-            <p>Here are some reasons why you might not be able connect.</p>
-            <ul class="uk-list uk-list-bullet">
-                <li>MCSS is not running (locally on port 25560)</li>
-                <li>The API url you entered is incorrect</li>
-                <li>Your firewall is blocking the connection</li>
-                <li>Your browser extentions are blocking the connection</li>
-                <li>Misconfigured portforwarding / ngrok / remote.it</li>
-            </ul>
-            <p>Reload the page when you're ready.</p>
+        <div id="modal-close-default2" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <h2 class="uk-modal-title">Unable to reach API</h2>
+                <p>Here are some reasons why you might not be able connect.</p>
+                <ul class="uk-list uk-list-bullet">
+                    <li>MCSS is not running (locally on port 25560)</li>
+                    <li>The API url you entered is incorrect</li>
+                    <li>Your firewall is blocking the connection</li>
+                    <li>Your browser extentions are blocking the connection</li>
+                    <li>Misconfigured portforwarding / ngrok / remote.it</li>
+                </ul>
+                <p>Reload the page when you're ready.</p>
+            </div>
         </div>
-    </div>
-    <div class="uk-container uk-container-small uk-width-large uk-margin-large">
-        <div class="uk-child-width-expand uk-grid-small uk-text-center uk-align-center" uk-grid>
-            <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-slide-bottom-medium" id="login-card">
-                <h1 class="uk-card-title uk-text-bold uk-margin-remove-top uk-padding-remove-top">MCSS Remote Login</h1>
-                <img class="uk-margin-medium-bottom" src="assets/img/logo.png" alt="" width="100" height="100">
-                <div class="" id="login-card2">
-                    <div uk-spinner="ratio: 1.3"></div>
-                    <p>Connecting...</p>
-                    <noscript><p>Seems like you have javascript disabled, This site won't really work without it. ¯\_(ツ)_/¯</p></noscript>
+        <div class="uk-container uk-container-small uk-width-large uk-margin-large">
+            <div class="uk-child-width-expand uk-grid-small uk-text-center uk-align-center" uk-grid>
+                <div class="uk-card uk-card-secondary uk-card-body uk-padding-large uk-animation-slide-bottom-medium"
+                    id="login-card">
+                    <h1 class="uk-card-title uk-text-bold uk-margin-remove-top uk-padding-remove-top">MCSS Remote Login
+                    </h1>
+                    <img class="uk-margin-medium-bottom" src="assets/img/logo.png" alt="" width="100" height="100">
+                    <div class="" id="login-card2">
+                        <div uk-spinner="ratio: 1.3"></div>
+                        <p>Connecting...</p>
+                        <noscript>
+                            <p>Seems like you have javascript disabled, This site won't really work without it.
+                                ¯\_(ツ)_/¯</p>
+                        </noscript>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<footer class="uk-section uk-section-transparent uk-section-xsmall">
-    <div class="uk-container uk-text-white uk-width-large">
-        <div class="uk-text-center">
-            <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
-            <p>MCSS Remote Panel / Made with ❤<br/>
-                <a href="https://mcserversoft.com" target="_blank" >Website</a> | <a href="https://mcserversoft.com/discord" target="_blank" >Discord</a> | <a href="https://github.com/mcserversoft/RemotePanel" target="_blank" >Github</a> | <a href="https://mcserversoft.com/donate" target="_blank" >Donate</a></p>
+    <footer class="uk-section uk-section-transparent uk-section-xsmall">
+        <div class="uk-container uk-text-white uk-width-large">
+            <div class="uk-text-center">
+                <hr class="uk-margin-large uk-divider-icon uk-margin-small-bottom">
+                <p>MCSS Remote Panel / Made with ❤<br />
+                    <a href="https://mcserversoft.com" target="_blank">Website</a> | <a
+                        href="https://mcserversoft.com/discord" target="_blank">Discord</a> | <a
+                        href="https://github.com/mcserversoft/RemotePanel" target="_blank">Github</a> | <a
+                        href="https://mcserversoft.com/donate" target="_blank">Donate</a>
+                </p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-<script src="assets/core/uikit/js/uikit.min.js"></script>
-<script src="assets/core/uikit/js/uikit-icons.min.js"></script>
-<script src="assets/core/jquery.min.js"></script>
-<script src="assets/core/axios.min.js"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/login.js"></script>
-<script src="assets/js/cookies.js" defer></script>
-<script>
-    // register service worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').then(registration => {
-            }).catch(registrationError => {
-                console.log('The Service Worker could not be registered. Please report this issue.');
+    <script src="assets/core/uikit/js/uikit.min.js"></script>
+    <script src="assets/core/uikit/js/uikit-icons.min.js"></script>
+    <script src="assets/core/jquery.min.js"></script>
+    <script src="assets/core/axios.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/cookies.js" defer></script>
+    <script>
+        // register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                }).catch(registrationError => {
+                    console.log('The Service Worker could not be registered. Please report this issue.');
+                });
             });
-        });
-    }
-</script>
+        }
+    </script>
 </body>
 </html>

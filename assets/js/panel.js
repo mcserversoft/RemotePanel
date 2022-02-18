@@ -61,7 +61,7 @@ function loadDashboard(control) {
             <div class="uk-button-group server-status">
                     <button class="uk-button uk-button-default color-${server.Status}" id="${server.Guid}">${GetFriendlyStatusName(server.Status)}</button>
                 <div class="uk-inline">
-                    <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down"></span></button>
+                    <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down" class="white"></span></button>
                     <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
                         <ul class="uk-nav uk-dropdown-nav">
                             <li><a href="#" class="uk-dropdown-close color-1" onclick="start('${server.Guid}')">Start</a></li>
