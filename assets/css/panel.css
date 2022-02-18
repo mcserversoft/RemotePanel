@@ -87,3 +87,15 @@ a, a:hover, .uk-icon-link {
 	color: #fff;
 	outline: 0;
 }
+.color-0 {
+	color: #d65554 !important;
+}
+.color-2 {
+	color: #888 !important;
+}
+.color-1 {
+	color: #71b280 !important;
+}
+.color-3, .color-4 {
+	color: #eda60e !important;
+}
