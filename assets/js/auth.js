@@ -18,7 +18,7 @@ function isUserAuthenticated() {
 function redirectIfRequired(isAuthenticated) {
     let currentPage = window.location.pathname;
 
-    if (currentPage == "/index.html" && isAuthenticated) {
+    if ((currentPage == "/" || currentPage == "/index.html") && isAuthenticated) {
         window.location.href = "/panel.html";
     } else if (currentPage == "panel.html" && !isAuthenticated) {
         window.location.href = "/index.html";
