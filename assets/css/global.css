@@ -1,4 +1,9 @@
-.uk-navbar-container:not(.uk-navbar-transparent).gradient, .gradient {
+.gradient {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+/*.uk-navbar-container:not(.uk-navbar-transparent).gradient, .gradient {
 	background: #134e5e;
 	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
 	background: linear-gradient(to left,#71b280,#134e5e);
@@ -18,3 +23,4 @@ a, a:hover, .uk-icon-link {
 .uk-text-white {
 	color: #e5e5e5 !important;
 }
+*/
