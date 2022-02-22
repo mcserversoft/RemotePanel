@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/discord/335560186930659328?label=Discord)](https://mcserversoft.com/discord)
-[![Maintained](https://img.shields.io/maintenance/yes/2021)](https://github.com/mcserversoft/RemotePanell)
+[![Maintained](https://img.shields.io/maintenance/yes/2021)](https://github.com/mcserversoft/RemotePanel)
 [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/9f9t.svg)](https://betteruptime.com/?utm_source=status_badge)
 
 # MCSS Remote Panel
