@@ -1,65 +1,55 @@
-async function start(server) {
+async function start(serverGuid) {
     showPopup('Sent Start Signal');
-    UIkit.dropdown($('#uk-dropdown').removeClass('uk-open'));
-    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "1" }, {
+
+    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "1" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
-
-async function stop(server) {
+async function stop(serverGuid) {
     showPopup('Sent Stop Signal');
-    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "2" }, {
+
+    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "2" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
-
-async function restart(server) {
+async function restart(serverGuid) {
     showPopup('Sent Restart Signal');
-    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "3" }, {
+
+    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "3" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
-
-async function kill(server) {
+async function kill(serverGuid) {
     showPopup('Sent kill Signal');
-    await axios.post(`/api/server/execute/action`, { "Guid": server, "Action": "4" }, {
+
+    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "4" }, {
         headers: { "Authorization": `Bearer ${token}` }
     }).then(() => console.log("It worked")).catch((err) => console.error(err))
 }
 
+async function updateServers() {
+    if (document.hidden) {
+        //webpage is not active, don't update so reduce server calls
+        return;
+    }
 
-async function sendCommand(server) {
-    showPopup('Command Sent');
-    await axios.post(`/api/server/execute/command`, { "Guid": server, "Command": document.getElementById('consoleInput').value }, {
-        headers: { "Authorization": `Bearer ${token}` }
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
-    document.getElementById('consoleInput').value=''
-}
-
-async function updateStatus() {
     await axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
-    }).then((data) => {     
-    data.data.forEach(server => {
-        
-        $(`#${server.Guid}`).replaceWith(`
-            <button class="uk-button uk-button-default color-${server.Status}" id="${server.Guid}">${GetFriendlyStatusName(server.Status)}</button>
-        `);
-        $(`#${'icon' + server.Guid}`).replaceWith(`
-            <div id="${'icon' + server.Guid}" class="uk-position-left"><span class="color-${server.Status}" uk-icon="icon: triangle-right; ratio: 1"></span></div>
-        `);
-    })
+    }).then((response) => {
+        response.data.forEach(server => {
+            
+            $(`[data-server-guid="${server.Guid}"]`).data("server", server) 
+            $(`.serverName-${server.Guid}`).html(`${server.Name}`)
+            $(`.serverStatus-${server.Guid}`).html(`${GetFriendlyStatusName(server.Status)}`)
+            $(`.serverStatusColor-${server.Guid}`).removeClass(["color-0", "color-1", "color-2", "color-3","color-4"]).addClass(`color-${server.Status}`)  
+        })
     }).catch(err => {
-        UIkit.notification({message: '<span uk-icon=\'icon: ban\'></span> Failed to fetch server status.', status: 'danger'});
         console.error(err);
+        showPopup("Failed to fetch server status.")
     });
-}
-
-function showPopup(content){
-    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> ' + content + '.', status: 'info'});
 }
