@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 let token = localStorage.getItem("token");
 
 function loadServers() {
-    setInterval(updateServers, 3500);
+    setInterval(updateServers, 3000);
     axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
