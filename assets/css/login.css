@@ -1,6 +1,63 @@
-.uk-card-secondary {
-	background: #212529;
-	color: #fff;
-	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.315);
-	border-radius: 10px 10px 10px 10px;
+body {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+body>.grid {
+    height: 100%;
+}
+h1 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+img {
+	margin-bottom: 2rem;
+}
+.column {
+    max-width: 450px;
+}
+.ui.segment {
+    background: #212529;
+    color: #eee;
+    padding: 6em 3em;
+    box-shadow: 0 10px 15px rgb(0 0 0 / 32%);
+    border-radius: 10px 10px 10px 10px;
+}
+.ui.form input[type=text], .ui.form input[type=password] {
+    color: #eee;
+    background: rgba(255,255,255,.15);
+}
+.ui.secondary.menu .item {
+	margin: 2rem 2rem -2rem 0;
+}
+.ui.submit.button {
+	color: inherit;
+	background-color: #7ca740;
+}
+
+@media only screen and (max-height: 700px) {
+    body{
+        background: none #212529;
+    }
+    .ui.grid {
+        margin-top: -5rem;
+    }
+    .ui.segment {
+        box-shadow: none;
+        background-color: inherit;
+    }
+    .ui.segment.footer {
+        padding: 2em 0em;
+    }
+
+    .ui.menu button {
+        z-index: 99;
+    }
+}
+
+@media only screen and (max-height: 450px) {
+    .ui.segment.footer {
+        content-visibility: hidden;
+        visibility: hidden;
+    }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "MCSS Panel",
-    "short_name": "Panel",
+    "name": "MCSS Remote Panel",
+    "short_name": "MCSS Remote",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

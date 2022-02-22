@@ -5,76 +5,96 @@ document.addEventListener("DOMContentLoaded", function () {
 let token = localStorage.getItem("token");
 
 function loadServers() {
-    setInterval(updateStatus, 3000);
+    setInterval(updateServers, 3000);
     axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
     }).then((response) => {
         response.data.forEach((server, index) => {
-            $(".server-list").append(`
-                <li>
-                <a class="uk-text-truncate uk-margin-small-left"
-                data-server="${encodeURIComponent(JSON.stringify(server))}"
-                onclick="loadDashboard(this)">${server.Name}
+            let control = $(`
+            <a class="item ellipseOverflow"
+                data-server-guid="${server.Guid}"
+                onclick="loadDashboard(this)">
+                <i class="server icon serverStatusColor-${server.Guid} color-${server.Status}"></i>
+                <span class="serverName-${server.Guid}">${server.Name}</span>
                 </a>
-                <div id="${'icon' + server.Guid}" class="uk-position-left"><span class="color-${server.Status}" uk-icon="icon: triangle-right; ratio: 1"></span></div>
-                <hr class="uk-margin-small-left uk-margin-small-right uk-margin-remove-top uk-margin-remove-bottom">
-                </li>
-                `);
+                `).data("server", server);
+                $(".servers").append(control);
 
             // load default server dashboard
             if (index == 0) {
-                let firstControl = $(".server-list li:first-child a")[0];
+                let firstControl = $(".servers:first-child a")[0];
                 loadDashboard(firstControl);
             }
         })
     }).catch(err => {
-        if (err.status === 401) {
+        // TODO testing if this can be removed
+       /* if (err.status === 401) {
             localStorage.removeItem("token")
             window.location.href = "/index.html"
         } else {
             alert("Something went wrong: " + err);
             console.error(err);
             //TODO find a better way of handling this error
-        }
+        }*/
+        console.error(err);
+        localStorage.removeItem("token")
+        window.location.href = "/index.html"
     });
 }
 
 function loadDashboard(control) {
+    $(".servers:first-child a").each(function () {
+        $(this).removeClass("active")
+    });
+    $(control).addClass("active");
+
     let data = $(control).data();
-    let server = JSON.parse(decodeURIComponent(data.server))
+    let server = data.server;
 
     $(".serverDashboard").html(`
-        <div class="uk-align-left uk-text-left">
-        <form action="#" onsubmit="sendCommand('${server.Guid}'); return false;">
-        <div class="uk-margin">
-            <div class="uk-inline">
-                <a class="uk-form-icon uk-form-icon-flip" uk-tooltip="Send" href="#" uk-icon="icon: forward" onclick="sendCommand('${server.Guid}')"></a>
-                <input id="consoleInput" class="uk-input uk-form-width-medium2" type="text" placeholder="Server Command">
-            </div>
+<div class="ui inverted segments">
+    <div class="ui horizontal segments">
+        <div class="ui left aligned segment hideOnSmallScreens">
+            <h1 class="serverName-${server.Guid}">${server.Name}</h1>
         </div>
-        </form>
-        <p>Guid: ${server.Guid}</p>
-        </div>
-        <div class="uk-align-right">
-            <div class="uk-button-group server-status">
-                    <button class="uk-button uk-button-default color-${server.Status}" id="${server.Guid}">${GetFriendlyStatusName(server.Status)}</button>
-                <div class="uk-inline">
-                    <button class="uk-button uk-button-default" type="button"><span uk-icon="icon: triangle-down" class="white"></span></button>
-                    <div uk-dropdown="mode: click; boundary: ! .uk-button-group; boundary-align: true;">
-                        <ul class="uk-nav uk-dropdown-nav">
-                            <li><a href="#" class="uk-dropdown-close color-1" onclick="start('${server.Guid}')">Start</a></li>
-                            <li><a href="#" class="uk-dropdown-close color-0" onclick="stop('${server.Guid}')">Stop</a></li>
-                            <li><a href="#" class="uk-dropdown-close color-3" onclick="restart('${server.Guid}')">Restart</a></li>
-                            <li><a href="#" class="uk-dropdown-close color-2" onclick="kill('${server.Guid}')">Kill</a></li>
-                        </ul>
-                    </div>
+        <div class="ui right aligned segment">
+            <button class="ui icon grey button" onclick=refreshDashboard('${server.Guid}')><i class="sync icon"></i></button>
+            <button class="ui labeled icon pointing dropdown grey button">
+                <i class="circle icon serverStatusColor-${server.Guid} color-${server.Status}"></i><span class="serverStatus-${server.Guid}">${GetFriendlyStatusName(server.Status)}</span>
+                <div class="menu inverted">
+                    <div class="item" onclick="start('${server.Guid}')">Start</div>
+                    <div class="item" onclick="stop('${server.Guid}')">Stop</div>
+                    <div class="item" onclick="restart('${server.Guid}')">Restart</div>
+                    <div class="item" onclick="kill('${server.Guid}')">Kill</div>
                 </div>
-            </div>
-            <p>Auto Start: ${server.IsSetToAutoStart}</p>
+            </button>
         </div>
+    </div>
+</div>
+<div class="ui inverted segments">
+    <div class="ui segment">
+        <textarea readonly id="serverConsole">test</textarea>
+    </div>
+    <div class="ui segment">
+        <form action="#" onsubmit="sendCommand('${server.Guid}'); return false;">
+            <div class="ui left icon fluid input">
+                <input id="consoleInput" type="text" placeholder="Enter command e.g. /say hello">
+                <i class="terminal icon"></i>
+            </div>
+        </form>
+    </div>
+</div>
     `);
+
+    $('.ui.dropdown').dropdown();
+    loadConsole(server.Guid);
+}
+
+function refreshDashboard(serverGuid){
+    updateServers();
+    loadConsole(serverGuid);
 }
 
 function GetFriendlyStatusName(status) {
@@ -94,4 +114,12 @@ function GetFriendlyStatusName(status) {
     } else if (status === 4) {
         return "Stopping";
     }
+}
+
+function showPopup(content) {
+    $('body')
+        .toast({
+            position: 'bottom right',
+            message: content
+    });
 }

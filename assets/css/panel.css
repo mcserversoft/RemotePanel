@@ -1,6 +1,42 @@
 body {
 	background: #212529;
 }
+.header.item{
+    font-size: 1.2rem;
+}
+.header.item img.logo{
+    margin-right: 0.5rem !important;
+}
+.ui.menu.nav {
+	background: #134e5e;
+	background: -webkit-linear-gradient(to left,#71b280,#134e5e);
+	background: linear-gradient(to left,#71b280,#134e5e);
+}
+.ui.menu.nav .header {
+	color: #fff;
+}
+.ui.vertical.menu {
+    width: unset;
+}
+.row.dashboard .column:first-child {
+	flex: 0 0 16rem;
+	margin-right: -1rem;
+}
+.row.dashboard .column:nth-child(2){
+	flex: 1;	
+}
+#serverConsole{
+	color: #9c9c9d;
+	background-color: inherit;
+	border: none;
+	max-width: 100%;
+	min-width: 100%;
+
+	min-height: 20rem;
+	height: 20rem;
+    outline: none;
+	resize: none;
+}
 .color-0 {
 	color: #d65554 !important;
 }
@@ -13,70 +49,25 @@ body {
 .color-3, .color-4 {
 	color: #eda60e !important;
 }
-
-.uk-dropdown {
-	background: #212529;
-	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.288);
+.ui.footer.segment {
+	margin-top: 2rem;
+}
+.ui.input>input, input:focus  {
+	color: #9c9c9d !important;
+	background-color: #3a3a3a !important;
+}
+.ellipseOverflow{
+	text-overflow: ellipsis;
+	overflow: hidden; 
+	white-space: nowrap;
+}
+/* protect against long server names (temp)*/
+.ui.horizontal.segments>.segment { 
+    min-width: unset;
 }
 
-.uk-alert-primary {
-    background: #343a40;
-    color: #d8eafc;
+@media only screen and (max-width: 499px) {
+	.hideOnSmallScreens {
+		content-visibility:hidden;
+	}
 }
-.uk-tab-left::before {
-    border-left: 1px solid #343a40;
-}
-
-.uk-tab>.uk-active>a {
-    color: #abd037;
-    border-color: #abd037;
-}
-.uk-tab>*>a {
-    color: #d3d3d3;
-}
-.uk-tab>*>a:hover {
-    color: #91a15e;
-}
-.uk-hr, hr {
-    border-top: 1px solid #343a40;
-}
-.white{
-	color: white;
-}
-/*
-.uk-modal-header {
-	display: flow-root;
-	padding: 15px 30px;
-	background: #212529;
-	border-bottom: 1px solid #888888;
-}
-.uk-modal-footer {
-	display: flow-root;
-	padding: 15px 30px;
-	background: #212529;
-	border-top: 1px solid #888888;
-}
-.uk-button-green {
-	background-color: #3b786c;
-	color: #fff;
-	border: 1px solid transparent;
-}
-.uk-button-green:focus, .uk-button-green:hover {
-	background-color: #33685d;
-	color: #fff;
-	outline: 0;
-}
-.uk-card-primary.uk-card-body .uk-tab > .uk-active > a, .uk-card-primary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-card-secondary.uk-card-body .uk-tab > .uk-active > a, .uk-card-secondary > :not([class*="uk-card-media"]) .uk-tab > .uk-active > a, .uk-light .uk-tab > .uk-active > a, .uk-offcanvas-bar .uk-tab > .uk-active > a, .uk-overlay-primary .uk-tab > .uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-tab > .uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-tab > .uk-active > a {
-	border-color: #fff;
-}
-.uk-divider-vertical {
-	width: 1px;
-	height: 36px;
-	margin-left: auto;
-	margin-right: auto;
-	border-left: 1px solid #e5e5e5;
-}
-.uk-margin-smaller-top {
-	margin-top: 5px !important;
-}
-*/
