@@ -6,6 +6,8 @@ let token = localStorage.getItem("token");
 
 function loadServers() {
     setInterval(updateServers, 3000);
+    setInterval(updateConsoleIfNeeded, 3000);
+    
     axios.get(`/api/servers`, {
         headers: {
             "Authorization": `Bearer ${token}`
@@ -52,6 +54,8 @@ function loadDashboard(control) {
 
     let data = $(control).data();
     let server = data.server;
+    
+    localStorage.setItem("activeServerGuid", server.Guid);
 
     $(".serverDashboard").html(`
 <div class="ui inverted segments">

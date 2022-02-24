@@ -1,5 +1,32 @@
+const LINE_BREAK = "&#13;&#10;";
+
+async function updateConsoleIfNeeded() {
+    let serverGuid = localStorage.getItem("activeServerGuid");
+
+    if (serverGuid == null) {
+        return;
+    }
+
+    let lines = $('#serverConsole').val().split('\n');
+    let length = lines.length - 1;
+
+    let secondLastLine = lines[length - 1];
+    let lastLine = lines[length];
+
+    await axios.post(`/api/server/console/outdated`, { "Guid": serverGuid, "SecondLastLine": secondLastLine, "LastLine": lastLine }, {
+        headers: { "Authorization": `Bearer ${token}` }
+
+    }).then((response) => {
+        
+        if (response.data){
+            loadConsole(serverGuid)
+        }
+    }
+    ).catch((err) => console.error(err))
+}
+
 async function loadConsole(serverGuid) {
-    $("#serverConsole").text("");
+    clearConsole();
 
     await axios.post(`/api/server/console`, { "Guid": serverGuid, "AmountOfLines": 50, "Reversed": false }, {
         headers: { "Authorization": `Bearer ${token}` }
@@ -7,7 +34,7 @@ async function loadConsole(serverGuid) {
     }).then((response) => {
 
         response.data.forEach(line => {
-            $("#serverConsole").append(line + "&#13;&#10;");
+            $("#serverConsole").append(LINE_BREAK + line);
         });
         scrollToBottom();
     }
@@ -29,6 +56,10 @@ async function sendCommand(serverGuid) {
 
     $("#consoleInput").val('');
     loadConsole(serverGuid);
+}
+
+function clearConsole() {
+    $("#serverConsole").text("");
 }
 
 function scrollToBottom() {
