@@ -51,6 +51,13 @@ body {
 }
 .ui.footer.segment {
 	margin-top: 2rem;
+	padding-bottom: 1rem;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+.divided.link.list {
+	margin-top: 0;
 }
 .ui.input>input, input:focus  {
 	color: #9c9c9d !important;

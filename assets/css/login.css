@@ -34,6 +34,10 @@ img {
 	color: inherit;
 	background-color: #7ca740;
 }
+.ui.middle.aligned.center.aligned.grid {
+    margin-top: -10rem;
+    margin-bottom: 6rem;
+}
 
 @media only screen and (max-height: 700px) {
     body{
