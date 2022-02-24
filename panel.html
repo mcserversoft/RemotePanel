@@ -37,9 +37,11 @@
                 <div class="ui vertical pointing inverted menu servers"></div>
             </div>
             <div class="column">
-                <div class="serverDashboard"><div class="ui visible black message">
-                    <p>No servers found.</p>
-                </div></div>
+                <div class="serverDashboard">
+                    <div class="ui visible black message">
+                        <p>No servers found.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -55,6 +57,17 @@
             </div>
         </div>
     </div>
+
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="satellite dish icon"></i>
+            Lost connection to the MC Server Soft API.
+        </div>
+        <div class="center aligned content">
+          <p>Trying to restore the connection.</p>
+          <i class="sync loading icon"></i>
+        </div>
+      </div>
 
     <script src="assets/core/jquery.min.js"></script>
     <script src="assets/core/fomantic/semantic.min.js"></script>
