@@ -127,3 +127,11 @@ function showPopup(content) {
             message: content
     });
 }
+
+function showLostConnectionPopup(visible) {
+    let parameter = visible ? "show": "hide";
+
+    $(".ui.basic.modal").modal({
+        closable: false,
+    }).modal(parameter);
+}

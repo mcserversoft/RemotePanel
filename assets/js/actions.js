@@ -42,6 +42,7 @@ async function updateServers() {
         }
     }).then((response) => {
         response.data.forEach(server => {
+            showLostConnectionPopup(false);
             
             $(`[data-server-guid="${server.Guid}"]`).data("server", server) 
             $(`.serverName-${server.Guid}`).html(`${server.Name}`)
@@ -49,7 +50,6 @@ async function updateServers() {
             $(`.serverStatusColor-${server.Guid}`).removeClass(["color-0", "color-1", "color-2", "color-3","color-4"]).addClass(`color-${server.Status}`)  
         })
     }).catch(err => {
-        console.error(err);
-        showPopup("Failed to fetch server status.")
+        showLostConnectionPopup(true);
     });
 }
