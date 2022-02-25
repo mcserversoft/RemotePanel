@@ -1,5 +1,11 @@
 body {
 	background: #212529;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+.content {
+    flex: 1;
 }
 .header.item{
     font-size: 1.2rem;
@@ -51,6 +57,9 @@ body {
 }
 .ui.footer.segment {
 	margin-top: 2rem;
+}
+.divided.link.list {
+	margin-top: 0;
 }
 .ui.input>input, input:focus  {
 	color: #9c9c9d !important;
