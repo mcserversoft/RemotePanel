@@ -31,18 +31,11 @@ function loadServers() {
             }
         })
     }).catch(err => {
-        // TODO testing if this can be removed
-       /* if (err.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/index.html"
-        } else {
-            alert("Something went wrong: " + err);
-            console.error(err);
-            //TODO find a better way of handling this error
-        }*/
         console.error(err);
-        localStorage.removeItem("token")
-        window.location.href = "/index.html"
+        if (err.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/index.html";
+        }
     });
 }
 
