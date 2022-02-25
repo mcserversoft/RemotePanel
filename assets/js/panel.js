@@ -2,16 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     loadServers();
 });
 
-let token = localStorage.getItem("token");
-
 function loadServers() {
     setInterval(updateServers, 3000);
     setInterval(updateConsoleIfNeeded, 3000);
-    
+
     axios.get(`/api/servers`, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
     }).then((response) => {
         response.data.forEach((server, index) => {
             let control = $(`
@@ -22,7 +17,7 @@ function loadServers() {
                 <span class="serverName-${server.Guid}">${server.Name}</span>
                 </a>
                 `).data("server", server);
-                $(".servers").append(control);
+            $(".servers").append(control);
 
             // load default server dashboard
             if (index == 0) {
@@ -30,14 +25,9 @@ function loadServers() {
                 loadDashboard(firstControl);
             }
         })
-    }).catch(err => {
-        console.error(err);
-        if (err.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/index.html";
-        }
     });
 }
+
 
 function loadDashboard(control) {
     $(".servers:first-child a").each(function () {
@@ -47,7 +37,7 @@ function loadDashboard(control) {
 
     let data = $(control).data();
     let server = data.server;
-    
+
     localStorage.setItem("activeServerGuid", server.Guid);
 
     $(".serverDashboard").html(`
@@ -89,7 +79,7 @@ function loadDashboard(control) {
     loadConsole(server.Guid);
 }
 
-function refreshDashboard(serverGuid){
+function refreshDashboard(serverGuid) {
     updateServers();
     loadConsole(serverGuid);
 }
@@ -118,11 +108,11 @@ function showPopup(content) {
         .toast({
             position: 'bottom right',
             message: content
-    });
+        });
 }
 
 function showLostConnectionPopup(visible) {
-    let parameter = visible ? "show": "hide";
+    let parameter = visible ? "show" : "hide";
 
     $(".ui.basic.modal").modal({
         closable: false,

@@ -1,3 +1,5 @@
+// TODO is this code still needed?
+/*
 function setCookie(name, value, days) {
     const amountOfMillisecondsInADay = 24 * 60 * 60 * 1000
     let expires = ''
@@ -24,3 +26,4 @@ function getCookie(name) {
 function eraseCookie(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 }
+*/

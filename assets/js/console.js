@@ -14,22 +14,18 @@ async function updateConsoleIfNeeded() {
     let lastLine = lines[length];
 
     await axios.post(`/api/server/console/outdated`, { "Guid": serverGuid, "SecondLastLine": secondLastLine, "LastLine": lastLine }, {
-        headers: { "Authorization": `Bearer ${token}` }
 
     }).then((response) => {
-        
-        if (response.data){
+        if (response.data) {
             loadConsole(serverGuid)
         }
-    }
-    ).catch((err) => console.error(err))
+    }).catch((err) => console.error(err))
 }
 
 async function loadConsole(serverGuid) {
     clearConsole();
 
     await axios.post(`/api/server/console`, { "Guid": serverGuid, "AmountOfLines": 50, "Reversed": false }, {
-        headers: { "Authorization": `Bearer ${token}` }
 
     }).then((response) => {
 
@@ -37,8 +33,7 @@ async function loadConsole(serverGuid) {
             $("#serverConsole").append(LINE_BREAK + line);
         });
         scrollToBottom();
-    }
-    ).catch((err) => console.error(err))
+    }).catch((err) => console.error(err))
 }
 
 async function sendCommand(serverGuid) {
@@ -51,8 +46,7 @@ async function sendCommand(serverGuid) {
     showPopup('Command Sent');
 
     await axios.post(`/api/server/execute/command`, { "Guid": serverGuid, "Command": input }, {
-        headers: { "Authorization": `Bearer ${token}` }
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    }).then().catch((err) => console.error(err))
 
     $("#consoleInput").val('');
     loadConsole(serverGuid);
