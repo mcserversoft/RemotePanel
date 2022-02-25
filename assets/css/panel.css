@@ -1,5 +1,11 @@
 body {
 	background: #212529;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+.content {
+  flex: 1;
 }
 .header.item{
     font-size: 1.2rem;
@@ -51,10 +57,6 @@ body {
 }
 .ui.footer.segment {
 	margin-top: 2rem;
-	padding-bottom: 1rem;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
 }
 .divided.link.list {
 	margin-top: 0;

@@ -11,42 +11,43 @@
     <title>MCSS Remote Panel | Home</title>
 </head>
 <body>
-    <div class="ui secondary menu nav">
-        <div class="ui container">
-            <div class="header item">
-                <img class="logo" src="assets/img/logo.png">MCSS Remote Panel
-            </div>
+    <main class="content">
+        <div class="ui secondary menu nav">
+            <div class="ui container">
+                <div class="header item">
+                    <img class="logo" src="assets/img/logo.png">MCSS Remote Panel
+                </div>
 
-            <div class="right menu">
-                <button class="ui icon tertiary button" onclick="logout()"><i class="sign out alternate inverted icon"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui container stackable grid">
-        <div class="row">
-            <div class="column">
-                <div class="ui centered black message">
-                    <p>This panel and API are in early development, UI/features are limited. More will be added in the near future. Thank you for trying it out!</p>
+                <div class="right menu">
+                    <button class="ui icon tertiary button" onclick="logout()"><i class="sign out alternate inverted icon"></i></button>
                 </div>
             </div>
         </div>
 
-        <div class="row dashboard">
-            <div class="column">
-                <div class="ui vertical pointing inverted menu servers"></div>
+        <div class="ui container stackable grid">
+            <div class="row">
+                <div class="column">
+                    <div class="ui centered black message">
+                        <p>This panel and API are in early development, UI/features are limited. More will be added in the near future. Thank you for trying it out!</p>
+                    </div>
+                </div>
             </div>
-            <div class="column">
-                <div class="serverDashboard">
-                    <div class="ui visible black message">
-                        <p>No servers found.</p>
+
+            <div class="row dashboard">
+                <div class="column">
+                    <div class="ui vertical pointing inverted menu servers"></div>
+                </div>
+                <div class="column">
+                    <div class="serverDashboard">
+                        <div class="ui visible black message">
+                            <p>No servers found.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="ui inverted vertical footer segment">
+    </main>
+    <footer class="ui inverted vertical sticky footer segment">
         <div class="ui center aligned container">
             <p>MCSS Remote Panel / Made with ❤️</p>
             <div class="ui horizontal inverted small divided link list">
@@ -56,7 +57,7 @@
                 <a class="item" target="_blank" href="https://mcserversoft.com/donate">Donate</a>
             </div>
         </div>
-    </div>
+    </footer>
 
     <div class="ui basic modal">
         <div class="ui icon header">
@@ -67,7 +68,7 @@
           <p>Trying to restore the connection.</p>
           <i class="sync loading icon"></i>
         </div>
-      </div>
+    </div>
 
     <script src="assets/core/jquery.min.js"></script>
     <script src="assets/core/fomantic/semantic.min.js"></script>
