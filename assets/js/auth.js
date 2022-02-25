@@ -1,10 +1,13 @@
-let token = localStorage.getItem("token");
 let offlineMode = false;
 
 document.addEventListener("DOMContentLoaded", function () {
     axios.interceptors.request.use(
         requestConfig => {
-            requestConfig.headers.authorization = `Bearer ${token}`;
+            let token = localStorage.getItem("token");
+
+            if (token != null) {
+                requestConfig.headers.authorization = `Bearer ${token}`;
+            }
 
             return requestConfig;
         }
@@ -36,6 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function isUserAuthenticated() {
+    let token = localStorage.getItem("token");
+
     if (token == null) {
         redirectIfRequired(false);
         return;
