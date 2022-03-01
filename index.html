@@ -102,7 +102,7 @@
   // register service worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').then(registration => {
+      navigator.serviceWorker.register('./sw.js').then(registration => {
       }).catch(registrationError => {
         console.log('The Service Worker could not be registered. Please report this issue.');
       });
