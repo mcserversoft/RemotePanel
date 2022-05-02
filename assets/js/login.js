@@ -68,8 +68,13 @@ function login() {
 
 					JSON.stringify(result)
 					let token = result["access_token"]
+					let expirationDate = result["expires_at"]
+					let username = result["userName"]
 
 					localStorage.setItem("token", token)
+					localStorage.setItem("token_expires_at", expirationDate)
+					localStorage.setItem("username", username)
+
 					window.location.href = "/panel.html";
 				})
 				return;

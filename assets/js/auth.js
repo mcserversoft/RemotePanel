@@ -15,8 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     axios.interceptors.response.use(
         response => {
-            let statusCode = response.status;
 
+            if (localStorage.getItem("token_expires_at") != null){
+                let currentDate = Math.floor(Date.now() / 1000);
+                let expirationDate = localStorage.getItem("token_expires_at");
+    
+                if (expirationDate < currentDate) {
+                    console.log("Your session has timed out.")
+                    logout();
+                }
+            }
+
+            let statusCode = response.status;
             if (statusCode == 200 && offlineMode) {
                 showLostConnectionPopup(false);
             }
@@ -70,6 +80,8 @@ function logout() {
 
 function destroySession() {
     localStorage.removeItem("token");
+    localStorage.removeItem("token_expires_at");
+    localStorage.removeItem("username");
     //the code below would remove user preferences (if that is ever added)
     //localStorage.clear();
 }
