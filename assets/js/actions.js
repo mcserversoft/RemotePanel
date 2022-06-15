@@ -43,10 +43,10 @@ async function updateServers() {
         response.data.forEach(server => {
             showLostConnectionPopup(false);
 
-            $(`[data-server-guid="${server.Guid}"]`).data("server", server)
-            $(`.serverName-${server.Guid}`).html(`${server.Name}`)
-            $(`.serverStatus-${server.Guid}`).html(`${GetFriendlyStatusName(server.Status)}`)
-            $(`.serverStatusColor-${server.Guid}`).removeClass(["color-0", "color-1", "color-2", "color-3", "color-4"]).addClass(`color-${server.Status}`)
+            $(`[data-server-guid="${server.guid}"]`).data("server", server)
+            $(`.serverName-${server.guid}`).html(`${server.name}`)
+            $(`.serverStatus-${server.guid}`).html(`${GetFriendlyStatusName(server.status)}`)
+            $(`.serverStatusColor-${server.guid}`).removeClass(["color-0", "color-1", "color-2", "color-3", "color-4"]).addClass(`color-${server.status}`)
         })
     }).catch((err) => console.error(err))
 }
