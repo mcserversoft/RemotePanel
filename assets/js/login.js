@@ -48,32 +48,30 @@ function showInfoDialog() {
 	$('.mini.modal').modal('show');
 }
 
-function login() {
+async function login() {
 	showBusyIndicator(true);
 
-	let token = localStorage.getItem('token')
-	if (token != null) {
+	let apiKey = localStorage.getItem('apiKey')
+	if (apiKey != null) {
 		return;
 	}
 
 	let username = document.getElementById("username").value;
 	let password = document.getElementById("password").value;
-	const request = new Request(`/api/token`, { method: 'POST', body: new URLSearchParams({ 'username': username, 'password': password }) })
 
-	fetch(request).then(function (response) {
+	const request = new Request(`/auth`, { method: 'POST', body: JSON.stringify({ 'username': username, 'password': password }) })
+	fetch(request).then(response => {
 		try {
+
 			if (response.status === 200) {
 				response.json().then((result) => {
 					$(".ui.form .ui.input").hide();
 
+					console.log(result);
 					JSON.stringify(result)
-					let token = result["access_token"]
-					let expirationDate = result["expires_at"]
-					let username = result["userName"]
 
-					localStorage.setItem("token", token)
-					localStorage.setItem("token_expires_at", expirationDate)
-					localStorage.setItem("username", username)
+					localStorage.setItem("apiKey", result["apiKey"])
+					localStorage.setItem("username", result["username"])
 
 					window.location.href = "/panel.html";
 				})

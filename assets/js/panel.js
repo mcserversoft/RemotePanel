@@ -2,19 +2,21 @@ document.addEventListener("DOMContentLoaded", function () {
     loadServers();
 });
 
-function loadServers() {
+async function loadServers() {
     setInterval(updateServers, 3000);
     setInterval(updateConsoleIfNeeded, 3000);
 
-    axios.get(`/api/servers`, {
+    await axios({
+        method: 'get',
+        url: `/api/v1/servers`
     }).then((response) => {
         response.data.forEach((server, index) => {
             let control = $(`
             <a class="item ellipseOverflow"
-                data-server-guid="${server.Guid}"
+                data-server-guid="${server.guid}"
                 onclick="loadDashboard(this)">
-                <i class="server icon serverStatusColor-${server.Guid} color-${server.Status}"></i>
-                <span class="serverName-${server.Guid}">${server.Name}</span>
+                <i class="server icon serverStatusColor-${server.guid} color-${server.status}"></i>
+                <span class="serverName-${server.guid}">${server.name}</span>
                 </a>
                 `).data("server", server);
             $(".servers").append(control);
@@ -38,23 +40,23 @@ function loadDashboard(control) {
     let data = $(control).data();
     let server = data.server;
 
-    localStorage.setItem("activeServerGuid", server.Guid);
+    localStorage.setItem("activeServerGuid", server.guid);
 
     $(".serverDashboard").html(`
 <div class="ui inverted segments">
     <div class="ui horizontal segments">
         <div class="ui left aligned segment hideOnSmallScreens">
-            <h1 class="serverName-${server.Guid}">${server.Name}</h1>
+            <h1 class="serverName-${server.guid}">${server.name}</h1>
         </div>
         <div class="ui right aligned segment">
-            <button class="ui icon grey button" onclick=refreshDashboard('${server.Guid}')><i class="sync icon"></i></button>
+            <button class="ui icon grey button" onclick=refreshDashboard('${server.guid}')><i class="sync icon"></i></button>
             <button class="ui labeled icon pointing dropdown grey button">
-                <i class="circle icon serverStatusColor-${server.Guid} color-${server.Status}"></i><span class="serverStatus-${server.Guid}">${GetFriendlyStatusName(server.Status)}</span>
+                <i class="circle icon serverStatusColor-${server.guid} color-${server.status}"></i><span class="serverStatus-${server.guid}">${GetFriendlyStatusName(server.status)}</span>
                 <div class="menu inverted">
-                    <div class="item" onclick="start('${server.Guid}')">Start</div>
-                    <div class="item" onclick="stop('${server.Guid}')">Stop</div>
-                    <div class="item" onclick="restart('${server.Guid}')">Restart</div>
-                    <div class="item" onclick="kill('${server.Guid}')">Kill</div>
+                    <div class="item" onclick="start('${server.guid}')">Start</div>
+                    <div class="item" onclick="stop('${server.guid}')">Stop</div>
+                    <div class="item" onclick="restart('${server.guid}')">Restart</div>
+                    <div class="item" onclick="kill('${server.guid}')">Kill</div>
                 </div>
             </button>
         </div>
@@ -65,7 +67,7 @@ function loadDashboard(control) {
         <textarea readonly id="serverConsole">test</textarea>
     </div>
     <div class="ui segment">
-        <form action="#" onsubmit="sendCommand('${server.Guid}'); return false;">
+        <form action="#" onsubmit="sendCommand('${server.guid}'); return false;">
             <div class="ui left icon fluid input">
                 <input id="consoleInput" type="text" placeholder="Enter command e.g. /say hello">
                 <i class="terminal icon"></i>
@@ -76,7 +78,7 @@ function loadDashboard(control) {
     `);
 
     $('.ui.dropdown').dropdown();
-    loadConsole(server.Guid);
+    loadConsole(server.guid);
 }
 
 function refreshDashboard(serverGuid) {

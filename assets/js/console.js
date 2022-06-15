@@ -10,13 +10,18 @@ async function updateConsoleIfNeeded() {
     let lines = $('#serverConsole').val().split('\n');
     let length = lines.length - 1;
 
-    let secondLastLine = lines[length - 1];
-    let lastLine = lines[length];
+    let secondLastLine = encodeURIComponent(lines[length - 1]);
+    let lastLine = encodeURIComponent(lines[length]);
 
-    await axios.post(`/api/server/console/outdated`, { "Guid": serverGuid, "SecondLastLine": secondLastLine, "LastLine": lastLine }, {
-
+    await axios({
+        method: 'get',
+        url: `/api/v1/servers/${serverGuid}/console/outdated`,
+        params: {
+             secondLastLine: secondLastLine,       
+            lastLine: lastLine
+        }
     }).then((response) => {
-        if (response.data) {
+        if (response.data === "True") {
             loadConsole(serverGuid)
         }
     }).catch((err) => console.error(err))
@@ -25,10 +30,14 @@ async function updateConsoleIfNeeded() {
 async function loadConsole(serverGuid) {
     clearConsole();
 
-    await axios.post(`/api/server/console`, { "Guid": serverGuid, "AmountOfLines": 50, "Reversed": false }, {
-
+    await axios({
+        method: 'get',
+        url: `/api/v1/servers/${serverGuid}/console`,
+        params: {
+            amountOfLines: 50,
+            reversed: false
+        }
     }).then((response) => {
-
         response.data.forEach(line => {
             $("#serverConsole").append(LINE_BREAK + line);
         });
@@ -45,8 +54,14 @@ async function sendCommand(serverGuid) {
 
     showPopup('Command Sent');
 
-    await axios.post(`/api/server/execute/command`, { "Guid": serverGuid, "Command": input }, {
-    }).then().catch((err) => console.error(err))
+    await axios({
+        method: 'post',
+        url: `/api/v1/servers/${serverGuid}/execute/command`,
+        data: {
+            command: input,
+        }
+    }).catch((err) => console.error(err));
+
 
     $("#consoleInput").val('');
     loadConsole(serverGuid);

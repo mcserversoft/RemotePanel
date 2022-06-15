@@ -1,29 +1,33 @@
 async function start(serverGuid) {
     showPopup('Sent Start Signal');
-
-    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "1" }, {
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    await sendAction(serverGuid, 1);
 }
 
 async function stop(serverGuid) {
     showPopup('Sent Stop Signal');
-
-    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "2" }, {
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    await sendAction(serverGuid, 2);
 }
 
 async function restart(serverGuid) {
     showPopup('Sent Restart Signal');
-
-    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "3" }, {
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+    await sendAction(serverGuid, 3);
 }
 
 async function kill(serverGuid) {
     showPopup('Sent kill Signal');
+    await sendAction(serverGuid, 4);
+}
 
-    await axios.post(`/api/server/execute/action`, { "Guid": serverGuid, "Action": "4" }, {
-    }).then(() => console.log("It worked")).catch((err) => console.error(err))
+async function sendAction(serverGuid, action) {
+    await axios({
+        method: 'post',
+        url: `/api/v1/servers/${serverGuid}/execute/action`,
+        params: {
+            action: action,
+        }
+    }).then(
+        console.log("It worked")
+    ).catch((err) => console.error(err))
 }
 
 async function updateServers() {
@@ -32,7 +36,9 @@ async function updateServers() {
         return;
     }
 
-    await axios.get(`/api/servers`, {
+    await axios({
+        method: 'get',
+        url: `/api/v1/servers`
     }).then((response) => {
         response.data.forEach(server => {
             showLostConnectionPopup(false);

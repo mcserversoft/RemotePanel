@@ -3,10 +3,10 @@ let offlineMode = false;
 document.addEventListener("DOMContentLoaded", function () {
     axios.interceptors.request.use(
         requestConfig => {
-            let token = localStorage.getItem("token");
+            let apiKey = localStorage.getItem("apiKey");
 
-            if (token != null) {
-                requestConfig.headers.authorization = `Bearer ${token}`;
+            if (apiKey != null) {
+                requestConfig.headers.apiKey = apiKey;
             }
 
             return requestConfig;
@@ -16,15 +16,15 @@ document.addEventListener("DOMContentLoaded", function () {
     axios.interceptors.response.use(
         response => {
 
-            if (localStorage.getItem("token_expires_at") != null){
-                let currentDate = Math.floor(Date.now() / 1000);
-                let expirationDate = localStorage.getItem("token_expires_at");
-    
-                if (expirationDate < currentDate) {
-                    console.log("Your session has timed out.")
-                    logout();
-                }
-            }
+            // if (localStorage.getItem("token_expires_at") != null){
+            //     let currentDate = Math.floor(Date.now() / 1000);
+            //     let expirationDate = localStorage.getItem("token_expires_at");
+
+            //     if (expirationDate < currentDate) {
+            //         console.log("Your session has timed out.")
+            //         logout();
+            //     }
+            // }
 
             let statusCode = response.status;
             if (statusCode == 200 && offlineMode) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!error.response) {
                 //Error: Network Error
                 showLostConnectionPopup(true);
-            } else if (error.response.status == 401) {
+            } else if (error.response.status == 401 || error.response.status == 403) {
                 logout();
             }
 
@@ -48,19 +48,21 @@ document.addEventListener("DOMContentLoaded", function () {
     isUserAuthenticated();
 });
 
-function isUserAuthenticated() {
-    let token = localStorage.getItem("token");
+async function isUserAuthenticated() {
+    let apiKey = localStorage.getItem("apiKey");
 
-    if (token == null) {
+    if (apiKey == null) {
         redirectIfRequired(false);
         return;
     }
 
-    axios.get(`/api/version`, {
-    }).then(function (response) {
-        let isAuthenticated = (response.status == 200 && token != null);
+    await axios({
+        method: 'get',
+        url: `/api/v1`
+    }).then(response => {
+        let isAuthenticated = (response.status == 200 && apiKey != null);
         redirectIfRequired(isAuthenticated)
-    });
+    }).catch((err) => console.error(err))
 }
 
 function redirectIfRequired(isAuthenticated) {
@@ -79,8 +81,7 @@ function logout() {
 }
 
 function destroySession() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("token_expires_at");
+    localStorage.removeItem("apiKey");
     localStorage.removeItem("username");
     //the code below would remove user preferences (if that is ever added)
     //localStorage.clear();
