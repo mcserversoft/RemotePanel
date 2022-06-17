@@ -1,6 +1,8 @@
 import { writable } from 'svelte-local-storage-store'
 
 export const auth = writable('user', {
-  apiKey: '',
-  username: '',
+    apiKey: '',
+    username: '',
 })
+
+export const selectedServerGuid = writable('selectedServerGuid', '');

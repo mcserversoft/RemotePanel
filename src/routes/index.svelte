@@ -9,6 +9,7 @@
 	import PanelPage from "../pages/panel.svelte";
 
 	let isAuthenticated: boolean;
+	let isPageLoadedYet: boolean;
 
 	if (browser) {
 		console.log("browser");
@@ -22,12 +23,16 @@
 			} else {
 				isAuthenticated = false;
 			}
+			isPageLoadedYet = true;
 		});
 	}
 </script>
 
-{#if isAuthenticated}
-	<PanelPage />
-{:else}
-	<LoginPage />
+<!-- this removes page ghosting on F5 -->
+{#if isPageLoadedYet}
+	{#if isAuthenticated}
+		<PanelPage />
+	{:else}
+		<LoginPage />
+	{/if}
 {/if}
