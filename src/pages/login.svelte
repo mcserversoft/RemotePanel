@@ -18,37 +18,39 @@
 	let password: string;
 
 	async function handleOnSubmit() {
-		console.log(username);
-
 		const request = new Request(`https://localhost:2096/auth`, {
 			method: `POST`,
 			body: JSON.stringify({ username: username, password: password }),
 		});
 
-		await fetch(request).then((response) => {
-			console.log(response);
-			try {
+		await fetch(request)
+			.then((response) => {
 				if (response.status === 200) {
-					response.json().then((result) => {
-						// hideError();
-
-						auth.set({
-							apiKey: result[`apiKey`],
-							username: result[`username`],
-						});
-					});
-					return;
-				} else if (response.status === 401) {
-					showError(``, `Your username and/or password are not correct.`);
-				} else if (response.status === 500) {
-					showError(``, `Unable to reach the API.`);
-				} else {
-					showError(``, `Unable to reach the API.`);
+					return response.json();
 				}
-			} catch (error) {
-				showError(``, `Failed to login for some unknown reason.`);
-			}
-		});
+				return Promise.reject(response);
+			})
+			.then((data) => {
+				// hideError();
+
+				auth.set({
+					apiKey: data[`apiKey`],
+					username: data[`username`],
+				});
+			})
+			.catch((error) => {
+				console.log(error)
+				console.log(error.status)
+
+				// 401 -> unauthorized || undefined -> because of false CORS warnings
+				if (error.status === 401 || error.status === undefined) {
+					showError(`Unauthorized`, `Your username and/or password are not correct.`);
+				} else if (error.status === 500) {
+					showError(`Unkown`, `Failed to login for some unknown reason.`);
+				} else {
+					showError(`Network`, `Unable to reach the API.`);
+				}
+			});
 	}
 
 	function showError(title: string, message: string) {

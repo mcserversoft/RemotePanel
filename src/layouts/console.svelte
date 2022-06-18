@@ -2,6 +2,7 @@
     import { get } from "svelte/store";
     import { auth } from "$lib/store.js";
     import { selectedServerGuid } from "$lib/store.js";
+    import { logout } from "$lib/common.js";
 
     let serverConsole: string[] = [];
 
@@ -19,12 +20,10 @@
 
         await fetch(request)
             .then((response) => {
-                console.log(response);
-
                 if (response.status === 200) {
                     return response.json();
                 }
-                throw new Error("Not properly authenticated");
+                return Promise.reject(response);
             })
             .then((data) => {
                 console.log(data);
@@ -32,9 +31,13 @@
                 //  scrollToBottom();
             })
             .catch((error) => {
-                console.error(error);
+                if (error.status === 403) {
+                    logout();
+                }
             });
     }
+
+    async function sendCommand() {}
 </script>
 
 <div class="col-span-full xl:col-span-6 shadow-lg rounded-md bg-zinc-700">
@@ -43,16 +46,8 @@
     </div>
 
     <textarea readonly class="w-full h-60 px-5 outline-none text-sm bg-inherit">{serverConsole}</textarea>
-</div>
 
-<div class="ui inverted segments">
-    <div class="ui segment" />
-    <div class="ui segment">
-        <form action="#" onsubmit="sendCommand(); return false;">
-            <div class="ui left icon fluid input">
-                <input id="consoleInput" type="text" placeholder="Enter command e.g. /say hello" />
-                <i class="terminal icon" />
-            </div>
-        </form>
-    </div>
+    <form on:submit={sendCommand}>
+        <input id="consoleInput" type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
+    </form>
 </div>

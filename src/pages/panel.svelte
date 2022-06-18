@@ -1,13 +1,11 @@
 <script type="ts">
     import { get } from "svelte/store";
     import { auth } from "$lib/store.js";
-    import { selectedServerGuid } from "$lib/store.js";
     import Header from "../layouts/header.svelte";
     import Sidebar from "../layouts/sidebar.svelte";
     import Console from "../layouts/console.svelte";
 
     let username = get(auth).username;
-    let selectedServer = selectedServerGuid;
 </script>
 
 <svelte:head>

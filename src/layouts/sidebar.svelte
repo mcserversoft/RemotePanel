@@ -2,6 +2,7 @@
     import { get } from "svelte/store";
     import { auth } from "$lib/store.js";
     import { selectedServerGuid } from "$lib/store.js";
+    import { logout } from "$lib/common.js";
 
     interface Server {
         guid: string;
@@ -25,12 +26,10 @@
 
         await fetch(request)
             .then((response) => {
-                console.log(response);
-
                 if (response.status === 200) {
                     return response.json();
                 }
-                throw new Error("Not properly authenticated");
+                return Promise.reject(response);
             })
             .then((data) => {
                 servers = data;
@@ -38,12 +37,11 @@
                 if (data.any) {
                     loadingMessage = "No Servers";
                 }
-                // isAuthenticated.set(true);
             })
             .catch((error) => {
-                console.error(error);
-                // destroySession();
-                // isAuthenticated.set(false);
+                if (error.status === 403) {
+                    logout();
+                }
             });
         loadingServers = false;
     }
@@ -54,7 +52,7 @@
         }
     }
     function setSelectedServer(guid: string) {
-        selectedServerGuid.update(g => guid);
+        selectedServerGuid.update((g) => guid);
     }
 </script>
 

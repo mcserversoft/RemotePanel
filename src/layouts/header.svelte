@@ -1,5 +1,6 @@
 <script lang="ts">
     import { auth } from "$lib/store.js";
+    import { logout } from "$lib/common.js";
 
     export let username: string;
 
@@ -9,12 +10,6 @@
         showUserDropdown = !showUserDropdown;
     }
 
-    function logout() {
-        auth.set({
-            apiKey: "",
-            username: "",
-        });
-    }
 </script>
 
 <header class="sticky top-0 bg-zinc-900 text-white">

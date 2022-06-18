@@ -12,10 +12,7 @@
 	let isPageLoadedYet: boolean;
 
 	if (browser) {
-		console.log("browser");
-
 		auth.subscribe((value) => {
-			console.log("sub");
 
 			//TODO also validate if it's valid
 			if (value.apiKey) {
