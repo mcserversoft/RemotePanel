@@ -1,7 +1,6 @@
 <script lang="ts">
     import { get } from "svelte/store";
-    import { auth } from "$lib/store.js";
-    import { selectedServerGuid } from "$lib/store.js";
+    import { auth, selectedServer } from "$lib/store.js";
     import { logout } from "$lib/common.js";
 
     interface Server {
@@ -18,6 +17,7 @@
     async function loadServers() {
         loadingServers = true;
         const request = new Request(`https://localhost:2096/api/v1/servers`, {
+            //const request = new Request(`/api/v1/servers`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -51,8 +51,12 @@
             loadServers();
         }
     }
-    function setSelectedServer(guid: string) {
-        selectedServerGuid.update((g) => guid);
+
+    function setSelectedServer(guid: string, name: string) {
+        selectedServer.set({
+            guid: guid,
+            name: name,
+        });
     }
 </script>
 
@@ -120,7 +124,7 @@
             <ul class="pl-9 mt-1 truncate">
                 {#each servers || [] as { guid, name }}
                     <li class="mb-1 last:mb-0">
-                        <button on:click={setSelectedServer(guid)} class=" text-slate-400 hover:text-slate-200">
+                        <button on:click={() => setSelectedServer(guid, name)} class=" text-slate-400 hover:text-slate-200">
                             <span class="text-sm font-medium s 2xl:opacity-100 ">{name}</span>
                         </button>
                     </li>

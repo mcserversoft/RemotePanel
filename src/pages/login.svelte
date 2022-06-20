@@ -19,6 +19,7 @@
 
 	async function handleOnSubmit() {
 		const request = new Request(`https://localhost:2096/auth`, {
+			//const request = new Request(`/auth`, {
 			method: `POST`,
 			body: JSON.stringify({ username: username, password: password }),
 		});
@@ -31,17 +32,12 @@
 				return Promise.reject(response);
 			})
 			.then((data) => {
-				// hideError();
-
 				auth.set({
 					apiKey: data[`apiKey`],
 					username: data[`username`],
 				});
 			})
 			.catch((error) => {
-				console.log(error)
-				console.log(error.status)
-
 				// 401 -> unauthorized || undefined -> because of false CORS warnings
 				if (error.status === 401 || error.status === undefined) {
 					showError(`Unauthorized`, `Your username and/or password are not correct.`);
@@ -57,10 +53,6 @@
 		error.visible = true;
 		error.title = title;
 		error.message = message;
-	}
-
-	function hideError() {
-		error.visible = false;
 	}
 </script>
 

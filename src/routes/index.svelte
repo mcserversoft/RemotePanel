@@ -12,10 +12,10 @@
 	let isPageLoadedYet: boolean;
 
 	if (browser) {
-		auth.subscribe((value) => {
+		auth.subscribe((updatedAuth) => {
 
-			//TODO also validate if it's valid
-			if (value.apiKey) {
+			// apiKey validation occurs with API requests
+			if (updatedAuth.apiKey) {
 				isAuthenticated = true;
 			} else {
 				isAuthenticated = false;
@@ -25,7 +25,7 @@
 	}
 </script>
 
-<!-- this removes page ghosting on F5 -->
+<!-- isPageLoadedYet removes page ghosting on F5 -->
 {#if isPageLoadedYet}
 	{#if isAuthenticated}
 		<PanelPage />

@@ -9,3 +9,10 @@ This repository contains the code that is used for the remote panel. Feel free t
 
 Join our [discord](https://mcserversoft.com/discord) for a chat!
 
+##TODO
+- add warning when backend isn't available
+- fix console scroll to bottom
+- console / server refresh
+- console fetching mechanism
+- general dashboard?
+- show server status

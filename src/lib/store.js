@@ -5,4 +5,12 @@ export const auth = writable('user', {
     username: '',
 })
 
-export const selectedServerGuid = writable('selectedServerGuid', '');
+
+export const selectedServer = writable('server', {
+    guid: '',
+    name: '',
+})
+
+// export const selectedServerGuid = writable('selectedServerGuid', '');
+// export const selectedServerName = writable('selectedServerName', '');
+export const showDiscordPopup = writable('showDiscordPopup', true);
