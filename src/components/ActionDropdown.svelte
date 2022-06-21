@@ -50,8 +50,8 @@
     }
 </script>
 
-<div class="relative inline-flex">
-    <button on:click={toggleDropdown} use:clickOutside on:click_outside={handleClickOutside} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
+<div class="relative inline-flex" use:clickOutside on:click_outside={handleClickOutside}>
+    <button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
         <div class="flex items-center truncate text-zinc-200">
             <span class="truncate ml-2 text-sm font-medium capitalize">status</span>
             <ArrowDownSvg />

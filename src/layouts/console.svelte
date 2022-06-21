@@ -5,6 +5,7 @@
     import { logout } from "$lib/common.js";
 
     let serverConsole: string[] = [];
+    let consoleInput: string;
     let textarea: HTMLTextAreaElement;
 
     if (browser) {
@@ -44,7 +45,34 @@
             });
     }
 
-    async function sendCommand() {}
+    async function sendCommand() {
+        if (!consoleInput) {
+            return;
+        }
+
+        const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
+            //const request = new Request(`/api/v1/servers/${get(get(selectedServer).guid)}/execute/command`, {
+            //const request = new Request(`/auth`, {
+            method: `POST`,
+            headers: {
+                apiKey: get(auth).apiKey,
+            },
+            body: JSON.stringify({ command: consoleInput }),
+        });
+
+        await fetch(request)
+            .then((response) => {
+                if (response.status == 200) {
+                    consoleInput = "";
+                }
+                return Promise.reject(response);
+            })
+            .catch((error) => {
+                if (error.status === 403) {
+                    logout();
+                }
+            });
+    }
 
     function scrollToBottom() {
         //TODO fix
@@ -72,7 +100,7 @@
 
     <textarea bind:this={textarea} readonly class="w-full h-60 px-5 outline-none text-sm bg-inherit">{serverConsole}</textarea>
 
-    <form on:submit={sendCommand}>
-        <input id="consoleInput" type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
+    <form on:submit|preventDefault={sendCommand}>
+        <input bind:value={consoleInput} type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
     </form>
 </div>
