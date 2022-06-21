@@ -13,9 +13,11 @@
         });
     }
 
-    async function loadConsole(guid:string) {
-         const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
-        //const request = new Request(`/api/v1/servers/${get(selectedServerGuid)}/console?amountOfLines=50&reversed=false`, {
+    async function loadConsole(guid: string) {
+        clearConsole();
+
+        const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
+            //const request = new Request(`/api/v1/servers/${get(selectedServerGuid)}/console?amountOfLines=50&reversed=false`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -56,6 +58,10 @@
         console.log(textarea.scrollTop);
 
         //  $("#serverConsole").scrollTop($("#serverConsole")[0].scrollHeight);
+    }
+
+    function clearConsole() {
+        serverConsole = [];
     }
 </script>
 

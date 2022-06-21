@@ -1,7 +1,7 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import { auth, selectedServer } from "$lib/store.js";
-    import { logout } from "$lib/common.js";
+    import { logout, clickOutside } from "$lib/common.js";
     import ArrowDownSvg from "../components/svgs/ArrowDownSvg.svelte";
 
     let actions: string[] = ["start", "stop", "restart", "kill"];
@@ -9,6 +9,10 @@
 
     function toggleDropdown() {
         dropdownVisible = !dropdownVisible;
+    }
+
+    function handleClickOutside() {
+        dropdownVisible = false;
     }
 
     async function sendAction(action: number) {
@@ -46,8 +50,8 @@
     }
 </script>
 
-<div class="relative">
-    <button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
+<div class="relative inline-flex">
+    <button on:click={toggleDropdown} use:clickOutside on:click_outside={handleClickOutside} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
         <div class="flex items-center truncate text-zinc-200">
             <span class="truncate ml-2 text-sm font-medium capitalize">status</span>
             <ArrowDownSvg />

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { logout } from "$lib/common.js";
+    import { logout, clickOutside } from "$lib/common.js";
     import ArrowDownSvg from "../components/svgs/ArrowDownSvg.svelte";
 
     export let username: string;
@@ -9,13 +9,17 @@
     function toggleDropdown() {
         dropdownVisible = !dropdownVisible;
     }
+    
+    function handleClickOutside() {
+        dropdownVisible = false;
+    }
 </script>
 
-<header class="sticky top-0 bg-zinc-900 text-white">
+<header class="sticky top-0 bg-zinc-900 text-white z-50">
     <div class="px-4 sm:px-6">
         <div class="flex justify-end h-16">
             <div class="relative inline-flex">
-                <button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center">
+                <button on:click={toggleDropdown} use:clickOutside on:click_outside={handleClickOutside} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center">
                     <div class="flex items-center truncate text-zinc-200">
                         <span class="ml-2 text-sm font-medium capitalize truncate"> {username}</span>
                         <ArrowDownSvg />

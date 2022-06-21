@@ -21,7 +21,8 @@
 		const request = new Request(`https://localhost:2096/auth`, {
 			//const request = new Request(`/auth`, {
 			method: `POST`,
-			body: JSON.stringify({ username: username, password: password }),
+			body: JSON.stringify({ username: username, password: password })
+			
 		});
 
 		await fetch(request)
