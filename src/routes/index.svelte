@@ -3,6 +3,7 @@
 </script>
 
 <script type="ts">
+	import { onDestroy } from "svelte";
 	import { browser } from "$app/env";
 	import { auth } from "$lib/store.js";
 	import LoginPage from "../pages/login.svelte";
@@ -12,8 +13,7 @@
 	let isPageLoadedYet: boolean;
 
 	if (browser) {
-		auth.subscribe((updatedAuth) => {
-
+		const unsubscribe = auth.subscribe((updatedAuth) => {
 			// apiKey validation occurs with API requests
 			if (updatedAuth.apiKey) {
 				isAuthenticated = true;
@@ -22,6 +22,7 @@
 			}
 			isPageLoadedYet = true;
 		});
+		onDestroy(unsubscribe);
 	}
 </script>
 

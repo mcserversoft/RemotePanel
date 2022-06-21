@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { get } from "svelte/store";
     import { browser } from "$app/env";
     import { auth, selectedServer } from "$lib/store.js";
@@ -9,9 +10,10 @@
     let textarea: HTMLTextAreaElement;
 
     if (browser) {
-        selectedServer.subscribe((newSelectedServer) => {
+        const unsubscribe = selectedServer.subscribe((newSelectedServer) => {
             loadConsole(newSelectedServer.guid);
         });
+        onDestroy(unsubscribe);
     }
 
     async function loadConsole(guid: string) {
