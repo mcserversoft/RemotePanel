@@ -1,6 +1,6 @@
 <script type="ts">
 	import { auth } from "$lib/store.js";
-	import FormError from "../components/FormError.svelte";
+	import FormError from "../components/formError.svelte";
 
 	interface Error {
 		visible: boolean;
@@ -40,7 +40,8 @@
 			})
 			.catch((error) => {
 				// 401 -> unauthorized || undefined -> because of false CORS warnings
-				if (error.status === 401 || error.status === undefined) {
+				// if (error.status === 401 || error.status === undefined) {
+				if (error.status === 401) {
 					showError(`Unauthorized`, `Your username and/or password are not correct.`);
 				} else if (error.status === 500) {
 					showError(`Unkown`, `Failed to login for some unknown reason.`);

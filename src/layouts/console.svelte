@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+    import { onDestroy } from "svelte";
     import { get } from "svelte/store";
     import { browser } from "$app/env";
     import { auth, selectedServer } from "$lib/store.js";
@@ -18,6 +18,10 @@
 
     async function loadConsole(guid: string) {
         clearConsole();
+
+        if (!guid) {
+            return;
+        }
 
         const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
             //const request = new Request(`/api/v1/servers/${get(selectedServerGuid)}/console?amountOfLines=50&reversed=false`, {
