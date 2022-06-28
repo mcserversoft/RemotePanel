@@ -23,8 +23,8 @@
             return;
         }
 
-        const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
-            //const request = new Request(`/api/v1/servers/${get(selectedServerGuid)}/console?amountOfLines=50&reversed=false`, {
+        const request = new Request(`/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
+        // const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -56,9 +56,8 @@
             return;
         }
 
-        const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
-            //const request = new Request(`/api/v1/servers/${get(get(selectedServer).guid)}/execute/command`, {
-            //const request = new Request(`/auth`, {
+        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
+        // const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,

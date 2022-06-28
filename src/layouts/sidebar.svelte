@@ -17,8 +17,8 @@
 
     async function loadServers() {
         loadingServers = true;
-        const request = new Request(`https://localhost:2096/api/v1/servers`, {
-            //const request = new Request(`/api/v1/servers`, {
+        const request = new Request(`/api/v1/servers`, {
+        // const request = new Request(`https://localhost:2096/api/v1/servers`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,

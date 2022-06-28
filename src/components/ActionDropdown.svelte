@@ -23,8 +23,8 @@
             return;
         }
 
-        const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
-            //const request = new Request(`/api/v1/servers/${get(selectedServerGuid)}/execute/action`, {
+        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
+        // const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,
