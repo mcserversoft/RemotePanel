@@ -103,7 +103,7 @@
         <h2 class="font-semibold text-gray-300">Console</h2>
     </div>
 
-    <textarea bind:this={textarea} readonly class="w-full h-60 px-5 outline-none text-sm bg-inherit">{serverConsole}</textarea>
+    <textarea bind:this={textarea} readonly class="w-full h-96 px-5 outline-none text-sm bg-inherit">{serverConsole}</textarea>
 
     <form on:submit|preventDefault={sendCommand}>
         <input bind:value={consoleInput} type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />

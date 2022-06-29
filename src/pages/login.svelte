@@ -21,8 +21,7 @@
 		const request = new Request(`/auth`, {
 		// const request = new Request(`https://localhost:2096/auth`, {
 			method: `POST`,
-			body: JSON.stringify({ username: username, password: password })
-			
+			body: JSON.stringify({ username: username, password: password }),
 		});
 
 		await fetch(request)
@@ -66,7 +65,7 @@
 <section class="h-screen bg-login-background bg-cover bg-blend-color-dodge bg-zinc-800">
 	<div class="container mx-auto max-w-md h-full">
 		<div class="flex flex-col place-content-center h-full text-white">
-			<div class="p-10 rounded-xl bg-mcss-gray">
+			<div class="p-10 rounded-xl sm:bg-mcss-gray">
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
 				<svg width="96" height="96" class="mx-auto mb-8 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2134 2134" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">

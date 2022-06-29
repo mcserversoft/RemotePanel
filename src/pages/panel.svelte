@@ -19,30 +19,32 @@
     <!-- <meta name="description" content="Svelte demo app" /> -->
 </svelte:head>
 
-<div class="flex h-screen overflow-hidden bg-zinc-800">
-    <Sidebar />
+<div class=" overflow-hidden bg-zinc-800">
+    <Header {username} />
+    <div class="flex h-screen ">
+        <Sidebar />
 
-    <div class=" flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        <Header {username} />
+        <div class=" flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <div class="sm:px-6 px-8 mt-8 w-full max-w-9xl mx-auto text-gray-300">
+                {#if $selectedServer.guid}
+                    <Server />
+                {:else}
+                    <!-- TOOD dashboard -->
+                    <!-- <Dashboard {username} /> -->
+                {/if}
+            </div>
 
-        <div class="sm:px-6 px-8 mt-8 w-full max-w-9xl mx-auto text-gray-300">
-            {#if $selectedServer.guid}
-                <Server />
-            {:else}
-                <Dashboard {username} />
+            {#if $showDiscordPopup}
+                <div class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60">
+                    <div class="bg-zinc-500 text-slate-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
+                        <div>👉 <a class="hover:underline" href="https://mcserversoft.com/discord" target="_blank" rel="noreferrer">Show your support and join our Discord server!</a></div>
+                        <button on:click={hideDiscordPopup} class="text-slate-50 hover:text-slate-400 ml-5">
+                            <span class="sr-only">Close</span>
+                            <CloseSvg />
+                        </button>
+                    </div>
+                </div>
             {/if}
         </div>
-
-        {#if $showDiscordPopup}
-            <div class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60">
-                <div class="bg-zinc-500 text-slate-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
-                    <div>👉 <a class="hover:underline" href="https://mcserversoft.com/discord" target="_blank" rel="noreferrer">Show your support and join our Discord server!</a></div>
-                    <button on:click={hideDiscordPopup} class="text-slate-50 hover:text-slate-400 ml-5">
-                        <span class="sr-only">Close</span>
-                        <CloseSvg />
-                    </button>
-                </div>
-            </div>
-        {/if}
     </div>
 </div>
