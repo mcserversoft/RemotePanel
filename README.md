@@ -8,11 +8,3 @@
 This repository contains the code that is used for the remote panel. Feel free to [report issues](https://github.com/stefmmm/MCSS-Panel/issues), make [pull requests](https://github.com/mcserversoft/RemotePanel/pulls), all is appreciated!
 
 Join our [discord](https://mcserversoft.com/discord) for a chat!
-
-##TODO
-- add warning when backend isn't available
-- fix console scroll to bottom
-- console / server refresh
-- console fetching mechanism
-- general dashboard?
-- show server status

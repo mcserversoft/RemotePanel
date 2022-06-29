@@ -3,6 +3,7 @@
     import { auth, selectedServer } from "$lib/store.js";
     import { logout } from "$lib/common.js";
     import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
+    import DoubleCheveronDown from "../components/svgs/DoubleCheveronDown.svelte";
 
     interface Server {
         guid: string;
@@ -18,6 +19,14 @@
 
     hideMobileView();
     loadServers();
+
+    // on mobile when there are no servers, show the menu
+    //    if ($selectedServer.guid === "") {
+    if (get(selectedServer).guid === "") {
+        toggleMobileView();
+    }
+
+    console.log(get(selectedServer));
 
     async function loadServers() {
         loadingServers = true;
@@ -47,6 +56,7 @@
                 if (error.status === 403) {
                     logout();
                 }
+                loadingMessage = "Failed to fetch servers";
             });
         loadingServers = false;
     }
@@ -81,10 +91,6 @@
         }
     }
 
-    if (innerWidth < 500) {
-        console.log(innerWidth);
-    }
-
     function toggleMobileView() {
         hideMenu = !hideMenu;
         popupMenu = !popupMenu;
@@ -95,15 +101,12 @@
     }
 </script>
 
-<section class=" bg-zinc-900 text-white">
-    <div on:click={toggleMobileView} class="flex md:hidden w-16 justify-center">
-        <div class="space-y-2">
-            <span class="block w-8 h-0.5 bg-gray-600 " />
-            <span class="block w-8 h-0.5 bg-gray-600 " />
-            <span class="block w-8 h-0.5 bg-gray-600 " />
-        </div>
+<section class="h-max md:w-96 w-max  max-w-full overflow-hidden bg-zinc-900 text-white">
+    <div on:click={toggleMobileView} class="flex md:hidden justify-center h-10 w-screen md:w-16 ">
+        <DoubleCheveronDown className={popupMenu ? "rotate-180" : ""} />
     </div>
-    <div class:absolute={popupMenu} class:hidden={hideMenu} class="md:pt-4 md:flex flex-col pt-5 h-screen overflow-y-auto w-64  bg-inherit">
+
+    <div class:hidden={hideMenu} class="md:pt-4 md:flex flex-col pt-5 h-screen overflow-y-auto md:w-64 w-screen md:px-4 sm:px-28 px-8 z-50 bg-inherit">
         <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
             <span class="text-center w-6">{getGreeting()}, {username} 👋</span>
         </h3>
@@ -122,13 +125,13 @@
             </button>
         </li> -->
 
-            <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 false">
+            <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                            <path class="fill-current text-slate-400 false" d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
-                            <path class="fill-current text-slate-700 false" d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
-                            <path class="fill-current text-slate-600 false" d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
+                            <path class="fill-current text-slate-400" d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
+                            <path class="fill-current text-slate-700" d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
+                            <path class="fill-current text-slate-600" d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
                         </svg>
                         <span class="text-sm font-medium ml-3 cursor-default">Servers</span>
                     </div>

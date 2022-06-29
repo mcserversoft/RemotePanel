@@ -36,7 +36,7 @@
                 </g>
             </svg>
 
-        <div class="relative inline-flex" use:clickOutside on:click_outside={handleClickOutside}>
+        <div class="relative inline-flex " use:clickOutside on:click_outside={handleClickOutside}>
             <button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible}>
                 <div class="flex items-center truncate text-zinc-200">
                     <span class="ml-2 text-sm font-medium capitalize truncate"> {username}</span>
@@ -45,14 +45,14 @@
             </button>
 
             {#if dropdownVisible}
-                <div class="absolute top-full right-0 min-w-44 py-1.5 mt-2 rounded shadow-lg overflow-hidden bg-white">
-                    <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-                        <div class="font-medium capitalize text-slate-800">{username}</div>
-                        <div class="text-xs italic text-slate-500">Administrator</div>
+                <div class="absolute top-full right-0 min-w-44 py-1.5 mt-2 rounded shadow-lg overflow-hidden z-50 bg-zinc-800">
+                    <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-zinc-400">
+                        <div class="font-medium capitalize text-zinc-100">{username}</div>
+                        <div class="text-xs italic text-zinc-400">Administrator</div>
                     </div>
                     <ul>
                         <li>
-                            <button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-gray-100">log out</button>
+                            <button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-zinc-700">log out</button>
                         </li>
                     </ul>
                 </div>
