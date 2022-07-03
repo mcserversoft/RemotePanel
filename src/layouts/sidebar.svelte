@@ -45,7 +45,7 @@
 
     async function loadServers(filter: Filter = Filter.None) {
         loadingServers = true;
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers?filter=${filter}`, {
+        const request = new Request(`/api/v1/servers?filter=${filter}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,

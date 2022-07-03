@@ -42,7 +42,7 @@
 
         loadingConsole = true;
 
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${$selectedServer.guid}/console?amountOfLines=${$settings.amountOfConsoleLines}&reversed=${$settings.reverseConsoleLines}`, {
+        const request = new Request(`/api/v1/servers/${$selectedServer.guid}/console?amountOfLines=${$settings.amountOfConsoleLines}&reversed=${$settings.reverseConsoleLines}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -85,7 +85,7 @@
         let secondLastLine: string = encodeURIComponent(lines[length - 1]);
         let lastLine: string = encodeURIComponent(lines[length]);
 
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${$selectedServer.guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
+        const request = new Request(`/api/v1/servers/${$selectedServer.guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -122,7 +122,7 @@
             return;
         }
 
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
+        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,

@@ -32,7 +32,7 @@
     }
 
     async function loadServer(guid: string, filter: Filter = Filter.None) {
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${guid}?filter=${filter}`, {
+        const request = new Request(`/api/v1/servers/${guid}?filter=${filter}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,

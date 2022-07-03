@@ -18,7 +18,7 @@
 	let password: string;
 
 	async function handleOnSubmit() {
-		const request = new Request(`https://192.168.1.100:2096/auth`, {
+		const request = new Request(`/auth`, {
 			method: `POST`,
 			body: JSON.stringify({ username: username, password: password }),
 		});

@@ -13,7 +13,7 @@
     }
 
 	async function reconnect() {
-		const request = new Request(`https://192.168.1.100:2096`, {
+		const request = new Request(`/`, {
 			method: `POST`,
 		});
 
