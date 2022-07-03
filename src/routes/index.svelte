@@ -5,9 +5,10 @@
 <script type="ts">
 	import { onDestroy } from "svelte";
 	import { browser } from "$app/env";
-	import { auth } from "$lib/store.js";
+	import { auth, isOffline } from "$lib/store.js";
 	import LoginPage from "../pages/login.svelte";
 	import PanelPage from "../pages/panel.svelte";
+	import OfflinePage from "../pages/offline.svelte";
 
 	let isAuthenticated: boolean;
 	let isPageLoadedYet: boolean;
@@ -28,7 +29,9 @@
 
 <!-- isPageLoadedYet removes page ghosting on F5 -->
 {#if isPageLoadedYet}
-	{#if isAuthenticated}
+	{#if $isOffline}
+		<OfflinePage />
+	{:else if isAuthenticated}
 		<PanelPage />
 	{:else}
 		<LoginPage />

@@ -1,5 +1,7 @@
 import { writable } from 'svelte-local-storage-store'
 
+export const isOffline = writable('offline', false)
+
 export const auth = writable('user', {
     apiKey: '',
     username: ''

@@ -2,7 +2,7 @@
     import { onDestroy, beforeUpdate, afterUpdate } from "svelte";
     import { get } from "svelte/store";
     import { browser } from "$app/env";
-    import { auth, settings, selectedServer } from "$lib/store.js";
+    import { auth, isOffline, settings, selectedServer } from "$lib/store.js";
     import { logout } from "$lib/common.js";
     import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
 
@@ -63,9 +63,13 @@
             .catch((error) => {
                 if (error.status === 403) {
                     logout();
+                } else if (!error.status) {
+                    $isOffline = true;
                 }
-            });
-        loadingConsole = false;
+            })
+			.finally(() => {
+				loadingConsole = false;
+			});
     }
 
     async function updateConsoleIfNeeded() {
@@ -104,9 +108,13 @@
             .catch((error) => {
                 if (error.status === 403) {
                     logout();
+                } else if (!error.status) {
+                    $isOffline = true;
                 }
-            });
-        loadingConsole = false;
+            })
+			.finally(() => {
+				loadingConsole = false;
+			});
     }
 
     async function sendCommand() {
@@ -132,6 +140,8 @@
             .catch((error) => {
                 if (error.status === 403) {
                     logout();
+                } else if (!error.status) {
+                    $isOffline = true;
                 }
             });
     }

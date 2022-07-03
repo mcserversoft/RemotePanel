@@ -2,7 +2,7 @@
     import { onDestroy } from "svelte";
     import { get } from "svelte/store";
     import { browser } from "$app/env";
-    import { auth, selectedServer } from "$lib/store.js";
+    import { auth, isOffline, selectedServer } from "$lib/store.js";
     import { logout, getFriendlyStatusName, getStatusColor } from "$lib/common.js";
     import Console from "../layouts/console.svelte";
     import ActionDropdown from "../components/actionDropdown.svelte";
@@ -53,6 +53,8 @@
             .catch((error) => {
                 if (error.status === 403) {
                     logout();
+                } else if (!error.status) {
+                    $isOffline = true;
                 }
             });
     }

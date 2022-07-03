@@ -2,7 +2,7 @@
     import { onDestroy } from "svelte";
     import { get } from "svelte/store";
     import { browser } from "$app/env";
-    import { auth, selectedServer } from "$lib/store.js";
+    import { auth, isOffline, selectedServer } from "$lib/store.js";
     import { logout, getGreeting, getFriendlyStatusName, getStatusColor } from "$lib/common.js";
     import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
     import DoubleCheveronDown from "../components/svgs/DoubleCheveronDown.svelte";
@@ -76,10 +76,14 @@
             .catch((error) => {
                 if (error.status === 403) {
                     logout();
+                } else if (!error.status) {
+                    $isOffline = true;
                 }
                 loadingMessage = "Failed to fetch servers";
-            });
-        loadingServers = false;
+            })
+			.finally(() => {
+				loadingServers = false;
+			});
     }
 
     function reloadServers() {
@@ -119,7 +123,7 @@
             <span class="text-center w-6">{getGreeting()}, {username} 👋</span>
         </h3>
         <ul class="mt-3">
-            <!-- TOOD dashboard -->
+            <!-- TODO dashboard -->
             <!-- <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0">
             <button on:click={loadMainDashboard} class=" text-slate-200 hover:text-white" href="/">
                 <div class="flex items-center">
