@@ -1,13 +1,22 @@
 <script lang="ts">
+    import { onDestroy } from "svelte";
     import { get } from "svelte/store";
+    import { browser } from "$app/env";
     import { auth, selectedServer } from "$lib/store.js";
-    import { logout } from "$lib/common.js";
+    import { logout, getGreeting, getFriendlyStatusName, getStatusColor } from "$lib/common.js";
     import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
     import DoubleCheveronDown from "../components/svgs/DoubleCheveronDown.svelte";
 
     interface Server {
         guid: string;
         name: string;
+        status: number;
+    }
+    
+    enum Filter {
+        None,
+        Minimal,
+        Status,
     }
 
     let servers: Server[];
@@ -16,6 +25,15 @@
     let username: string = get(auth).username;
     let hideMenu: boolean;
     let popupMenu: boolean;
+
+    if (browser) {
+        const updateServerStatus = setInterval(() => {
+            loadServers(Filter.Minimal);
+        }, 10000);
+
+        onDestroy(() => clearInterval(updateServerStatus));
+    }
+
 
     hideMobileView();
     loadServers();
@@ -26,12 +44,11 @@
         toggleMobileView();
     }
 
-    console.log(get(selectedServer));
+    
 
-    async function loadServers() {
+    async function loadServers(filter: Filter = Filter.None) {
         loadingServers = true;
-        const request = new Request(`/api/v1/servers`, {
-        // const request = new Request(`https://localhost:2096/api/v1/servers`, {
+        const request = new Request(`https://192.168.1.100:2096/api/v1/servers?filter=${filter}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -48,7 +65,7 @@
             .then((data) => {
                 servers = data;
 
-                if (data.any) {
+                if (!data.any) {
                     loadingMessage = "No Servers";
                 }
             })
@@ -67,28 +84,15 @@
         }
     }
 
-    function setSelectedServer(guid: string, name: string) {
+    function setSelectedServer(guid: string, name: string, status: number) {
         // incase a server is clicked on mobile
         hideMobileView();
 
         selectedServer.set({
             guid: guid,
             name: name,
+            status: status
         });
-    }
-
-    function getGreeting() {
-        var currentHour = new Date().getHours();
-
-        if (currentHour < 12) {
-            return "good morning";
-        } else if (currentHour >= 5 && currentHour < 18) {
-            return "good afternoon";
-        } else if (currentHour >= 18 && currentHour <= 22) {
-            return "good evening";
-        } else {
-            return "hi";
-        }
     }
 
     function toggleMobileView() {
@@ -101,7 +105,7 @@
     }
 </script>
 
-<section class="h-max md:w-96 w-max  max-w-full overflow-hidden bg-zinc-900 text-white">
+<section class="h-max md:w-96 w-max max-w-full overflow-hidden bg-zinc-900 text-white">
     <div on:click={toggleMobileView} class="flex md:hidden justify-center h-10 w-screen md:w-16 ">
         <DoubleCheveronDown className={popupMenu ? "rotate-180" : ""} />
     </div>
@@ -137,16 +141,16 @@
                     </div>
                     <div class="flex shrink-0 ml-2">
                         <button on:click={reloadServers} disabled={loadingServers} class="disabled:text-slate-700 text-slate-400">
-                            <ReloadSvg />
+                            <ReloadSvg className={(loadingServers ? "animate-spin" : "")}/>
                         </button>
                     </div>
                 </div>
 
                 <ul class="pl-9 mt-1 truncate">
-                    {#each servers || [] as { guid, name }}
+                    {#each servers || [] as { guid, name, status }}
                         <li class="mb-1 last:mb-0">
-                            <button on:click={() => setSelectedServer(guid, name)} class=" text-slate-400 hover:text-slate-200">
-                                <span class="text-sm font-medium">{name}</span>
+                            <button on:click={() => setSelectedServer(guid, name, status)} class=" text-slate-400 hover:text-slate-200">
+                                <span class="inline-flex rounded-full h-2 w-2 {getStatusColor(status)}" title={getFriendlyStatusName(status)} /> <span class="text-sm font-medium">{name}</span>
                             </button>
                         </li>
                     {:else}

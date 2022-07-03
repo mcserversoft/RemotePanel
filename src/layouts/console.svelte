@@ -4,27 +4,74 @@
     import { browser } from "$app/env";
     import { auth, selectedServer } from "$lib/store.js";
     import { logout } from "$lib/common.js";
+    import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
 
+    let loadingConsole: boolean;
     let serverConsole: string[] = [];
     let consoleInput: string;
     let textarea: HTMLTextAreaElement;
 
     if (browser) {
         const unsubscribe = selectedServer.subscribe((newSelectedServer) => {
-            loadConsole(newSelectedServer.guid);
+            reloadConsole();
         });
+
+        const updateConsole = setInterval(() => {
+            updateConsoleIfNeeded();
+        }, 5000);
+
         onDestroy(unsubscribe);
+        onDestroy(() => clearInterval(updateConsole));
     }
 
-    async function loadConsole(guid: string) {
-        clearConsole();
-
-        if (!guid) {
+    async function reloadConsole() {
+        if (!$selectedServer.guid) {
             return;
         }
 
-        const request = new Request(`/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
-        // const request = new Request(`https://localhost:2096/api/v1/servers/${guid}/console?amountOfLines=50&reversed=false`, {
+        clearConsole();
+        loadingConsole = true;
+
+        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${$selectedServer.guid}/console?amountOfLines=50&reversed=false`, {
+            method: `GET`,
+            headers: {
+                apiKey: get(auth).apiKey,
+            },
+        });
+
+        await fetch(request)
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            })
+            .then((data) => {
+                serverConsole = data.join("\r\n");
+                scrollToBottom();
+            })
+            .catch((error) => {
+                if (error.status === 403) {
+                    logout();
+                }
+            });
+        loadingConsole = false;
+    }
+
+    async function updateConsoleIfNeeded() {
+        if (!$selectedServer.guid) {
+            return;
+        }
+
+        loadingConsole = true;
+
+        let lines = textarea.value.split("\n");
+        let length: number = lines.length - 1;
+
+        let secondLastLine: string = encodeURIComponent(lines[length - 1]);
+        let lastLine: string = encodeURIComponent(lines[length]);
+
+        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${$selectedServer.guid}/console/outdated?secondLastLine=${secondLastLine}&reversed=${lastLine}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -41,7 +88,9 @@
             .then((data) => {
                 console.log(data);
 
-                serverConsole = data.join("\r\n");
+                if (data) {
+                    reloadConsole();
+                }
                 scrollToBottom();
             })
             .catch((error) => {
@@ -49,6 +98,7 @@
                     logout();
                 }
             });
+        loadingConsole = false;
     }
 
     async function sendCommand() {
@@ -56,8 +106,7 @@
             return;
         }
 
-        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
-        // const request = new Request(`https://localhost:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
+        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -99,8 +148,13 @@
 </script>
 
 <div class="col-span-full xl:col-span-6 shadow-lg rounded-md bg-zinc-700">
-    <div class="px-5 py-4">
+    <div class="flex px-5 py-4">
         <h2 class="font-semibold text-gray-300">Console</h2>
+        <div class="inline-flex ml-2 ">
+            <button on:click={reloadConsole} disabled={loadingConsole} class="disabled:text-zinc-800 text-slate-400">
+                <ReloadSvg className={loadingConsole ? "animate-spin" : ""} />
+            </button>
+        </div>
     </div>
 
     <textarea bind:this={textarea} readonly class="w-full h-96 md:px-5 px-2 outline-none md:text-sm text-xs bg-inherit">{serverConsole}</textarea>
