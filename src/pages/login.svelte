@@ -58,7 +58,7 @@
 
 <svelte:head>
 	<title>MCSS Remote Panel | Login</title>
-	<!-- <meta name="description" content="Svelte demo app" /> -->
+	<meta name="description" content="Remote Panel for MC Server Soft" />
 </svelte:head>
 
 <section class="h-screen bg-login-background bg-cover bg-blend-color-dodge bg-zinc-800">

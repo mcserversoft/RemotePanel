@@ -16,7 +16,7 @@
 
 <svelte:head>
     <title>MCSS Remote Panel | Panel</title>
-    <!-- <meta name="description" content="Svelte demo app" /> -->
+    <meta name="description" content="Remote Panel for MC Server Soft" />
 </svelte:head>
 
 <div class="bg-zinc-800">
@@ -29,7 +29,7 @@
             {#if $selectedServer.guid}
                 <Server />
             {:else}
-                <!-- TOOD dashboard -->
+                <!-- TODO dashboard -->
                 <!-- <Dashboard {username} /> -->
             {/if}
         </div>
