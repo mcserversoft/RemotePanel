@@ -1,6 +1,6 @@
 <script type="ts">
     import { get } from "svelte/store";
-    import { auth, showDiscordPopup, selectedServer } from "$lib/store.js";
+    import { auth, settings, selectedServer } from "$lib/store.js";
     import Header from "../layouts/header.svelte";
     import Sidebar from "../layouts/sidebar.svelte";
     import Dashboard from "../layouts/dashboard.svelte";
@@ -10,7 +10,7 @@
     let username = get(auth).username;
 
     function hideDiscordPopup() {
-        showDiscordPopup.update((s) => false);
+        $settings.showDiscordPopup = false;
     }
 </script>
 
@@ -34,7 +34,7 @@
             {/if}
         </div>
 
-        {#if $showDiscordPopup}
+        {#if $settings.showDiscordPopup}
             <div class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60">
                 <div class="bg-zinc-500 text-slate-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
                     <div>👉 <a class="hover:underline" href="https://mcserversoft.com/discord" target="_blank" rel="noreferrer">Show your support and join our Discord server!</a></div>
