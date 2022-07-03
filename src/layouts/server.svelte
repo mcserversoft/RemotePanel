@@ -63,7 +63,7 @@
         <h2 class="leading-relaxed align-middle text-xl max-w-lg truncate"><span class="inline-flex rounded-full h-3 w-3  {getStatusColor($selectedServer.status)}" title={getFriendlyStatusName($selectedServer.status)} /> {$selectedServer.name}</h2>
     </div>
 
-    <ActionDropdown statusName={getFriendlyStatusName(server.status)} />
+    <ActionDropdown statusName={getFriendlyStatusName($selectedServer.status)} />
 </div>
 
 <Console />

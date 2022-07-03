@@ -12,7 +12,7 @@
         name: string;
         status: number;
     }
-    
+
     enum Filter {
         None,
         Minimal,
@@ -34,7 +34,6 @@
         onDestroy(() => clearInterval(updateServerStatus));
     }
 
-
     hideMobileView();
     loadServers();
 
@@ -43,8 +42,6 @@
     if (get(selectedServer).guid === "") {
         toggleMobileView();
     }
-
-    
 
     async function loadServers(filter: Filter = Filter.None) {
         loadingServers = true;
@@ -64,6 +61,13 @@
             })
             .then((data) => {
                 servers = data;
+
+                // update current server
+                let foundSelectedServer = servers.find((s) => s.guid == $selectedServer.guid);
+                if (foundSelectedServer) {
+                    $selectedServer.name = foundSelectedServer.name;
+                    $selectedServer.status = foundSelectedServer.status;
+                }
 
                 if (!data.any) {
                     loadingMessage = "No Servers";
@@ -91,7 +95,7 @@
         selectedServer.set({
             guid: guid,
             name: name,
-            status: status
+            status: status,
         });
     }
 
@@ -141,7 +145,7 @@
                     </div>
                     <div class="flex shrink-0 ml-2">
                         <button on:click={reloadServers} disabled={loadingServers} class="disabled:text-slate-700 text-slate-400">
-                            <ReloadSvg className={(loadingServers ? "animate-spin" : "")}/>
+                            <ReloadSvg className={loadingServers ? "animate-spin" : ""} />
                         </button>
                     </div>
                 </div>
