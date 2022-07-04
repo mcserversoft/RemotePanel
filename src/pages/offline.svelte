@@ -7,7 +7,7 @@
 	if (browser) {
         const testConnection = setInterval(() => {
             reconnect();
-        }, 10000);
+        }, 5000);
 
         onDestroy(() => clearInterval(testConnection));
     }
