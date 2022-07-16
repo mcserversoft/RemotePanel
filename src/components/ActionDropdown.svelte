@@ -17,7 +17,7 @@
         dropdownVisible = false;
     }
 
-    async function sendAction(action: number) {
+    async function sendAction(action: string) {
         console.log(action);
         dropdownVisible = false;
 
@@ -62,10 +62,10 @@
     {#if dropdownVisible}
         <div id="dropdown" class="absolute top-full right-0 min-w-44 py-1.5 -mt-2 rounded shadow-lg overflow-hidden bg-white ">
             <ul>
-                {#each actions as action, index}
+                {#each actions as action}
                     <li>
                         <!-- ++ because in the API 0 means invalid, so we start from 1 -->
-                        <button on:click={() => sendAction(++index)} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-gray-700 hover:bg-gray-100">{action}</button>
+                        <button on:click={() => sendAction(action)} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-gray-700 hover:bg-gray-100">{action}</button>
                     </li>
                 {/each}
             </ul>
