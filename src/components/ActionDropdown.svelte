@@ -25,7 +25,7 @@
             return;
         }
 
-        const request = new Request(`https://192.168.1.100:2096/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
+        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,
