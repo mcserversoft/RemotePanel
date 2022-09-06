@@ -7,7 +7,5 @@ node_modules
 .env.*
 !.env.example
 # custom
-/_old
-mcss-panel.zip
 panel.zip
 .save
