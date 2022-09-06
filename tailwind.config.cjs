@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/tw-elements/dist/js/**/*.js'],
+  content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
       colors: {
@@ -12,7 +12,31 @@ module.exports = {
         'login-background': "url('/bg.jpg')",
         'hero-pattern': "url('/bg.jpg')",
       }
-    }
+    },
   },
-  plugins: [require('tw-elements/dist/plugin')],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+
+          "primary": "#7ca740",
+          "primary-content": "#fff",
+          
+           //"secondary": "#949895",
+          // "accent": "#37CDBE",
+           "neutral": "#949895",
+           "base-100": "#212529",
+          // "info": "#3ABFF8",
+          // "success": "#36D399",
+          // "warning": "#FBBD23",
+          // "error": "#F87272",
+
+          "--rounded-btn": "0.375rem",
+        },
+      },
+    ],
+  },
+  plugins: [
+    require('daisyui'),
+  ],
 }

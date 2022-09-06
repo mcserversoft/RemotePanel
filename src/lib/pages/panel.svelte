@@ -1,11 +1,11 @@
 <script type="ts">
     import { get } from "svelte/store";
     import { auth, settings, selectedServer } from "$lib/store.js";
-    import Header from "../layouts/header.svelte";
-    import Sidebar from "../layouts/sidebar.svelte";
-    import Dashboard from "../layouts/dashboard.svelte";
-    import CloseSvg from "../components/svgs/CloseSvg.svelte";
-    import Server from "../layouts/server.svelte";
+    import Header from "$lib/layouts/header.svelte";
+    import Sidebar from "$lib/layouts/sidebar.svelte";
+    import Dashboard from "$lib/layouts/dashboard.svelte";
+    import CloseSvg from "$lib/svgs/CloseSvg.svelte";
+    import Server from "$lib/layouts/server.svelte";
 
     let username = get(auth).username;
 

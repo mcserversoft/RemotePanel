@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onDestroy } from "svelte";
     import { get } from "svelte/store";
-    import { browser } from "$app/env";
-    import { auth, isOffline, selectedServer } from "$lib/store.js";
+    import { browser } from "$app/environment";
+    import { auth, baseUrl, isOffline, selectedServer } from "$lib/store.js";
     import { logout, getFriendlyStatusName, getStatusColor } from "$lib/common.js";
-    import Console from "../layouts/console.svelte";
-    import ActionDropdown from "../components/actionDropdown.svelte";
+    import Console from "$lib/layouts/console.svelte";
+    import ActionDropdown from "$lib/components/actionDropdown.svelte";
 
     interface Server {
         guid: string;
@@ -32,7 +32,7 @@
     }
 
     async function loadServer(guid: string, filter: Filter = Filter.None) {
-        const request = new Request(`/api/v1/servers/${guid}?filter=${filter}`, {
+        const request = new Request(`${get(baseUrl)}/api/v1/servers/${guid}?filter=${filter}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -48,7 +48,6 @@
             })
             .then((data) => {
                 server = data;
-                console.log(server);
             })
             .catch((error) => {
                 if (error.status === 401) {

@@ -1,5 +1,8 @@
 import { writable } from 'svelte-local-storage-store'
 
+// used for testing purposes
+export const baseUrl = writable('baseUrl', '')
+
 export const isOffline = writable('offline', false)
 
 export const auth = writable('user', {

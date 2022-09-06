@@ -1,8 +1,9 @@
 <script type="ts">
+    import { get } from "svelte/store";
     import { onDestroy } from "svelte";
-    import { browser } from "$app/env";
-	import { isOffline } from "$lib/store.js";
-	import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
+    import { browser } from "$app/environment";
+	import { baseUrl, isOffline } from "$lib/store.js";
+	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
 	if (browser) {
         const testConnection = setInterval(() => {
@@ -13,7 +14,7 @@
     }
 
 	async function reconnect() {
-		const request = new Request(`/`, {
+		const request = new Request(`${get(baseUrl)}/`, {
 			method: `POST`,
 		});
 

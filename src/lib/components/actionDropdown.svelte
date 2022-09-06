@@ -1,8 +1,8 @@
 <script lang="ts">
     import { get } from "svelte/store";
-    import { auth, selectedServer } from "$lib/store.js";
+    import { auth, baseUrl, selectedServer } from "$lib/store.js";
     import { logout, clickOutside } from "$lib/common.js";
-    import ArrowDownSvg from "./svgs/ArrowDownSvg.svelte";
+    import ArrowDownSvg from "$lib/svgs/ArrowDownSvg.svelte";
 
     export let statusName: string;
 
@@ -18,14 +18,13 @@
     }
 
     async function sendAction(action: string) {
-        console.log(action);
         dropdownVisible = false;
 
         if (get(selectedServer).guid === null) {
             return;
         }
 
-        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
+        const request = new Request(`${get(baseUrl)}/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -39,9 +38,6 @@
                     return response.json();
                 }
                 return Promise.reject(response);
-            })
-            .then((data) => {
-                console.log(data);
             })
             .catch((error) => {
                 if (error.status === 401) {

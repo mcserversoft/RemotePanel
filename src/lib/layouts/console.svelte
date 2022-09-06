@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onDestroy, beforeUpdate, afterUpdate } from "svelte";
     import { get } from "svelte/store";
-    import { browser } from "$app/env";
-    import { auth, isOffline, settings, selectedServer } from "$lib/store.js";
+    import { browser } from "$app/environment";
+    import { auth, baseUrl, isOffline, settings, selectedServer } from "$lib/store.js";
     import { logout } from "$lib/common.js";
-    import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
+    import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
     let loadingConsole: boolean;
     let serverConsole: string[] = [];
@@ -42,7 +42,7 @@
 
         loadingConsole = true;
 
-        const request = new Request(`/api/v1/servers/${$selectedServer.guid}/console?amountOfLines=${$settings.amountOfConsoleLines}&reversed=${$settings.reverseConsoleLines}`, {
+        const request = new Request(`${get(baseUrl)}/api/v1/servers/${$selectedServer.guid}/console?amountOfLines=${$settings.amountOfConsoleLines}&reversed=${$settings.reverseConsoleLines}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -85,7 +85,7 @@
         let secondLastLine: string = encodeURIComponent(lines[length - 1]);
         let lastLine: string = encodeURIComponent(lines[length]);
 
-        const request = new Request(`/api/v1/servers/${$selectedServer.guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
+        const request = new Request(`${get(baseUrl)}/api/v1/servers/${$selectedServer.guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
             method: `GET`,
             headers: {
                 apiKey: get(auth).apiKey,
@@ -122,7 +122,7 @@
             return;
         }
 
-        const request = new Request(`/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
+        const request = new Request(`${get(baseUrl)}/api/v1/servers/${get(selectedServer).guid}/execute/command`, {
             method: `POST`,
             headers: {
                 apiKey: get(auth).apiKey,

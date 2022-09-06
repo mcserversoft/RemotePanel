@@ -4,11 +4,11 @@
 
 <script type="ts">
 	import { onDestroy } from "svelte";
-	import { browser } from "$app/env";
+	import { browser } from "$app/environment";
 	import { auth, isOffline } from "$lib/store.js";
-	import LoginPage from "../pages/login.svelte";
-	import PanelPage from "../pages/panel.svelte";
-	import OfflinePage from "../pages/offline.svelte";
+	import LoginPage from "$lib/pages/login.svelte";
+	import PanelPage from "$lib/pages/panel.svelte";
+	import OfflinePage from "$lib/pages/offline.svelte";
 
 	let isAuthenticated: boolean;
 	let isPageLoadedYet: boolean;

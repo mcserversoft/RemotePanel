@@ -1,6 +1,6 @@
 <script lang="ts">
     import { logout, clickOutside } from "$lib/common.js";
-    import ArrowDownSvg from "../components/svgs/ArrowDownSvg.svelte";
+    import ArrowDownSvg from "$lib/svgs/ArrowDownSvg.svelte";
 
     export let username: string;
 
