@@ -2,7 +2,8 @@
     import { get } from "svelte/store";
     import { onDestroy } from "svelte";
     import { browser } from "$app/environment";
-	import { baseUrl, isOffline } from "$lib/storage";
+	import { baseUrl } from '$lib/routing';
+	import { isOffline } from "$lib/storage";
 	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
 	if (browser) {
@@ -14,7 +15,7 @@
     }
 
 	async function reconnect() {
-		const request = new Request(`${get(baseUrl)}/`, {
+		const request = new Request(`${baseUrl}/`, {
 			method: `POST`,
 		});
 

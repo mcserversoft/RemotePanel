@@ -2,9 +2,10 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { auth, baseUrl, isOffline, selectedServer } from '$lib/storage';
-	import { logout, getStatusBgColor } from '$lib/common.js';
-	import { navigateToPage, Page } from '$lib/routing';
+	import { auth, logout } from '$lib/auth';
+	import { isOffline, selectedServer } from '$lib/storage';
+	import { getStatusBgColor } from '$lib/common';
+	import { baseUrl, navigateToPage, Page } from '$lib/routing';
 
 	interface Server {
 		guid: string;
@@ -35,7 +36,7 @@
 
 	async function loadServers(filter: Filter = Filter.None) {
 		loadingServers = true;
-		const request = new Request(`${get(baseUrl)}/api/v1/servers?filter=${filter}`, {
+		const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
 			method: `GET`,
 			headers: {
 				apiKey: get(auth).apiKey

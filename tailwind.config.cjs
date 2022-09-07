@@ -9,6 +9,7 @@ module.exports = {
         'mcss-gray': '#212529',
         'custom-gray': '#202124',
         'custom-gray-lighter': '#202124',
+        'custom-gray-lightest': '#353639',
         'custom-mcss-green': '#7ca740',
       },
       backgroundImage: {

@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { selectedPage } from '$lib/storage';
-	import { Page, navigateToPage } from '$lib/routing';
+	import { Page, selectedPage, navigateToPage } from '$lib/routing';
 </script>
 
 <div class="btm-nav bg-custom-gray z-50 visible lg:hidden">
-	<button class={$selectedPage.pageName == Page.Servers ? 'active text-custom-mcss-green bg-inherit' : ''} on:click={() => navigateToPage(Page.Servers)}>
+	<button class={$selectedPage == Page.Servers ? 'active text-custom-mcss-green bg-inherit' : ''} on:click={() => navigateToPage(Page.Servers)}>
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
 			<path
 				stroke-linecap="round"
@@ -14,7 +13,7 @@
 		</svg>
 		<span class="btm-nav-label">Servers</span>
 	</button>
-	<button class={$selectedPage.pageName == Page.Dashboard ? 'active text-custom-mcss-green bg-inherit' : ''} on:click={() => navigateToPage(Page.Dashboard)}>
+	<button class={$selectedPage == Page.Dashboard ? 'active text-custom-mcss-green bg-inherit' : ''} on:click={() => navigateToPage(Page.Dashboard)}>
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
 			<path
 				stroke-linecap="round"

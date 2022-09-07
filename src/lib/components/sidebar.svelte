@@ -2,8 +2,10 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { auth, baseUrl, isOffline, selectedServer } from '$lib/storage';
-	import { logout, getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/common.js';
+	import { auth, logout } from '$lib/auth';
+	import { baseUrl } from '$lib/routing';
+	import { isOffline, selectedServer } from '$lib/storage';
+	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/common';
 	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 	import DoubleCheveronDown from '$lib/svgs/DoubleCheveronDown.svelte';
 
@@ -37,7 +39,7 @@
 
 	async function loadServers(filter: Filter = Filter.None) {
 		loadingServers = true;
-		const request = new Request(`${get(baseUrl)}/api/v1/servers?filter=${filter}`, {
+		const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
 			method: `GET`,
 			headers: {
 				apiKey: get(auth).apiKey

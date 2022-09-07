@@ -1,6 +1,21 @@
 <script lang="ts">
-	import { logout } from '$lib/common.js';
+	import { get } from 'svelte/store';
+
+	import { auth, logout } from '$lib/auth';
+	import { clickOutside } from '$lib/common';
+	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
+
+	let username: string = get(auth).username;
+	let dropdownVisible: boolean = true;
+
+	function toggleDropdown() {
+		dropdownVisible = !dropdownVisible;
+	}
+
+	function handleClickOutside() {
+		dropdownVisible = false;
+	}
 </script>
 
 <header class="navbar sticky top-0 z-50 bg-custom-gray shadow-sm">
@@ -9,24 +24,35 @@
 		<p class="font-semibold text-xl px-3">MCSS Remote Panel</p>
 	</div>
 	<div class="flex-none gap-2">
-		<div class="dropdown dropdown-end">
-			<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-				<div class="w-10 rounded-full">
-					<!-- <img src="https://placeimg.com/80/80/people" /> -->
-					<img src="avatar.png" />
+		<div class="relative inline-flex mr-6" use:clickOutside on:click_outside={handleClickOutside}>
+			<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible}>
+				<div class="flex items-center truncate text-zinc-200">
+					<span class="ml-2 text-sm font-medium capitalize truncate"> {username}</span>
+					<ArrowDownSvg />
 				</div>
-			</label>
+			</button>
 
-			<ul tabindex="0" class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-				<li>
-					<a class="justify-between">
-						Profile
-						<span class="badge">New</span>
-					</a>
-				</li>
-				<li><a>Settings</a></li>
-				<li><button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-zinc-700">log out</button></li>
-			</ul>
+			{#if dropdownVisible}
+				<div class="absolute top-full right-0 min-w-44 py-1.5 mt-2 rounded shadow-lg overflow-hidden z-50 bg-custom-gray-lightest">
+					<ul>
+						<li>
+							<div class="pt-0.5 pb-2 px-3 mb-1 border-b border-zinc-500">
+								<div class="font-medium capitalize text-zinc-100">{username}</div>
+								<div class="text-xs italic text-zinc-400">Administrator</div>
+							</div>
+						</li>
+						<li>
+							<button class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">Settings</button>
+						</li>
+						<li class="py-1 border-b border-zinc-500">
+							<button class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">About</button>
+						</li>
+						<li class="pt-1">
+							<button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-zinc-600">log out</button>
+						</li>
+					</ul>
+				</div>
+			{/if}
 		</div>
 	</div>
 </header>

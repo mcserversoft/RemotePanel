@@ -1,6 +1,7 @@
 <script type="ts">
 	import { get } from 'svelte/store';
-	import { auth, baseUrl } from '$lib/storage';
+	import { auth } from '$lib/auth';
+	import { baseUrl } from '$lib/routing';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
@@ -20,7 +21,7 @@
 	let password: string;
 
 	async function handleOnSubmit() {
-		const request = new Request(`${get(baseUrl)}/auth`, {
+		const request = new Request(`${baseUrl}/auth`, {
 			method: `POST`,
 			body: JSON.stringify({ username: username, password: password })
 		});

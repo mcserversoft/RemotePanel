@@ -2,8 +2,10 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { auth, baseUrl, isOffline, selectedServer } from '$lib/storage';
-	import { logout, getFriendlyStatusName, getStatusBgColor } from '$lib/common.js';
+	import { auth, logout } from '$lib/auth';
+	import { baseUrl } from '$lib/routing';
+	import { isOffline, selectedServer } from '$lib/storage';
+	import { getFriendlyStatusName, getStatusBgColor } from '$lib/common';
 	import ActionDropdown from '$lib/components/actionDropdown.svelte';
 
 	interface Server {
@@ -31,7 +33,7 @@
 	}
 
 	async function loadServer(guid: string, filter: Filter = Filter.None) {
-		const request = new Request(`${get(baseUrl)}/api/v1/servers/${guid}?filter=${filter}`, {
+		const request = new Request(`${baseUrl}/api/v1/servers/${guid}?filter=${filter}`, {
 			method: `GET`,
 			headers: {
 				apiKey: get(auth).apiKey

@@ -1,13 +1,4 @@
-import { auth } from "$lib/storage";
-
-export function logout() {
-    auth.set({
-        apiKey: '',
-        username: '',
-    });
-}
-
-export function getFriendlyStatusName(status) {
+export function getFriendlyStatusName(status:number) {
     if (status === 0) {
         return "Offline";
     } else if (status === 1) {
@@ -23,7 +14,7 @@ export function getFriendlyStatusName(status) {
     }
 }
 
-export function getStatusBgColor(status) {
+export function getStatusBgColor(status:number) {
     if (status === 0) {
         return "bg-red-500 ";
     } else if (status === 1) {
@@ -39,7 +30,7 @@ export function getStatusBgColor(status) {
     }
 }
 
-export function getStatusTextColor(status) {
+export function getStatusTextColor(status:number) {
     if (status === 0) {
         return "text-red-500";
     } else if (status === 1) {
