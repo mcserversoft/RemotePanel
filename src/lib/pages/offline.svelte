@@ -2,7 +2,7 @@
     import { get } from "svelte/store";
     import { onDestroy } from "svelte";
     import { browser } from "$app/environment";
-	import { baseUrl, isOffline } from "$lib/store.js";
+	import { baseUrl, isOffline } from "$lib/storage";
 	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
 	if (browser) {

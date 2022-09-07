@@ -1,6 +1,6 @@
 <script type="ts">
-    import { get } from "svelte/store";
-	import { auth, baseUrl } from '$lib/store.js';
+	import { get } from 'svelte/store';
+	import { auth, baseUrl } from '$lib/storage';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
@@ -67,7 +67,7 @@
 	<div class="container mx-auto max-w-md h-full">
 		<div class="flex flex-col place-content-center h-full text-white">
 			<div class="p-10 rounded-xl sm:bg-mcss-gray">
-				<Logo className="mx-auto mb-8" />
+				<Logo className="mx-auto mb-8" width="96" height="96" />
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
 				<form on:submit|preventDefault={handleOnSubmit}>

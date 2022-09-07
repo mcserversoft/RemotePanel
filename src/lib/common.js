@@ -1,4 +1,4 @@
-import { auth } from "$lib/store.js";
+import { auth } from "$lib/storage";
 
 export function logout() {
     auth.set({
@@ -23,19 +23,35 @@ export function getFriendlyStatusName(status) {
     }
 }
 
-export function getStatusColor(status) {
+export function getStatusBgColor(status) {
     if (status === 0) {
-        return "bg-red-500";
+        return "bg-red-500 ";
     } else if (status === 1) {
         return "bg-green-500";
     } else if (status === 2) {
-        return "bg-orange-500 animate-bounce";
+        return "bg-orange-500";
     } else if (status === 3) {
-        return "bg-green-500 animate-bounce";
+        return "bg-green-500 ";
     } else if (status === 4) {
-        return "bg-red-500 animate-bounce";
+        return "bg-red-500";
     } else {
         return "bg-gray-500";
+    }
+}
+
+export function getStatusTextColor(status) {
+    if (status === 0) {
+        return "text-red-500";
+    } else if (status === 1) {
+        return "text-green-500";
+    } else if (status === 2) {
+        return "text-orange-500";
+    } else if (status === 3) {
+        return "text-green-500";
+    } else if (status === 4) {
+        return "text-red-500";
+    } else {
+        return "text-gray-500";
     }
 }
 

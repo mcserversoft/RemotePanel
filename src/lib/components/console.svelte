@@ -2,7 +2,7 @@
     import { onDestroy, beforeUpdate, afterUpdate } from "svelte";
     import { get } from "svelte/store";
     import { browser } from "$app/environment";
-    import { auth, baseUrl, isOffline, settings, selectedServer } from "$lib/store.js";
+    import { auth, baseUrl, isOffline, settings, selectedServer } from "$lib/storage";
     import { logout } from "$lib/common.js";
     import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
@@ -157,7 +157,8 @@
     }
 </script>
 
-<div class="col-span-full xl:col-span-6 shadow-lg rounded-md bg-zinc-700">
+<!-- <div class="col-span-full xl:col-span-6 shadow-lg rounded-md bg-zinc-700"> -->
+<div class="col-span-full xl:col-span-6 shadow-lg rounded-md bg-custom-gray-lighter">
     <div class="flex px-5 py-4">
         <h2 class="font-semibold text-gray-300">Console</h2>
         <div class="inline-flex ml-2">
