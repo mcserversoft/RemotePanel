@@ -14,6 +14,8 @@
 	import OfflinePage from '$lib/pages/offline.svelte';
 	import BottomNav from '$lib/components/bottomNav.svelte';
 	import Header from '$lib/components/header.svelte';
+	import About from '$lib/pages/about.svelte';
+	import Server from '$lib/components/server.svelte';
 
 	let isAuthenticated: boolean;
 	let isPageLoadedYet: boolean;
@@ -40,11 +42,16 @@
 {#if isAuthenticated}
 	<Header />
 
-	{#if $selectedPage == Page.Servers}
-		<ServersPage />
+	{#if $selectedPage == Page.About}
+		<p>About</p>
 	{:else if $selectedPage == Page.Dashboard}
 		<DashboardPage />
+	{:else if $selectedPage == Page.Servers}
+		<ServersPage />
+	{:else if $selectedPage == Page.Settings}
+		<p>Settings</p>
 	{/if}
+	
 	<BottomNav />
 {:else}
 	<LoginPage />

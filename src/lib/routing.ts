@@ -1,8 +1,10 @@
 import { writable } from 'svelte-local-storage-store';
 
 export enum Page {
+    About,
     Dashboard,
     Servers,
+    Settings,
 }
 
 // used for testing purposes

@@ -2,6 +2,7 @@
 	import { get } from 'svelte/store';
 
 	import { auth, logout } from '$lib/auth';
+	import { Page, navigateToPage } from '$lib/routing';
 	import { clickOutside } from '$lib/common';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
@@ -42,10 +43,10 @@
 							</div>
 						</li>
 						<li>
-							<button class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">Settings</button>
+							<button on:click={() => navigateToPage(Page.Settings)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">Settings</button>
 						</li>
 						<li class="py-1 border-b border-zinc-500">
-							<button class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">About</button>
+							<button on:click={() => navigateToPage(Page.About)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">About</button>
 						</li>
 						<li class="pt-1">
 							<button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-zinc-600">log out</button>
