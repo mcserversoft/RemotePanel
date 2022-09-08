@@ -3,6 +3,8 @@ import { writable, derived, get } from 'svelte/store';
 import { auth, logout } from './auth';
 import { baseUrl } from './routing';
 
+//TODO add these to app.d.ts at some point
+// see https://kit.svelte.dev/docs/types#app
 export interface IServer {
     guid: string;
     name: string;
