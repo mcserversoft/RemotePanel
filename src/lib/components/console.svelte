@@ -4,8 +4,8 @@
 	import { browser } from '$app/environment';
 	import { auth, logout } from '$lib/auth';
 	import { baseUrl } from '$lib/routing';
-	import { isOffline, settings } from '$lib/storage';
-	import { selectedServerGuid } from '$lib/api';
+	import { settings } from '$lib/storage';
+	import { selectedServerGuid, sendServerCommand } from '$lib/api';
 	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 
 	let loadingConsole: boolean;
@@ -66,8 +66,6 @@
 			.catch((error) => {
 				if (error.status === 403) {
 					logout();
-				} else if (!error.status) {
-					$isOffline = true;
 				}
 			})
 			.finally(() => {
@@ -113,8 +111,6 @@
 			.catch((error) => {
 				if (error.status === 401) {
 					logout();
-				} else if (!error.status) {
-					$isOffline = true;
 				}
 			})
 			.finally(() => {
@@ -122,35 +118,13 @@
 			});
 	}
 
-	async function sendCommand() {
-		const guid = get(selectedServerGuid);
-
-		if (!guid || !consoleInput) {
+	function sendCommand() {
+		if (!consoleInput) {
 			return;
 		}
 
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/command`, {
-			method: `POST`,
-			headers: {
-				apiKey: get(auth).apiKey
-			},
-			body: JSON.stringify({ command: consoleInput })
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status == 200) {
-					consoleInput = '';
-				}
-				return Promise.reject(response);
-			})
-			.catch((error) => {
-				if (error.status === 403) {
-					logout();
-				} else if (!error.status) {
-					$isOffline = true;
-				}
-			});
+		sendServerCommand(consoleInput);
+		consoleInput = '';
 	}
 
 	function scrollToBottom() {

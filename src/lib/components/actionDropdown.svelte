@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { get } from 'svelte/store';
-	import { auth, logout } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
 	import { clickOutside } from '$lib/shared';
+	import { sendServerAction } from '$lib/api';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
-	import { selectedServerGuid } from '$lib/api';
 
 	export let statusName: string;
 
@@ -18,36 +15,10 @@
 	function handleClickOutside() {
 		dropdownVisible = false;
 	}
-	
-	//TODO move this to api.ts
-	async function sendAction(action: string) {
+
+	function serverActionClick(action: string) {
 		dropdownVisible = false;
-		const guid = get(selectedServerGuid);
-
-		if (!guid) {
-			return;
-		}
-
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/action`, {
-			method: `POST`,
-			headers: {
-				apiKey: get(auth).apiKey
-			},
-			body: JSON.stringify({ action: action })
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				}
-			});
+		sendServerAction(action);
 	}
 </script>
 
@@ -64,8 +35,7 @@
 			<ul class="w-28">
 				{#each actions as action}
 					<li>
-						<!-- ++ because in the API 0 means invalid, so we start from 1 -->
-						<button on:click={() => sendAction(action)} class="flex w-full py-1 px-3 text-sm capitalize text-gray-300 hover:bg-zinc-600">{action}</button>
+						<button on:click={() => serverActionClick(action)} class="flex w-full py-1 px-3 text-sm capitalize text-gray-300 hover:bg-zinc-600">{action}</button>
 					</li>
 				{/each}
 			</ul>

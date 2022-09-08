@@ -2,7 +2,7 @@
     import { onDestroy } from "svelte";
     import { browser } from "$app/environment";
 	import { baseUrl } from '$lib/routing';
-	import { isOffline } from "$lib/storage";
+	import { isOffline } from "$lib/api";
 	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
 	if (browser) {
@@ -21,7 +21,7 @@
 		await fetch(request)
 			.then((response) => {
 				if (response.status === 200) {
-					$isOffline = false;
+					isOffline.set(false);
 				}
 				return Promise.reject(response);
 			});

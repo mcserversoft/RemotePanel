@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/auth';
-	import { servers, selectedServerGuid } from '$lib/api';
+	import { servers, selectedServerGuid, isLoadingServers } from '$lib/api';
 	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
 
-	//TODO loading message
-	let loadingMessage: string = '';
 	//TODO maybe make facade for this
 	let username: string = get(auth).username;
 
@@ -41,7 +39,7 @@
 					</li>
 				{:else}
 					<li class="mb-1 last:mb-0">
-						<span class="text-sm font-medium italic text-slate-400">{loadingMessage}</span>
+						<span class="text-sm font-medium italic text-slate-400">{$isLoadingServers  ? 'Loading Servers.' : 'No Servers found.' }</span>
 					</li>
 				{/each}
 			</ul>

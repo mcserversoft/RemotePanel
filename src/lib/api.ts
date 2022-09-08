@@ -1,5 +1,5 @@
-import { writable as writableCache } from 'svelte-local-storage-store';
-import { derived, get } from 'svelte/store';
+import { writable as writableStorage } from 'svelte-local-storage-store';
+import { writable, derived, get } from 'svelte/store';
 import { auth, logout } from './auth';
 import { baseUrl } from './routing';
 
@@ -18,12 +18,13 @@ export enum Filter {
 
 //todo remove/rework this
 let loadingMessage: string = '';
-export let loadingServers: boolean;
 //
+export const isOffline = writable(false);
+export const isLoadingServers = writable(false);
 
 
-export const servers = writableCache('servers', []);
-export const selectedServerGuid = writableCache('selectedServerGuid', '');
+export const servers = writableStorage('servers', []);
+export const selectedServerGuid = writableStorage('selectedServerGuid', '');
 
 export const getSelectedServer = derived(servers, ($servers) => {
     if ($servers) {
@@ -42,6 +43,8 @@ export const getSelectedServer = derived(servers, ($servers) => {
 */
 
 export async function fetchServers(filter: Filter = Filter.None) {
+    isLoadingServers.set(true);
+
     const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
         method: `GET`,
         headers: {
@@ -67,8 +70,67 @@ export async function fetchServers(filter: Filter = Filter.None) {
             if (error.status === 401) {
                 logout();
             } else if (!error.status) {
-                //    $isOffline = true;
+                isOffline.set(true);
             }
             loadingMessage = 'Failed to fetch servers.';
+        });
+    isLoadingServers.set(false);
+}
+
+export async function sendServerAction(action: string) {
+    const guid = get(selectedServerGuid);
+
+    if (!guid) {
+        return;
+    }
+
+    const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/action`, {
+        method: `POST`,
+        headers: {
+            apiKey: get(auth).apiKey
+        },
+        body: JSON.stringify({ action: action })
+    });
+
+    await fetch(request)
+        .then((response) => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            return Promise.reject(response);
+        })
+        .catch((error) => {
+            if (error.status === 401) {
+                logout();
+            }
+        });
+}
+
+export async function sendServerCommand(input: string) {
+    const guid = get(selectedServerGuid);
+
+    if (!guid || !input) {
+        return;
+    }
+
+    const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/command`, {
+        method: `POST`,
+        headers: {
+            apiKey: get(auth).apiKey
+        },
+        body: JSON.stringify({ command: input })
+    });
+
+    await fetch(request)
+        .then((response) => {
+            if (response.status == 200) {
+                //   consoleInput = '';
+            }
+            return Promise.reject(response);
+        })
+        .catch((error) => {
+            if (error.status === 403) {
+                logout();
+            }
         });
 }
