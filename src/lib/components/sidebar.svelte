@@ -1,97 +1,16 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
-	import { auth, logout } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
-	import { isOffline, selectedServer } from '$lib/storage';
-	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/common';
-	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
-	import DoubleCheveronDown from '$lib/svgs/DoubleCheveronDown.svelte';
+	import { auth } from '$lib/auth';
+	import { servers, selectedServerGuid } from '$lib/api';
+	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
 
-	interface Server {
-		guid: string;
-		name: string;
-		status: number;
-	}
-
-	enum Filter {
-		None,
-		Minimal,
-		Status
-	}
-
-	let servers: Server[];
-	let loadingServers: boolean;
+	//TODO loading message
 	let loadingMessage: string = '';
+	//TODO maybe make facade for this
 	let username: string = get(auth).username;
-	let popupMenu: boolean;
 
-	if (browser) {
-		const updateServerStatus = setInterval(() => {
-			loadServers(Filter.Minimal);
-		}, 10000);
-
-		onDestroy(() => clearInterval(updateServerStatus));
-	}
-
-	loadServers();
-
-	async function loadServers(filter: Filter = Filter.None) {
-		loadingServers = true;
-		const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
-			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				servers = data;
-
-				// update current server
-				let foundSelectedServer = servers.find((s) => s.guid == $selectedServer.guid);
-				if (foundSelectedServer) {
-					$selectedServer.name = foundSelectedServer.name;
-					$selectedServer.status = foundSelectedServer.status;
-				}
-
-				if (!data.any) {
-					loadingMessage = 'No Servers';
-				}
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				} else if (!error.status) {
-					$isOffline = true;
-				}
-				loadingMessage = 'Failed to fetch servers';
-			})
-			.finally(() => {
-				loadingServers = false;
-			});
-	}
-
-	function reloadServers() {
-		if (!loadingServers) {
-			loadServers();
-		}
-	}
-
-	function setSelectedServer(guid: string, name: string, status: number) {
-		selectedServer.set({
-			guid: guid,
-			name: name,
-			status: status
-		});
+	function updateSelectedServer(guid: string) {
+		selectedServerGuid.set(guid);
 	}
 </script>
 
@@ -111,17 +30,12 @@
 					</svg>
 					<span class="text-sm font-medium ml-3 cursor-default">Servers</span>
 				</div>
-				<div class="flex shrink-0 ml-2">
-					<button on:click={reloadServers} disabled={loadingServers} class="disabled:text-slate-700 text-slate-400">
-						<ReloadSvg className={loadingServers ? 'animate-spin' : ''} />
-					</button>
-				</div>
 			</div>
 
 			<ul class="pl-9 mt-1 truncate">
-				{#each servers || [] as { guid, name, status }}
+				{#each $servers || [] as { guid, name, status }}
 					<li class="mb-1 last:mb-0">
-						<button on:click={() => setSelectedServer(guid, name, status)} class=" text-slate-400 hover:text-slate-200">
+						<button on:click={() => updateSelectedServer(guid)} class=" text-slate-400 hover:text-slate-200">
 							<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor(status)}" title={getFriendlyStatusName(status)} /> <span class="text-sm font-medium">{name}</span>
 						</button>
 					</li>

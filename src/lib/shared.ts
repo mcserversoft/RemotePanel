@@ -1,4 +1,4 @@
-export function getFriendlyStatusName(status:number) {
+export function getFriendlyStatusName(status: number = 0) {
     if (status === 0) {
         return "Offline";
     } else if (status === 1) {
@@ -14,7 +14,7 @@ export function getFriendlyStatusName(status:number) {
     }
 }
 
-export function getStatusBgColor(status:number) {
+export function getStatusBgColor(status: number = 0) {
     if (status === 0) {
         return "bg-red-500 ";
     } else if (status === 1) {
@@ -30,7 +30,7 @@ export function getStatusBgColor(status:number) {
     }
 }
 
-export function getStatusTextColor(status:number) {
+export function getStatusTextColor(status: number = 0) {
     if (status === 0) {
         return "text-red-500";
     } else if (status === 1) {

@@ -1,73 +1,16 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
-	import { auth, logout } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
-	import { isOffline, selectedServer } from '$lib/storage';
-	import { getFriendlyStatusName, getStatusBgColor } from '$lib/common';
+	import { getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
+	import { getSelectedServer } from '$lib/api';
 	import ActionDropdown from '$lib/components/actionDropdown.svelte';
-
-	interface Server {
-		guid: string;
-		status: number;
-	}
-
-	enum Filter {
-		None,
-		Minimal,
-		Status
-	}
-
-	let server: Server = {
-		guid: '',
-		status: 0
-	};
-
-	if (browser) {
-		const unsubscribe = selectedServer.subscribe((newSelectedServer) => {
-			loadServer(newSelectedServer.guid);
-		});
-
-		onDestroy(unsubscribe);
-	}
-
-	async function loadServer(guid: string, filter: Filter = Filter.None) {
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}?filter=${filter}`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
-			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				server = data;
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				} else if (!error.status) {
-					$isOffline = true;
-				}
-			});
-	}
 </script>
 
-<!-- <div class="flex mb-8"> -->
 <div class="flex mb-3">
 	<div class="grow">
 		<h2 class="leading-relaxed align-middle text-xl max-w-lg truncate">
-			<span class="inline-flex rounded-full h-3 w-3  {getStatusBgColor($selectedServer.status)}" title={getFriendlyStatusName($selectedServer.status)} />
-			{$selectedServer.name}
+			<span class="inline-flex rounded-full h-3 w-3  {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
+			{$getSelectedServer?.name}
 		</h2>
 	</div>
 
-	<ActionDropdown statusName={getFriendlyStatusName($selectedServer.status)} />
+	<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
 </div>

@@ -1,6 +1,5 @@
 <script type="ts">
-	import { get } from 'svelte/store';
-	import { auth } from '$lib/auth';
+	import { login } from '$lib/auth';
 	import { baseUrl } from '$lib/routing';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
@@ -34,10 +33,7 @@
 				return Promise.reject(response);
 			})
 			.then((data) => {
-				auth.set({
-					apiKey: data[`apiKey`],
-					username: data[`username`]
-				});
+				login(data[`apiKey`], data[`username`]);
 			})
 			.catch((error) => {
 				// 401 -> unauthorized || undefined -> because of false CORS warnings

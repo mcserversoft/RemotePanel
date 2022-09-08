@@ -1,5 +1,4 @@
 <script type="ts">
-    import { get } from "svelte/store";
     import { onDestroy } from "svelte";
     import { browser } from "$app/environment";
 	import { baseUrl } from '$lib/routing';

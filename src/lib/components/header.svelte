@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-
 	import { auth, logout } from '$lib/auth';
 	import { Page, navigateToPage } from '$lib/routing';
-	import { clickOutside } from '$lib/common';
+	import { clickOutside } from '$lib/shared';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
 	let username: string = get(auth).username;
-	let dropdownVisible: boolean = true;
+	let dropdownVisible: boolean = false;
 
 	function toggleDropdown() {
 		dropdownVisible = !dropdownVisible;

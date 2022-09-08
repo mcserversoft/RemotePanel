@@ -2,9 +2,9 @@
 	import { get } from 'svelte/store';
 	import { auth, logout } from '$lib/auth';
 	import { baseUrl } from '$lib/routing';
-	import { selectedServer } from '$lib/storage';
-	import { clickOutside } from '$lib/common';
+	import { clickOutside } from '$lib/shared';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
+	import { selectedServerGuid } from '$lib/api';
 
 	export let statusName: string;
 
@@ -18,15 +18,17 @@
 	function handleClickOutside() {
 		dropdownVisible = false;
 	}
-
+	
+	//TODO move this to api.ts
 	async function sendAction(action: string) {
 		dropdownVisible = false;
+		const guid = get(selectedServerGuid);
 
-		if (get(selectedServer).guid === null) {
+		if (!guid) {
 			return;
 		}
 
-		const request = new Request(`${baseUrl}/api/v1/servers/${get(selectedServer).guid}/execute/action`, {
+		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/action`, {
 			method: `POST`,
 			headers: {
 				apiKey: get(auth).apiKey

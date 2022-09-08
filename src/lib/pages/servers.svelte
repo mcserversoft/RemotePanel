@@ -1,110 +1,21 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
-	import { auth, logout } from '$lib/auth';
-	import { isOffline, selectedServer } from '$lib/storage';
-	import { getStatusBgColor } from '$lib/common';
-	import { baseUrl, navigateToPage, Page } from '$lib/routing';
+	import { getStatusBgColor } from '$lib/shared';
+	import { navigateToPage, Page } from '$lib/routing';
+	import { servers } from '$lib/api';
+	import { selectedServerGuid } from '$lib/api';
 
-	interface Server {
-		guid: string;
-		name: string;
-		description: string;
-		status: number;
-	}
-
-	enum Filter {
-		None,
-		Minimal,
-		Status
-	}
-
-	let servers: Server[];
-	let loadingServers: boolean;
+	//TODO this message
 	let loadingMessage: string = '';
 
-	if (browser) {
-		const updateServerStatus = setInterval(() => {
-			loadServers(Filter.Minimal);
-		}, 5000);
-
-		onDestroy(() => clearInterval(updateServerStatus));
-	}
-
-	loadServers();
-
-	async function loadServers(filter: Filter = Filter.None) {
-		loadingServers = true;
-		const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
-			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				servers = data;
-
-				// update current server
-				let foundSelectedServer = servers.find((s) => s.guid == $selectedServer.guid);
-				if (foundSelectedServer) {
-					$selectedServer.name = foundSelectedServer.name;
-					$selectedServer.status = foundSelectedServer.status;
-				}
-
-				if (!data.any) {
-					loadingMessage = 'No Servers found.';
-				}
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				} else if (!error.status) {
-					$isOffline = true;
-				}
-				loadingMessage = 'Failed to fetch servers.';
-			})
-			.finally(() => {
-				loadingServers = false;
-			});
-	}
-
-	function reloadServers() {
-		if (!loadingServers) {
-			loadServers();
-		}
-	}
-
-	function setSelectedServer(guid: string, name: string, status: number) {
-		selectedServer.set({
-			guid: guid,
-			name: name,
-			status: status
-		});
-
+	function changeSelectedServer(guid: string) {
+		selectedServerGuid.set(guid);
 		navigateToPage(Page.Dashboard);
 	}
 </script>
 
 <section class="pt-3 px-6">
-	<!-- <div class="flex items-center justify-between">
-		<div class="flex shrink-0 ml-2">
-			<button on:click={reloadServers} disabled={loadingServers} class="disabled:text-slate-700 text-slate-400">
-				<ReloadSvg className={loadingServers ? 'animate-spin' : ''} />
-			</button>
-		</div>
-	</div> -->
-
-	{#each servers || [] as { guid, name, description, status }}
-		<div class="flex items-center mb-6 h-9" on:click={() => setSelectedServer(guid, name, status)}>
+	{#each $servers || [] as { guid, name, description, status }}
+		<div class="flex items-center mb-6 h-9" on:click={() => changeSelectedServer(guid)}>
 			<div class="flex-none w-14">
 				<div class="indicator">
 					<span class="indicator-item badge rounded-full border-none scale-50 mt-1 mr-1 {getStatusBgColor(status)}" />
