@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { get } from 'svelte/store';
 	import { auth, logout } from '$lib/auth';
 	import { Page, navigateToPage } from '$lib/routing';
 	import { clickOutside } from '$lib/shared';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
-	let username: string = get(auth).username;
 	let dropdownVisible: boolean = false;
 
 	function toggleDropdown() {
@@ -27,7 +25,7 @@
 		<div class="relative inline-flex mr-6" use:clickOutside on:click_outside={handleClickOutside}>
 			<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible}>
 				<div class="flex items-center truncate text-zinc-200">
-					<span class="ml-2 text-sm font-medium capitalize truncate"> {username}</span>
+					<span class="ml-2 text-sm font-medium capitalize truncate"> {$auth.username}</span>
 					<ArrowDownSvg />
 				</div>
 			</button>
@@ -37,7 +35,7 @@
 					<ul>
 						<li>
 							<div class="pt-0.5 pb-2 px-3 mb-1 border-b border-zinc-500">
-								<div class="font-medium capitalize text-zinc-100">{username}</div>
+								<div class="font-medium capitalize text-zinc-100">{$auth.username}</div>
 								<div class="text-xs italic text-zinc-400">Administrator</div>
 							</div>
 						</li>

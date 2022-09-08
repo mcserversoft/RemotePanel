@@ -16,16 +16,15 @@ export enum Filter {
     Status
 }
 
-//todo remove/rework this
-let loadingMessage: string = '';
-//
+// global in-memory store
 export const isOffline = writable(false);
 export const isLoadingServers = writable(false);
 
-
+// global persistent store
 export const servers = writableStorage('servers', []);
 export const selectedServerGuid = writableStorage('selectedServerGuid', '');
 
+// global translations
 export const getSelectedServer = derived(servers, ($servers) => {
     if ($servers) {
         return $servers.find((s: IServer) => s.guid == get(selectedServerGuid));
@@ -41,7 +40,6 @@ export const getSelectedServer = derived(servers, ($servers) => {
 /*
     API Requests
 */
-
 export async function fetchServers(filter: Filter = Filter.None) {
     isLoadingServers.set(true);
 
@@ -61,10 +59,6 @@ export async function fetchServers(filter: Filter = Filter.None) {
         })
         .then((data) => {
             servers.set(data);
-
-            if (!data.any) {
-                loadingMessage = 'No Servers found.';
-            }
         })
         .catch((error) => {
             if (error.status === 401) {
@@ -72,8 +66,8 @@ export async function fetchServers(filter: Filter = Filter.None) {
             } else if (!error.status) {
                 isOffline.set(true);
             }
-            loadingMessage = 'Failed to fetch servers.';
         });
+        
     isLoadingServers.set(false);
 }
 

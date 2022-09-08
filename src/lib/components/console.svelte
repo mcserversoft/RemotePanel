@@ -88,6 +88,7 @@
 		let secondLastLine: string = encodeURIComponent(lines[length - 1]);
 		let lastLine: string = encodeURIComponent(lines[length]);
 
+		//TODO move this to api.ts
 		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
 			method: `GET`,
 			headers: {

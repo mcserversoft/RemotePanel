@@ -1,11 +1,7 @@
 <script lang="ts">
-	import { get } from 'svelte/store';
 	import { auth } from '$lib/auth';
 	import { servers, selectedServerGuid, isLoadingServers } from '$lib/api';
 	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
-
-	//TODO maybe make facade for this
-	let username: string = get(auth).username;
 
 	function updateSelectedServer(guid: string) {
 		selectedServerGuid.set(guid);
@@ -15,7 +11,7 @@
 <section class="h-max w-max max-w-full overflow-hidden pr-6 bg-custom-gray-lighter text-white">
 	<div class="flex-col h-screen overflow-y-auto bg-inherit w-64 pt-6 pl-6">
 		<h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
-			<span class="text-center w-6">{getGreeting()}, {username} 👋</span>
+			<span class="text-center w-6">{getGreeting()}, {$auth.username} 👋</span>
 		</h3>
 
 		<div class="mt-6 px-3">

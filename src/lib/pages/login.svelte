@@ -25,6 +25,7 @@
 			body: JSON.stringify({ username: username, password: password })
 		});
 
+		//TODO move this to auth.ts
 		await fetch(request)
 			.then((response) => {
 				if (response.status === 200) {
