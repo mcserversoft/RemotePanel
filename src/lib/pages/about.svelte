@@ -13,7 +13,7 @@
 	<div class="hero-content text-center p-0">
 		<div class="max-w-md">
 			<div class="hidden lg:block">
-				<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Bashboard'}</button>
+				<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Dashboard'}</button>
 			</div>
 
 			<Logo height="72" width="72" className="mx-auto" />

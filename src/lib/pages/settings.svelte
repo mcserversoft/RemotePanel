@@ -44,7 +44,7 @@
 <seaction class="text-center">
 	<div class="max-w-sm mx-auto py-12 px-6 md:px-0">
         <div class="hidden lg:block">
-            <button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Bashboard'}</button>
+            <button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Dashboard'}</button>
         </div>
 
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
