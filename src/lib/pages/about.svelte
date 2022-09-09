@@ -9,10 +9,12 @@
 	<title>MCSS Remote Panel | About</title>
 </svelte:head>
 
-<seaction class="hero py-12">
+<seaction class="hero py-12 px-6 md:px-0">
 	<div class="hero-content text-center p-0">
 		<div class="max-w-md">
-			<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Bashboard'}</button>
+			<div class="hidden lg:block">
+				<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Bashboard'}</button>
+			</div>
 
 			<Logo height="72" width="72" className="mx-auto" />
 			<h1 class="text-3xl font-bold pb-1">MCSS Remote Panel <span class="text-lg">v{version}</span></h1>
