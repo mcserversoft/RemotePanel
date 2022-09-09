@@ -10,6 +10,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>MCSS Remote Panel | Panel</title>
+</svelte:head>
+
 <section class="pt-3 px-6">
 	{#each $servers || [] as { guid, name, description, status }}
 		<div class="flex items-center mb-6 h-9" on:click={() => changeSelectedServer(guid)}>
