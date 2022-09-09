@@ -21,7 +21,7 @@
 
 		const updateConsole = setInterval(() => {
 			updateConsoleIfNeeded();
-		}, 5000);
+		}, $settings.consoleRefreshRate * 1000 ?? 5000);
 
 		onDestroy(unsubscribe);
 		onDestroy(() => clearInterval(updateConsole));

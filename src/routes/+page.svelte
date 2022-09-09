@@ -8,6 +8,7 @@
 	import { auth } from '$lib/auth';
 	import { fetchServers, isOffline } from '$lib/api';
 	import { Page, selectedPage } from '$lib/routing';
+	import { settings } from '$lib/storage';
 	import BottomNav from '$lib/components/bottomNav.svelte';
 	import Header from '$lib/components/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
@@ -25,7 +26,7 @@
 			if (isAuthenticated) {
 				fetchServers();
 			}
-		}, 5000);
+		}, $settings.serversRefreshRate * 1000 ?? 5000);
 		onDestroy(() => clearInterval(updateServers));
 
 		const unsubscribe = auth.subscribe((updatedAuth) => {
