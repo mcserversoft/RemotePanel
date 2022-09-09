@@ -14,6 +14,11 @@
 	function handleClickOutside() {
 		dropdownVisible = false;
 	}
+
+	function navigateClick(page: Page) {
+		dropdownVisible = false;
+		navigateToPage(page);
+	}
 </script>
 
 <header class="navbar sticky top-0 z-50 bg-custom-gray shadow-sm">
@@ -40,10 +45,10 @@
 							</div>
 						</li>
 						<li>
-							<button on:click={() => navigateToPage(Page.Settings)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">Settings</button>
+							<button on:click={() => navigateClick(Page.Settings)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">Settings</button>
 						</li>
 						<li class="py-1 border-b border-zinc-500">
-							<button on:click={() => navigateToPage(Page.About)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">About</button>
+							<button on:click={() => navigateClick(Page.About)} class="flex w-full py-1 px-3 font-medium text-sm hover:bg-zinc-600">About</button>
 						</li>
 						<li class="pt-1">
 							<button on:click={logout} class="flex w-full py-1 px-3 font-medium text-sm capitalize text-red-500 hover:bg-zinc-600">log out</button>

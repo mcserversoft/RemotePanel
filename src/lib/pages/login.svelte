@@ -19,7 +19,7 @@
 	let username: string;
 	let password: string;
 
-	async function handleOnSubmit() {
+	async function handleLogin() {
 		const request = new Request(`${baseUrl}/auth`, {
 			method: `POST`,
 			body: JSON.stringify({ username: username, password: password })
@@ -67,7 +67,7 @@
 				<Logo className="mx-auto mb-8" width="96" height="96" />
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
-				<form on:submit|preventDefault={handleOnSubmit}>
+				<form on:submit|preventDefault={handleLogin}>
 					<div class="form-control mb-3">
 						<label class="label" for="username">
 							<span class="label-text">Username</span>
@@ -82,7 +82,7 @@
 						<input bind:value={password} required id="password" name="password" type="password" placeholder="" class="input input-bordered " />
 					</div>
 
-					<button type="submit" class="btn btn-primary btn-block mb-3"> Login </button>
+					<button type="submit" class="btn btn-primary btn-block mb-3">Login</button>
 					{#if error.visible}
 						<FormError title={error.title} message={error.message} />
 					{/if}

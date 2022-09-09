@@ -10,7 +10,7 @@
 </svelte:head>
 
 <seaction class="hero py-12">
-	<div class="hero-content text-center">
+	<div class="hero-content text-center p-0">
 		<div class="max-w-md">
 			<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Bashboard'}</button>
 
