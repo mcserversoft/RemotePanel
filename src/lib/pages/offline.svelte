@@ -1,8 +1,9 @@
 <script type="ts">
     import { onDestroy } from "svelte";
-    import { browser } from "$app/env";
-	import { isOffline } from "$lib/store.js";
-	import ReloadSvg from "../components/svgs/ReloadSvg.svelte";
+    import { browser } from "$app/environment";
+	import { baseUrl } from '$lib/routing';
+	import { isOffline } from "$lib/api";
+	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
 
 	if (browser) {
         const testConnection = setInterval(() => {
@@ -13,14 +14,14 @@
     }
 
 	async function reconnect() {
-		const request = new Request(`/`, {
+		const request = new Request(`${baseUrl}/`, {
 			method: `POST`,
 		});
 
 		await fetch(request)
 			.then((response) => {
 				if (response.status === 200) {
-					$isOffline = false;
+					isOffline.set(false);
 				}
 				return Promise.reject(response);
 			});
@@ -28,8 +29,7 @@
 </script>
 
 <svelte:head>
-	<title>MCSS Remote Panel</title>
-	<meta name="description" content="Remote Panel for MC Server Soft" />
+	<title>MCSS Remote Panel | Panel</title>
 </svelte:head>
 
 <section class="h-screen bg-login-background bg-cover bg-blend-color-dodge bg-zinc-800">

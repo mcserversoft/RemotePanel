@@ -4,8 +4,8 @@
     "description": "Application that allows you to remotely control MC Server Soft.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#212529",
-    "theme_color": "#212529",
+    "background_color": "#202124",
+    "theme_color": "#202124",
     "lang": "en-US",
     "icons": [
       {
