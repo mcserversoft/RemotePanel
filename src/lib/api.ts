@@ -125,7 +125,7 @@ export async function sendServerCommand(input: string) {
             return Promise.reject(response);
         })
         .catch((error) => {
-            if (error.status === 403) {
+            if (error.status === 401) {
                 logout();
             }
         });
