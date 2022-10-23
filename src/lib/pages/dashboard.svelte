@@ -3,6 +3,7 @@
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import Server from '$lib/components/server.svelte';
 	import Console from '$lib/components/console.svelte';
+	import ServerStats from '$lib/components/serverStats.svelte';
 </script>
 
 <svelte:head>
@@ -18,6 +19,7 @@
 			<div class="mb-20">
 				{#if $selectedServerGuid}
 					<Server />
+					<ServerStats />
 					<Console />
 				{:else}
 					<div class="text-center">
