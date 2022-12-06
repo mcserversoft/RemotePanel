@@ -86,7 +86,7 @@ export async function fetchServers(filter: Filter = Filter.None) {
                 isOffline.set(true);
             }
         });
-        
+
     isLoadingServers.set(false);
 }
 
