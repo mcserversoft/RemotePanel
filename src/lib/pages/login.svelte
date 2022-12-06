@@ -34,7 +34,7 @@
 				return Promise.reject(response);
 			})
 			.then((data) => {
-				login(data[`apiKey`], data[`username`]);
+				login(data[`apiKey`], data[`username`], data[`serverPermissions`]);
 			})
 			.catch((error) => {
 				// 401 -> unauthorized || undefined -> because of false CORS warnings
