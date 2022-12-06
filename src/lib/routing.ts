@@ -8,7 +8,8 @@ export enum Page {
 }
 
 // used for testing purposes
-export const baseUrl = '';
+export const baseUrl = 'https://192.168.1.100:2096';
+//export const baseUrl = '';
 
 export const selectedPage = writable('selectedPage', Page.Dashboard);
 

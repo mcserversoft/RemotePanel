@@ -34,6 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tabler/core": "^1.0.0-beta16",
 		"daisyui": "^2.25.0",
 		"svelte-local-storage-store": "^0.3.1"
 	}
