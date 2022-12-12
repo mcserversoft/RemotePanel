@@ -1,5 +1,6 @@
 import { writable } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
+import { baseUrl } from '$lib/routing';
 import { selectedServerGuid } from './api';
 import { settings } from './storage';
 
@@ -20,6 +21,10 @@ export enum Permissions {
     viewConsole,
     useConsole,
     useServerActions,
+export enum LoginFailureReason {
+    Unauthorized,
+    Network,
+    Unknown
 }
 
 export const auth = writable('user', {
@@ -30,24 +35,46 @@ export const auth = writable('user', {
 
 export let username: string = get(auth).username;
 
-export function login(apiKey: string, username: string, permissions: ServerPermissionCatalog[]) {
-
-    auth.set({
-        apiKey: apiKey,
-        username: username,
-        serverPermissions: permissions
+export function login(username: string, password: string, report: (failureReason: LoginFailureReason) => void): void {
+    const request = new Request(`${baseUrl}/auth`, {
+        method: `POST`,
+        body: JSON.stringify({ username: username, password: password })
     });
 
-    // set default settings
-    if (get(settings) == null) {
-        settings.set({
-            serversRefreshRate: 5,
-            consoleRefreshRate: 5,
-            autoScrollConsole: true,
-            amountOfConsoleLines: 50,
-            reverseConsoleLines: false,
+    fetch(request)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            return response.json();
         })
-    }
+        .then((data) => {
+            auth.set({
+                apiKey: data!.apiKey,
+                username: data!.username,
+            });
+
+            // set default settings
+            if (get(settings) == null) {
+                settings.set({
+                    serversRefreshRate: 5,
+                    consoleRefreshRate: 5,
+                    autoScrollConsole: true,
+                    amountOfConsoleLines: 50,
+                    reverseConsoleLines: false,
+                })
+            }
+        })
+        .catch((error) => {
+            if (error.status === 401) {
+                report(LoginFailureReason.Unauthorized);
+            } else if (error.status === 500) {
+                report(LoginFailureReason.Unknown);
+            } else {
+                report(LoginFailureReason.Network);
+            }
+        });
 }
 
 export function logout() {

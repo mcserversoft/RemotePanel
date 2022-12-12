@@ -1,6 +1,5 @@
 <script type="ts">
-	import { login } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
+	import { login, LoginFailureReason } from '$lib/auth';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
@@ -19,34 +18,21 @@
 	let username: string;
 	let password: string;
 
-	async function handleLogin() {
-		const request = new Request(`${baseUrl}/auth`, {
-			method: `POST`,
-			body: JSON.stringify({ username: username, password: password })
-		});
+	async function onLogin() {
+		login(username, password, (failureReason: LoginFailureReason) => {
+			switch (failureReason) {
+				case LoginFailureReason.Unauthorized:
+					showError('Unauthorized', 'Your username and/or password are not correct.');
+					break;
+				case LoginFailureReason.Network:
+					showError('Network', 'Unable to reach the API.');
+					break;
 
-		//TODO move this to auth.ts
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				login(data[`apiKey`], data[`username`], data[`serverPermissions`]);
-			})
-			.catch((error) => {
-				// 401 -> unauthorized || undefined -> because of false CORS warnings
-				// if (error.status === 401 || error.status === undefined) {
-				if (error.status === 401) {
-					showError(`Unauthorized`, `Your username and/or password are not correct.`);
-				} else if (error.status === 500) {
-					showError(`Unkown`, `Failed to login for some unknown reason.`);
-				} else {
-					showError(`Network`, `Unable to reach the API.`);
-				}
-			});
+				default:
+					showError('Unknown', 'Failed to login for some unknown reason.');
+					break;
+			}
+		});
 	}
 
 	function showError(title: string, message: string) {
@@ -67,7 +53,7 @@
 				<Logo className="mx-auto mb-8" width="96" height="96" />
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
-				<form on:submit|preventDefault={handleLogin}>
+				<form on:submit|preventDefault={onLogin}>
 					<div class="form-control mb-3">
 						<label class="label" for="username">
 							<span class="label-text">Username</span>
