@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import { baseUrl } from '$lib/routing';
 import { selectedServerGuid } from './api';
 import { settings } from './storage';
+import axios from 'axios'
 
 export interface ServerPermissionCatalog {
     guid: string;
@@ -50,9 +51,24 @@ export function login(username: string, password: string, report: (failureReason
             return response.json();
         })
         .then((data) => {
+            axios.defaults.baseURL = baseUrl;
+            axios.defaults.headers.common['apiKey'] = data.apiKey;
+
+            axios.interceptors.response.use(
+                (response) => {
+                    return response;
+                },
+                (error) => {
+                    if (error.response.status == 401) {
+                        logout();
+                    } else {
+                        return Promise.reject(error);
+                    }
+                });
+
             auth.set({
-                apiKey: data!.apiKey,
-                username: data!.username,
+                apiKey: data.apiKey,
+                username: data.username,
             });
 
             // set default settings

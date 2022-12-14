@@ -18,7 +18,7 @@
 	let username: string;
 	let password: string;
 
-	async function onLogin() {
+	function onLogin() {
 		login(username, password, (failureReason: LoginFailureReason) => {
 			switch (failureReason) {
 				case LoginFailureReason.Unauthorized:

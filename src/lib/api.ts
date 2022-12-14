@@ -57,35 +57,25 @@ export const getSelectedServer = derived(servers, ($servers) => {
 })
 
 /*
-    API Requests
+*  API Requests
 */
-export async function fetchServers(filter: Filter = Filter.None) {
+export function fetchServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 
-    const request = new Request(`${baseUrl}/api/v1/servers?filter=${filter}`, {
-        method: `GET`,
-        headers: {
-            apiKey: get(auth).apiKey
-        }
-    });
-
-    await fetch(request)
+    axios.get(`/api/v1/servers?filter=${filter}`)
         .then((response) => {
-            if (response.status === 200) {
-                return response.json();
+            if (response?.status !== 200) {
+                return Promise.reject(response);
             }
-            return Promise.reject(response);
+            return response.data;
         })
-        .then((data) => {
-            servers.set(data);
+
+        .then((json) => {
+            servers.set(json);
         })
         .catch((error) => {
-            if (error.status === 401) {
-                logout();
-            } else if (!error.status) {
-                isOffline.set(true);
-            }
-        });
+            console.error(`Failed to fetch servers with filter: ${filter} Error: ${error}`)
+        })
 
     isLoadingServers.set(false);
 }
@@ -97,26 +87,17 @@ export async function sendServerAction(action: string) {
         return;
     }
 
-    const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/action`, {
-        method: `POST`,
-        headers: {
-            apiKey: get(auth).apiKey
-        },
-        body: JSON.stringify({ action: action })
-    });
-
-    await fetch(request)
+    axios.post(`/api/v1/servers/${guid}/execute/action`, JSON.stringify({ action: action }))
         .then((response) => {
-            if (response.status === 200) {
-                return response.json();
+            if (response?.status !== 200) {
+                return Promise.reject(response);
             }
-            return Promise.reject(response);
+            return response.data;
         })
+
         .catch((error) => {
-            if (error.status === 401) {
-                logout();
-            }
-        });
+            console.error(`Failed to execute action: ${action} on server: ${guid} Error: ${error}`)
+        })
 }
 
 export async function sendServerCommand(input: string) {
@@ -126,24 +107,15 @@ export async function sendServerCommand(input: string) {
         return;
     }
 
-    const request = new Request(`${baseUrl}/api/v1/servers/${guid}/execute/command`, {
-        method: `POST`,
-        headers: {
-            apiKey: get(auth).apiKey
-        },
-        body: JSON.stringify({ command: input })
-    });
-
-    await fetch(request)
+    axios.post(`/api/v1/servers/${guid}/execute/command`, JSON.stringify({ command: input }))
         .then((response) => {
-            if (response.status == 200) {
-                //   consoleInput = '';
+            if (response?.status !== 200) {
+                return Promise.reject(response);
             }
-            return Promise.reject(response);
+            return response.data;
         })
+
         .catch((error) => {
-            if (error.status === 401) {
-                logout();
-            }
-        });
+            console.error(`Failed to execute command: ${input} on server: ${guid} Error: ${error}`)
+        })
 }
