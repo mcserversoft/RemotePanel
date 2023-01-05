@@ -2,11 +2,10 @@
 	import { onDestroy, beforeUpdate, afterUpdate } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { auth, logout } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
-	import { settings } from '$lib/storage';
-	import { selectedServerGuid, sendServerCommand } from '$lib/api';
+	import { settings } from '$lib/code/storage';
+	import { fetchServerConsole, isServerConsoleOutdated, selectedServerGuid, sendServerCommand } from '$lib/code/api';
 	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
+	import { hasPermission, Permission } from '$lib/code/permissions';
 
 	let loadingConsole: boolean;
 	let serverConsole: string[] = [];
@@ -44,33 +43,16 @@
 
 		loadingConsole = true;
 
-		//TODO move this to api.ts
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/console?amountOfLines=${$settings.amountOfConsoleLines}&reversed=${$settings.reverseConsoleLines}`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
-			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				serverConsole = data.join('\r\n');
+		fetchServerConsole(
+			guid,
+			(consoleLines: string[]) => {
+				serverConsole = consoleLines;
 				scrollToBottom();
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				}
-			})
-			.finally(() => {
+			},
+			(wasSuccess: boolean) => {
 				loadingConsole = false;
-			});
+			}
+		);
 	}
 
 	async function updateConsoleIfNeeded() {
@@ -88,49 +70,35 @@
 		let secondLastLine: string = encodeURIComponent(lines[length - 1]);
 		let lastLine: string = encodeURIComponent(lines[length]);
 
-		//TODO move this to api.ts
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
-			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				if (data.isOutdated) {
+		isServerConsoleOutdated(
+			guid,
+			secondLastLine,
+			lastLine,
+			(isOutdated: boolean) => {
+				if (isOutdated) {
 					reloadConsole(guid);
 					scrollToBottom();
 				}
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				}
-			})
-			.finally(() => {
+			},
+			(wasSuccess: boolean) => {
 				loadingConsole = false;
-			});
+			}
+		);
 	}
 
 	function sendCommand() {
-		if (!consoleInput) {
+		const guid = get(selectedServerGuid);
+		if (!consoleInput || !guid) {
 			return;
 		}
 
-		sendServerCommand(consoleInput);
+		sendServerCommand(guid, consoleInput);
 		consoleInput = '';
 	}
 
 	function scrollToBottom() {
-		if ($settings.autoScrollConsole) {
-			textarea.scrollTo(0, textarea.scrollHeight);
+		if (get(settings).autoScrollConsole) {
+			textarea?.scrollTo(0, textarea.scrollHeight);
 		}
 	}
 
@@ -157,7 +125,11 @@
 
 	<textarea bind:this={textarea} readonly class="w-full h-96 md:px-5 px-2 outline-none md:text-sm text-xs bg-inherit">{serverConsole}</textarea>
 
-	<form on:submit|preventDefault={sendCommand}>
-		<input bind:value={consoleInput} type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
-	</form>
+	{#key $selectedServerGuid}
+		{#if hasPermission(Permission.useConsole, $selectedServerGuid)}
+			<form on:submit|preventDefault={sendCommand}>
+				<input bind:value={consoleInput} type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
+			</form>
+		{/if}
+	{/key}
 </div>

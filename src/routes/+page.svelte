@@ -1,14 +1,10 @@
-<script lang="ts" context="module">
-	export const prerender = true;
-</script>
-
 <script type="ts">
 	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import { auth } from '$lib/auth';
-	import { fetchServers, isOffline } from '$lib/api';
-	import { Page, selectedPage } from '$lib/routing';
-	import { settings } from '$lib/storage';
+	import { auth } from '$lib/code/auth';
+	import { fetchServers, isOffline } from '$lib/code/api';
+	import { Page, selectedPage } from '$lib/code/routing';
+	import { settings } from '$lib/code/storage';
 	import BottomNav from '$lib/components/bottomNav.svelte';
 	import Header from '$lib/components/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
@@ -48,9 +44,10 @@
 
 <!-- isPageLoadedYet prevents page ghosting on F5 -->
 {#if isPageLoadedYet}
-	{#if $isOffline}
+	<!-- {#if $isOffline}
 		<OfflinePage />
-	{:else if isAuthenticated}
+	{:else if isAuthenticated} -->
+	{#if isAuthenticated}
 		<Header />
 
 		{#if $selectedPage == Page.About}

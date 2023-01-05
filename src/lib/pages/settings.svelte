@@ -1,6 +1,6 @@
 <script type="ts">
-	import { navigateToPage, Page } from '$lib/routing';
-	import { settings } from '$lib/storage';
+	import { navigateToPage, Page } from '$lib/code/routing';
+	import { settings } from '$lib/code/storage';
 
 	let serversRefreshRate: number = $settings.serversRefreshRate;
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
@@ -16,7 +16,7 @@
 		inputErrorServersRefreshRate = !(serversRefreshRate >= 1 && serversRefreshRate <= 3600);
 		inputErrorConsoleRefreshRate = !(consoleRefreshRate >= 1 && consoleRefreshRate <= 3600);
 		inputErrorAmountOfConsoleLines = !(amountOfConsoleLines >= 1 && amountOfConsoleLines <= 1000);
-        disableSaveButton = false;
+		disableSaveButton = false;
 	}
 
 	function handleSettingsEdit() {
@@ -33,7 +33,7 @@
 		}
 
 		$settings.autoScrollConsole = autoScrollConsole;
-        disableSaveButton = true;
+		disableSaveButton = true;
 	}
 </script>
 
@@ -43,9 +43,9 @@
 
 <seaction class="text-center">
 	<div class="max-w-sm mx-auto py-12 px-6 md:px-0">
-        <div class="hidden lg:block">
-            <button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Dashboard'}</button>
-        </div>
+		<div class="hidden lg:block">
+			<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Dashboard'}</button>
+		</div>
 
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how this panel interacts with the MCSS API, these settings only stored in this browser.</p>
@@ -93,7 +93,7 @@
 			<div class="form-control">
 				<label class="label cursor-pointer" for="autoScrollConsole">
 					<span class="label-text">Automatially scroll console</span>
-					<input type="checkbox" bind:checked={autoScrollConsole}  on:input={inputValidator} id="autoScrollConsole" class="checkbox" />
+					<input type="checkbox" bind:checked={autoScrollConsole} on:input={inputValidator} id="autoScrollConsole" class="checkbox" />
 				</label>
 			</div>
 

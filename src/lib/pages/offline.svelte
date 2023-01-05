@@ -1,30 +1,29 @@
 <script type="ts">
-    import { onDestroy } from "svelte";
-    import { browser } from "$app/environment";
-	import { baseUrl } from '$lib/routing';
-	import { isOffline } from "$lib/api";
-	import ReloadSvg from "$lib/svgs/ReloadSvg.svelte";
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
+	import { baseUrl } from '$lib/code/routing';
+	import { isOffline } from '$lib/code/api';
+	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 
 	if (browser) {
-        const testConnection = setInterval(() => {
-            reconnect();
-        }, 5000);
+		const testConnection = setInterval(() => {
+			reconnect();
+		}, 5000);
 
-        onDestroy(() => clearInterval(testConnection));
-    }
+		onDestroy(() => clearInterval(testConnection));
+	}
 
 	async function reconnect() {
 		const request = new Request(`${baseUrl}/`, {
-			method: `POST`,
+			method: `POST`
 		});
 
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					isOffline.set(false);
-				}
-				return Promise.reject(response);
-			});
+		await fetch(request).then((response) => {
+			if (response.status === 200) {
+				isOffline.set(false);
+			}
+			return Promise.reject(response);
+		});
 	}
 </script>
 

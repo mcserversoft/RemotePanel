@@ -1,27 +1,8 @@
 import { writable } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
-import { baseUrl } from '$lib/routing';
-import { selectedServerGuid } from './api';
-import { settings } from './storage';
-import axios from 'axios'
+import { baseUrl } from '$lib/code/routing';
+import { settings } from '$lib/code/storage';
 
-export interface ServerPermissionCatalog {
-    guid: string;
-    permissions: ServerPermission;
-}
-
-export interface ServerPermission {
-    viewStats: boolean;
-    viewConsole: boolean;
-    useConsole: boolean;
-    useServerActions: boolean;
-}
-
-export enum Permissions {
-    viewStats,
-    viewConsole,
-    useConsole,
-    useServerActions,
 export enum LoginFailureReason {
     Unauthorized,
     Network,
@@ -31,7 +12,6 @@ export enum LoginFailureReason {
 export const auth = writable('user', {
     apiKey: '',
     username: '',
-    serverPermissions: new Array<ServerPermissionCatalog>,
 })
 
 export let username: string = get(auth).username;
@@ -51,21 +31,6 @@ export function login(username: string, password: string, report: (failureReason
             return response.json();
         })
         .then((data) => {
-            axios.defaults.baseURL = baseUrl;
-            axios.defaults.headers.common['apiKey'] = data.apiKey;
-
-            axios.interceptors.response.use(
-                (response) => {
-                    return response;
-                },
-                (error) => {
-                    if (error.response.status == 401) {
-                        logout();
-                    } else {
-                        return Promise.reject(error);
-                    }
-                });
-
             auth.set({
                 apiKey: data.apiKey,
                 username: data.username,
@@ -97,9 +62,5 @@ export function logout() {
     auth.set({
         apiKey: '',
         username: '',
-        serverPermissions: new Array<ServerPermissionCatalog>,
     });
-}
-
-    }
 }

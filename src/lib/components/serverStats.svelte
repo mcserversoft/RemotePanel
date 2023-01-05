@@ -2,9 +2,8 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { auth, logout } from '$lib/auth';
-	import { baseUrl } from '$lib/routing';
-	import { selectedServerGuid, type Stats } from '$lib/api';
+	import { fetchServerStatus, selectedServerGuid } from '$lib/code/api';
+	import type { Stats } from '../../types';
 
 	let stats: Stats = {
 		cpu: 0,
@@ -39,77 +38,15 @@
 			return;
 		}
 
-		//TODO move this to api.ts
-		const request = new Request(`${baseUrl}/api/v1/servers/${guid}/stats`, {
-			method: `GET`,
-			headers: {
-				apiKey: get(auth).apiKey
+		fetchServerStatus(
+			guid,
+			(latestStats: Stats) => {
+				stats = latestStats;
+			},
+			(wasSuccess: Boolean) => {
+				isLoadingStats = false;
 			}
-		});
-
-		await fetch(request)
-			.then((response) => {
-				if (response.status === 200) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((data) => {
-				stats.cpu = data.latest.cpu ?? 0;
-				stats.memory.current = data.latest.memoryUsed ?? 0;
-				stats.memory.max = data.latest.memoryLimit ?? 0;
-				stats.memory.free = stats.memory.max - stats.memory.current;
-				stats.memory.percentageFree = Math.round((stats.memory.current / stats.memory.max) * 100);
-
-				stats.playersOnline = data.latest.playersOnline ?? 0;
-				stats.playerLimit = data.latest.playerLimit ?? 0;
-
-				stats.uptime = calculateUptime(data.latest.startDate);
-				stats.startDateUnix = data.latest.startDate;
-				stats.startDate = new Date(data.latest.startDate * 1000).toLocaleString(window.navigator.language, {
-					year: 'numeric',
-					month: '2-digit',
-					day: '2-digit',
-					hour: '2-digit',
-					minute: '2-digit'
-				});
-
-				isLoadingStats = false;
-			})
-			.catch((error) => {
-				if (error.status === 401) {
-					logout();
-				}
-			})
-			.finally(() => {
-				isLoadingStats = false;
-			});
-	}
-
-	function calculateUptime(startUnixTimestamp: number): string {
-		if (startUnixTimestamp <= 0) {
-			return 'offline';
-		}
-
-		let diff = Date.now() - new Date(startUnixTimestamp * 1000);
-
-		let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-		diff -= days * (1000 * 60 * 60 * 24);
-
-		let hours = Math.floor(diff / (1000 * 60 * 60));
-		diff -= hours * (1000 * 60 * 60);
-
-		let minutes = Math.floor(diff / (1000 * 60));
-		diff -= minutes * (1000 * 60);
-
-		if (days > 0) {
-			return `${days}d ${hours}h ${minutes}m`;
-		} else if (hours > 0) {
-			return `${hours}h ${minutes}m`;
-		} else {
-			let seconds = Math.floor(diff / 1000);
-			return `${minutes}m ${seconds}s`;
-		}
+		);
 	}
 </script>
 

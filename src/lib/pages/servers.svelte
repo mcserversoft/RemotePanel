@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { getStatusBgColor } from '$lib/shared';
-	import { navigateToPage, Page } from '$lib/routing';
-	import { servers, isLoadingServers } from '$lib/api';
-	import { selectedServerGuid } from '$lib/api';
+	import { getStatusBgColor } from '$lib/code/shared';
+	import { navigateToPage, Page } from '$lib/code/routing';
+	import { servers, isLoadingServers } from '$lib/code/api';
+	import { selectedServerGuid } from '$lib/code/api';
 
 	function changeSelectedServer(guid: string) {
 		selectedServerGuid.set(guid);
@@ -41,8 +41,7 @@
 		</div>
 	{:else}
 		<div class="text-center">
-			<span class="text-sm font-medium italic text-slate-400">{$isLoadingServers  ? 'Loading Servers.' : 'No Servers found.' }</span>
+			<span class="text-sm font-medium italic text-slate-400">{$isLoadingServers ? 'Loading Servers.' : 'No Servers found.'}</span>
 		</div>
 	{/each}
-
 </section>

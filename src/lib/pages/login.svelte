@@ -1,5 +1,5 @@
 <script type="ts">
-	import { login, LoginFailureReason } from '$lib/auth';
+	import { login, LoginFailureReason } from '$lib/code/auth';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
