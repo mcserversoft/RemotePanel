@@ -1,6 +1,5 @@
 import { writable as writableStorage } from 'svelte-local-storage-store';
 import { writable, derived, get } from 'svelte/store';
-import { baseUrl } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
 import { calculateUptime } from '$lib/code/shared';
 import { hasPermission, Permission } from '$lib/code/permissions';
@@ -39,7 +38,7 @@ export const getSelectedServer = derived(servers, ($servers) => {
 export function fetchServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 
-    axiosClient().get(`${baseUrl}/api/v1/servers?filter=${filter}`)
+    axiosClient().get(`/api/v1/servers?filter=${filter}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -63,7 +62,7 @@ export async function sendServerAction(serverId: string, action: string) {
         return;
     }
 
-    axiosClient().post(`${baseUrl}/api/v1/servers/${serverId}/execute/action`, JSON.stringify({ action: action }))
+    axiosClient().post(`/api/v1/servers/${serverId}/execute/action`, JSON.stringify({ action: action }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -81,7 +80,7 @@ export async function sendServerCommand(serverId: string, input: string) {
         return;
     }
 
-    axiosClient().post(`${baseUrl}/api/v1/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
+    axiosClient().post(`/api/v1/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -99,7 +98,7 @@ export function fetchServerStatus(serverId: string, report: (latestStats: Stats)
         return;
     }
 
-    axiosClient().get(`${baseUrl}/api/v1/servers/${serverId}/stats`)
+    axiosClient().get(`/api/v1/servers/${serverId}/stats`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -150,7 +149,7 @@ export function fetchServerConsole(serverId: string, report: (consoleLines: stri
     const amountOfConsoleLines = get(settings)?.amountOfConsoleLines ?? 50;
     const reverseConsoleLines = get(settings)?.reverseConsoleLines ?? false;
 
-    axiosClient().get(`${baseUrl}/api/v1/servers/${serverId}/console?amountOfLines=${amountOfConsoleLines}&reversed=${reverseConsoleLines}`)
+    axiosClient().get(`/api/v1/servers/${serverId}/console?amountOfLines=${amountOfConsoleLines}&reversed=${reverseConsoleLines}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -171,7 +170,7 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
         return;
     }
 
-    axiosClient().get(`${baseUrl}/api/v1/servers/${serverId}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`)
+    axiosClient().get(`/api/v1/servers/${serverId}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
