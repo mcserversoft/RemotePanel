@@ -1,4 +1,6 @@
-import { writable } from 'svelte-local-storage-store'
+import { writable } from 'svelte-local-storage-store';
+
+import { PanelTheme } from '../../types';
 
 export const settings = writable('settings', {
     serversRefreshRate: 5,
@@ -6,5 +8,7 @@ export const settings = writable('settings', {
     autoScrollConsole: true,
     amountOfConsoleLines: 50,
     reverseConsoleLines: false,
+    panelTheme: PanelTheme.Light,
+    UseSystemTheme: false,
 })
 
