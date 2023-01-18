@@ -66,7 +66,7 @@
 				<form on:submit|preventDefault={onLogin} class="space-y-4 md:space-y-6">
 					<div>
 						<Label for="username" class="mb-2">Username</Label>
-						<Input bind:value={username} type="text" id="username" placeholder="John" required />
+						<Input bind:value={username} type="text" id="username" placeholder="Username" required />
 					</div>
 
 					<div>
