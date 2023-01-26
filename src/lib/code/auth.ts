@@ -47,7 +47,8 @@ export function login(username: string, password: string, report: (failureReason
                     amountOfConsoleLines: 50,
                     reverseConsoleLines: false,
                     panelTheme: PanelTheme.Light,
-                    UseSystemTheme: false
+                    useSystemTheme: false,
+                    collapseSidebar: false,
                 })
             }
         })

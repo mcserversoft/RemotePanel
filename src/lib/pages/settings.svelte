@@ -23,7 +23,7 @@
 	];
 
 	let selectedTheme: number;
-	if ($settings.UseSystemTheme) {
+	if ($settings.useSystemTheme) {
 		selectedTheme = 2;
 	} else {
 		selectedTheme = $settings.panelTheme;
@@ -60,12 +60,12 @@
 		console.log(selectedTheme);
 		if (selectedTheme === 0) {
 			$settings.panelTheme = PanelTheme.Light;
-			$settings.UseSystemTheme = false;
+			$settings.useSystemTheme = false;
 		} else if (selectedTheme === 1) {
 			$settings.panelTheme = PanelTheme.Dark;
-			$settings.UseSystemTheme = false;
+			$settings.useSystemTheme = false;
 		} else if (selectedTheme === 2) {
-			$settings.UseSystemTheme = true;
+			$settings.useSystemTheme = true;
 			$settings.panelTheme = getPanelTheme();
 		}
 

@@ -57,7 +57,7 @@
 	</div>
 
 	<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-		<Logo className="mx-auto mb-4" width="96" height="96" />
+		<Logo class="mx-auto mb-4" width="96" height="96" />
 		<p class="mb-8 text-center text-2xl font-semibold dark:text-white">MC Server Soft Remote</p>
 
 		<div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

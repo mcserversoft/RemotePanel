@@ -61,39 +61,41 @@
 	{:else if isAuthenticated} -->
 
 	{#if isAuthenticated}
-		<div id="left" class="sticky top-0 h-screen">
-			<Sidebar />
+		<div class="flex">
+			<div id="left" class="sticky top-0 h-screen">
+				<Sidebar />
+			</div>
+
+			<div id="right" class="flex-grow">
+				<header class="sticky top-0">
+					<Header />
+				</header>
+
+				<main class="{sidebarMarginLeft} border-l border-gray-100 dark:border-gray-700">
+					<!-- <article class="flex-grow"> -->
+					{#if $selectedPage == Page.About}
+						<AboutPage />
+					{:else if $selectedPage == Page.Dashboard}
+						<DashboardPage />
+					{:else if $selectedPage == Page.Servers}
+						<ServersPage />
+					{:else if $selectedPage == Page.Settings}
+						<SettingsPage />
+					{/if}
+					<!-- </article> -->
+				</main>
+			</div>
+
+			<!-- <Footer /> -->
+
+			<!-- <BottomNav /> -->
 		</div>
-
-		<div id="right" class="flex-grow">
-			<header class="sticky top-0">
-				<Header />
-			</header>
-
-			<main class="{sidebarMarginLeft} border-l border-gray-100 dark:border-gray-700">
-				<!-- <article class="flex-grow"> -->
-				{#if $selectedPage == Page.About}
-					<AboutPage />
-				{:else if $selectedPage == Page.Dashboard}
-					<DashboardPage />
-				{:else if $selectedPage == Page.Servers}
-					<ServersPage />
-				{:else if $selectedPage == Page.Settings}
-					<SettingsPage />
-				{/if}
-				<!-- </article> -->
-			</main>
-		</div>
-
-		<!-- <Footer /> -->
-
-		<!-- <BottomNav /> -->
 	{:else}
 		<header />
 		<aside />
-		<article>
+		<main>
 			<LoginPage />
-		</article>
+		</main>
 		<footer />
 	{/if}
 {/if}
