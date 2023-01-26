@@ -1,7 +1,12 @@
+import {
+	auth,
+	logout
+} from '$lib/code/auth';
+import { baseUrl } from '$lib/code/routing';
 import axios, { type AxiosInstance } from 'axios';
 import { get } from 'svelte/store';
-import { auth, logout } from '$lib/code/auth';
-import { baseUrl } from '$lib/code/routing';
+
+import { isOffline } from './api';
 
 function axiosClient(): AxiosInstance {
 
@@ -12,6 +17,7 @@ function axiosClient(): AxiosInstance {
 
 	axiosClient.interceptors.response.use(
 		(response) => {
+			isOffline.set(false);
 			return response;
 		},
 		(error) => {

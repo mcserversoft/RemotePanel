@@ -1,10 +1,23 @@
-import { writable as writableStorage } from 'svelte-local-storage-store';
-import { writable, derived, get } from 'svelte/store';
-import { settings } from '$lib/code/storage';
-import { calculateUptime } from '$lib/code/shared';
-import { hasPermission, Permission } from '$lib/code/permissions';
 import axiosClient from '$lib/code/axiosClient';
-import type { Server, Stats, IServer, Memory } from '../../types';
+import {
+	hasPermission,
+	Permission
+} from '$lib/code/permissions';
+import { calculateUptime } from '$lib/code/shared';
+import { settings } from '$lib/code/storage';
+import { writable as writableStorage } from 'svelte-local-storage-store';
+import {
+	derived,
+	get,
+	writable
+} from 'svelte/store';
+
+import type {
+	IServer,
+	Memory,
+	Server,
+	Stats
+} from '../../types';
 import { Filter } from '../../types';
 
 // global in-memory store
@@ -50,6 +63,7 @@ export function fetchServers(filter: Filter = Filter.None): void {
             servers.set(json);
         })
         .catch((error) => {
+            isOffline.set(true)
             console.error(`Failed to fetch servers with filter: ${filter} Error: ${error}`)
         })
 

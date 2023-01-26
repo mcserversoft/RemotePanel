@@ -12,7 +12,7 @@
 	let error: Error = {
 		visible: false,
 		title: '',
-		message: ''
+		message: '',
 	};
 
 	let username: string;
