@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Sidebar, SidebarGroup, SidebarItem, Toolbar, ToolbarButton, ToolbarGroup } from 'flowbite-svelte';
+	import { Sidebar, SidebarGroup, SidebarItem, Toolbar, ToolbarButton } from 'flowbite-svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 	import { Page, navigateToPage } from '$lib/code/routing';
 	import Icon from '$lib/components/icon.svelte';
-	import { mdiArrowExpandLeft, mdiArrowExpandRight, mdiInformationOutline, mdiCog, mdiBrightness5, mdiBrightness2, mdiThemeLightDark } from '@mdi/js';
+	import { mdiArrowExpandLeft, mdiArrowExpandRight, mdiInformationOutline, mdiCog, mdiBrightness5, mdiBrightness2, mdiServer } from '@mdi/js';
 	import ToolBarThemeSwitcher from '$lib/components/toolBarThemeSwitcher.svelte';
 	import ToolBarSizeSwitcher from '$lib/components/toolBarSizeSwitcher.svelte';
 	import { settings } from '$lib/code/storage';
@@ -43,6 +43,15 @@
 					<span class="ml-3 {collapseSidebar ? 'hidden ' : ''}">Dashboard</span>
 				</a>
 			</li>
+			<li>
+				<a href="/" on:click={() => navigateToPage(Page.Servers)} class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+					<Icon data={mdiServer} size={6} class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+
+					<span class="{collapseSidebar ? 'hidden' : ''} flex-1 ml-3 whitespace-nowrap">Servers</span>
+					<!-- <span class="{collapseSidebar ? 'hidden' : ''} inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200">3</span> -->
+				</a>
+			</li>
+
 			<!-- <li>
 				<a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
 					<svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"

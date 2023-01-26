@@ -5,6 +5,7 @@
 	import { Select, Label, Input, Toggle, Helper, Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
 	import { PanelTheme } from '../../types';
+	import PageContainer from '$lib/layouts/pageContainer.svelte';
 
 	let serversRefreshRate: number = $settings.serversRefreshRate;
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
@@ -19,7 +20,7 @@
 	let themeOptions = [
 		{ value: 0, name: 'Light' },
 		{ value: 1, name: 'Dark' },
-		{ value: 2, name: 'System' }
+		{ value: 2, name: 'System' },
 	];
 
 	let selectedTheme: number;
@@ -78,7 +79,7 @@
 	<title>MCSS Remote Panel | Settings</title>
 </svelte:head>
 
-<section class="py-24 min-h-screen dark:bg-gray-900 dark:text-white">
+<PageContainer>
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how this panel interacts with the MCSS API, these settings are only stored in this browser.</p>
@@ -125,4 +126,4 @@
 			</Button>
 		</div>
 	</form>
-</section>
+</PageContainer>

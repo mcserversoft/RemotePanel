@@ -1,10 +1,12 @@
-import type { Permission } from "$lib/code/permissions";
+import type { Permission } from '$lib/code/permissions';
 
 export class Server implements IServer {
     guid = "";
     name = "";
     description = "";
     status = 0;
+    type = "";
+    version = "";
     serverPermissions = new Array<Permission>();
 }
 
@@ -20,6 +22,8 @@ export interface IServer {
     name: string;
     description: string;
     status: number;
+    type: string;
+    version: string;
     serverPermissions: Permission[];
 }
 

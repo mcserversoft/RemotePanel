@@ -1,4 +1,5 @@
 <script type="ts">
+	import PageContainer from '$lib/layouts/pageContainer.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 
 	// @ts-ignore
@@ -9,7 +10,7 @@
 	<title>MCSS Remote Panel | About</title>
 </svelte:head>
 
-<section class="py-24 min-h-screen dark:bg-gray-900 dark:text-white">
+<PageContainer>
 	<div class="mx-auto text-center">
 		<Logo height="72" width="72" class="mx-auto" />
 		<h1 class="text-3xl font-bold pb-1">MCSS Remote Panel <span class="text-lg">v{version}</span></h1>
@@ -47,4 +48,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</PageContainer>
