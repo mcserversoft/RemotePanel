@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { auth } from '$lib/auth';
-	import { servers, selectedServerGuid, isLoadingServers } from '$lib/api';
-	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
+	import { auth } from '$lib/code/auth';
+	import { servers, selectedServerGuid, isLoadingServers } from '$lib/code/api';
+	import { getGreeting, getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
 
-	function updateSelectedServer(guid: string) {
+	function onServerClick(guid: string) {
 		selectedServerGuid.set(guid);
 	}
 </script>
@@ -29,13 +29,13 @@
 			<ul class="pl-9 mt-1 truncate">
 				{#each $servers || [] as { guid, name, status }}
 					<li class="mb-1 last:mb-0">
-						<button on:click={() => updateSelectedServer(guid)} class=" text-slate-400 hover:text-slate-200">
+						<button on:click={() => onServerClick(guid)} class=" text-slate-400 hover:text-slate-200">
 							<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor(status)}" title={getFriendlyStatusName(status)} /> <span class="text-sm font-medium">{name}</span>
 						</button>
 					</li>
 				{:else}
 					<li class="mb-1 last:mb-0">
-						<span class="text-sm font-medium italic text-slate-400">{$isLoadingServers  ? 'Loading Servers.' : 'No Servers found.' }</span>
+						<span class="text-sm font-medium italic text-slate-400">{$isLoadingServers ? 'Loading Servers.' : 'No Servers found.'}</span>
 					</li>
 				{/each}
 			</ul>

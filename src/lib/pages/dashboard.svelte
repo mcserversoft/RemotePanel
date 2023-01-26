@@ -1,5 +1,6 @@
 <script type="ts">
-	import { selectedServerGuid } from '$lib/api';
+	import { selectedServerGuid } from '$lib/code/api';
+	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import Server from '$lib/components/server.svelte';
 	import Console from '$lib/components/console.svelte';
@@ -19,8 +20,15 @@
 			<div class="mb-20">
 				{#if $selectedServerGuid}
 					<Server />
-					<ServerStats />
-					<Console />
+					{#key $selectedServerGuid}
+						{#if hasPermission(Permission.viewStats, $selectedServerGuid)}
+							<ServerStats />
+						{/if}
+
+						{#if hasPermission(Permission.viewConsole, $selectedServerGuid)}
+							<Console />
+						{/if}
+					{/key}
 				{:else}
 					<div class="text-center">
 						<span class="text-sm font-medium italic text-slate-400">No server selected.</span>

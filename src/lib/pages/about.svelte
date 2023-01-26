@@ -1,5 +1,5 @@
 <script type="ts">
-	import { navigateToPage, Page } from '$lib/routing';
+	import { navigateToPage, Page } from '$lib/code/routing';
 	import Logo from '$lib/svgs/Logo.svelte';
 
 	const version: string = __VERSION__;

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { auth, logout } from '$lib/auth';
-	import { Page, navigateToPage } from '$lib/routing';
-	import { clickOutside } from '$lib/shared';
+	import { auth, logout } from '$lib/code/auth';
+	import { Page, navigateToPage } from '$lib/code/routing';
+	import { clickOutside } from '$lib/code/shared';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 

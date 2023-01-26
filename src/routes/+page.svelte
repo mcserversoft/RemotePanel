@@ -1,22 +1,18 @@
-<script lang="ts" context="module">
-	export const prerender = true;
-</script>
-
 <script type="ts">
 	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import { auth } from '$lib/auth';
-	import { fetchServers, isOffline } from '$lib/api';
-	import { Page, selectedPage } from '$lib/routing';
-	import { settings } from '$lib/storage';
+	import { auth } from '$lib/code/auth';
+	import { fetchServers } from '$lib/code/api';
+	import { Page, selectedPage } from '$lib/code/routing';
+	import { settings } from '$lib/code/storage';
 	import BottomNav from '$lib/components/bottomNav.svelte';
 	import Header from '$lib/components/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
 	import ServersPage from '$lib/pages/servers.svelte';
-	import OfflinePage from '$lib/pages/offline.svelte';
 	import SettingsPage from '$lib/pages/settings.svelte';
+	import OfflineWarning from '$lib/components/offlineWarning.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -48,9 +44,7 @@
 
 <!-- isPageLoadedYet prevents page ghosting on F5 -->
 {#if isPageLoadedYet}
-	{#if $isOffline}
-		<OfflinePage />
-	{:else if isAuthenticated}
+	{#if isAuthenticated}
 		<Header />
 
 		{#if $selectedPage == Page.About}
@@ -62,7 +56,7 @@
 		{:else if $selectedPage == Page.Settings}
 			<SettingsPage />
 		{/if}
-
+		<OfflineWarning />
 		<BottomNav />
 	{:else}
 		<LoginPage />

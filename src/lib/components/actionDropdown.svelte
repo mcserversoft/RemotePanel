@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { clickOutside } from '$lib/shared';
-	import { sendServerAction } from '$lib/api';
+	import { get } from 'svelte/store';
+	import { clickOutside } from '$lib/code/shared';
+	import { sendServerAction, selectedServerGuid } from '$lib/code/api';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 
 	export let statusName: string;
@@ -18,12 +19,17 @@
 
 	function serverActionClick(action: string) {
 		dropdownVisible = false;
-		sendServerAction(action);
+
+		const guid = get(selectedServerGuid);
+		if (!guid) {
+			return;
+		}
+
+		sendServerAction(guid, action);
 	}
 </script>
 
 <div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
-	
 	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
 		<div class="flex items-center truncate text-zinc-100">
 			<span class="truncate ml-2 text-xs font-medium uppercase">{statusName}</span>

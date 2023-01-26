@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { getFriendlyStatusName, getStatusBgColor } from '$lib/shared';
-	import { getSelectedServer } from '$lib/api';
+	import { getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
+	import { getSelectedServer, selectedServerGuid } from '$lib/code/api';
 	import ActionDropdown from '$lib/components/actionDropdown.svelte';
+	import { hasPermission, Permission } from '$lib/code/permissions';
 </script>
 
 <div class="flex mb-3">
@@ -12,5 +13,9 @@
 		</h2>
 	</div>
 
-	<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
+	{#key $selectedServerGuid}
+		{#if hasPermission(Permission.useServerActions, $selectedServerGuid)}
+			<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
+		{/if}
+	{/key}
 </div>

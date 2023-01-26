@@ -9,7 +9,7 @@ const FILES = `cache${version}`;
 const to_cache = build.concat(files);
 const staticAssets = new Set(to_cache);
 
-worker.addEventListener('install', (event) => {
+worker.addEventListener('install', (event: any) => {
   event.waitUntil(
     caches
       .open(FILES)
@@ -20,7 +20,7 @@ worker.addEventListener('install', (event) => {
   );
 });
 
-worker.addEventListener('activate', (event) => {
+worker.addEventListener('activate', (event: any) => {
   event.waitUntil(
     caches.keys().then(async (keys) => {
       // delete old caches
@@ -52,7 +52,7 @@ async function fetchAndCache(request: Request) {
   }
 }
 
-worker.addEventListener('fetch', (event) => {
+worker.addEventListener('fetch', (event: any) => {
   if (event.request.method !== 'GET' || event.request.headers.has('range')) return;
 
   const url = new URL(event.request.url);
