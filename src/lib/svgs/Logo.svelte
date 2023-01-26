@@ -1,7 +1,9 @@
 <script lang="ts">
-	export let className: string = '';
 	export let width: string = '32';
 	export let height: string = '32';
+	export { className as class };
+
+	let className: string = '';
 </script>
 
 <svg {width} {height} class={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2134 2134" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">

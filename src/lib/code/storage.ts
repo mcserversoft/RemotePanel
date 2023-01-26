@@ -9,6 +9,7 @@ export const settings = writable('settings', {
     amountOfConsoleLines: 50,
     reverseConsoleLines: false,
     panelTheme: PanelTheme.Light,
-    UseSystemTheme: false,
+    collapseSidebar: false,
+    useSystemTheme: false,
 })
 
