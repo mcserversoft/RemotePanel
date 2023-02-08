@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { navigateToPage, Page } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
 

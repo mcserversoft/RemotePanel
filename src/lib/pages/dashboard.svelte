@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { selectedServerId } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Sidebar from '$lib/components/sidebar.svelte';

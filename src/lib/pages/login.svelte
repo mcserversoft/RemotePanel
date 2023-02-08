@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { login, LoginFailureReason } from '$lib/code/auth';
 	import FormError from '$lib/components/formError.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
@@ -12,7 +12,7 @@
 	let error: Error = {
 		visible: false,
 		title: '',
-		message: '',
+		message: ''
 	};
 
 	let username: string;
