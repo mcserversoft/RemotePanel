@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { clickOutside } from '$lib/code/shared';
-	import { sendServerAction, selectedServerGuid } from '$lib/code/api';
+	import { sendServerAction, selectedServerId } from '$lib/code/api';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 
 	export let statusName: string;
@@ -20,12 +20,12 @@
 	function serverActionClick(action: string) {
 		dropdownVisible = false;
 
-		const guid = get(selectedServerGuid);
-		if (!guid) {
+		const serverId = get(selectedServerId);
+		if (!serverId) {
 			return;
 		}
 
-		sendServerAction(guid, action);
+		sendServerAction(serverId, action);
 	}
 </script>
 

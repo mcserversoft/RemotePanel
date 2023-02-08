@@ -26,17 +26,17 @@ export const isLoadingServers = writable(false);
 
 // global persistent store
 export const servers = writableStorage<Server[]>('servers', new Array<Server>());
-export const selectedServerGuid = writableStorage('selectedServerGuid', '');
+export const selectedServerId = writableStorage('selectedServerId', '');
 
 // this should maybe be moved, api should only have api stuff
 
 // global translations
 export const getSelectedServer = derived(servers, ($servers) => {
     if ($servers) {
-        return $servers.find((s: IServer) => s.guid == get(selectedServerGuid));
+        return $servers.find((s: IServer) => s.serverId == get(selectedServerId));
     }
     return {
-        guid: '',
+        serverId: '',
         name: '',
         description: '',
         status: 0,
@@ -51,7 +51,7 @@ export const getSelectedServer = derived(servers, ($servers) => {
 export function fetchServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 
-    axiosClient().get(`/api/v1/servers?filter=${filter}`)
+    axiosClient().get(`/api/v2/servers?filter=${filter}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -76,7 +76,7 @@ export async function sendServerAction(serverId: string, action: string) {
         return;
     }
 
-    axiosClient().post(`/api/v1/servers/${serverId}/execute/action`, JSON.stringify({ action: action }))
+    axiosClient().post(`/api/v2/servers/${serverId}/execute/action`, JSON.stringify({ action: action }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -94,7 +94,7 @@ export async function sendServerCommand(serverId: string, input: string) {
         return;
     }
 
-    axiosClient().post(`/api/v1/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
+    axiosClient().post(`/api/v2/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -112,7 +112,7 @@ export function fetchServerStatus(serverId: string, report: (latestStats: Stats)
         return;
     }
 
-    axiosClient().get(`/api/v1/servers/${serverId}/stats`)
+    axiosClient().get(`/api/v2/servers/${serverId}/stats`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -163,7 +163,7 @@ export function fetchServerConsole(serverId: string, report: (consoleLines: stri
     const amountOfConsoleLines = get(settings)?.amountOfConsoleLines ?? 50;
     const reverseConsoleLines = get(settings)?.reverseConsoleLines ?? false;
 
-    axiosClient().get(`/api/v1/servers/${serverId}/console?amountOfLines=${amountOfConsoleLines}&reversed=${reverseConsoleLines}`)
+    axiosClient().get(`/api/v2/servers/${serverId}/console?amountOfLines=${amountOfConsoleLines}&reversed=${reverseConsoleLines}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -184,7 +184,7 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
         return;
     }
 
-    axiosClient().get(`/api/v1/servers/${serverId}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`)
+    axiosClient().get(`/api/v2/servers/${serverId}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);

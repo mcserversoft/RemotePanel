@@ -2,10 +2,10 @@
 	import { getStatusBgColor } from '$lib/code/shared';
 	import { navigateToPage, Page } from '$lib/code/routing';
 	import { servers, isLoadingServers } from '$lib/code/api';
-	import { selectedServerGuid } from '$lib/code/api';
+	import { selectedServerId } from '$lib/code/api';
 
-	function changeSelectedServer(guid: string) {
-		selectedServerGuid.set(guid);
+	function changeSelectedServer(serverId: string) {
+		selectedServerId.set(serverId);
 		navigateToPage(Page.Dashboard);
 	}
 </script>
@@ -15,8 +15,8 @@
 </svelte:head>
 
 <section class="pt-3 px-6">
-	{#each $servers || [] as { guid, name, description, status }}
-		<div class="flex items-center mb-6 h-9" on:click={() => changeSelectedServer(guid)}>
+	{#each $servers || [] as { serverId, name, description, status }}
+		<div class="flex items-center mb-6 h-9" on:click={() => changeSelectedServer(serverId)}>
 			<div class="flex-none w-14">
 				<div class="indicator">
 					<span class="indicator-item badge rounded-full border-none scale-50 mt-1 mr-1 {getStatusBgColor(status)}" />

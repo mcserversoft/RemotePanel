@@ -1,5 +1,5 @@
 <script type="ts">
-	import { selectedServerGuid } from '$lib/code/api';
+	import { selectedServerId } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import Server from '$lib/components/server.svelte';
@@ -18,14 +18,14 @@
 		</div>
 		<div class="flex-grow p-6">
 			<div class="mb-20">
-				{#if $selectedServerGuid}
+				{#if $selectedServerId}
 					<Server />
-					{#key $selectedServerGuid}
-						{#if hasPermission(Permission.viewStats, $selectedServerGuid)}
+					{#key $selectedServerId}
+						{#if hasPermission(Permission.viewStats, $selectedServerId)}
 							<ServerStats />
 						{/if}
 
-						{#if hasPermission(Permission.viewConsole, $selectedServerGuid)}
+						{#if hasPermission(Permission.viewConsole, $selectedServerId)}
 							<Console />
 						{/if}
 					{/key}

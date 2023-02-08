@@ -2,7 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { fetchServerStatus, selectedServerGuid } from '$lib/code/api';
+	import { fetchServerStatus, selectedServerId } from '$lib/code/api';
 	import type { Stats } from '../../types';
 
 	let stats: Stats = {
@@ -18,7 +18,7 @@
 	let isLoadingStats: boolean = true;
 
 	if (browser) {
-		const unsubscribe = selectedServerGuid.subscribe((newGuid) => {
+		const unsubscribe = selectedServerId.subscribe((newServerId) => {
 			isLoadingStats = true;
 			updateServerStats();
 		});
@@ -32,14 +32,14 @@
 	}
 
 	async function updateServerStats() {
-		const guid = get(selectedServerGuid);
+		const serverId = get(selectedServerId);
 
-		if (!guid) {
+		if (!serverId) {
 			return;
 		}
 
 		fetchServerStatus(
-			guid,
+			serverId,
 			(latestStats: Stats) => {
 				stats = latestStats;
 			},

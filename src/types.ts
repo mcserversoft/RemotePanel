@@ -1,7 +1,7 @@
 import type { Permission } from "$lib/code/permissions";
 
 export class Server implements IServer {
-    guid = "";
+    serverId = "";
     name = "";
     description = "";
     status = 0;
@@ -16,7 +16,7 @@ export class ServerPermission implements IServerPermission {
 }
 
 export interface IServer {
-    guid: string;
+    serverId: string;
     name: string;
     description: string;
     status: number;
