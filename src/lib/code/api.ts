@@ -1,22 +1,22 @@
 import axiosClient from '$lib/code/axiosClient';
 import {
-	hasPermission,
-	Permission
+    hasPermission,
+    Permission
 } from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
-import { writable as writableStorage } from 'svelte-local-storage-store';
+import { persisted } from 'svelte-local-storage-store';
 import {
-	derived,
-	get,
-	writable
+    derived,
+    get,
+    writable
 } from 'svelte/store';
 
 import type {
-	IServer,
-	Memory,
-	Server,
-	Stats
+    IServer,
+    Memory,
+    Server,
+    Stats
 } from '../../types';
 import { Filter } from '../../types';
 
@@ -25,8 +25,8 @@ export const isOffline = writable(false);
 export const isLoadingServers = writable(false);
 
 // global persistent store
-export const servers = writableStorage<Server[]>('servers', new Array<Server>());
-export const selectedServerId = writableStorage('selectedServerId', '');
+export const servers = persisted<Server[]>('servers', new Array<Server>());
+export const selectedServerId = persisted('selectedServerId', '');
 
 // this should maybe be moved, api should only have api stuff
 
