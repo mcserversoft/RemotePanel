@@ -1,6 +1,6 @@
-import { writable } from 'svelte-local-storage-store'
+import { persisted } from 'svelte-local-storage-store'
 
-export const settings = writable('settings', {
+export const settings = persisted('settings', {
     serversRefreshRate: 5,
     consoleRefreshRate: 5,
     autoScrollConsole: true,

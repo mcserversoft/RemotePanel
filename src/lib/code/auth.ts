@@ -1,4 +1,4 @@
-import { writable } from 'svelte-local-storage-store'
+import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
 import { baseUrl } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
@@ -9,7 +9,7 @@ export enum LoginFailureReason {
     Unknown
 }
 
-export const auth = writable('user', {
+export const auth = persisted('user', {
     apiKey: '',
     username: '',
 })

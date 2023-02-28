@@ -8,8 +8,8 @@ export enum Permission {
     useServerActions = "USE_SERVER_ACTIONS",
 }
 
-export function hasPermission(perm: Permission, guid: string): boolean {
-    const server = get(servers).find((s) => s.guid == guid);
+export function hasPermission(perm: Permission, serverId: string): boolean {
+    const server = get(servers).find((s) => s.serverId == serverId);
     if (!server) {
         return false;
     }

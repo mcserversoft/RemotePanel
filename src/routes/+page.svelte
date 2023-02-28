@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';

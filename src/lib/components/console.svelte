@@ -3,7 +3,7 @@
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
-	import { fetchServerConsole, isServerConsoleOutdated, selectedServerGuid, sendServerCommand } from '$lib/code/api';
+	import { fetchServerConsole, isServerConsoleOutdated, selectedServerId, sendServerCommand } from '$lib/code/api';
 	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 
@@ -14,8 +14,8 @@
 	let consoleRequiresUpdate: boolean;
 
 	if (browser) {
-		const unsubscribe = selectedServerGuid.subscribe((newGuid) => {
-			reloadConsole(newGuid);
+		const unsubscribe = selectedServerId.subscribe((newServerId) => {
+			reloadConsole(newServerId);
 		});
 
 		const updateConsole = setInterval(() => {
@@ -36,15 +36,15 @@
 		}
 	});
 
-	async function reloadConsole(guid: string) {
-		if (!guid) {
+	async function reloadConsole(serverId: string) {
+		if (!serverId) {
 			return;
 		}
 
 		loadingConsole = true;
 
 		fetchServerConsole(
-			guid,
+			serverId,
 			(consoleLines: string[]) => {
 				serverConsole = consoleLines;
 				scrollToBottom();
@@ -56,9 +56,9 @@
 	}
 
 	async function updateConsoleIfNeeded() {
-		const guid = get(selectedServerGuid);
+		const serverId = get(selectedServerId);
 
-		if (!guid) {
+		if (!serverId) {
 			return;
 		}
 
@@ -71,12 +71,12 @@
 		let lastLine: string = encodeURIComponent(lines[length]);
 
 		isServerConsoleOutdated(
-			guid,
+			serverId,
 			secondLastLine,
 			lastLine,
 			(isOutdated: boolean) => {
 				if (isOutdated) {
-					reloadConsole(guid);
+					reloadConsole(serverId);
 					scrollToBottom();
 				}
 			},
@@ -87,12 +87,12 @@
 	}
 
 	function sendCommand() {
-		const guid = get(selectedServerGuid);
-		if (!consoleInput || !guid) {
+		const serverId = get(selectedServerId);
+		if (!consoleInput || !serverId) {
 			return;
 		}
 
-		sendServerCommand(guid, consoleInput);
+		sendServerCommand(serverId, consoleInput);
 		consoleInput = '';
 	}
 
@@ -125,8 +125,8 @@
 
 	<textarea bind:this={textarea} readonly class="w-full h-96 md:px-5 px-2 outline-none md:text-sm text-xs bg-inherit">{serverConsole}</textarea>
 
-	{#key $selectedServerGuid}
-		{#if hasPermission(Permission.useConsole, $selectedServerGuid)}
+	{#key $selectedServerId}
+		{#if hasPermission(Permission.useConsole, $selectedServerId)}
 			<form on:submit|preventDefault={sendCommand}>
 				<input bind:value={consoleInput} type="text" placeholder="Enter command e.g. /say hello" class="w-full px-5 pt-1 pb-3 outline-none bg-inherit" />
 			</form>
