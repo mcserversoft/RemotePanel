@@ -1,4 +1,4 @@
-import { writable } from 'svelte-local-storage-store';
+import { persisted } from 'svelte-local-storage-store';
 
 export enum Page {
     About,
@@ -10,7 +10,7 @@ export enum Page {
 // used for testing purposes
 export const baseUrl = '';
 
-export const selectedPage = writable('selectedPage', Page.Dashboard);
+export const selectedPage = persisted('selectedPage', Page.Dashboard);
 
 export function navigateToPage(pageName: Page) {
     selectedPage.set(pageName);
