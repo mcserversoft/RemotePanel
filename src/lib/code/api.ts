@@ -6,6 +6,7 @@ import {
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { persisted } from 'svelte-local-storage-store';
+import axios from 'axios';
 import {
     derived,
     get,
@@ -19,6 +20,7 @@ import type {
     Stats
 } from '../../types';
 import { Filter } from '../../types';
+import { auth } from './auth';
 
 // global in-memory store
 export const isOffline = writable(false);
@@ -198,4 +200,47 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
             console.error(`Failed to check if console is outdated on server: ${serverId} Error: ${error}`)
             completed(false);
         })
+}
+
+export function streamConsole(serverId: string, report: (obj: any) => void, completed: (wasSuccess: boolean) => void): void {
+    if (!serverId || !hasPermission(Permission.viewConsole, serverId)) {
+        return;
+    }
+
+    // const url = `http://127.0.0.1:2096/api/v2/servers/${serverId}/console/stream`;
+    // const eventSource = new EventSource(url, {
+    //     withCredentials: true,
+    // });
+
+    // eventSource.onmessage = (event) => {
+    //     console.log(event.data);
+    // };
+
+    // eventSource.onerror = (error) => {
+    //     console.error(error);
+    // };
+
+    // axiosClient().get(url).then((response) => {
+    //     console.log(response.data);
+    // }).catch((error) => {
+    //     console.error(error);
+    //     completed(false);
+    // });
+
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `http://127.0.0.1:2096/api/v2/servers/${serverId}/console/stream`,
+        headers: { apiKey: get(auth)?.apiKey ?? '' }
+    };
+
+    axios.request(config)
+        .then((response: any) => {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
+
 }

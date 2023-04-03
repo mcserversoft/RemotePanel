@@ -8,7 +8,8 @@ export enum Page {
 }
 
 // used for testing purposes
-export const baseUrl = '';
+//export const baseUrl = '';
+export const baseUrl = 'http://127.0.0.1:2096';
 
 export const selectedPage = persisted('selectedPage', Page.Dashboard);
 

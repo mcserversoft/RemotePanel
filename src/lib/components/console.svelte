@@ -3,7 +3,7 @@
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
-	import { fetchServerConsole, isServerConsoleOutdated, selectedServerId, sendServerCommand } from '$lib/code/api';
+	import { fetchServerConsole, isServerConsoleOutdated, selectedServerId, sendServerCommand, streamConsole } from '$lib/code/api';
 	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 
@@ -18,8 +18,23 @@
 			reloadConsole(newServerId);
 		});
 
+		const serverId = get(selectedServerId);
+
+		streamConsole(
+			serverId,
+			(isOutdated: boolean) => {
+				if (isOutdated) {
+					reloadConsole(serverId);
+					scrollToBottom();
+				}
+			},
+			(wasSuccess: boolean) => {
+				loadingConsole = false;
+			}
+		);
+
 		const updateConsole = setInterval(() => {
-			updateConsoleIfNeeded();
+			///	updateConsoleIfNeeded();
 		}, $settings.consoleRefreshRate * 1000 ?? 5000);
 
 		onDestroy(unsubscribe);
