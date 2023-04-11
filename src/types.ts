@@ -52,3 +52,8 @@ export enum Filter {
     Minimal,
     Status
 }
+
+export enum PanelTheme {
+    Light,
+    Dark
+}

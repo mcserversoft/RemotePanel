@@ -1,6 +1,10 @@
 <script lang="ts">
-	import { navigateToPage, Page } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
+	import { getPanelTheme } from '$lib/code/theme';
+	import Icon from '$lib/components/icon.svelte';
+	import { Select, Label, Input, Toggle, Helper, Button } from 'flowbite-svelte';
+	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
+	import { PanelTheme } from '../../types';
 
 	let serversRefreshRate: number = $settings.serversRefreshRate;
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
@@ -10,16 +14,40 @@
 	let inputErrorServersRefreshRate: boolean;
 	let inputErrorConsoleRefreshRate: boolean;
 	let inputErrorAmountOfConsoleLines: boolean;
-	let disableSaveButton: boolean = true;
+	let disableButtons: boolean = true;
 
-	function inputValidator() {
+	let themeOptions = [
+		{ value: 0, name: 'Light' },
+		{ value: 1, name: 'Dark' },
+		{ value: 2, name: 'System' }
+	];
+
+	let selectedTheme: number;
+	if ($settings.UseSystemTheme) {
+		selectedTheme = 2;
+	} else {
+		selectedTheme = $settings.panelTheme;
+	}
+
+	// reactivity incase the theme is toggled from the side nav
+	$: selectedTheme = $settings.panelTheme;
+
+	function handleInputChange() {
 		inputErrorServersRefreshRate = !(serversRefreshRate >= 1 && serversRefreshRate <= 3600);
 		inputErrorConsoleRefreshRate = !(consoleRefreshRate >= 1 && consoleRefreshRate <= 3600);
 		inputErrorAmountOfConsoleLines = !(amountOfConsoleLines >= 1 && amountOfConsoleLines <= 1000);
-		disableSaveButton = false;
+		disableButtons = false;
 	}
 
-	function handleSettingsEdit() {
+	function handleFormReset() {
+		serversRefreshRate = $settings.serversRefreshRate;
+		consoleRefreshRate = $settings.consoleRefreshRate;
+		amountOfConsoleLines = $settings.amountOfConsoleLines;
+		autoScrollConsole = $settings.autoScrollConsole;
+		disableButtons = true;
+	}
+
+	function handleFormSave() {
 		if (serversRefreshRate >= 1 && serversRefreshRate <= 1000) {
 			$settings.serversRefreshRate = serversRefreshRate;
 		}
@@ -32,8 +60,19 @@
 			$settings.amountOfConsoleLines = amountOfConsoleLines;
 		}
 
+		if (selectedTheme === 0) {
+			$settings.panelTheme = PanelTheme.Light;
+			$settings.UseSystemTheme = false;
+		} else if (selectedTheme === 1) {
+			$settings.panelTheme = PanelTheme.Dark;
+			$settings.UseSystemTheme = false;
+		} else if (selectedTheme === 2) {
+			$settings.UseSystemTheme = true;
+			$settings.panelTheme = getPanelTheme();
+		}
+
 		$settings.autoScrollConsole = autoScrollConsole;
-		disableSaveButton = true;
+		disableButtons = true;
 	}
 </script>
 
@@ -41,63 +80,51 @@
 	<title>MCSS Remote Panel | Settings</title>
 </svelte:head>
 
-<seaction class="text-center">
-	<div class="max-w-sm mx-auto py-12 px-6 md:px-0">
-		<div class="hidden lg:block">
-			<button class="btn btn-ghost mb-9" on:click={() => navigateToPage(Page.Dashboard)}>{'< Back to the Dashboard'}</button>
-		</div>
-
+<section class="py-24 min-h-screen">
+	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
-		<p>Control how this panel interacts with the MCSS API, these settings only stored in this browser.</p>
-
-		<form on:submit|preventDefault={handleSettingsEdit} class="my-6">
-			<div class="form-control mb-6">
-				<label class="label" for="serversRefreshRate">
-					<span class="label-text">Server refresh rate in seconds</span>
-				</label>
-				<input bind:value={serversRefreshRate} on:input={inputValidator} required id="serversRefreshRate" name="serversRefreshRate" type="number" min="1" max="3600" placeholder="" class="input input-bordered {inputErrorServersRefreshRate ? 'input-error' : ''}" />
-				<label class="label" for="serversRefreshRate">
-					<span class="label-text-alt text-opacity-50">Setting this value too low can lead to peformance issues.</span>
-					<div class="tooltip tooltip-error tooltip-bottom {inputErrorServersRefreshRate ? 'visible' : 'hidden'}" data-tip="The value must be between 1 and 3600.">
-						<span class="label-text-alt text-error">1-3600</span>
-					</div>
-				</label>
-			</div>
-
-			<div class="form-control mb-6">
-				<label class="label" for="consoleRefreshRate">
-					<span class="label-text">Console refresh rate in seconds</span>
-				</label>
-				<input bind:value={consoleRefreshRate} on:input={inputValidator} required id="consoleRefreshRate" name="consoleRefreshRate" type="number" min="1" max="3600" placeholder="" class="input input-bordered {inputErrorConsoleRefreshRate ? 'input-error' : ''}" />
-				<label class="label" for="consoleRefreshRate">
-					<span class="label-text-alt text-opacity-50">Setting this value too low can lead to peformance issues.</span>
-					<div class="tooltip tooltip-error tooltip-bottom {inputErrorConsoleRefreshRate ? 'visible' : 'hidden'}" data-tip="The value must be between 1 and 3600.">
-						<span class="label-text-alt text-error">1-3600</span>
-					</div>
-				</label>
-			</div>
-
-			<div class="form-control mb-6">
-				<label class="label" for="amountOfConsoleLines">
-					<span class="label-text">Amount of console lines</span>
-				</label>
-				<input bind:value={amountOfConsoleLines} on:input={inputValidator} required id="amountOfConsoleLines" name="amountOfConsoleLines" type="number" min="1" max="1000" placeholder="" class="input input-bordered {inputErrorAmountOfConsoleLines ? 'input-error' : ''}" />
-				<label class="label" for="amountOfConsoleLines">
-					<span class="label-text-alt text-opacity-50">Setting this value too high can lead to peformance issues.</span>
-					<div class="tooltip tooltip-error tooltip-bottom {inputErrorAmountOfConsoleLines ? 'visible' : 'hidden'}" data-tip="The value must be between 1 and 1000.">
-						<span class="label-text-alt text-error">1-1000</span>
-					</div>
-				</label>
-			</div>
-
-			<div class="form-control">
-				<label class="label cursor-pointer" for="autoScrollConsole">
-					<span class="label-text">Automatially scroll console</span>
-					<input type="checkbox" bind:checked={autoScrollConsole} on:input={inputValidator} id="autoScrollConsole" class="checkbox" />
-				</label>
-			</div>
-
-			<button type="submit" disabled={disableSaveButton} class="btn btn-primary btn-block mt-6">Save</button>
-		</form>
+		<p>Control how this panel interacts with the MCSS API, these settings are only stored in this browser.</p>
 	</div>
-</seaction>
+
+	<form on:submit|preventDefault={handleFormSave} class="max-w-3xl mx-auto my-6">
+		<div class="form-control mb-6">
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Label>
+					Panel Theme
+					<Select class="mt-2" items={themeOptions} bind:value={selectedTheme} on:input={handleInputChange} />
+				</Label>
+				<Helper class="text-sm mt-3">Choose between light or dark. You can also use the theme defined by your system.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Label for="serversRefreshRate" class="mb-2">Server Refresh Rate</Label>
+				<Input bind:value={serversRefreshRate} on:input={handleInputChange} color={inputErrorServersRefreshRate ? 'red' : 'base'} type="number" min="1" max="3600" id="serversRefreshRate" required />
+				<Helper class="text-sm mt-3">Value between 1 and 3600 seconds.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Label for="consoleRefreshRate" class="mb-2">Console Refresh Rate</Label>
+				<Input bind:value={consoleRefreshRate} on:input={handleInputChange} color={inputErrorConsoleRefreshRate ? 'red' : 'base'} type="number" min="1" max="3600" id="consoleRefreshRate" required />
+				<Helper class="text-sm mt-3">Value between 1 and 3600 seconds. Fast refresh rates can lead to performance issues.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Label for="amountOfConsoleLines" class="mb-2">Amount of Console Lines</Label>
+				<Input bind:value={amountOfConsoleLines} on:input={handleInputChange} color={inputErrorAmountOfConsoleLines ? 'red' : 'base'} type="number" min="1" max="1000" id="amountOfConsoleLines" required />
+				<Helper class="text-sm mt-3">Value between 1 and 1000. Higher numbers can lead to performance issues.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange}>Automatic Console Scrolling</Toggle>
+				<Helper class="text-sm mt-3">When the console is updated, automatically scroll to the bottom.</Helper>
+			</div>
+
+			<Button type="submit" disabled={disableButtons}>
+				<Icon data={mdiContentSave} class="mr-2 -ml-1" /> Save
+			</Button>
+			<Button type="button" disabled={disableButtons} on:click={handleFormReset} color="alternative">
+				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
+			</Button>
+		</div>
+	</form>
+</section>

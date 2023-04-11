@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
+  content: [
+    './src/**/*.{html,js,svelte,ts}',
+    "./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}"
+  ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -18,45 +22,7 @@ module.exports = {
       }
     },
   },
-  daisyui: {
-    themes: [
-      {
-        mytheme: {
-
-          "primary": "#7ca740",
-          "primary-content": "#fff",
-          
-           //"secondary": "#949895",
-          // "accent": "#37CDBE",
-           "neutral": "#949895",
-           "base-100": "#191a1c",
-          // "info": "#3ABFF8",
-          // "success": "#36D399",
-          // "warning": "#FBBD23",
-          // "error": "#F87272",
-
-          "error":"#ef4444",
-
-          "--rounded-btn": "0.375rem",
-          // "--tw-scale-x": "0.5",
-          // "--tw-scale-y": "0.5",
-          
-          ".stats" : {
-            "border-radius" : "0.375rem"
-          },
-          // server stats icon
-          ".stat-figure" : {
-            "padding-top" : "0.7em"
-          },
-          ".stat-value" : {
-            "font-size" : "1.5rem",
-            "line-height" : "1.5rem"
-          },
-        },
-      },
-    ],
-  },
   plugins: [
-    require('daisyui'),
+    require('flowbite/plugin')
   ],
 }

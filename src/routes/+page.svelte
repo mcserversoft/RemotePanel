@@ -5,14 +5,15 @@
 	import { fetchServers } from '$lib/code/api';
 	import { Page, selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
-	import BottomNav from '$lib/components/bottomNav.svelte';
-	import Header from '$lib/components/header.svelte';
+	import BottomNav from '$lib/components/navigation/bottomNav.svelte';
+	import Header from '$lib/components/navigation/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
 	import ServersPage from '$lib/pages/servers.svelte';
 	import SettingsPage from '$lib/pages/settings.svelte';
 	import OfflineWarning from '$lib/components/offlineWarning.svelte';
+	import SideNav from '$lib/components/navigation/sideNav.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -45,19 +46,23 @@
 <!-- isPageLoadedYet prevents page ghosting on F5 -->
 {#if isPageLoadedYet}
 	{#if isAuthenticated}
-		<Header />
+		<!-- <Header /> -->
 
-		{#if $selectedPage == Page.About}
-			<AboutPage />
-		{:else if $selectedPage == Page.Dashboard}
-			<DashboardPage />
-		{:else if $selectedPage == Page.Servers}
-			<ServersPage />
-		{:else if $selectedPage == Page.Settings}
-			<SettingsPage />
-		{/if}
-		<OfflineWarning />
-		<BottomNav />
+		<SideNav />
+		<div class="p-4 md:ml-64 mt-14 dark:bg-gray-900 dark:text-white">
+			{#if $selectedPage == Page.About}
+				<AboutPage />
+			{:else if $selectedPage == Page.Dashboard}
+				<DashboardPage />
+			{:else if $selectedPage == Page.Servers}
+				<ServersPage />
+			{:else if $selectedPage == Page.Settings}
+				<SettingsPage />
+			{/if}
+		</div>
+
+		<!--	<OfflineWarning /> -->
+		<!-- <BottomNav /> -->
 	{:else}
 		<LoginPage />
 	{/if}
