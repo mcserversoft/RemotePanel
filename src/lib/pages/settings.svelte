@@ -10,6 +10,7 @@
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
 	let amountOfConsoleLines: number = $settings.amountOfConsoleLines;
 	let autoScrollConsole: boolean = $settings.autoScrollConsole;
+	let debugging: boolean = $settings.debugging;
 
 	let inputErrorServersRefreshRate: boolean;
 	let inputErrorConsoleRefreshRate: boolean;
@@ -23,7 +24,7 @@
 	];
 
 	let selectedTheme: number;
-	if ($settings.UseSystemTheme) {
+	if ($settings.useSystemTheme) {
 		selectedTheme = 2;
 	} else {
 		selectedTheme = $settings.panelTheme;
@@ -62,16 +63,17 @@
 
 		if (selectedTheme === 0) {
 			$settings.panelTheme = PanelTheme.Light;
-			$settings.UseSystemTheme = false;
+			$settings.useSystemTheme = false;
 		} else if (selectedTheme === 1) {
 			$settings.panelTheme = PanelTheme.Dark;
-			$settings.UseSystemTheme = false;
+			$settings.useSystemTheme = false;
 		} else if (selectedTheme === 2) {
-			$settings.UseSystemTheme = true;
+			$settings.useSystemTheme = true;
 			$settings.panelTheme = getPanelTheme();
 		}
 
 		$settings.autoScrollConsole = autoScrollConsole;
+		$settings.debugging = debugging;
 		disableButtons = true;
 	}
 </script>
@@ -80,7 +82,7 @@
 	<title>MCSS Remote Panel | Settings</title>
 </svelte:head>
 
-<section class="py-24 min-h-screen">
+<section class="py-12 min-h-screen">
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how this panel interacts with the MCSS API, these settings are only stored in this browser.</p>
@@ -117,6 +119,11 @@
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange}>Automatic Console Scrolling</Toggle>
 				<Helper class="text-sm mt-3">When the console is updated, automatically scroll to the bottom.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Toggle bind:checked={debugging} on:click={handleInputChange}>Debugging</Toggle>
+				<Helper class="text-sm mt-3">Developer option to enable verbose logging in the browser's console.</Helper>
 			</div>
 
 			<Button type="submit" disabled={disableButtons}>

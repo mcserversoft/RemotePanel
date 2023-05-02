@@ -5,6 +5,7 @@ export class Server implements IServer {
     name = "";
     description = "";
     status = 0;
+    creationDate = new Date();
     serverPermissions = new Array<Permission>();
 }
 
@@ -56,4 +57,59 @@ export enum Filter {
 export enum PanelTheme {
     Light,
     Dark
+}
+
+export enum Page {
+    About,
+    BackupsCreate,
+    BackupsOverview,
+    Dashboard,
+    Donate,
+    Servers,
+    Settings,
+    UsersCreate,
+    UsersOverview,
+}
+
+export interface PageReference {
+    name: string;
+    page: Page;
+}
+
+export interface PanelUser {
+    userId: string;
+    username: string;
+    enabled: boolean;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    customServerPermissions: any;
+    createdAt: Date;
+    lastModifiedAt: Date;
+}
+
+export interface Backup {
+    backupId: string;
+    name: string;
+    destination: string;
+    suspend: boolean;
+    deleteOldBackups: boolean;
+    compression: BackupCompression;
+    lastStatus: BackupStatus;
+    fileBlacklist: any;
+    folderBlacklist: any;
+    completedAt: Date;
+}
+
+
+export enum BackupCompression {
+    High,
+    Low,
+    None
+}
+export enum BackupStatus {
+    NeverRun,
+    InProgress,
+    Completed,
+    Failed,
+    Canceled
 }

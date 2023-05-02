@@ -1,10 +1,11 @@
-<script lang="ts">
+<!--<script lang="ts">
 	import { auth, logout } from '$lib/code/auth';
-	import { Page, navigateToPage } from '$lib/code/routing';
+	import { navigateToPage } from '$lib/code/routing';
 	import { clickOutside } from '$lib/code/shared';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import Logo from '$lib/svgs/Logo.svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Avatar, Dropdown, DropdownItem, DropdownHeader, DropdownDivider } from 'flowbite-svelte';
+	import type { Page } from '../../../types';
 
 	let dropdownVisible: boolean = false;
 
@@ -22,7 +23,7 @@
 	}
 </script>
 
-<!-- <Navbar let:hidden let:toggle>
+ <Navbar let:hidden let:toggle>
 	<NavBrand href="/">
 		<img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
 		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>

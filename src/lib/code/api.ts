@@ -13,8 +13,10 @@ import {
 } from 'svelte/store';
 
 import type {
+    Backup,
     IServer,
     Memory,
+    PanelUser,
     Server,
     Stats
 } from '../../types';
@@ -44,6 +46,9 @@ export const getSelectedServer = derived(servers, ($servers) => {
     };
 })
 
+function isInDebuggingMode(): boolean {
+    return get(settings)?.debugging ?? false;
+}
 
 /*
 *  API Requests
@@ -196,6 +201,48 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
 
         .catch((error) => {
             console.error(`Failed to check if console is outdated on server: ${serverId} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed: (wasSuccess: boolean) => void): void {
+    axiosClient().get(`/api/v2/users`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("fetchPanelUsers:")
+                console.log(response?.data)
+            }
+            report(response?.data ?? []);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch panel users with Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function fetchBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+    axiosClient().get(`/api/v2/${serverId}/backups`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("fetchBackups:")
+                console.log(response?.data)
+            }
+            report(response?.data ?? []);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch panel users with Error: ${error}`)
             completed(false);
         })
 }

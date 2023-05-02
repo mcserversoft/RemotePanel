@@ -2,6 +2,7 @@ import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
 import { baseUrl } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
+import { PanelTheme } from '../../types';
 
 export enum LoginFailureReason {
     Unauthorized,
@@ -44,6 +45,9 @@ export function login(username: string, password: string, report: (failureReason
                     autoScrollConsole: true,
                     amountOfConsoleLines: 50,
                     reverseConsoleLines: false,
+                    panelTheme: PanelTheme.Light,
+                    useSystemTheme: true,
+                    debugging: false
                 })
             }
         })

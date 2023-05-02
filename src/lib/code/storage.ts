@@ -8,6 +8,7 @@ export const settings = persisted('settings', {
     amountOfConsoleLines: 50,
     reverseConsoleLines: false,
     panelTheme: PanelTheme.Light,
-    UseSystemTheme: false,
+    useSystemTheme: false,
+    debugging: false,
 })
 

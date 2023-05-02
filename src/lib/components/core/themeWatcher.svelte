@@ -15,7 +15,7 @@
 	// listen on system theme changes
 	onMount(async () => {
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-			if (get(settings).UseSystemTheme) {
+			if (get(settings).useSystemTheme) {
 				setPanelTheme(event.matches ? PanelTheme.Dark : PanelTheme.Light);
 			}
 		});

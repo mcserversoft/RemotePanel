@@ -1,11 +1,5 @@
 import { persisted } from 'svelte-local-storage-store';
-
-export enum Page {
-    About,
-    Dashboard,
-    Servers,
-    Settings,
-}
+import { Page } from '../../types';
 
 // used for testing purposes
 export const baseUrl = '';

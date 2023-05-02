@@ -3,17 +3,22 @@
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
 	import { fetchServers } from '$lib/code/api';
-	import { Page, selectedPage } from '$lib/code/routing';
+	import { selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
 	import BottomNav from '$lib/components/navigation/bottomNav.svelte';
 	import Header from '$lib/components/navigation/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
+	import BackupsPage from '$lib/pages/backups/overview.svelte';
+	import DonatePage from '$lib/pages/donate.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
 	import ServersPage from '$lib/pages/servers.svelte';
 	import SettingsPage from '$lib/pages/settings.svelte';
+	import UsersOverviewPage from '$lib/pages/users/overview.svelte';
+	import UsersCreatePage from '$lib/pages/users/create.svelte';
 	import OfflineWarning from '$lib/components/offlineWarning.svelte';
 	import SideNav from '$lib/components/navigation/sideNav.svelte';
+	import { Page } from '../types';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -49,15 +54,23 @@
 		<!-- <Header /> -->
 
 		<SideNav />
-		<div class="p-4 md:ml-64 mt-14 dark:bg-gray-900 dark:text-white">
+		<div class="px-3 mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
 			{#if $selectedPage == Page.About}
 				<AboutPage />
+			{:else if $selectedPage == Page.BackupsOverview}
+				<BackupsPage />
 			{:else if $selectedPage == Page.Dashboard}
 				<DashboardPage />
+			{:else if $selectedPage == Page.Donate}
+				<DonatePage />
 			{:else if $selectedPage == Page.Servers}
 				<ServersPage />
 			{:else if $selectedPage == Page.Settings}
 				<SettingsPage />
+			{:else if $selectedPage == Page.UsersOverview}
+				<UsersOverviewPage />
+			{:else if $selectedPage == Page.UsersCreate}
+				<UsersCreatePage />
 			{/if}
 		</div>
 

@@ -1,9 +1,9 @@
-<script lang="ts">
-	import { Page, selectedPage, navigateToPage } from '$lib/code/routing';
+<!--<script lang="ts">
+	import { selectedPage, navigateToPage } from '$lib/code/routing';
 	import { BottomNav, BottomNavItem } from 'flowbite-svelte';
 </script>
 
-<!-- <BottomNav position="absolute" innerDiv="grid-cols-4">
+ <BottomNav position="absolute" innerDiv="grid-cols-4">
 	<BottomNavItem btnName="Servers">
 		<svg class="w-6 h-6 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 			<path
