@@ -47,7 +47,7 @@
 			<div class="flex items-center justify-start">
 				<UserDropdown>
 					<span class="sr-only">Open user menu</span>
-					<img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+					<img class="w-8 h-8 rounded-full" src="http://127.0.0.1:5173/fire_avatar.png" alt="user photo" />
 				</UserDropdown>
 			</div>
 		</div>
@@ -129,7 +129,7 @@
 					</a>
 				</li>
 
-				<li>
+				<!-- <li>
 					<a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
 						<svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
 							><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg
@@ -146,7 +146,7 @@
 						<span class="flex-1 ml-3 whitespace-nowrap">Inbox</span>
 						<span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
 					</a>
-				</li>
+				</li> -->
 			</ul>
 
 			<ul class="absolute bottom-0 left-0 w-full p-3 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
