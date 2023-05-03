@@ -4,6 +4,7 @@ export class Server implements IServer {
     serverId = "";
     name = "";
     description = "";
+    type = "";
     status = 0;
     creationDate = new Date();
     serverPermissions = new Array<Permission>();
@@ -20,6 +21,7 @@ export interface IServer {
     serverId: string;
     name: string;
     description: string;
+    type: string;
     status: number;
     serverPermissions: Permission[];
 }
@@ -63,6 +65,7 @@ export enum Page {
     About,
     BackupsCreate,
     BackupsOverview,
+    Console,
     Dashboard,
     Donate,
     Servers,

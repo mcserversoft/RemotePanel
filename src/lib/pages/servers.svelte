@@ -7,11 +7,16 @@
 	import Icon from '$lib/components/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
+	import Console from '$lib/components/console.svelte';
+	import { Page } from '../../types';
 
 	let title = 'Servers';
 	let caption = 'General overview of all servers.';
-	const items = $servers;
 	let selection: any = [];
+
+	let searchTerm: string;
+	const serverList = $servers;
+	let filteredServers = serverList;
 
 	enum MassAction {
 		Start,
@@ -26,11 +31,7 @@
 	// }
 
 	function toggleAll(e: any) {
-		selection = e.target.checked ? [...items.map((x) => x.serverId)] : [];
-	}
-
-	function handleSearchSubmit() {
-		console.log('search');
+		selection = e.target.checked ? [...filteredServers.map((x) => x.serverId)] : [];
 	}
 
 	function handleRefreshButton() {
@@ -44,6 +45,17 @@
 	function handleShortcutDropdownAction(event: any) {
 		console.log(event.detail.action);
 	}
+
+	function handleSearch() {
+		filterServers();
+	}
+
+	const filterServers = () => {
+		return (filteredServers = serverList.filter((server) => {
+			let searchableProperties = server.name.toLowerCase() + server.description.toLowerCase() + server.type.toLowerCase();
+			return searchableProperties.includes(searchTerm.toLowerCase());
+		}));
+	};
 </script>
 
 <svelte:head>
@@ -66,8 +78,10 @@
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 						<Icon data={mdiMagnify} size={5} class="text-gray-500 dark:text-gray-400" />
 					</div>
-					<form on:submit|preventDefault={handleSearchSubmit}>
+					<form on:submit|preventDefault>
 						<input
+							bind:value={searchTerm}
+							on:input={handleSearch}
 							type="text"
 							id="search-servers"
 							class="block w-full p-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -102,7 +116,7 @@
 		</div>
 
 		<!-- page table -->
-		<table class="text-sm text-left text-gray-500 dark:text-gray-400">
+		<table class="text-sm w-full text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 				<tr>
 					<th scope="col" class="p-4">
@@ -110,7 +124,7 @@
 							<input
 								id="checkbox-all-search"
 								on:change={toggleAll}
-								checked={selection.length === items.length}
+								checked={selection.length === filteredServers.length}
 								type="checkbox"
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 							/>
@@ -125,7 +139,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each items || [] as { serverId, name, description, status, creationDate }}
+				{#each filteredServers || [] as { serverId, name, description, status, creationDate }}
 					<tr class="bg-white dark:bg-gray-800">
 						<td class="w-4 p-4">
 							<div class="flex items-center">
@@ -158,6 +172,7 @@
 							<div class="inline-flex rounded-md shadow-sm" role="group">
 								<button
 									type="button"
+									on:click={() => navigateToPage(Page.Dashboard)}
 									class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 								>
 									View Dashboard
@@ -168,10 +183,11 @@
 									<Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" /></Button
 								>
 								<Dropdown>
-									<DropdownItem>View Console</DropdownItem>
-									<DropdownItem>View Settings</DropdownItem>
-									<DropdownItem>View Backups</DropdownItem>
-									<DropdownItem>View Scheduler</DropdownItem>
+									<!--TODO pages-->
+									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Console</DropdownItem>
+									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Settings</DropdownItem>
+									<DropdownItem on:click={() => navigateToPage(Page.BackupsOverview)}>View Backups</DropdownItem>
+									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Scheduler</DropdownItem>
 								</Dropdown>
 							</div>
 						</td>

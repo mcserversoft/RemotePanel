@@ -41,6 +41,7 @@ export const getSelectedServer = derived(servers, ($servers) => {
         serverId: '',
         name: '',
         description: '',
+        type: '',
         status: 0,
         permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
     };
