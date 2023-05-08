@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { selectedServerId } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import Sidebar from '$lib/components/sidebar.svelte';
+	// import Sidebar from '$lib/components/sidebar.svelte';
 	import Server from '$lib/components/server.svelte';
 	import Console from '$lib/components/console.svelte';
 	import ServerStats from '$lib/components/serverStats.svelte';
 </script>
 
 <svelte:head>
-	<title>MCSS Remote Panel | Panel</title>
+	<title>MCSS Remote Panel | Dashboard</title>
 </svelte:head>
 
 <div class="">
 	<div class="flex flex-col lg:flex-row">
 		<div class="flex-none hidden lg:block">
-			<Sidebar />
+			<!-- <Sidebar /> -->
 		</div>
 		<div class="flex-grow p-6">
 			<div class="mb-20">

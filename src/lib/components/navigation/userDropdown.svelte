@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { clickOutside } from '$lib/code/shared';
+	import { clickOutside, getGreeting } from '$lib/code/shared';
+	import { auth } from '$lib/code/auth';
 	import { navigateToPage } from '$lib/code/routing';
 	import { logout } from '$lib/code/auth';
 	import { Page } from '../../../types';
@@ -27,13 +28,32 @@
 		</button>
 
 		{#if isOpen}
-			<div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg focus:outline-none ring-1 ring-opacity-5 ring-black bg-white dark:bg-gray-700 dark:divide-gray-600" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+			<div class="absolute right-0 rounded-lg divide-y w-44 bg-white divide-gray-100 dark:bg-gray-700 dark:divide-gray-600">
+				<div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+					<div class="capitalize">{getGreeting()}, <span class="normal-case font-semibold">{$auth.username}</span> 👋</div>
+					<!-- <div class="font-medium truncate">{$auth.username} 👋</div> -->
+				</div>
+				<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+					<li>
+						<button on:click={() => navigateClick(Page.Settings)} class="px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</button>
+					</li>
+					<li>
+						<button on:click={() => navigateClick(Page.About)} class="px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">About</button>
+					</li>
+				</ul>
+				<div class="py-2">
+					<button on:click={logout} class=" px-4 py-2 w-full text-left text-sm text-red-500 hover:bg-gray-100 hover:dark:bg-red-500 dark:text-red-500 dark:hover:bg-gray-600 dark:hover:text-white">Log Out</button>
+				</div>
+			</div>
+
+			<!-- <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg focus:outline-none ring-1 ring-opacity-5 ring-black bg-white dark:bg-gray-700 dark:divide-gray-600" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+				<p class="w-full capitalize text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300" role="none">{getGreeting()}, {$auth.username} 👋</p>
 				<div class="py-1" role="none">
 					<button on:click={() => navigateClick(Page.Settings)} class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</button>
 					<button on:click={() => navigateClick(Page.About)} class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">About</button>
 					<button on:click={logout} class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 hover:dark:bg-red-500 dark:text-red-500 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Log Out</button>
 				</div>
-			</div>
+			</div> -->
 		{/if}
 	</div>
 </div>

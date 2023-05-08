@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
 	import { navigateToPage } from '$lib/code/routing';
-	import { servers, isLoadingServers } from '$lib/code/api';
+	import { servers, isLoadingServers, selectedServerId } from '$lib/code/api';
 	import Spinner from '$lib/components/spinner.svelte';
 	import { mdiRefresh, mdiMagnify, mdiChevronDown } from '@mdi/js';
 	import Icon from '$lib/components/icon.svelte';
@@ -10,8 +10,6 @@
 	import Console from '$lib/components/console.svelte';
 	import { Page } from '../../types';
 
-	let title = 'Servers';
-	let caption = 'General overview of all servers.';
 	let selection: any = [];
 
 	let searchTerm: string;
@@ -25,10 +23,13 @@
 		Kill
 	}
 
-	// function changeSelectedServer(serverId: string) {
-	// 	selectedServerId.set(serverId);
-	// 	navigateToPage(Page.Dashboard);
-	// }
+	function changeSelectedServer(serverId: string) {
+		if (!serverId) {
+			return;
+		}
+
+		selectedServerId.set(serverId);
+	}
 
 	function toggleAll(e: any) {
 		selection = e.target.checked ? [...filteredServers.map((x) => x.serverId)] : [];
@@ -68,8 +69,8 @@
 		<div class="flex pb-3 space-x-2">
 			<div class="self-center grow">
 				<div class="pr-3 self-nonecenter">
-					<span class="text-lg font-semibold">{title}</span>
-					<p class="text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{caption}</p>
+					<span class="text-lg font-semibold">Servers</span>
+					<p class="text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">General overview of all servers.</p>
 				</div>
 			</div>
 			<div class="self-center">
@@ -139,6 +140,15 @@
 				</tr>
 			</thead>
 			<tbody>
+				<!-- {#if searchTerm && filteredServers.length === 0}
+					<tr class="bg-white dark:bg-gray-800">
+						{#if isLoadingServers}
+							<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
+						{:else}
+							<td class="px-6 py-4 text-center" colspan="7">No users were found.</td>
+						{/if}
+					</tr>
+				{:else} -->
 				{#each filteredServers || [] as { serverId, name, description, status, creationDate }}
 					<tr class="bg-white dark:bg-gray-800">
 						<td class="w-4 p-4">
@@ -172,7 +182,7 @@
 							<div class="inline-flex rounded-md shadow-sm" role="group">
 								<button
 									type="button"
-									on:click={() => navigateToPage(Page.Dashboard)}
+									on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}
 									class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 								>
 									View Dashboard
@@ -184,10 +194,10 @@
 								>
 								<Dropdown>
 									<!--TODO pages-->
-									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Console</DropdownItem>
-									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Settings</DropdownItem>
-									<DropdownItem on:click={() => navigateToPage(Page.BackupsOverview)}>View Backups</DropdownItem>
-									<DropdownItem on:click={() => navigateToPage(Page.Console)}>View Scheduler</DropdownItem>
+									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
+									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
+									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.BackupsOverview))}>View Backups</DropdownItem>
+									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
 								</Dropdown>
 							</div>
 						</td>
@@ -198,13 +208,14 @@
 					</tr>
 				{:else}
 					<tr class="bg-white dark:bg-gray-800">
-						{#if isLoadingServers}
+						{#if $isLoadingServers}
 							<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
 						{:else}
-							<td class="px-6 py-4 text-center" colspan="7">No users were found.</td>
+							<td class="px-6 py-4 text-center" colspan="7">No servers were found.</td>
 						{/if}
 					</tr>
 				{/each}
+				<!-- {/if} -->
 			</tbody>
 		</table>
 	</div>
