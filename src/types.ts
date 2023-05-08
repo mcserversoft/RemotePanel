@@ -103,12 +103,12 @@ export interface Backup {
     completedAt: Date;
 }
 
-
 export enum BackupCompression {
     High,
     Low,
     None
 }
+
 export enum BackupStatus {
     NeverRun,
     InProgress,

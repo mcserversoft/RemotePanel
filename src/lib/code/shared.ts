@@ -1,3 +1,5 @@
+import type { Url } from "./urlLibrary";
+
 export function getFriendlyStatusName(status: number = 0) {
     if (status === 0) {
         return "Offline";
@@ -104,4 +106,8 @@ export function clickOutside(node: any): any {
             document.removeEventListener('click', handleClick, true);
         }
     }
+}
+
+export function openInNewTab(url: string) {
+    window.open(url, "_blank", "noopener noreferrer")
 }
