@@ -7,7 +7,6 @@
 	import Icon from '$lib/components/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
-	import Console from '$lib/components/console.svelte';
 	import { Page } from '../../types';
 
 	let selection: any = [];
@@ -36,15 +35,13 @@
 	}
 
 	function handleRefreshButton() {
+		//TODO handleRefreshButton
 		console.log('refresh');
 	}
 
 	function handleMassAction(action: MassAction) {
+		//TODO handleMassAction
 		console.log(action);
-	}
-
-	function handleShortcutDropdownAction(event: any) {
-		console.log(event.detail.action);
 	}
 
 	function handleSearch() {
@@ -116,7 +113,7 @@
 			</div>
 		</div>
 
-		<!-- page table -->
+		<!-- rest of page -->
 		<table class="text-sm w-full text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 				<tr>
@@ -140,15 +137,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- {#if searchTerm && filteredServers.length === 0}
-					<tr class="bg-white dark:bg-gray-800">
-						{#if isLoadingServers}
-							<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
-						{:else}
-							<td class="px-6 py-4 text-center" colspan="7">No users were found.</td>
-						{/if}
-					</tr>
-				{:else} -->
 				{#each filteredServers || [] as { serverId, name, description, status, creationDate }}
 					<tr class="bg-white dark:bg-gray-800">
 						<td class="w-4 p-4">
@@ -174,7 +162,6 @@
 								<div class="h-2.5 w-2.5 rounded-full {getStatusBgColor(status)} mr-2" />
 								{getFriendlyStatusName(status)}
 							</div>
-							<!-- <Icon data={status ? mdiCircleMedium : mdiCircleMedium} class="{status ? 'text-green-400' : 'text-red-400'} " /> -->
 						</td>
 						<!--TODO locale -->
 						<td class="px-6 py-4">{new Date(creationDate).toLocaleString()}</td>
@@ -202,7 +189,7 @@
 							</div>
 						</td>
 						<td class="px-6 py-4 space-x-3 font-medium text-center">
-							<button on:click={() => ''} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+							<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 							<button on:click={() => confirm(`Are you sure you want to delete server: ${name}?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
 						</td>
 					</tr>
