@@ -54,7 +54,7 @@
 		<!-- <Header /> -->
 
 		<SideNav />
-		<div class="px-3 pt-6 mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
+		<div class="pl-6 pt-6 pr-3 pb-3 mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
 			{#if $selectedPage == Page.About}
 				<AboutPage />
 			{:else if $selectedPage == Page.BackupsOverview}

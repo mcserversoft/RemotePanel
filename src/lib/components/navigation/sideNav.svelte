@@ -10,7 +10,7 @@
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../icon.svelte';
-	import { mdiDiamond, mdiDiamondStone, mdiLifebuoy, mdiNotebook } from '@mdi/js';
+	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
 
 	let isOpen = false;
 	let wasOpenBeforeAutoClose = true;
@@ -63,76 +63,68 @@
 	<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
 		<div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
 			<ul class="space-y-2 font-medium">
-				<li>
-					<button on:click={() => navigateToPage(Page.Servers)} class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+				<!-- <button on:click={() => navigateToPage(Page.Servers)} class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
 						<svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 							<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 						</svg>
 						<span class="ml-3">Servers</span>
-					</button>
-				</li>
+					</button> -->
+				<NavItem on:click={() => navigateToPage(Page.Servers)} name="Servers">
+					<Icon data={mdiLayers} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
 			</ul>
 
 			<ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-				<li>
-					<button on:click={() => navigateToPage(Page.Dashboard)} class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-						<svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-							<path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
-						</svg>
-						<span class="ml-3">Dashboard</span>
-					</button>
-				</li>
-				<li>
-					<NavDropdown
-						name="Backups"
-						items={[
-							{
-								name: 'Overview',
-								page: Page.BackupsOverview
-							},
-							{
-								name: 'History',
-								page: Page.UsersCreate
-							},
-							{
-								name: 'Settings',
-								page: Page.UsersCreate
-							}
-						]}
-					>
-						<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-					</NavDropdown>
-				</li>
-				<li>
-					<NavDropdown name="Scheduler" items={[]}>
-						<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-					</NavDropdown>
-				</li>
-				<li>
-					<NavDropdown
-						name="Users"
-						items={[
-							{
-								name: 'Overview',
-								page: Page.UsersOverview
-							},
-							{
-								name: 'Add User',
-								page: Page.UsersCreate
-							}
-						]}
-					>
-						<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-					</NavDropdown>
-				</li>
-				<li>
-					<a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-						<svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-							><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" /></svg
-						>
-						<span class="flex-1 ml-3 whitespace-nowrap">API Keys</span>
-					</a>
-				</li>
+				<NavItem on:click={() => navigateToPage(Page.Dashboard)} name="Dashboard">
+					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
+				<NavDropdown
+					name="Backups"
+					items={[
+						{
+							name: 'Overview',
+							page: Page.BackupsOverview
+						},
+						{
+							name: 'History',
+							page: Page.UsersCreate
+						},
+						{
+							name: 'Settings',
+							page: Page.UsersCreate
+						}
+					]}
+				>
+					<Icon data={mdiArchive} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavDropdown>
+
+				<NavDropdown name="Scheduler" items={[]}>
+					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavDropdown>
+
+				<!-- <NavDropdown
+					name="Users"
+					items={[
+						{
+							name: 'Overview',
+							page: Page.UsersOverview
+						},
+						{
+							name: 'Add User',
+							page: Page.UsersCreate
+						}
+					]}
+				>
+					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavDropdown> -->
+
+				<NavItem name="Users">
+					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
+
+				<NavItem name="API Keys">
+					<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
 
 				<!-- <li>
 					<a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -155,28 +147,24 @@
 			</ul>
 
 			<ul class="absolute bottom-0 left-0 w-full p-3 space-y-2 font-medium border-t border-gray-200 text-gray-500 dark:text-gray-400 dark:border-gray-700">
+				<NavItem on:click={() => openInNewTab(getUrl(Url.Contribute))} name="Contribute" isExternal={true}>
+					<Icon data={mdiCardsHeart} size={6} />
+				</NavItem>
+
+				<NavItem on:click={() => openInNewTab(getUrl(Url.Documentation))} name="Documentation" isExternal={true}>
+					<Icon data={mdiNotebook} size={6} class={''} />
+				</NavItem>
+
+				<NavItem on:click={() => openInNewTab(getUrl(Url.Support))} name="Help" isExternal={true}>
+					<Icon data={mdiLifebuoy} size={6} />
+				</NavItem>
+
+				<NavItem on:click={togglePanelTheme} name="Switch Theme">
+					<CurrentThemeIcon class="text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" />
+				</NavItem>
 				<li>
-					<NavItem on:click={() => openInNewTab(getUrl(Url.Contribute))} name="Contribute" isExternal={true}>
-						<Icon data={mdiDiamond} size={6} class={'text-gray-500 dark:text-gray-400'} />
-						<!-- <path fill="currentColor" d="M378.7 32H133.3L256 182.7L378.7 32zM512 192l-107.4-141.3L289.6 192H512zM107.4 50.67L0 192h222.4L107.4 50.67zM244.3 474.9C247.3 478.2 251.6 480 256 480s8.653-1.828 11.67-5.062L510.6 224H1.365L244.3 474.9z" /> -->
-					</NavItem>
+					<p class="mt-3 text-sm text-center text-gray-500 dark:text-gray-500">Panel v6.0.0.0</p>
 				</li>
-				<li>
-					<NavItem on:click={() => openInNewTab(getUrl(Url.Documentation))} name="Documentation" isExternal={true}>
-						<Icon data={mdiNotebook} size={6} class={''} />
-					</NavItem>
-				</li>
-				<li>
-					<NavItem on:click={() => openInNewTab(getUrl(Url.Support))} name="Help" isExternal={true}>
-						<Icon data={mdiLifebuoy} size={6} class={'text-gray-500 dark:text-gray-400'} />
-					</NavItem>
-				</li>
-				<li>
-					<NavItem on:click={togglePanelTheme} name="Switch Theme">
-						<CurrentThemeIcon class="text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" />
-					</NavItem>
-				</li>
-				<li><p class="mt-3 text-sm text-center text-gray-500 dark:text-gray-500">Panel v6.0.0.0</p></li>
 			</ul>
 		</div>
 	</aside>
