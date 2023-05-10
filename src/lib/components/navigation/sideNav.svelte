@@ -83,7 +83,7 @@
 					items={[
 						{
 							name: 'Overview',
-							page: Page.BackupsOverview
+							page: Page.Backups
 						},
 						{
 							name: 'History',
@@ -118,7 +118,7 @@
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown> -->
 
-				<NavItem name="Users">
+				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users">
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 

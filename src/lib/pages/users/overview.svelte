@@ -1,42 +1,66 @@
 <script lang="ts">
-	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
+	import { mdiAccountPlus, mdiCheck, mdiChevronDown, mdiClose, mdiMagnify, mdiRefresh } from '@mdi/js';
 	import { fetchPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type PanelUser } from '../../../types';
 	import Spinner from '$lib/components/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
+	import { Button } from 'flowbite-svelte';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
 	let users: PanelUser[] = [];
 	let isLoading = true;
 
-	fetchPanelUsers(
-		(data: PanelUser[]) => {
-			users = data;
-		},
-		(wasSuccess: boolean) => {
-			isLoading = false;
-		}
-	);
+	load();
+
+	function load() {
+		fetchPanelUsers(
+			(data: PanelUser[]) => {
+				users = data;
+			},
+			(wasSuccess: boolean) => {
+				isLoading = false;
+			}
+		);
+	}
+
+	function handleRefreshButton() {
+		isLoading = true;
+		users = [];
+		load();
+	}
 </script>
 
 <svelte:head>
 	<title>MCSS Remote Panel | Users Overview</title>
 </svelte:head>
 
-<section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
-	<div class="relative overflow-x-auto shadow-md">
+<section class="min-h-screen dark:bg-gray-900 dark:text-white">
+	<div class="relative overflow-x-auto">
+		<!-- <section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
+	<div class="relative overflow-x-auto shadow-md"> -->
 		<PageTitleBanner title="Users Overview" caption="All users that are configured to view and use the Remote Panel.">
-			<button
-				on:click={() => navigateToPage(Page.UsersCreate)}
-				type="button"
-				class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-			>
-				<Icon data={mdiAccountPlus} size={5} class="w-5 h-5 mr-2 -ml-1" />
-				Add User
-			</button>
+			<div class="self-center">
+				<button
+					type="button"
+					on:click={handleRefreshButton}
+					class="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+				>
+					<Icon data={mdiRefresh} size={5} class="" />
+				</button>
+			</div>
+			<div class="self-center">
+				<button
+					on:click={() => navigateToPage(Page.UsersCreate)}
+					type="button"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-[0.45rem] text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				>
+					<Icon data={mdiAccountPlus} size={5} class="w-5 h-5 mr-2 -ml-1" />
+					Add User
+				</button>
+			</div>
 		</PageTitleBanner>
 
 		<div class="relative overflow-x-auto">
@@ -69,7 +93,7 @@
 							<!--TODO locale -->
 							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString()}</td>
 							<td class="px-6 py-4 space-x-3">
-								<a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+								<button on:click={() => confirm('todo')} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 								<button on:click={() => confirm("Are you sure you want to delete user 'ABC'?")} class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>
 							</td>
 						</tr>

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
+	import { mdiAccountMultiple, mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
 	import { fetchPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page } from '../../../types';
 	import Spinner from '$lib/components/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { Toggle } from 'flowbite-svelte';
 	import Breadcrumb from '$lib/components/breadcrumb.svelte';
+	import { Page, type BreadcrumbItem } from '../../../types';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
@@ -21,9 +21,13 @@
 
 <section class="min-h-screen dark:bg-gray-900 dark:text-white">
 	<div class="relative overflow-x-auto shadow-md">
-		<div class="mt-9">
-			<Breadcrumb />
-		</div>
+		<Breadcrumb
+			icon={mdiAccountMultiple}
+			items={[
+				{ name: 'Users', page: Page.Users, isClickable: true },
+				{ name: 'Create', page: Page.Empty, isClickable: false }
+			]}
+		/>
 
 		<PageTitleBanner title="Add User" caption="Create a new user for the remote web panel." />
 

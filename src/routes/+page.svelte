@@ -57,7 +57,7 @@
 		<div class="pl-6 pt-6 pr-3 pb-3 mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
 			{#if $selectedPage == Page.About}
 				<AboutPage />
-			{:else if $selectedPage == Page.BackupsOverview}
+			{:else if $selectedPage == Page.Backups}
 				<BackupsPage />
 			{:else if $selectedPage == Page.Dashboard}
 				<DashboardPage />
@@ -67,7 +67,7 @@
 				<ServersPage />
 			{:else if $selectedPage == Page.Settings}
 				<SettingsPage />
-			{:else if $selectedPage == Page.UsersOverview}
+			{:else if $selectedPage == Page.Users}
 				<UsersOverviewPage />
 			{:else if $selectedPage == Page.UsersCreate}
 				<UsersCreatePage />

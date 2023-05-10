@@ -62,21 +62,28 @@ export enum PanelTheme {
 }
 
 export enum Page {
+    Empty,
     About,
+    Backups,
     BackupsCreate,
-    BackupsOverview,
     Console,
     Dashboard,
     Donate,
     Servers,
     Settings,
+    Users,
     UsersCreate,
-    UsersOverview,
 }
 
 export interface PageReference {
     name: string;
     page: Page;
+}
+
+export interface BreadcrumbItem {
+    name: string;
+    page: Page;
+    isClickable: boolean;
 }
 
 export interface PanelUser {

@@ -3,11 +3,12 @@
 	import { navigateToPage } from '$lib/code/routing';
 	import { servers, isLoadingServers, selectedServerId } from '$lib/code/api';
 	import Spinner from '$lib/components/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown } from '@mdi/js';
+	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus } from '@mdi/js';
 	import Icon from '$lib/components/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
 	import { Page } from '../../types';
+	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 
 	let selection: any = [];
 
@@ -62,14 +63,7 @@
 
 <section class="min-h-screen dark:bg-gray-900 dark:text-white">
 	<div class="relative overflow-x-auto">
-		<!-- page title -->
-		<div class="flex pb-3 space-x-2">
-			<div class="self-center grow">
-				<div class="pr-3 self-nonecenter">
-					<span class="text-lg font-semibold">Servers</span>
-					<p class="text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">General overview of all servers.</p>
-				</div>
-			</div>
+		<PageTitleBanner title="Servers" caption="General overview of all servers.">
 			<div class="self-center">
 				<label for="search-servers" class="sr-only">Search</label>
 				<div class="relative w-full">
@@ -97,7 +91,6 @@
 					<Icon data={mdiRefresh} size={5} class="" />
 				</button>
 			</div>
-
 			<div class="self-center">
 				<Button
 					btnClass="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -111,9 +104,8 @@
 					<DropdownItem on:click={() => handleMassAction(MassAction.Kill)}>Kill</DropdownItem>
 				</Dropdown>
 			</div>
-		</div>
+		</PageTitleBanner>
 
-		<!-- rest of page -->
 		<table class="text-sm w-full text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 				<tr>
@@ -183,7 +175,7 @@
 									<!--TODO pages-->
 									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
 									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
-									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.BackupsOverview))}>View Backups</DropdownItem>
+									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
 									<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
 								</Dropdown>
 							</div>
