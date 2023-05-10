@@ -9,8 +9,6 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { get } from 'svelte/store';
 
-	// @ts-ignore
-	const version: string = __VERSION__;
 	let backups: Backup[] = [];
 	let isLoading = true;
 

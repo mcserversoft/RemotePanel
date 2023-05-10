@@ -5,8 +5,6 @@
 	import { fetchServers } from '$lib/code/api';
 	import { selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
-	import BottomNav from '$lib/components/navigation/bottomNav.svelte';
-	import Header from '$lib/components/navigation/header.svelte';
 	import AboutPage from '$lib/pages/about.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import BackupsPage from '$lib/pages/backups/overview.svelte';

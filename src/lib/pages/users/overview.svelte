@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { mdiAccountPlus, mdiCheck, mdiChevronDown, mdiClose, mdiMagnify, mdiRefresh } from '@mdi/js';
+	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
 	import { fetchPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type PanelUser } from '../../../types';
 	import Spinner from '$lib/components/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
-	import { Button } from 'flowbite-svelte';
 
-	// @ts-ignore
-	const version: string = __VERSION__;
 	let users: PanelUser[] = [];
 	let isLoading = true;
 
@@ -39,8 +36,6 @@
 
 <section class="min-h-screen dark:bg-gray-900 dark:text-white">
 	<div class="relative overflow-x-auto">
-		<!-- <section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
-	<div class="relative overflow-x-auto shadow-md"> -->
 		<PageTitleBanner title="Users Overview" caption="All users that are configured to view and use the Remote Panel.">
 			<div class="self-center">
 				<button

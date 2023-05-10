@@ -6,7 +6,7 @@
 	import Spinner from '$lib/components/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { Toggle } from 'flowbite-svelte';
-	import Breadcrumb from '$lib/components/breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Page, type BreadcrumbItem } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 

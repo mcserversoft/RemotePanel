@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { mdiChevronRight, mdiHome } from '@mdi/js';
 
-	import Icon from './icon.svelte';
-	import type { BreadcrumbItem, Page } from '../../types';
+	import Icon from '../icon.svelte';
+	import type { BreadcrumbItem, Page } from '../../../types';
 	import { navigateToPage } from '$lib/code/routing';
 
 	export let icon: string = mdiHome;
