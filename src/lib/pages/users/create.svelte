@@ -12,6 +12,10 @@
 
 	let isLoading = true;
 
+	function generateRandomPassword() {
+		console.log('TODO generateRandomPassword');
+	}
+
 	function createUser() {
 		console.log('TODO create user');
 	}
@@ -39,19 +43,26 @@
 				type="username"
 				id="username"
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-				placeholder="name@flowbite.com"
+				placeholder="Username"
 				required
 			/>
 		</div>
 		<div class="">
 			<label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-			<input
-				type="password"
-				id="password"
-				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-				placeholder="••••••••••••••••••"
-				required
-			/>
+			<div class="relative">
+				<input
+					type="password"
+					id="password"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					placeholder="••••••••••••••••••"
+					required
+				/>
+				<form on:submit|preventDefault={generateRandomPassword}>
+					<button type="submit" class="absolute right-[5px] top-[5px] px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+						Generate Password
+					</button>
+				</form>
+			</div>
 		</div>
 
 		<!--TODO add server access & perms -->

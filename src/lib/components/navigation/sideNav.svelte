@@ -87,18 +87,30 @@
 						},
 						{
 							name: 'History',
-							page: Page.UsersCreate
+							page: Page.Empty
 						},
 						{
 							name: 'Settings',
-							page: Page.UsersCreate
+							page: Page.Empty
 						}
 					]}
 				>
 					<Icon data={mdiArchive} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown>
 
-				<NavDropdown name="Scheduler" items={[]}>
+				<NavDropdown
+					name="Scheduler"
+					items={[
+						{
+							name: 'Overview',
+							page: Page.Empty
+						},
+						{
+							name: 'History',
+							page: Page.Empty
+						}
+					]}
+				>
 					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown>
 
@@ -151,7 +163,7 @@
 					<Icon data={mdiCardsHeart} size={6} />
 				</NavItem>
 
-				<NavItem on:click={() => openInNewTab(getUrl(Url.Documentation))} name="Documentation" isExternal={true}>
+				<NavItem on:click={() => openInNewTab(getUrl(Url.DocumentationPanel))} name="Documentation" isExternal={true}>
 					<Icon data={mdiNotebook} size={6} class={''} />
 				</NavItem>
 
