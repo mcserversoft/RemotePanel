@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
 	import { fetchBackups, selectedServerId } from '$lib/code/api';
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type Backup } from '../../../types';
-	import Spinner from '$lib/components/spinner.svelte';
+	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { get } from 'svelte/store';
 

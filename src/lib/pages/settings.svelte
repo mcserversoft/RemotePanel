@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { settings } from '$lib/code/storage';
 	import { getPanelTheme } from '$lib/code/theme';
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import { Select, Label, Input, Toggle, Helper, Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
 	import { PanelTheme } from '../../types';

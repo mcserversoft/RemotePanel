@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
 	import { fetchPanelUsers } from '$lib/code/api';
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type PanelUser } from '../../../types';
-	import Spinner from '$lib/components/spinner.svelte';
+	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 
 	let users: PanelUser[] = [];

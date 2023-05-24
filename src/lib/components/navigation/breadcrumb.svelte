@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mdiChevronRight, mdiHome } from '@mdi/js';
 
-	import Icon from '../icon.svelte';
+	import Icon from '../elements/icon.svelte';
 	import type { BreadcrumbItem, Page } from '../../../types';
 	import { navigateToPage } from '$lib/code/routing';
 

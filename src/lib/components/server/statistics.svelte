@@ -1,0 +1,64 @@
+<script lang="ts">
+	import { onDestroy } from 'svelte';
+	import { get } from 'svelte/store';
+	import { browser } from '$app/environment';
+	import { fetchServerStatus, selectedServerId } from '$lib/code/api';
+	import type { Stats } from '../../../types';
+	import ServerStatistic from './stat.svelte';
+	import { mdiAccountCowboyHat, mdiChartArc, mdiChip, mdiClockTimeEight } from '@mdi/js';
+
+	let stats: Stats = {
+		cpu: 0,
+		memory: { current: 0, max: 0, free: 0, percentageFree: 0 },
+		playersOnline: 0,
+		playerLimit: 0,
+		startDateUnix: 0,
+		startDate: '',
+		uptime: 'offline'
+	};
+
+	let isLoadingStats: boolean = true;
+
+	if (browser) {
+		const unsubscribe = selectedServerId.subscribe((newServerId) => {
+			isLoadingStats = true;
+			updateServerStats();
+		});
+
+		const updateConsole = setInterval(() => {
+			updateServerStats();
+		}, 2000);
+
+		onDestroy(unsubscribe);
+		onDestroy(() => clearInterval(updateConsole));
+	}
+
+	async function updateServerStats() {
+		const serverId = get(selectedServerId);
+
+		if (!serverId) {
+			return;
+		}
+
+		fetchServerStatus(
+			serverId,
+			(latestStats: Stats) => {
+				stats = latestStats;
+			},
+			(wasSuccess: Boolean) => {
+				isLoadingStats = false;
+			}
+		);
+	}
+</script>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 pb-3">
+	<ServerStatistic title="CPU" value={stats.cpu.toString() + '%'} caption="current CPU usage" icon={mdiChip} />
+	<ServerStatistic title="Memory" value={stats.memory.current.toString() + 'MB'} caption="{stats.memory.percentageFree}% used of {stats.memory.max} MB" icon={mdiChartArc} />
+
+	{#if stats.playerLimit != 0}
+		<ServerStatistic title="Players" value={stats.playersOnline.toString()} caption="out of {stats.playerLimit}" icon={mdiAccountCowboyHat} />
+	{/if}
+
+	<ServerStatistic title="Uptime" value={stats.uptime.toString()} caption={stats.startDateUnix > 0 ? 'since ' + stats.startDate : 'server not operational'} icon={mdiClockTimeEight} />
+</div>

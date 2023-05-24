@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { mdiAccountMultiple, mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
 	import { fetchPanelUsers } from '$lib/code/api';
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import Spinner from '$lib/components/spinner.svelte';
+	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { Toggle } from 'flowbite-svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';

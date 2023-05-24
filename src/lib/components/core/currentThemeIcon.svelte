@@ -2,7 +2,7 @@
 	import { mdiBrightness2, mdiWhiteBalanceSunny } from '@mdi/js';
 	import { settings } from '$lib/code/storage';
 	import { PanelTheme } from '../../../types';
-	import Icon from '../icon.svelte';
+	import Icon from '../elements/icon.svelte';
 
 	export { className as class };
 	let className: string = '';

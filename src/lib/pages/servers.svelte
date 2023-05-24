@@ -2,9 +2,9 @@
 	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
 	import { navigateToPage } from '$lib/code/routing';
 	import { servers, isLoadingServers, selectedServerId } from '$lib/code/api';
-	import Spinner from '$lib/components/spinner.svelte';
+	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus } from '@mdi/js';
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
 	import { Page } from '../../types';

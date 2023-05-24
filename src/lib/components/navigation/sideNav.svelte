@@ -9,7 +9,7 @@
 	import NavItem from './navItem.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';
-	import Icon from '../icon.svelte';
+	import Icon from '../elements/icon.svelte';
 	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
 
 	let isOpen = false;

@@ -30,7 +30,7 @@
 </script>
 
 <div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
-	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded bg-blue-600 hover:bg-blue-700">
+	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded-lg bg-blue-600 hover:bg-blue-700">
 		<div class="flex items-center truncate text-zinc-100">
 			<span class="truncate ml-2 text-xs font-medium uppercase">{statusName}</span>
 			<ArrowDownSvg />
@@ -38,7 +38,7 @@
 	</button>
 
 	{#if dropdownVisible}
-		<div id="dropdown" class="absolute top-full right-0 min-w-44 py-1.5 mt-1 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
+		<div id="dropdown" class="absolute top-full z-20 right-0 min-w-44 py-1.5 mt-1 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
 			<ul class="w-28">
 				{#each actions as action}
 					<li>

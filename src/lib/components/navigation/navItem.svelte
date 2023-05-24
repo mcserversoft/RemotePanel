@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mdiOpenInNew } from '@mdi/js';
-	import Icon from '../icon.svelte';
+	import Icon from '../elements/icon.svelte';
 
 	export let name: string = 'dropdown';
 	export let isExternal: boolean = false;
