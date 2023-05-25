@@ -10,6 +10,7 @@
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
 	let amountOfConsoleLines: number = $settings.amountOfConsoleLines;
 	let autoScrollConsole: boolean = $settings.autoScrollConsole;
+	let chatModeConsole: boolean = $settings.chatModeConsole;
 	let debugging: boolean = $settings.debugging;
 
 	let inputErrorServersRefreshRate: boolean;
@@ -45,6 +46,7 @@
 		consoleRefreshRate = $settings.consoleRefreshRate;
 		amountOfConsoleLines = $settings.amountOfConsoleLines;
 		autoScrollConsole = $settings.autoScrollConsole;
+		chatModeConsole = $settings.chatModeConsole;
 		disableButtons = true;
 	}
 
@@ -73,6 +75,7 @@
 		}
 
 		$settings.autoScrollConsole = autoScrollConsole;
+		$settings.chatModeConsole = chatModeConsole;
 		$settings.debugging = debugging;
 		disableButtons = true;
 	}
@@ -119,6 +122,11 @@
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange}>Automatic Console Scrolling</Toggle>
 				<Helper class="text-sm mt-3">When the console is updated, automatically scroll to the bottom.</Helper>
+			</div>
+
+			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+				<Toggle bind:checked={chatModeConsole} on:click={handleInputChange}>Console Chat Mode</Toggle>
+				<Helper class="text-sm mt-3">Automatically convert your console input to the <span class="p-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">/say &lt;input&gt;</span> format.</Helper>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">

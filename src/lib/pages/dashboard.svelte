@@ -19,10 +19,8 @@
 <section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
 	<div class="flex pb-3 space-x-2">
 		<div class="self-center grow">
-			<div class="pr-3 self-nonecenter">
-				<ServerSwitchDropdown />
-				<p class="text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
-			</div>
+			<ServerSwitchDropdown />
+			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
 		</div>
 		<div class="self-center">
 			<button

@@ -8,6 +8,7 @@
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import { mdiBullhorn, mdiSend } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
+	import { Popover, Button } from 'flowbite-svelte';
 
 	let loadingConsole: boolean;
 	let serverConsole: string[] = [];
@@ -108,7 +109,11 @@
 		serverConsole = [];
 	}
 
-	//TODO add console features: clear, chat mode, download
+	function toggleChatMode() {
+		$settings.chatModeConsole = !get(settings).chatModeConsole;
+	}
+
+	//TODO add console features: clear, download
 </script>
 
 <div class="w-full border border-b-0 border-gray-200 rounded-b-none rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -143,10 +148,13 @@
 	{#if hasPermission(Permission.useConsole, $selectedServerId)}
 		<form on:submit|preventDefault={sendCommand}>
 			<div class="flex items-center px-3 py-2 rounded-t-none rounded-lg bg-gray-50 dark:bg-gray-700">
-				<button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-					<Icon data={mdiBullhorn} size={6} />
-					<span class="sr-only">Chat mode</span>
-				</button>
+				<form on:submit|preventDefault={toggleChatMode}>
+					<button id="placement-right" type="submit" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 {$settings.chatModeConsole ? 'text-green-400 dark:text-green-400  ' : 'text-gray-400 dark:text-gray-400  '}  dark:hover:bg-gray-600">
+						<Icon data={mdiBullhorn} size={6} />
+						<span class="sr-only">Chat mode</span>
+					</button>
+				</form>
+				<Popover triggeredBy="[id^='placement-']" placement="right" class="w-64 text-sm font-light " title="Chat Mode {$settings.chatModeConsole ? 'Enabled' : 'Disabled (default)'}">Talk a lot? Automatically convert your console input to the /say format.</Popover>
 				<input
 					bind:value={consoleInput}
 					type="text"
