@@ -4,9 +4,10 @@
 	import Console from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { mdiRefresh } from '@mdi/js';
-	import { getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
+	import { getFriendlyStatusName } from '$lib/code/shared';
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
 	import Statistics from '$lib/components/server/statistics.svelte';
+	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 
 	function handleRefreshButton() {}
 </script>
@@ -19,11 +20,7 @@
 	<div class="flex pb-3 space-x-2">
 		<div class="self-center grow">
 			<div class="pr-3 self-nonecenter">
-				<p class="text-lg font-semibold">
-					<!--TODO center status vertically -->
-					<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
-					{$getSelectedServer?.name}
-				</p>
+				<ServerSwitchDropdown />
 				<p class="text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
 			</div>
 		</div>
@@ -33,8 +30,9 @@
 				on:click={handleRefreshButton}
 				class="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
 			>
-				<Icon data={mdiRefresh} size={5} class="" />
+				<Icon data={mdiRefresh} size={5} />
 			</button>
+			<span class="sr-only">Reload UI</span>
 		</div>
 		<div class="self-center">
 			{#key $selectedServerId}
