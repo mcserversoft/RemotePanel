@@ -100,6 +100,17 @@ export async function sendServerCommand(serverId: string, input: string) {
         return;
     }
 
+    if (get(settings).chatModeConsole) {
+        if (!input.startsWith("/say") && !input.startsWith("say ")) {
+            input = "/say " + input;
+        }
+    }
+
+    if (isInDebuggingMode()) {
+        console.log("sendServerCommand:")
+        console.log(input)
+    }
+
     axiosClient().post(`/api/v2/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
         .then((response) => {
             if (response?.status !== 200) {

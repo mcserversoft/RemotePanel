@@ -113,7 +113,7 @@
 		$settings.chatModeConsole = !get(settings).chatModeConsole;
 	}
 
-	//TODO add console features: clear, download
+	//TODO add console features: reload, clear, download
 </script>
 
 <div class="w-full border border-b-0 border-gray-200 rounded-b-none rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
