@@ -83,10 +83,8 @@
 							</td>
 							<!--TODO server count  eg All <> (5/7) -->
 							<td class="px-6 py-4">TODO</td>
-							<!--TODO locale -->
-							<td class="px-6 py-4">{new Date(user.lastModifiedAt).toLocaleString()}</td>
-							<!--TODO locale -->
-							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString()}</td>
+							<td class="px-6 py-4">{new Date(user.lastModifiedAt).toLocaleString(navigator.language)}</td>
+							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4 space-x-3">
 								<button on:click={() => confirm('todo')} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 								<button on:click={() => confirm("Are you sure you want to delete user 'ABC'?")} class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>

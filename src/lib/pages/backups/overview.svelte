@@ -78,10 +78,8 @@
 							</td>
 							<!--TODO server count  eg All <> (5/7) -->
 							<td class="px-6 py-4">TODO</td>
-							<!--TODO locale -->
-							<td class="px-6 py-4">{new Date(backup.compression).toLocaleString()}</td>
-							<!--TODO locale -->
-							<td class="px-6 py-4">{new Date(backup.completedAt).toLocaleString()}</td>
+							<td class="px-6 py-4">{new Date(backup.compression).toLocaleString(navigator.language)}</td>
+							<td class="px-6 py-4">{new Date(backup.completedAt).toLocaleString(navigator.language)}</td>
 							<td class="flex items-center px-6 py-4 space-x-3">
 								<a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 								<button on:click={() => confirm("Are you sure you want to delete user 'ABC'?")} class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>

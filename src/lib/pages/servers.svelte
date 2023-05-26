@@ -159,8 +159,7 @@
 								{getFriendlyStatusName(status)}
 							</div>
 						</td>
-						<!--TODO locale -->
-						<td class="px-6 py-4">{new Date(creationDate).toLocaleString()}</td>
+						<td class="px-6 py-4">{new Date(creationDate).toLocaleString(navigator.language)}</td>
 						<td class="px-6 py-4">
 							<div class="inline-flex rounded-md shadow-sm" role="group">
 								<button
