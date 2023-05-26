@@ -34,6 +34,7 @@
 		}
 
 		selectedServerId.set(serverId);
+		dropdownVisible = false;
 	}
 </script>
 

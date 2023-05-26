@@ -41,8 +41,6 @@
 	}
 
 	function toggleViewPassword() {
-		console.log('toggleViewPassword');
-
 		showPassword = !showPassword;
 	}
 
