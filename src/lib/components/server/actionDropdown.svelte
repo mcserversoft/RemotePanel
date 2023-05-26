@@ -3,10 +3,10 @@
 	import { clickOutside } from '$lib/code/shared';
 	import { sendServerAction, selectedServerId } from '$lib/code/api';
 	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
+	import { ServerAction } from '../../../types';
 
 	export let statusName: string;
 
-	let actions: string[] = ['start', 'stop', 'restart', 'kill'];
 	let dropdownVisible: boolean = false;
 
 	function toggleDropdown() {
@@ -17,15 +17,13 @@
 		dropdownVisible = false;
 	}
 
-	function serverActionClick(action: string) {
+	function serverActionClick(action: any) {
 		dropdownVisible = false;
-
 		const serverId = get(selectedServerId);
 		if (!serverId) {
 			return;
 		}
-
-		sendServerAction(serverId, action);
+		sendServerAction(serverId, action.toLowerCase());
 	}
 </script>
 
@@ -40,7 +38,7 @@
 	{#if dropdownVisible}
 		<div id="dropdown" class="absolute top-full z-20 right-0 min-w-44 py-1.5 mt-1 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
 			<ul class="w-28">
-				{#each actions as action}
+				{#each Object.values(ServerAction).filter((element) => typeof element === 'string') as action}
 					<li>
 						<button on:click={() => serverActionClick(action)} class="flex w-full py-1 px-3 text-sm capitalize text-gray-300 hover:bg-zinc-600">{action}</button>
 					</li>

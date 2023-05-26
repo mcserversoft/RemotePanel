@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
 	import { navigateToPage } from '$lib/code/routing';
-	import { servers, isLoadingServers, selectedServerId } from '$lib/code/api';
+	import { servers, isLoadingServers, selectedServerId, sendMassServerAction } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
-	import { Page } from '../../types';
+	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 
 	let selection: any = [];
@@ -15,13 +15,6 @@
 	let searchTerm: string;
 	const serverList = $servers;
 	let filteredServers = serverList;
-
-	enum MassAction {
-		Start,
-		Stop,
-		Restart,
-		Kill
-	}
 
 	function changeSelectedServer(serverId: string) {
 		if (!serverId) {
@@ -40,9 +33,19 @@
 		console.log('refresh');
 	}
 
-	function handleMassAction(action: MassAction) {
-		//TODO handleMassAction
-		console.log(action);
+	function handleMassAction(action: ServerAction) {
+		// when search is active, we only want to get the selected searched results
+		let servers = getCommonServerIds(filteredServers, selection);
+		sendMassServerAction(servers, action);
+
+		//TODO show confirmation/failure message (sendMassServerAction is multi response)
+
+		// reset selection
+		selection = [];
+	}
+
+	function getCommonServerIds(servers: Server[], selectedIds: string[]): string[] {
+		return servers.filter((s) => selectedIds.includes(s.serverId)).map((s) => s.serverId);
 	}
 
 	function handleSearch() {
@@ -98,10 +101,10 @@
 					<span class="flex">Action <Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" /></span>
 				</Button>
 				<Dropdown>
-					<DropdownItem on:click={() => handleMassAction(MassAction.Start)}>Start</DropdownItem>
-					<DropdownItem on:click={() => handleMassAction(MassAction.Stop)}>Stop</DropdownItem>
-					<DropdownItem on:click={() => handleMassAction(MassAction.Restart)}>Restart</DropdownItem>
-					<DropdownItem on:click={() => handleMassAction(MassAction.Kill)}>Kill</DropdownItem>
+					<DropdownItem on:click={() => handleMassAction(ServerAction.Start)}>Start</DropdownItem>
+					<DropdownItem on:click={() => handleMassAction(ServerAction.Stop)}>Stop</DropdownItem>
+					<DropdownItem on:click={() => handleMassAction(ServerAction.Restart)}>Restart</DropdownItem>
+					<DropdownItem on:click={() => handleMassAction(ServerAction.Kill)}>Kill</DropdownItem>
 				</Dropdown>
 			</div>
 		</PageTitleBanner>
@@ -150,6 +153,7 @@
 							</div>
 						</td>
 						<td class="px-6 py-4">
+							<!-- auto update status -->
 							<div class="flex items-center {getStatusTextColor(status)}">
 								<div class="h-2.5 w-2.5 rounded-full {getStatusBgColor(status)} mr-2" />
 								{getFriendlyStatusName(status)}

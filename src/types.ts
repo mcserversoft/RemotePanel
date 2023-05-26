@@ -56,6 +56,13 @@ export enum Filter {
     Status
 }
 
+export enum ServerAction {
+    Start = 2,
+    Stop = 1,
+    Restart = 4,
+    Kill = 3
+}
+
 export enum PanelTheme {
     Light,
     Dark

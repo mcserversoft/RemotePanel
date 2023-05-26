@@ -18,7 +18,8 @@ import type {
     Memory,
     PanelUser,
     Server,
-    Stats
+    Stats,
+    ServerAction
 } from '../../types';
 import { Filter } from '../../types';
 
@@ -92,6 +93,25 @@ export async function sendServerAction(serverId: string, action: string) {
 
         .catch((error) => {
             console.error(`Failed to execute action: ${action} on server: ${serverId} Error: ${error}`)
+        })
+}
+
+export async function sendMassServerAction(serverIds: string[], action: ServerAction) {
+    // we don't check perm here, the backend will do that
+    if (!serverIds || serverIds.length <= 0) {
+        return;
+    }
+
+    axiosClient().post(`/api/v2/servers/execute/action`, JSON.stringify({ action: action, serverIds: serverIds }))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+            return response.data;
+        })
+
+        .catch((error) => {
+            console.error(`Failed to mass execute action: ${action} on servers: ${serverIds} Error: ${error}`)
         })
 }
 
