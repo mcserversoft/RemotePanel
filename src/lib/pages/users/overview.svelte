@@ -6,11 +6,14 @@
 	import { Page, type PanelUser } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
+	import { onMount } from 'svelte';
 
 	let users: PanelUser[] = [];
 	let isLoading = true;
 
-	load();
+	onMount(async () => {
+		load();
+	});
 
 	function load() {
 		fetchPanelUsers(

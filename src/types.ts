@@ -85,6 +85,7 @@ export enum Page {
 export interface PageReference {
     name: string;
     page: Page;
+    isActive: boolean;
 }
 
 export interface BreadcrumbItem {

@@ -3,7 +3,7 @@
 	import Logo from '$lib/svgs/Logo.svelte';
 	import CurrentThemeIcon from '../core/currentThemeIcon.svelte';
 	import UserDropdown from './userDropdown.svelte';
-	import { navigateToPage } from '$lib/code/routing';
+	import { selectedPage, navigateToPage } from '$lib/code/routing';
 	import NavDropdown from './navDropdown.svelte';
 	import { Page } from '../../../types';
 	import NavItem from './navItem.svelte';
@@ -69,13 +69,13 @@
 						</svg>
 						<span class="ml-3">Servers</span>
 					</button> -->
-				<NavItem on:click={() => navigateToPage(Page.Servers)} name="Servers">
+				<NavItem on:click={() => navigateToPage(Page.Servers)} name="Servers" isActive={$selectedPage == Page.Servers}>
 					<Icon data={mdiLayers} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 			</ul>
 
 			<ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-				<NavItem on:click={() => navigateToPage(Page.Dashboard)} name="Dashboard">
+				<NavItem on:click={() => navigateToPage(Page.Dashboard)} name="Dashboard" isActive={$selectedPage == Page.Dashboard}>
 					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<NavDropdown
@@ -83,15 +83,18 @@
 					items={[
 						{
 							name: 'Overview',
-							page: Page.Backups
+							page: Page.Backups,
+							isActive: $selectedPage == Page.Backups
 						},
 						{
 							name: 'History',
-							page: Page.Empty
+							page: Page.Empty,
+							isActive: false
 						},
 						{
 							name: 'Settings',
-							page: Page.Empty
+							page: Page.Empty,
+							isActive: false
 						}
 					]}
 				>
@@ -103,11 +106,13 @@
 					items={[
 						{
 							name: 'Overview',
-							page: Page.Empty
+							page: Page.Empty,
+							isActive: false
 						},
 						{
 							name: 'History',
-							page: Page.Empty
+							page: Page.Empty,
+							isActive: false
 						}
 					]}
 				>
@@ -130,7 +135,7 @@
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown> -->
 
-				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users">
+				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users" isActive={$selectedPage == Page.Users}>
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 
