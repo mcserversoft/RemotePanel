@@ -99,9 +99,16 @@ export interface PanelUser {
     enabled: boolean;
     isAdmin: boolean;
     hasAccessToAllServers: boolean;
-    customServerPermissions: any;
+    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
     createdAt: Date;
     lastModifiedAt: Date;
+}
+
+interface ICustomServerPermission {
+    viewStats: boolean;
+    viewConsole: boolean;
+    useConsole: boolean;
+    useServerActions: boolean;
 }
 
 export interface Backup {

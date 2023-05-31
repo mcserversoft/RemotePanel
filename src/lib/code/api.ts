@@ -258,6 +258,27 @@ export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed:
         })
 }
 
+export function deletePanelUser(userId: string, completed: (wasSuccess: boolean) => void): void {
+    axiosClient().delete(`/api/v2/users/${userId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            //TODO add isInDebuggingMode everywhere
+            if (isInDebuggingMode()) {
+                console.log(`[DEBUG] deletePanelUser: ${response?.data}`)
+            }
+
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete panel user with id ${userId} Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function fetchBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     axiosClient().get(`/api/v2/${serverId}/backups`)
         .then((response) => {

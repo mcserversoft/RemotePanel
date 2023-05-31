@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
-	import { fetchPanelUsers } from '$lib/code/api';
+	import { deletePanelUser, fetchPanelUsers, servers } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type PanelUser } from '../../../types';
@@ -27,6 +27,31 @@
 		isLoading = true;
 		users = [];
 		load();
+	}
+
+	//TODO naming convention (start all event handlers with handle...)
+
+	//TODO handleEditPanelUser
+	function handleEditPanelUser() {
+		console.log('edit');
+	}
+
+	function handleDeletePanelUser(e: any) {
+		const formData = Object.fromEntries(new FormData(e.target).entries());
+
+		let allowedToDelete = confirm(`Are you sure you want to delete user: '${formData.username}'?`);
+		if (!allowedToDelete) {
+			return;
+		}
+
+		deletePanelUser(formData.userId.toString(), (wasSuccess: boolean) => {
+			console.log(wasSuccess);
+			if (wasSuccess) {
+				confirm(`User: '${formData.username}' was successfully deleted.`);
+			} else {
+				confirm(`Failed to delete user: '${formData.username}'.`);
+			}
+		});
 	}
 </script>
 
@@ -74,20 +99,26 @@
 				<tbody>
 					{#each users as user}
 						<tr class="bg-white dark:bg-gray-800">
-							<td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.username}</td>
+							<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.username}</td>
 							<td class="px-6 py-4">
 								<Icon data={user.enabled ? mdiCheck : mdiClose} class="{user.enabled ? 'text-green-400' : 'text-red-400'} " />
 							</td>
 							<td class="px-6 py-4">
 								<Icon data={user.isAdmin ? mdiCheck : mdiClose} class="{user.isAdmin ? 'text-green-400' : 'text-red-400'} " />
 							</td>
-							<!--TODO server count  eg All <> (5/7) -->
-							<td class="px-6 py-4">TODO</td>
+							<!--TODO hover dialog with more info? -->
+							<td class="px-6 py-4">{user.hasAccessToAllServers ? 'All' : Object.keys(user.customServerPermissions).length}</td>
 							<td class="px-6 py-4">{new Date(user.lastModifiedAt).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString(navigator.language)}</td>
-							<td class="px-6 py-4 space-x-3">
-								<button on:click={() => confirm('todo')} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-								<button on:click={() => confirm("Are you sure you want to delete user 'ABC'?")} class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>
+							<td class="flex px-6 py-4 space-x-3">
+								<form on:submit|preventDefault={handleEditPanelUser}>
+									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+								</form>
+								<form on:submit|preventDefault={handleDeletePanelUser}>
+									<input type="text" id="userId" name="userId" value={user.userId} hidden />
+									<input type="text" id="username" name="username" value={user.username} hidden />
+									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>
+								</form>
 							</td>
 						</tr>
 					{:else}
