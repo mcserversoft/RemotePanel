@@ -39,7 +39,7 @@
 	function handleDeletePanelUser(e: any) {
 		const formData = Object.fromEntries(new FormData(e.target).entries());
 
-		let allowedToDelete = confirm(`Are you sure you want to delete user: '${formData.username}'?`);
+		let allowedToDelete = confirm(`Are you sure you want to delete user '${formData.username}'?`);
 		if (!allowedToDelete) {
 			return;
 		}
@@ -47,9 +47,9 @@
 		deletePanelUser(formData.userId.toString(), (wasSuccess: boolean) => {
 			console.log(wasSuccess);
 			if (wasSuccess) {
-				confirm(`User: '${formData.username}' was successfully deleted.`);
+				confirm(`User '${formData.username}' was successfully deleted.`);
 			} else {
-				confirm(`Failed to delete user: '${formData.username}'.`);
+				confirm(`Failed to delete user '${formData.username}'.`);
 			}
 		});
 	}
@@ -107,7 +107,9 @@
 								<Icon data={user.isAdmin ? mdiCheck : mdiClose} class="{user.isAdmin ? 'text-green-400' : 'text-red-400'} " />
 							</td>
 							<!--TODO hover dialog with more info? -->
-							<td class="px-6 py-4">{user.hasAccessToAllServers ? 'All' : Object.keys(user.customServerPermissions).length}</td>
+							<td class="px-6 py-4">
+								<span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{user.hasAccessToAllServers ? 'All' : Object.keys(user.customServerPermissions).length}</span>
+							</td>
 							<td class="px-6 py-4">{new Date(user.lastModifiedAt).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString(navigator.language)}</td>
 							<td class="flex px-6 py-4 space-x-3">
@@ -117,7 +119,7 @@
 								<form on:submit|preventDefault={handleDeletePanelUser}>
 									<input type="text" id="userId" name="userId" value={user.userId} hidden />
 									<input type="text" id="username" name="username" value={user.username} hidden />
-									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>
+									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
 								</form>
 							</td>
 						</tr>

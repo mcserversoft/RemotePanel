@@ -9,7 +9,12 @@
 	import Statistics from '$lib/components/server/statistics.svelte';
 	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 
-	function handleRefreshButton() {}
+	function handleRefreshButton() {
+		//TODO handleRefreshButton
+		console.log('refresh');
+	}
+
+	//TODO make padding more like on this page
 </script>
 
 <svelte:head>

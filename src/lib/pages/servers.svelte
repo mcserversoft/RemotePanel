@@ -185,7 +185,7 @@
 						</td>
 						<td class="px-6 py-4 space-x-3 font-medium text-center">
 							<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-							<button on:click={() => confirm(`Are you sure you want to delete server: ${name}?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
+							<button on:click={() => confirm(`Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
 						</td>
 					</tr>
 				{:else}
