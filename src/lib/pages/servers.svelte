@@ -3,12 +3,13 @@
 	import { navigateToPage } from '$lib/code/routing';
 	import { servers, isLoadingServers, selectedServerId, sendMassServerAction } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus } from '@mdi/js';
+	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus, mdiCheckAll } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
 	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
+	import Toast from '$lib/components/elements/toast.svelte';
 
 	let selection: any = [];
 
@@ -36,9 +37,11 @@
 	function handleMassAction(action: ServerAction) {
 		// when search is active, we only want to get the selected searched results
 		let servers = getCommonServerIds(filteredServers, selection);
-		sendMassServerAction(servers, action);
-
-		//TODO show confirmation/failure message (sendMassServerAction is multi response)
+		sendMassServerAction(servers, action, (wasSuccess: boolean) => {
+			if (!wasSuccess) {
+				confirm('Something went wrong triggering the server action.');
+			}
+		});
 
 		// reset selection
 		selection = [];

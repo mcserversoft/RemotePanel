@@ -28,6 +28,8 @@ export const isOffline = writable(false);
 export const isLoadingServers = writable(false);
 
 // global persistent store
+
+//TODO add global caching store to reduce requests
 export const servers = persisted<Server[]>('servers', new Array<Server>());
 export const selectedServerId = persisted('selectedServerId', '');
 
@@ -96,7 +98,7 @@ export async function sendServerAction(serverId: string, action: string) {
         })
 }
 
-export async function sendMassServerAction(serverIds: string[], action: ServerAction) {
+export async function sendMassServerAction(serverIds: string[], action: ServerAction, completed: (wasSuccess: boolean) => void) {
     // we don't check perm here, the backend will do that
     if (!serverIds || serverIds.length <= 0) {
         return;
@@ -109,9 +111,12 @@ export async function sendMassServerAction(serverIds: string[], action: ServerAc
             }
             return response.data;
         })
-
+        .then((data) => {
+            completed(true);
+        })
         .catch((error) => {
             console.error(`Failed to mass execute action: ${action} on servers: ${serverIds} Error: ${error}`)
+            completed(false);
         })
 }
 
