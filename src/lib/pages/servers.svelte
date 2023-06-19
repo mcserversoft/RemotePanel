@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
 	import { navigateToPage } from '$lib/code/routing';
-	import { servers, isLoadingServers, selectedServerId, sendMassServerAction } from '$lib/code/api';
+	import { servers, isLoadingServers, selectedServerId, sendMassServerAction, fetchServers } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiAccountPlus, mdiCheckAll } from '@mdi/js';
+	import { mdiRefresh, mdiMagnify, mdiChevronDown } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
 	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
-	import Toast from '$lib/components/elements/toast.svelte';
 
 	let selection: any = [];
 
@@ -29,10 +28,12 @@
 		selection = e.target.checked ? [...filteredServers.map((x) => x.serverId)] : [];
 	}
 
-	function handleRefreshButton() {
-		//TODO handleRefreshButton
-		console.log('refresh');
-	}
+	// function handleRefreshButton() {
+	// 	//fetchServers();
+
+	// 	resetSelection();
+	// 	resetSearch();
+	// }
 
 	function handleMassAction(action: ServerAction) {
 		// when search is active, we only want to get the selected searched results
@@ -43,8 +44,16 @@
 			}
 		});
 
-		// reset selection
+		resetSelection();
+	}
+
+	function resetSelection() {
 		selection = [];
+	}
+
+	function resetSearch() {
+		searchTerm = '';
+		filterServers();
 	}
 
 	function getCommonServerIds(servers: Server[], selectedIds: string[]): string[] {
@@ -88,7 +97,7 @@
 					</form>
 				</div>
 			</div>
-			<div class="self-center">
+			<!-- <div class="self-center">
 				<button
 					type="button"
 					on:click={handleRefreshButton}
@@ -96,7 +105,7 @@
 				>
 					<Icon data={mdiRefresh} size={5} class="" />
 				</button>
-			</div>
+			</div> -->
 			<div class="self-center">
 				<Button
 					btnClass="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -188,7 +197,7 @@
 						</td>
 						<td class="px-6 py-4 space-x-3 font-medium text-center">
 							<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-							<button on:click={() => confirm(`Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
+							<button on:click={() => confirm(`TODO: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
 						</td>
 					</tr>
 				{:else}
@@ -200,7 +209,6 @@
 						{/if}
 					</tr>
 				{/each}
-				<!-- {/if} -->
 			</tbody>
 		</table>
 	</div>

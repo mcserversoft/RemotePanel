@@ -76,8 +76,7 @@
 							<td class="px-6 py-4">
 								<Icon data={backup.deleteOldBackups ? mdiCheck : mdiClose} class="{backup.deleteOldBackups ? 'text-green-400' : 'text-red-400'} " />
 							</td>
-							<!--TODO server count  eg All <> (5/7) -->
-							<td class="px-6 py-4">TODO</td>
+							<td class="px-6 py-4"></td>
 							<td class="px-6 py-4">{new Date(backup.compression).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4">{new Date(backup.completedAt).toLocaleString(navigator.language)}</td>
 							<td class="flex items-center px-6 py-4 space-x-3">

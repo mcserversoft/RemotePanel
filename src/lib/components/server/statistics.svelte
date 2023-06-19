@@ -52,7 +52,8 @@
 	}
 </script>
 
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 pb-3">
+<!-- this fixes a visual bug when loading -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-3 pb-3" class:md:grid-cols-4={stats.playerLimit != 0}>
 	<ServerStatistic title="CPU" value={stats.cpu.toString() + '%'} caption="current CPU usage" icon={mdiChip} />
 	<ServerStatistic title="Memory" value={stats.memory.current.toString() + 'MB'} caption="{stats.memory.percentageFree}% used of {stats.memory.max} MB" icon={mdiChartArc} />
 

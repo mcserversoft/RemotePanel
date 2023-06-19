@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getSelectedServer, selectedServerId } from '$lib/code/api';
+	import { fetchServers, getSelectedServer, selectedServerId } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Console from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
@@ -10,8 +10,7 @@
 	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 
 	function handleRefreshButton() {
-		//TODO handleRefreshButton
-		console.log('refresh');
+		fetchServers();
 	}
 
 	//TODO make padding more like on this page

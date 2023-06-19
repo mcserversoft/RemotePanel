@@ -23,7 +23,7 @@
 
 <div class="flex items-center" use:clickOutside on:click_outside={handleClickOutside}>
 	<div class="relative inline-block text-left">
-		<button on:click={toggle} type="button" class="inline-flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 bg-gray-800 dark:focus:ring-gray-600" id="menu-button" aria-expanded="true" aria-haspopup="true">
+		<button on:click={toggle} type="button" class="inline-flex align-middle text-sm rounded-full focus:ring-4 focus:ring-gray-300 bg-gray-800 dark:focus:ring-gray-600" id="menu-button" aria-expanded="true" aria-haspopup="true">
 			<slot />
 		</button>
 
