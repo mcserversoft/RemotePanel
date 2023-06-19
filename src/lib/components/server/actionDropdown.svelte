@@ -29,7 +29,7 @@
 </script>
 
 <div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
-	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded-lg bg-blue-600 hover:bg-blue-700">
+	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-[7px] rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
 		<div class="flex items-center truncate text-zinc-100">
 			<span class="truncate ml-2 text-xs font-medium uppercase">{statusName}</span>
 			<Icon data={mdiMenuDown} size={5} />
