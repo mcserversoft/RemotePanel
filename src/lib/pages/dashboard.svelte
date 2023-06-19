@@ -12,15 +12,13 @@
 	function handleRefreshButton() {
 		fetchServers();
 	}
-
-	//TODO make padding more like on this page
 </script>
 
 <svelte:head>
 	<title>MCSS Remote Panel | Dashboard</title>
 </svelte:head>
 
-<section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="min-h-screen dark:bg-gray-900 dark:text-white">
 	<div class="flex pb-3 space-x-2">
 		<div class="self-center grow">
 			<ServerSwitchDropdown />

@@ -63,6 +63,7 @@
 </svelte:head>
 
 <section class="min-h-screen dark:bg-gray-900 dark:text-white">
+	<!-- <section class="min-h-screen dark:bg-gray-900 dark:text-white"> -->
 	<div class="relative overflow-x-auto">
 		<PageTitleBanner title="Users Overview" caption="All users that are configured to view and use the Remote Panel.">
 			<div class="self-center">
@@ -86,7 +87,7 @@
 			</div>
 		</PageTitleBanner>
 
-		<div class="relative overflow-x-auto">
+		<div class="relative overflow-x-auto shadow-md rounded-b-none sm:rounded-lg">
 			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
@@ -109,7 +110,7 @@
 							<td class="px-6 py-4">
 								<Icon data={user.isAdmin ? mdiCheck : mdiClose} class="{user.isAdmin ? 'text-green-400' : 'text-red-400'} " />
 							</td>
-							<!--TODO hover dialog with more info? -->
+							<!--TODO FUTURE hover dialog with more info? -->
 							<td class="px-6 py-4">
 								<span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{user.hasAccessToAllServers ? 'All' : Object.keys(user.customServerPermissions).length}</span>
 							</td>
