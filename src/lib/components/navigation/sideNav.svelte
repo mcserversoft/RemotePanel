@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { togglePanelTheme } from '$lib/code/theme';
-	import Logo from '$lib/svgs/Logo.svelte';
+	import Logo from '$lib/components/elements/logo.svelte';
 	import CurrentThemeIcon from '../core/currentThemeIcon.svelte';
 	import UserDropdown from './userDropdown.svelte';
 	import { selectedPage, navigateToPage } from '$lib/code/routing';
-	import NavDropdown from './navDropdown.svelte';
 	import { Page } from '../../../types';
 	import NavItem from './navItem.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';

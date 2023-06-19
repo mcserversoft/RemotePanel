@@ -2,8 +2,9 @@
 	import { get } from 'svelte/store';
 	import { clickOutside } from '$lib/code/shared';
 	import { sendServerAction, selectedServerId } from '$lib/code/api';
-	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
 	import { ServerAction } from '../../../types';
+	import Icon from '../elements/icon.svelte';
+	import { mdiMenuDown } from '@mdi/js';
 
 	export let statusName: string;
 
@@ -31,7 +32,7 @@
 	<button on:click={toggleDropdown} aria-controls="dropdown" aria-expanded={dropdownVisible} class="inline-flex justify-center items-center group p-2 rounded-lg bg-blue-600 hover:bg-blue-700">
 		<div class="flex items-center truncate text-zinc-100">
 			<span class="truncate ml-2 text-xs font-medium uppercase">{statusName}</span>
-			<ArrowDownSvg />
+			<Icon data={mdiMenuDown} size={5} />
 		</div>
 	</button>
 

@@ -4,9 +4,8 @@
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
 	import { fetchServerConsole, isServerConsoleOutdated, selectedServerId, sendServerCommand } from '$lib/code/api';
-	import ReloadSvg from '$lib/svgs/ReloadSvg.svelte';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import { mdiBullhorn, mdiSend } from '@mdi/js';
+	import { mdiBullhorn, mdiRefresh, mdiSend } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
 	import { Popover, Button } from 'flowbite-svelte';
 
@@ -122,7 +121,7 @@
 			<div class="flex items-center space-x-1 sm:pr-4">
 				<h2 class="font-semibold text-gray-700 dark:text-gray-300">Console</h2>
 				<button on:click={() => reloadConsole} disabled={loadingConsole} class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 disabled:text-zinc-800 disabled:pointer-events-none">
-					<ReloadSvg className={loadingConsole ? 'animate-spin' : ''} />
+					<Icon data={mdiRefresh} size={5} class={loadingConsole ? 'animate-spin' : ''} />
 				</button>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Logo from '$lib/svgs/Logo.svelte';
+	import Logo from '$lib/components/elements/logo.svelte';
 
+	// @ts-ignore
 	const version: string = __VERSION__;
 </script>
 
@@ -15,6 +16,8 @@
 		<p>A web panel to easily access MC Server Soft remotely.</p>
 
 		<div class="mt-12">
+			<!-- <div class="flex space-x-3 justify-center"> -->
+			<!-- <div class="flex space-x-3 justify-center"> -->
 			<!-- <div class="flex space-x-3 justify-center"> -->
 			<!-- <div class="flex space-x-3 justify-center"> -->
 			<!-- <div class="flex space-x-3 justify-center"> -->

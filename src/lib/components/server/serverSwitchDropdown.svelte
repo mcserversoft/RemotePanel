@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { clickOutside, getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
 	import { getSelectedServer, selectedServerId, servers } from '$lib/code/api';
-	import ArrowDownSvg from '$lib/svgs/ArrowDownSvg.svelte';
+	import { mdiMenuDown } from '@mdi/js';
+	import Icon from '../elements/icon.svelte';
 
 	let dropdownVisible: boolean = false;
 
@@ -43,8 +44,8 @@
 		<div class="flex items-center space-x-2 text-lg font-semibold truncate text-zinc-100">
 			<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
 			<span>{$getSelectedServer?.name}</span>
-			<ArrowDownSvg />
 		</div>
+		<Icon data={mdiMenuDown} size={5} class="" />
 	</button>
 
 	{#if dropdownVisible}

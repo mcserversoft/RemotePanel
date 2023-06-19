@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Logo from '$lib/svgs/Logo.svelte';
+	import Logo from '$lib/components/elements/logo.svelte';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
