@@ -32,8 +32,6 @@
 		load();
 	}
 
-	//TODO naming convention (start all event handlers with handle...)
-
 	//TODO handleEditPanelUser
 	function handleEditPanelUser() {
 		console.log('edit');

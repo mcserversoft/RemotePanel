@@ -132,8 +132,7 @@ export async function sendServerCommand(serverId: string, input: string) {
     }
 
     if (isInDebuggingMode()) {
-        console.log("sendServerCommand:")
-        console.log(input)
+        console.log(`[DEBUG] sendServerCommand: ${input}`)
     }
 
     axiosClient().post(`/api/v2/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
@@ -187,6 +186,10 @@ export function fetchServerStatus(serverId: string, report: (latestStats: Stats)
                 })
             }
 
+            if (isInDebuggingMode()) {
+                console.log(`[DEBUG] fetchServerStatus: ${data}`)
+            }
+
             report(stats ?? false);
             completed(true);
         })
@@ -211,6 +214,10 @@ export function fetchServerConsole(serverId: string, report: (consoleLines: stri
                 return Promise.reject(response);
             }
 
+            if (isInDebuggingMode()) {
+                console.log(`[DEBUG] fetchServerConsole: ${response?.data}`)
+            }
+
             report(response?.data?.join('\r\n') ?? []);
             completed(true);
         })
@@ -230,6 +237,10 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log(`[DEBUG] isServerConsoleOutdated: ${response?.data}`)
             }
 
             report(response?.data?.isOutdated ?? false);
@@ -253,6 +264,7 @@ export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed:
                 console.log("fetchPanelUsers:")
                 console.log(response?.data)
             }
+
             report(response?.data ?? []);
             completed(true);
         })
@@ -270,7 +282,6 @@ export function deletePanelUser(userId: string, completed: (wasSuccess: boolean)
                 return Promise.reject(response);
             }
 
-            //TODO add isInDebuggingMode everywhere
             if (isInDebuggingMode()) {
                 console.log(`[DEBUG] deletePanelUser: ${response?.data}`)
             }
@@ -295,6 +306,7 @@ export function fetchBackups(serverId: string, report: (users: Backup[]) => void
                 console.log("fetchBackups:")
                 console.log(response?.data)
             }
+
             report(response?.data ?? []);
             completed(true);
         })

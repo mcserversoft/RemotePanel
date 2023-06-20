@@ -11,7 +11,6 @@
 	}
 </script>
 
-<!-- TODO temp width fix -->
 <FlowbiteDropdown bind:open={isOpen} class={className + 'w-44'}>
 	<div on:click={onClick} aria-hidden>
 		<slot />

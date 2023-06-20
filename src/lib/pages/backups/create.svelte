@@ -12,7 +12,7 @@
 	let isLoading = true;
 
 	function createBackup() {
-		console.log('TODO create backup');
+		console.log('create backup');
 	}
 </script>
 
