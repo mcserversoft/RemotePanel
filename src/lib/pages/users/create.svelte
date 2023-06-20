@@ -55,29 +55,32 @@
 			/>
 		</div>
 
-		<div class="flex items-center">
-			<div class="relative w-full">
-				<input
-					bind:value={password}
-					id="password"
-					name="password"
-					{...{ type }}
-					class="border sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-					placeholder="••••••••••••••••••"
-					required
-				/>
-				<form on:submit|preventDefault={toggleViewPassword}>
-					<button type="submit" class="text-gray-300 absolute right-2.5 bottom-2.5">
-						<Icon data={mdiEye} />
+		<div class="flex flex-col">
+			<label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+			<div class="flex">
+				<div class="relative w-full">
+					<input
+						bind:value={password}
+						id="password"
+						name="password"
+						{...{ type }}
+						class="border sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+						placeholder="••••••••••••••••••"
+						required
+					/>
+					<form on:submit|preventDefault={toggleViewPassword}>
+						<button type="submit" class="text-gray-300 absolute right-2.5 bottom-2.5">
+							<Icon data={mdiEye} />
+						</button>
+					</form>
+				</div>
+
+				<form on:submit|preventDefault={generateRandomPassword}>
+					<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
+						<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
 					</button>
 				</form>
 			</div>
-
-			<form on:submit|preventDefault={generateRandomPassword}>
-				<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
-					<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
-				</button>
-			</form>
 		</div>
 
 		<!--TODO add server access & perms -->
