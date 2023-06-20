@@ -111,3 +111,15 @@ export function clickOutside(node: any): any {
 export function openInNewTab(url: string) {
     window.open(url, "_blank", "noopener noreferrer")
 }
+
+export function getRandomPassword() {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-={}[]|:;"<>,.?/';
+    let password = '';
+
+    for (let i = 0; i < 35; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+
+    return password;
+}
