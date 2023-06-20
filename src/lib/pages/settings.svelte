@@ -120,17 +120,17 @@
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange}>Automatic Console Scrolling</Toggle>
+				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange} class="max-w-fit">Automatic Console Scrolling</Toggle>
 				<Helper class="text-sm mt-3">When the console is updated, automatically scroll to the bottom.</Helper>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={chatModeConsole} on:click={handleInputChange}>Console Chat Mode</Toggle>
+				<Toggle bind:checked={chatModeConsole} on:click={handleInputChange} class="max-w-fit">Console Chat Mode</Toggle>
 				<Helper class="text-sm mt-3">Automatically convert your console input to the <span class="p-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">/say &lt;input&gt;</span> format.</Helper>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={debugging} on:click={handleInputChange}>Debugging</Toggle>
+				<Toggle bind:checked={debugging} on:click={handleInputChange} class="max-w-fit">Debugging</Toggle>
 				<Helper class="text-sm mt-3">Developer option to enable verbose logging in the browser's console.</Helper>
 			</div>
 

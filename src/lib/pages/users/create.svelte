@@ -83,7 +83,7 @@
 		<!--TODO add server access & perms -->
 
 		<div class="space-y-3">
-			<Toggle>Assign admin rights</Toggle>
+			<Toggle class="max-w-fit">Assign admin rights</Toggle>
 			<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
 				Grant this user
 				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
@@ -91,7 +91,7 @@
 		</div>
 
 		<div class="space-y-3">
-			<Toggle checked={true}>Enabled</Toggle>
+			<Toggle class="max-w-fit" checked={true}>Enabled</Toggle>
 			<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
 		</div>
 
