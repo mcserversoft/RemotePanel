@@ -26,6 +26,21 @@
 		});
 	}
 
+	function handleModalCustomServersToggle() {
+		showCustomServersModal = true;
+	}
+
+	function handleServerSelection(event: any, serverId: string) {
+		let checked = event.target.checked;
+		console.log(serverId);
+		console.log(checked);
+
+		customServerPermissions[serverId].viewStats = checked;
+		customServerPermissions[serverId].viewConsole = checked;
+		customServerPermissions[serverId].useConsole = checked;
+		customServerPermissions[serverId].useServerActions = checked;
+	}
+
 	function handlePermissionInput(event: any, serverId: string) {
 		let value = event.target.value;
 		let checked = event.target.checked;
@@ -65,10 +80,6 @@
 	function handleDiscard() {
 		showCustomServersModal = false;
 		selection = savedSelection;
-	}
-
-	function handleModalCustomServersToggle() {
-		showCustomServersModal = true;
 	}
 </script>
 
@@ -114,6 +125,7 @@
 					<input
 						id="checkbox-custom-server-{index}"
 						bind:group={selection}
+						on:change={(event) => handleServerSelection(event, serverId)}
 						value={serverId}
 						type="checkbox"
 						class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"

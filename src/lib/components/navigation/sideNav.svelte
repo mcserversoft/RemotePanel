@@ -117,7 +117,7 @@
 				</NavDropdown> 
 				-->
 
-				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users" isActive={$selectedPage == Page.Users}>
+				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<!-- 
