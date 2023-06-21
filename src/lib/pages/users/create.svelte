@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { mdiAccountMultiple, mdiAccountPlus, mdiCheck, mdiClose, mdiEye, mdiRefreshCircle } from '@mdi/js';
-	import { fetchPanelUsers } from '$lib/code/api';
+	import { mdiAccountMultiple, mdiEye, mdiRefreshCircle } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { Toggle } from 'flowbite-svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, type BreadcrumbItem } from '../../../types';
+	import { Page } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { getRandomPassword } from '$lib/code/shared';
+	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
 
+	let customServers: any = [];
 	let password: string;
 	let showPassword: boolean = false;
 	$: type = showPassword ? 'text' : 'password';
@@ -25,6 +24,7 @@
 
 	function createUser() {
 		console.log('TODO create user');
+		console.log(customServers);
 	}
 </script>
 
@@ -83,7 +83,9 @@
 			</div>
 		</div>
 
-		<!--TODO add server access & perms -->
+		<div class="py-2">
+			<ServerPermSelector bind:selection={customServers} />
+		</div>
 
 		<div class="space-y-3">
 			<Toggle class="max-w-fit">Assign admin rights</Toggle>
