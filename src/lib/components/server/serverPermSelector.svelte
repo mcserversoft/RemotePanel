@@ -4,22 +4,66 @@
 	import { mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
 	import { isLoadingServers, servers } from '$lib/code/api';
 	import Spinner from '../elements/spinner.svelte';
+	import type { ICustomServerPermission } from '../../../types';
 
-	export let selection: any = [];
+	export let customServerPermissions: Record<string, Partial<ICustomServerPermission>> = {};
+
+	let selection: any = [];
 	let savedSelection: any = [];
 
 	let isCustomServerSelected: boolean = false;
 	let showCustomServersModal: boolean = false;
 
+	// run on open
+	$: if (showCustomServersModal) {
+		$servers.forEach((server) => {
+			customServerPermissions[server.serverId] = {
+				viewStats: false,
+				viewConsole: false,
+				useConsole: false,
+				useServerActions: false
+			};
+		});
+	}
+
+	function handlePermissionInput(event: any, serverId: string) {
+		let value = event.target.value;
+		let checked = event.target.checked;
+
+		if (!customServerPermissions[serverId]) {
+			return;
+		}
+
+		if (value == 0) {
+			customServerPermissions[serverId].viewStats = checked;
+		} else if (value == 1) {
+			customServerPermissions[serverId].viewConsole = checked;
+		} else if (value == 2) {
+			customServerPermissions[serverId].useConsole = checked;
+		} else if (value == 3) {
+			customServerPermissions[serverId].useServerActions = checked;
+		}
+
+		console.log(customServerPermissions);
+	}
+
 	function handleSave() {
 		showCustomServersModal = false;
 		isCustomServerSelected = true;
 		savedSelection = selection;
+
+		// remove non selected items
+		Object.entries(customServerPermissions).forEach((object: any) => {
+			if (!savedSelection.includes(object[0])) {
+				delete customServerPermissions[object[0]];
+			}
+		});
+
+		console.log(customServerPermissions);
 	}
 
 	function handleDiscard() {
 		showCustomServersModal = false;
-		// restore selection to previous saved state
 		selection = savedSelection;
 	}
 
@@ -87,7 +131,8 @@
 							<input
 								id="checkbox-permission-view-stats-{index}"
 								type="checkbox"
-								value=""
+								value="0"
+								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
 							<label for="checkbox-permission-view-stats-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Stats</label>
@@ -98,7 +143,8 @@
 							<input
 								id="checkbox-permission-view-console-{index}"
 								type="checkbox"
-								value=""
+								value="1"
+								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
 							<label for="checkbox-permission-view-console-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Console</label>
@@ -109,7 +155,8 @@
 							<input
 								id="checkbox-permission-use-console-{index}"
 								type="checkbox"
-								value=""
+								value="2"
+								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
 							<label for="checkbox-permission-use-console-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Use Console</label>
@@ -120,7 +167,8 @@
 							<input
 								id="checkbox-permission-use-server-actions-{index}"
 								type="checkbox"
-								value=""
+								value="3"
+								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
 							<label for="checkbox-permission-use-server-actions-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Use Server Actions</label>

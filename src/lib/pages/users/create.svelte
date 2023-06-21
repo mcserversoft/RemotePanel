@@ -4,12 +4,13 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { Toggle } from 'flowbite-svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page } from '../../../types';
+	import { Page, type ICustomServerPermission } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { getRandomPassword } from '$lib/code/shared';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
 
-	let customServers: any = [];
+	// let customServers: any = [];
+	let customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
 	let password: string;
 	let showPassword: boolean = false;
 	$: type = showPassword ? 'text' : 'password';
@@ -24,7 +25,7 @@
 
 	function createUser() {
 		console.log('TODO create user');
-		console.log(customServers);
+		console.log(customServerPermissions);
 	}
 </script>
 
@@ -84,7 +85,7 @@
 		</div>
 
 		<div class="py-2">
-			<ServerPermSelector bind:selection={customServers} />
+			<ServerPermSelector bind:customServerPermissions />
 		</div>
 
 		<div class="space-y-3">

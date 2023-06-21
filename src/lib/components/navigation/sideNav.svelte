@@ -15,6 +15,7 @@
 	let wasOpenBeforeAutoClose = true;
 	let screenWidth: any;
 
+	// run on screenWidth update
 	$: if (screenWidth > 767) {
 		// open menu on big screens
 		isOpen = true;

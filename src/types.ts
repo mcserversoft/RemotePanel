@@ -105,7 +105,7 @@ export interface PanelUser {
     lastModifiedAt: Date;
 }
 
-interface ICustomServerPermission {
+export interface ICustomServerPermission {
     viewStats: boolean;
     viewConsole: boolean;
     useConsole: boolean;
