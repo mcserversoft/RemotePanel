@@ -8,6 +8,7 @@
 
 	export let customServerPermissions: Record<string, Partial<ICustomServerPermission>> = {};
 
+	let permissionSelection: any = [];
 	let selection: any = [];
 	let savedSelection: any = [];
 
@@ -32,13 +33,27 @@
 
 	function handleServerSelection(event: any, serverId: string) {
 		let checked = event.target.checked;
-		console.log(serverId);
-		console.log(checked);
 
+		// toggle all
 		customServerPermissions[serverId].viewStats = checked;
 		customServerPermissions[serverId].viewConsole = checked;
 		customServerPermissions[serverId].useConsole = checked;
 		customServerPermissions[serverId].useServerActions = checked;
+
+		if (checked) {
+			permissionSelection.push('0-' + serverId);
+			permissionSelection.push('1-' + serverId);
+			permissionSelection.push('2-' + serverId);
+			permissionSelection.push('3-' + serverId);
+		} else {
+			permissionSelection.pop('0-' + serverId);
+			permissionSelection.pop('1-' + serverId);
+			permissionSelection.pop('2-' + serverId);
+			permissionSelection.pop('3-' + serverId);
+		}
+
+		// trigger reactivity
+		permissionSelection = permissionSelection;
 	}
 
 	function handlePermissionInput(event: any, serverId: string) {
@@ -49,17 +64,15 @@
 			return;
 		}
 
-		if (value == 0) {
+		if (value.startsWith(0)) {
 			customServerPermissions[serverId].viewStats = checked;
-		} else if (value == 1) {
+		} else if (value.startsWith(1)) {
 			customServerPermissions[serverId].viewConsole = checked;
-		} else if (value == 2) {
+		} else if (value.startsWith(2)) {
 			customServerPermissions[serverId].useConsole = checked;
-		} else if (value == 3) {
+		} else if (value.startsWith(3)) {
 			customServerPermissions[serverId].useServerActions = checked;
 		}
-
-		console.log(customServerPermissions);
 	}
 
 	function handleSave() {
@@ -73,8 +86,6 @@
 				delete customServerPermissions[object[0]];
 			}
 		});
-
-		console.log(customServerPermissions);
 	}
 
 	function handleDiscard() {
@@ -141,49 +152,53 @@
 					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 						<div class="flex items-center">
 							<input
-								id="checkbox-permission-view-stats-{index}"
+								id="checkbox-permission-view-stats-{index}-{serverId}"
 								type="checkbox"
-								value="0"
+								value="0-{serverId}"
+								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
-							<label for="checkbox-permission-view-stats-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Stats</label>
+							<label for="checkbox-permission-view-stats-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Stats</label>
 						</div>
 					</li>
 					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 						<div class="flex items-center">
 							<input
-								id="checkbox-permission-view-console-{index}"
+								id="checkbox-permission-view-console-{index}-{serverId}"
 								type="checkbox"
-								value="1"
+								value="1-{serverId}"
+								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
-							<label for="checkbox-permission-view-console-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Console</label>
+							<label for="checkbox-permission-view-console-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Console</label>
 						</div>
 					</li>
 					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 						<div class="flex items-center">
 							<input
-								id="checkbox-permission-use-console-{index}"
+								id="checkbox-permission-use-console-{index}-{serverId}"
 								type="checkbox"
-								value="2"
+								value="2-{serverId}"
+								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
-							<label for="checkbox-permission-use-console-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Use Console</label>
+							<label for="checkbox-permission-use-console-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Use Console</label>
 						</div>
 					</li>
 					<li class="w-full dark:border-gray-600">
 						<div class="flex items-center">
 							<input
-								id="checkbox-permission-use-server-actions-{index}"
+								id="checkbox-permission-use-server-actions-{index}-{serverId}"
 								type="checkbox"
-								value="3"
+								value="3-{serverId}"
+								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
-							<label for="checkbox-permission-use-server-actions-{index}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Use Server Actions</label>
+							<label for="checkbox-permission-use-server-actions-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Use Server Actions</label>
 						</div>
 					</li>
 				</ul>
