@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte/internal';
 	import { Button, Modal } from 'flowbite-svelte';
 	import Icon from '../elements/icon.svelte';
 	import { mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
@@ -15,16 +16,22 @@
 	let isCustomServerSelected: boolean = false;
 	let showCustomServersModal: boolean = false;
 
-	// run on open
-	$: if (showCustomServersModal) {
-		$servers.forEach((server) => {
-			customServerPermissions[server.serverId] = {
-				viewStats: false,
-				viewConsole: false,
-				useConsole: false,
-				useServerActions: false
-			};
-		});
+	onMount(() => {
+		load();
+	});
+
+	function load() {
+		// init if empty
+		if (Object.entries(customServerPermissions).length <= 0) {
+			$servers.forEach((server) => {
+				customServerPermissions[server.serverId] = {
+					viewStats: false,
+					viewConsole: false,
+					useConsole: false,
+					useServerActions: false
+				};
+			});
+		}
 	}
 
 	function handleModalCustomServersToggle() {
@@ -100,7 +107,6 @@
 <div class="flex space-x-4">
 	<div class="flex items-center">
 		<input
-			checked
 			id="radio-selection-all"
 			name="radio-selection"
 			value={false}

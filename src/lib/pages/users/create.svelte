@@ -2,7 +2,6 @@
 	import { mdiAccountMultiple, mdiEye, mdiRefreshCircle } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
-	import { Toggle } from 'flowbite-svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Page, type ICustomServerPermission } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
@@ -11,7 +10,11 @@
 
 	// let customServers: any = [];
 	let customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+	let username: string;
 	let password: string;
+	let isAdmin: boolean = false;
+	let isEnabled: boolean = true;
+
 	let showPassword: boolean = false;
 	$: type = showPassword ? 'text' : 'password';
 
@@ -24,7 +27,12 @@
 	}
 
 	function createUser() {
+		// TODO fix bug where perms are all false when only clicking on the server checkbox
 		console.log('TODO create user');
+		console.log(username);
+		console.log(password);
+		console.log(isAdmin);
+		console.log(isEnabled);
 		console.log(customServerPermissions);
 	}
 </script>
@@ -48,6 +56,7 @@
 		<div class="">
 			<label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
 			<input
+				bind:value={username}
 				type="username"
 				id="username"
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -88,17 +97,32 @@
 			<ServerPermSelector bind:customServerPermissions />
 		</div>
 
-		<div class="space-y-3">
-			<Toggle class="max-w-fit">Assign admin rights</Toggle>
+		<div class="space-y-2">
+			<label class="relative inline-flex items-center cursor-pointer">
+				<input bind:checked={isAdmin} type="checkbox" value="" class="sr-only peer" />
+				<div
+					class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+				/>
+				<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Assign admin rights</span>
+			</label>
+
 			<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
 				Grant this user
 				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
 			</p>
 		</div>
 
-		<div class="space-y-3">
-			<Toggle class="max-w-fit" checked={true}>Enabled</Toggle>
-			<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
+		<div class="space-y-2">
+			<!--TODO make this into custom toggle, I don't like the flowbite toggle control-->
+			<label class="relative inline-flex items-center cursor-pointer">
+				<input bind:checked={isEnabled} type="checkbox" value="" class="sr-only peer" />
+				<div
+					class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+				/>
+				<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Enabled</span>
+			</label>
+
+			<p class=" text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
 		</div>
 
 		<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add User </button>
