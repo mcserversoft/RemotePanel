@@ -216,7 +216,7 @@ export function fetchServerConsole(serverId: string, report: (consoleLines: stri
             }
 
             if (isInDebuggingMode()) {
-                console.log(`[DEBUG] fetchServerConsole: ${response?.data}`)
+                console.log(`[DEBUG] fetchServerConsole, amount of lines: ${response?.data?.length}`)
             }
 
             report(response?.data?.join('\r\n') ?? []);

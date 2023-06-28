@@ -128,7 +128,7 @@
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:value={debugging} on:toggle={handleInputChange} label={'Automatic Console Scrolling'}>Developer option to enable verbose logging in the browser's console.</Toggle>
+				<Toggle bind:value={debugging} on:toggle={handleInputChange} label={'Debugging'}>Developer option to enable verbose logging in the browser's console.</Toggle>
 			</div>
 
 			<Button type="submit" disabled={disableButtons}>
