@@ -8,12 +8,11 @@
 	import type { ICustomServerPermission } from '../../../types';
 
 	export let customServerPermissions: Record<string, Partial<ICustomServerPermission>> = {};
+	export let isCustomServerSelected: boolean = false;
 
 	let permissionSelection: any = [];
 	let selection: any = [];
 	let savedSelection: any = [];
-
-	let isCustomServerSelected: boolean = false;
 	let showCustomServersModal: boolean = false;
 
 	onMount(() => {

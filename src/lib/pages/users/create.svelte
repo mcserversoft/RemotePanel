@@ -3,13 +3,16 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, type ICustomServerPermission } from '../../../types';
+	import { Page, type ICustomServerPermission, type NewPanelUser } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { getRandomPassword } from '$lib/code/shared';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
+	import { createPanelUser } from '$lib/code/api';
+	import { navigateToPage } from '$lib/code/routing';
 
-	// let customServers: any = [];
 	let customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+	let isCustomServerSelected: boolean;
+
 	let username: string;
 	let password: string;
 	let isAdmin: boolean = false;
@@ -34,6 +37,30 @@
 		console.log(isAdmin);
 		console.log(isEnabled);
 		console.log(customServerPermissions);
+		console.log(!isCustomServerSelected);
+
+		let newUser: NewPanelUser = {
+			username: username,
+			password: password,
+			passwordRepeat: password,
+			isAdmin: isAdmin,
+			enabled: isEnabled,
+			hasAccessToAllServers: !isCustomServerSelected,
+			customServerPermissions: customServerPermissions
+		};
+
+		createPanelUser(newUser, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`User '${username}' was successfully created.`);
+				navigateBack();
+			} else {
+				confirm(`Failed to create user '${username}'.`);
+			}
+		});
+	}
+
+	function navigateBack() {
+		navigateToPage(Page.Users);
 	}
 </script>
 
@@ -94,7 +121,7 @@
 		</div>
 
 		<div class="py-2">
-			<ServerPermSelector bind:customServerPermissions />
+			<ServerPermSelector bind:customServerPermissions bind:isCustomServerSelected />
 		</div>
 
 		<div class="space-y-2">
@@ -125,6 +152,14 @@
 			<p class=" text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
 		</div>
 
-		<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add User </button>
+		<div class="flex space-x-3">
+			<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add User</button>
+
+			<form on:submit|preventDefault={navigateBack}>
+				<button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+					Cancel
+				</button>
+			</form>
+		</div>
 	</form>
 </section>

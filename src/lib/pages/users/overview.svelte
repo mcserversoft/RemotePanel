@@ -46,9 +46,9 @@
 		}
 
 		deletePanelUser(formData.userId.toString(), (wasSuccess: boolean) => {
-			console.log(wasSuccess);
 			if (wasSuccess) {
 				confirm(`User '${formData.username}' was successfully deleted.`);
+				handleRefreshButton();
 			} else {
 				confirm(`Failed to delete user '${formData.username}'.`);
 			}

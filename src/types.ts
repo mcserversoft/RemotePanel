@@ -105,6 +105,16 @@ export interface PanelUser {
     lastModifiedAt: Date;
 }
 
+export interface NewPanelUser {
+    username: string;
+    password: string;
+    passwordRepeat: string;
+    enabled: boolean;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+}
+
 export interface ICustomServerPermission {
     viewStats: boolean;
     viewConsole: boolean;
