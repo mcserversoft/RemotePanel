@@ -19,7 +19,8 @@ import type {
     PanelUser,
     Server,
     Stats,
-    ServerAction
+    ServerAction,
+    NewPanelUser
 } from '../../types';
 import { Filter } from '../../types';
 
@@ -271,6 +272,27 @@ export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed:
 
         .catch((error) => {
             console.error(`Failed to fetch panel users with Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function createPanelUser(newUser: NewPanelUser, completed: (wasSuccess: boolean) => void) {
+    axiosClient().post(`/api/v2/users`, JSON.stringify(newUser))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("createPanelUser:")
+                console.log(response?.data)
+            }
+
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to create panel user: ${newUser.username} Error: ${error}`)
             completed(false);
         })
 }
