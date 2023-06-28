@@ -2,7 +2,9 @@
 	import { settings } from '$lib/code/storage';
 	import { getPanelTheme } from '$lib/code/theme';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { Select, Label, Input, Toggle, Helper, Button } from 'flowbite-svelte';
+	import Input from '$lib/components/elements/input.svelte';
+	import Toggle from '$lib/components/elements/toggle.svelte';
+	import { Select, Label, Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
 	import { PanelTheme } from '../../types';
 
@@ -47,6 +49,7 @@
 		amountOfConsoleLines = $settings.amountOfConsoleLines;
 		autoScrollConsole = $settings.autoScrollConsole;
 		chatModeConsole = $settings.chatModeConsole;
+		debugging = $settings.debugging;
 		disableButtons = true;
 	}
 
@@ -96,42 +99,36 @@
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<Label>
 					Panel Theme
+					<!--TODO this is broken-->
 					<Select class="mt-2" items={themeOptions} bind:value={selectedTheme} on:input={handleInputChange} />
 				</Label>
-				<Helper class="text-sm mt-3">Choose between light or dark. You can also use the theme defined by your system.</Helper>
+				<p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Choose between light or dark. You can also use the theme defined by your system.</p>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Label for="serversRefreshRate" class="mb-2">Server Refresh Rate</Label>
-				<Input bind:value={serversRefreshRate} on:input={handleInputChange} color={inputErrorServersRefreshRate ? 'red' : 'base'} type="number" min="1" max="3600" id="serversRefreshRate" required />
-				<Helper class="text-sm mt-3">Value between 1 and 3600 seconds.</Helper>
+				<Input bind:value={serversRefreshRate} error={inputErrorServersRefreshRate} label={'Server Refresh Rate'} type={'number'} placeholder={'Username'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds.</Input>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Label for="consoleRefreshRate" class="mb-2">Console Refresh Rate</Label>
-				<Input bind:value={consoleRefreshRate} on:input={handleInputChange} color={inputErrorConsoleRefreshRate ? 'red' : 'base'} type="number" min="1" max="3600" id="consoleRefreshRate" required />
-				<Helper class="text-sm mt-3">Value between 1 and 3600 seconds. Fast refresh rates can lead to performance issues.</Helper>
+				<Input bind:value={consoleRefreshRate} error={inputErrorConsoleRefreshRate} label={'Console Refresh Rate'} type={'number'} placeholder={'Username'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds. Fast refresh rates can lead to performance issues.</Input>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Label for="amountOfConsoleLines" class="mb-2">Amount of Console Lines</Label>
-				<Input bind:value={amountOfConsoleLines} on:input={handleInputChange} color={inputErrorAmountOfConsoleLines ? 'red' : 'base'} type="number" min="1" max="1000" id="amountOfConsoleLines" required />
-				<Helper class="text-sm mt-3">Value between 1 and 1000. Higher numbers can lead to performance issues.</Helper>
+				<Input bind:value={amountOfConsoleLines} error={inputErrorAmountOfConsoleLines} label={'Amount of Console Lines'} type={'number'} placeholder={'Username'} min="1" max="1000" required={true}>Value between 1 and 1000. Higher numbers can lead to performance issues.</Input>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={autoScrollConsole} on:click={handleInputChange} class="max-w-fit">Automatic Console Scrolling</Toggle>
-				<Helper class="text-sm mt-3">When the console is updated, automatically scroll to the bottom.</Helper>
+				<Toggle bind:value={autoScrollConsole} on:toggle={handleInputChange} label={'Automatic Console Scrolling'}>When the console is updated, automatically scroll to the bottom.</Toggle>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={chatModeConsole} on:click={handleInputChange} class="max-w-fit">Console Chat Mode</Toggle>
-				<Helper class="text-sm mt-3">Automatically convert your console input to the <span class="p-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">/say &lt;input&gt;</span> format.</Helper>
+				<Toggle bind:value={chatModeConsole} on:toggle={handleInputChange} label={'Console Chat Mode'}>
+					Automatically convert your console input to the <span class="p-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">/say &lt;input&gt;</span> format.
+				</Toggle>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Toggle bind:checked={debugging} on:click={handleInputChange} class="max-w-fit">Debugging</Toggle>
-				<Helper class="text-sm mt-3">Developer option to enable verbose logging in the browser's console.</Helper>
+				<Toggle bind:value={debugging} on:toggle={handleInputChange} label={'Automatic Console Scrolling'}>Developer option to enable verbose logging in the browser's console.</Toggle>
 			</div>
 
 			<Button type="submit" disabled={disableButtons}>
