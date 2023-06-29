@@ -40,7 +40,7 @@
 	<title>MCSS Remote Panel | Backups Overview</title>
 </svelte:head>
 
-<section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<div class="relative overflow-x-auto shadow-md">
 		<PageTitleBanner title="Backups Overview" caption="l.">
 			<button
@@ -76,7 +76,7 @@
 							<td class="px-6 py-4">
 								<Icon data={backup.deleteOldBackups ? mdiCheck : mdiClose} class="{backup.deleteOldBackups ? 'text-green-400' : 'text-red-400'} " />
 							</td>
-							<td class="px-6 py-4"></td>
+							<td class="px-6 py-4" />
 							<td class="px-6 py-4">{new Date(backup.compression).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4">{new Date(backup.completedAt).toLocaleString(navigator.language)}</td>
 							<td class="flex items-center px-6 py-4 space-x-3">

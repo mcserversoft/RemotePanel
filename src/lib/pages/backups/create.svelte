@@ -20,8 +20,7 @@
 	<title>MCSS Remote Panel | Backups Overview</title>
 </svelte:head>
 
-<!-- <section class="pt-1 min-h-screen dark:bg-gray-900 dark:text-white"> -->
-<section class="min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<div class="relative overflow-x-auto shadow-md">
 		<div class="mt-9">
 			<Breadcrumb />

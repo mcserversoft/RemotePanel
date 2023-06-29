@@ -9,6 +9,13 @@
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
 
+	export let fillScreen: boolean = false;
+
+	export function refreshConsole() {
+		const serverId = get(selectedServerId);
+		reloadConsole(serverId);
+	}
+
 	let loadingConsole: boolean;
 	let serverConsole: string[] = [];
 	let consoleInput: string;
@@ -112,7 +119,7 @@
 		$settings.chatModeConsole = !get(settings).chatModeConsole;
 	}
 
-	//TODO FUTURE add console features: reload, clear, download
+	//FUTURE add console features: reload, clear, download
 </script>
 
 <div class="w-full border border-b-0 border-gray-200 rounded-b-none rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -139,7 +146,7 @@
 	<div class="bg-white rounded-b-lg dark:bg-gray-800">
 		<!-- don't put tabs before </textarea> -->
 		<!-- this messes up the isServerConsoleOutdated check -->
-		<textarea bind:this={textarea} readonly class="block w-full h-96 md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
+		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'}  md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
 	</div>
 </div>
 

@@ -9,7 +9,7 @@
 	<title>MCSS Remote Panel | About</title>
 </svelte:head>
 
-<section class="py-24 min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<div class="mx-auto text-center">
 		<Logo height="72" width="72" className="mx-auto" />
 		<h1 class="text-3xl font-bold py-1">MCSS Remote Panel <span class="text-lg">v{version}</span></h1>

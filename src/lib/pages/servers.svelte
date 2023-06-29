@@ -76,7 +76,7 @@
 	<title>MCSS Remote Panel | Servers</title>
 </svelte:head>
 
-<section class="min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<!-- <section class="min-h-screen dark:bg-gray-900 dark:text-white"> -->
 	<div class="relative overflow-x-auto">
 		<PageTitleBanner title="Servers" caption="General overview of all servers.">

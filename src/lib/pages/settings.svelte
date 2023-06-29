@@ -88,7 +88,7 @@
 	<title>MCSS Remote Panel | Settings</title>
 </svelte:head>
 
-<section class="py-12 min-h-screen">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white py-12">
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how this panel interacts with the MCSS API, these settings are only stored in this browser.</p>

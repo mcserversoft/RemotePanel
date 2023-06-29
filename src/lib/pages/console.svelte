@@ -1,18 +1,14 @@
 <script lang="ts">
-	import { fetchServers, getSelectedServer, selectedServerId } from '$lib/code/api';
+	import { getSelectedServer, selectedServerId } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Console from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { mdiRefresh } from '@mdi/js';
-	import { getFriendlyStatusName } from '$lib/code/shared';
-	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
-	import Statistics from '$lib/components/server/statistics.svelte';
 	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 
 	let console: any;
 
 	function handleRefreshButton() {
-		fetchServers();
 		console.refreshConsole();
 	}
 </script>
@@ -35,25 +31,16 @@
 			>
 				<Icon data={mdiRefresh} size={5} />
 			</button>
-			<span class="sr-only">Reload UI</span>
-		</div>
-		<div class="self-center">
-			{#key $selectedServerId}
-				{#if hasPermission(Permission.useServerActions, $selectedServerId)}
-					<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
-				{/if}
-			{/key}
+			<span class="sr-only">Reload Console</span>
 		</div>
 	</div>
 
 	{#if $selectedServerId}
 		{#key $selectedServerId}
-			{#if hasPermission(Permission.viewStats, $selectedServerId)}
-				<Statistics />
-			{/if}
-
 			{#if hasPermission(Permission.viewConsole, $selectedServerId)}
-				<Console bind:this={console} />
+				<Console bind:this={console} fillScreen={true} />
+			{:else}
+				<p>You don't have permission to view the console.</p>
 			{/if}
 		{/key}
 	{:else}

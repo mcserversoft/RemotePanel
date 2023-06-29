@@ -28,13 +28,6 @@
 
 	function createUser() {
 		// TODO fix bug where perms are all false when only clicking on the server checkbox
-		console.log('TODO create user');
-		console.log(username);
-		console.log(password);
-		console.log(isAdmin);
-		console.log(isEnabled);
-		console.log(customServerPermissions);
-		console.log(!isCustomServerSelected);
 
 		let newUser: NewPanelUser = {
 			username: username,
@@ -65,7 +58,7 @@
 	<title>MCSS Remote Panel | Users Overview</title>
 </svelte:head>
 
-<section class="min-h-screen dark:bg-gray-900 dark:text-white">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<Breadcrumb
 		icon={mdiAccountMultiple}
 		items={[
