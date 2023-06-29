@@ -27,8 +27,6 @@
 	}
 
 	function createUser() {
-		// TODO fix bug where perms are all false when only clicking on the server checkbox
-
 		let newUser: NewPanelUser = {
 			username: username,
 			password: password,

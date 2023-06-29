@@ -34,7 +34,10 @@
 	}
 
 	// reactivity incase the theme is toggled from the side nav
-	$: selectedTheme = $settings.panelTheme;
+	$: handleThemeChange.bind($settings.panelTheme)();
+	function handleThemeChange() {
+		selectedTheme = $settings.panelTheme;
+	}
 
 	function handleInputChange() {
 		inputErrorServersRefreshRate = !(serversRefreshRate >= 1 && serversRefreshRate <= 3600);
@@ -99,7 +102,6 @@
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<Label>
 					Panel Theme
-					<!--TODO this is broken-->
 					<Select class="mt-2" items={themeOptions} bind:value={selectedTheme} on:input={handleInputChange} />
 				</Label>
 				<p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Choose between light or dark. You can also use the theme defined by your system.</p>
