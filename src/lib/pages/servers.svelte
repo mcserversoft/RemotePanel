@@ -53,6 +53,10 @@
 	function getCommonServerIds(servers: Server[], selectedIds: string[]): string[] {
 		return servers.filter((s) => selectedIds.includes(s.serverId)).map((s) => s.serverId);
 	}
+
+	function handleEditServer(serverId: string) {
+		navigateToPage(Page.ServerEdit, serverId);
+	}
 </script>
 
 <svelte:head>
@@ -198,7 +202,7 @@
 								<!-- <td class="px-3"> -->
 								<!-- <div class="flex flex-col font-medium"> -->
 								<div class=" font-medium">
-									<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline"><Icon data={mdiPencil} /></button>
+									<button on:click={() => handleEditServer(serverId)} class="text-blue-600 dark:text-blue-500 hover:underline"><Icon data={mdiPencil} /></button>
 									<!-- <button on:click={() => confirm(`WIP: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button> -->
 									<!-- <button on:click={() => confirm(`WIP: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button> -->
 								</div>

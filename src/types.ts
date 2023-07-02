@@ -33,6 +33,17 @@ export interface IServerPermission {
     useServerActions: boolean;
 }
 
+
+export interface IServerSettings {
+    name: string;
+    description: string;
+    isSetToAutoStart: boolean;
+    forceSaveOnStop: boolean;
+    javaAllocatedMemory: number;
+    keepOnline: KeepOnline;
+}
+
+
 export interface Stats {
     cpu: number;
     memory: Memory;
@@ -54,6 +65,11 @@ export enum Filter {
     None,
     Minimal,
     Status
+}
+export enum KeepOnline {
+    None,
+    Elevated,
+    Aggressive
 }
 
 export enum ServerAction {
@@ -77,6 +93,7 @@ export enum Page {
     Dashboard,
     Donate,
     Servers,
+    ServerEdit,
     Settings,
     Users,
     UsersCreate,

@@ -20,7 +20,8 @@ import type {
     Server,
     Stats,
     ServerAction,
-    NewPanelUser
+    NewPanelUser,
+    IServerSettings
 } from '../../types';
 import { Filter } from '../../types';
 
@@ -78,6 +79,48 @@ export function fetchServers(filter: Filter = Filter.None): void {
         })
 
     isLoadingServers.set(false);
+}
+
+export function getServer(serverId: string, report: (wasSuccess: boolean, server: IServerSettings) => void) {
+    axiosClient().get(`/api/v2/servers/${serverId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("getServer:")
+                console.log(response?.data)
+            }
+
+            report(true, response?.data ?? null);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get server with id: ${serverId} Error: ${error}`)
+            report(false, null);
+        })
+}
+
+export function putServerSettings(serverId: string, settings: IServerSettings, report: (wasSuccess: boolean) => void) {
+    axiosClient().put(`/api/v2/servers/${serverId}`, JSON.stringify(settings))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("putServerSettings:")
+                console.log(response?.data)
+            }
+
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save settings of server with id: ${serverId} Error: ${error}`)
+            report(false);
+        })
 }
 
 export async function sendServerAction(serverId: string, action: string) {

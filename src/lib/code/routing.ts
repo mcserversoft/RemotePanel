@@ -5,7 +5,13 @@ import { Page } from '../../types';
 export const baseUrl = '';
 
 export const selectedPage = persisted('selectedPage', Page.Dashboard);
+export const selectedPageProps = persisted('selectedPageProps', null);
 
 export function navigateToPage(pageName: Page) {
+export function navigateToPage(pageName: Page, props: any = null) {
     selectedPage.set(pageName);
+
+    if (props) {
+        selectedPageProps.set(props);
+    }
 }

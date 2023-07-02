@@ -12,6 +12,7 @@
 	import ConsolePage from '$lib/pages/console.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
 	import ServersPage from '$lib/pages/servers.svelte';
+	import ServerEditPage from '$lib/pages/server/edit.svelte';
 	import SettingsPage from '$lib/pages/settings.svelte';
 	import UsersOverviewPage from '$lib/pages/users/overview.svelte';
 	import UsersCreatePage from '$lib/pages/users/create.svelte';
@@ -67,6 +68,8 @@
 				<DonatePage />
 			{:else if $selectedPage == Page.Servers}
 				<ServersPage />
+			{:else if $selectedPage == Page.ServerEdit}
+				<ServerEditPage />
 			{:else if $selectedPage == Page.Settings}
 				<SettingsPage />
 			{:else if $selectedPage == Page.Users}
