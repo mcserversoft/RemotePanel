@@ -3,7 +3,7 @@
 	import { navigateToPage } from '$lib/code/routing';
 	import { servers, isLoadingServers, selectedServerId, sendMassServerAction, fetchServers } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown } from '@mdi/js';
+	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
@@ -182,19 +182,25 @@
 										<Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" />
 									</Button>
 									<Dropdown>
-										<!--TODO pages-->
-										<DropdownItem class="block lg:hidden text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Dashboard</DropdownItem>
-										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}>View Console</DropdownItem>
-										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
-										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
-										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
+										<DropdownItem class="block lg:hidden text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}>View Dashboard</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
+										<!--TODO other pages-->
+										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Settings</DropdownItem> -->
+										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Backups</DropdownItem> -->
+										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Scheduler</DropdownItem> -->
 									</Dropdown>
 								</div>
 							</td>
-							<td class="px-3">
-								<div class="flex flex-col font-medium">
-									<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-									<button on:click={() => confirm(`TODO: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
+							<td class="px-3 text-center">
+								<!-- FUTURE add delete option (uncomment commented code) -->
+								<!-- atm it doesn't make sense to be able to delete servers when you can't remotely create them -->
+
+								<!-- <td class="px-3"> -->
+								<!-- <div class="flex flex-col font-medium"> -->
+								<div class=" font-medium">
+									<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline"><Icon data={mdiPencil} /></button>
+									<!-- <button on:click={() => confirm(`WIP: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button> -->
+									<!-- <button on:click={() => confirm(`WIP: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button> -->
 								</div>
 							</td>
 						</tr>

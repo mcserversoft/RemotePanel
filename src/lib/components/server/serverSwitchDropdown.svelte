@@ -48,6 +48,7 @@
 	>
 		<div class="flex items-center space-x-2 text-lg font-semibold truncate text-zinc-100">
 			<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
+			<!-- TODO fix server name overflow -->
 			<span>{$getSelectedServer?.name}</span>
 		</div>
 		<Icon data={mdiMenuDown} size={5} class="" />

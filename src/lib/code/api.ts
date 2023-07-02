@@ -30,7 +30,7 @@ export const isLoadingServers = writable(false);
 
 // global persistent store
 
-//TODO add global caching store to reduce requests
+//FUTURE add global caching store to reduce requests
 export const servers = persisted<Server[]>('servers', new Array<Server>());
 export const selectedServerId = persisted('selectedServerId', '');
 
