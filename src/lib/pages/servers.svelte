@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
+	import { derived, writable } from 'svelte/store';
 	import { navigateToPage } from '$lib/code/routing';
 	import { servers, isLoadingServers, selectedServerId, sendMassServerAction, fetchServers } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
@@ -12,10 +12,13 @@
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 
 	let selection: any = [];
-
-	let searchTerm: string;
-	const serverList = $servers;
-	let filteredServers = serverList;
+	const searchTerm = writable('');
+	const filteredServers = derived([searchTerm, servers], ([$term, $servers]) =>
+		$servers.filter((server) => {
+			let searchableProperties = (server.name + server.description + server.type).toLowerCase();
+			return searchableProperties.includes($term.toLowerCase());
+		})
+	);
 
 	function changeSelectedServer(serverId: string) {
 		if (!serverId) {
@@ -26,25 +29,20 @@
 	}
 
 	function toggleAll(e: any) {
-		selection = e.target.checked ? [...filteredServers.map((x) => x.serverId)] : [];
+		selection = e.target.checked ? [...$filteredServers.map((x) => x.serverId)] : [];
 	}
 
-	// function handleRefreshButton() {
-	// 	//fetchServers();
-
-	// 	resetSelection();
-	// 	resetSearch();
-	// }
+	// function handleRefreshButton() {}
 
 	function handleMassAction(action: ServerAction) {
 		// when search is active, we only want to get the selected searched results
-		let servers = getCommonServerIds(filteredServers, selection);
+		let servers = getCommonServerIds($filteredServers, selection);
+
 		sendMassServerAction(servers, action, (wasSuccess: boolean) => {
 			if (!wasSuccess) {
 				confirm('Something went wrong triggering the server action.');
 			}
 		});
-
 		resetSelection();
 	}
 
@@ -52,25 +50,9 @@
 		selection = [];
 	}
 
-	function resetSearch() {
-		searchTerm = '';
-		filterServers();
-	}
-
 	function getCommonServerIds(servers: Server[], selectedIds: string[]): string[] {
 		return servers.filter((s) => selectedIds.includes(s.serverId)).map((s) => s.serverId);
 	}
-
-	function handleSearch() {
-		filterServers();
-	}
-
-	const filterServers = () => {
-		return (filteredServers = serverList.filter((server) => {
-			let searchableProperties = server.name.toLowerCase() + server.description.toLowerCase() + server.type.toLowerCase();
-			return searchableProperties.includes(searchTerm.toLowerCase());
-		}));
-	};
 </script>
 
 <svelte:head>
@@ -89,8 +71,7 @@
 					</div>
 					<form on:submit|preventDefault>
 						<input
-							bind:value={searchTerm}
-							on:input={handleSearch}
+							bind:value={$searchTerm}
 							type="text"
 							id="search-servers"
 							class="block w-full p-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -132,7 +113,7 @@
 								<input
 									id="checkbox-all-search"
 									on:change={toggleAll}
-									checked={selection.length === filteredServers.length}
+									checked={selection.length === $filteredServers.length}
 									type="checkbox"
 									class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 								/>
@@ -156,9 +137,9 @@
 					<col width="0%" />
 				</colgroup>
 				<tbody class="bg-white dark:bg-gray-800">
-					{#each filteredServers || [] as { serverId, name, description, status, creationDate }}
+					{#each $filteredServers || [] as { serverId, name, description, status, creationDate }}
 						<tr>
-							<td class="w-4 p-2 xl:p-4">
+							<td class="w-4 p-4">
 								<div class="flex items-center">
 									<input
 										id="checkbox-table-search-1"
@@ -179,7 +160,6 @@
 								<p class="text-sm italic font-light truncate">{description ? description : ' No description for this server.'}</p>
 							</td>
 							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell">
-								<!-- TODO auto update status -->
 								<StatusIndicator {status} />
 							</td>
 							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell">
