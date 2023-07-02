@@ -141,7 +141,7 @@
 						</th>
 						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4">Details</th>
 						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell text-center">Status</th>
-						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden lg:table-cell text-center">Created</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell text-center">Created</th>
 						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 text-center">Shortcuts</th>
 						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 text-center">Actions</th>
 					</tr>
@@ -179,32 +179,32 @@
 								<p class="text-sm italic font-light truncate">{description ? description : ' No description for this server.'}</p>
 							</td>
 							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell">
-								<!-- TODO, what does this comment mean? -->
-								<!-- auto update status -->
+								<!-- TODO auto update status -->
 								<StatusIndicator {status} />
 							</td>
-							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden lg:table-cell">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell">
 								<div class="whitespace-pre-wrap xl:whitespace-nowrap">
 									{new Date(creationDate).toLocaleString(navigator.language)}
 								</div>
 							</td>
-							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 text-center">
 								<div class="inline-flex rounded-md shadow-sm" role="group">
 									<button
 										type="button"
 										on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}
-										class="px-2 py-1 xl:px-4 xl:py-2 text-xs xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+										class="px-2 py-1 xl:px-4 xl:py-2 hidden lg:block text-xs xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 									>
 										View Dashboard
 									</button>
 									<Button
-										btnClass="px-2 py-2 text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+										btnClass="px-2 py-2 text-gray-900 bg-white border border-gray-200 rounded-md lg:rounded-l-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 									>
-										<Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" /></Button
-									>
+										<Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" />
+									</Button>
 									<Dropdown>
 										<!--TODO pages-->
-										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
+										<DropdownItem class="block lg:hidden text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Dashboard</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}>View Console</DropdownItem>
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
