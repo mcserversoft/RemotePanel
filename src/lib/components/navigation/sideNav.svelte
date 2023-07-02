@@ -14,9 +14,10 @@
 	let isOpen = false;
 	let wasOpenBeforeAutoClose = true;
 	let screenWidth: any;
+	const mobileScreenWidthBreakpoint = 767;
 
 	// run on screenWidth update
-	$: if (screenWidth > 767) {
+	$: if (screenWidth > mobileScreenWidthBreakpoint) {
 		// open menu on big screens
 		isOpen = true;
 	} else {
@@ -29,6 +30,14 @@
 	function toggle() {
 		wasOpenBeforeAutoClose = isOpen;
 		isOpen = !isOpen;
+	}
+
+	function handleNavigationRequest(page: Page) {
+		navigateToPage(page);
+
+		if (screenWidth < mobileScreenWidthBreakpoint) {
+			isOpen = false;
+		}
 	}
 </script>
 
@@ -52,7 +61,7 @@
 			<div class="flex items-center justify-start">
 				<UserDropdown>
 					<span class="sr-only">Open user menu</span>
-					<!--TODO avatar-->
+					<!--TODO avatar (server side stored settings)-->
 					<img class="w-8 h-8 rounded-full" src="http://127.0.0.1:5173/fire_avatar.png" alt="user avatar" />
 				</UserDropdown>
 			</div>
@@ -64,13 +73,13 @@
 	<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
 		<div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
 			<ul class="space-y-2 font-medium">
-				<NavItem on:click={() => navigateToPage(Page.Servers)} name="Servers" isActive={$selectedPage == Page.Servers}>
+				<NavItem on:click={() => handleNavigationRequest(Page.Servers)} name="Servers" isActive={$selectedPage == Page.Servers}>
 					<Icon data={mdiLayers} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 			</ul>
 
 			<ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-				<NavItem on:click={() => navigateToPage(Page.Dashboard)} name="Dashboard" isActive={$selectedPage == Page.Dashboard}>
+				<NavItem on:click={() => handleNavigationRequest(Page.Dashboard)} name="Dashboard" isActive={$selectedPage == Page.Dashboard}>
 					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<!--TODO other pages-->
@@ -117,7 +126,7 @@
 				</NavDropdown> 
 				-->
 
-				<NavItem on:click={() => navigateToPage(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
+				<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
 					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<!-- 

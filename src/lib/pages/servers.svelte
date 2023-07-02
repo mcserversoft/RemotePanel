@@ -139,11 +139,11 @@
 								<label for="checkbox-all-search" class="sr-only">checkbox</label>
 							</div>
 						</th>
-						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4">Details</th>
-						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 hidden md:table-cell text-center">Status</th>
-						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 hidden lg:table-cell text-center">Created</th>
-						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 text-center">Shortcuts</th>
-						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 text-center">Actions</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4">Details</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell text-center">Status</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden lg:table-cell text-center">Created</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 text-center">Shortcuts</th>
+						<th scope="col" class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 text-center">Actions</th>
 					</tr>
 				</thead>
 				<!-- this colgroup HACK prevents the overflow of name & description td -->
@@ -170,7 +170,7 @@
 									<label for="checkbox-table-search-1" class="sr-only">checkbox</label>
 								</div>
 							</td>
-							<td class="px-3 py-2 xl:px-6 xl:py-4 overflow-hidden max-w-[1px] font-medium text-ellipsis text-gray-900 dark:text-white">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 overflow-hidden max-w-[1px] font-medium text-ellipsis text-gray-900 dark:text-white">
 								<span class="flex space-x-3">
 									<p class="text-sm font-medium truncate">{name}</p>
 									<StatusIndicator class="block md:hidden" {status} />
@@ -178,17 +178,17 @@
 
 								<p class="text-sm italic font-light truncate">{description ? description : ' No description for this server.'}</p>
 							</td>
-							<td class="px-3 py-2 xl:px-6 xl:py-4 hidden md:table-cell">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden md:table-cell">
 								<!-- TODO, what does this comment mean? -->
 								<!-- auto update status -->
 								<StatusIndicator {status} />
 							</td>
-							<td class="px-3 py-2 xl:px-6 xl:py-4 hidden lg:table-cell">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4 hidden lg:table-cell">
 								<div class="whitespace-pre-wrap xl:whitespace-nowrap">
 									{new Date(creationDate).toLocaleString(navigator.language)}
 								</div>
 							</td>
-							<td class="px-3 py-2 xl:px-6 xl:py-4">
+							<td class="px-1 py-2 md:px-3 xl:px-6 xl:py-4">
 								<div class="inline-flex rounded-md shadow-sm" role="group">
 									<button
 										type="button"
@@ -211,7 +211,7 @@
 									</Dropdown>
 								</div>
 							</td>
-							<td>
+							<td class="px-3">
 								<div class="flex flex-col font-medium">
 									<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 									<button on:click={() => confirm(`TODO: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>

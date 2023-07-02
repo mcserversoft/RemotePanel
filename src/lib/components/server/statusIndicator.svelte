@@ -9,5 +9,7 @@
 
 <div class="flex items-center {className} {getStatusTextColor(status)}">
 	<div class="h-2.5 w-2.5 rounded-full {getStatusBgColor(status)} mr-2" />
-	{getFriendlyStatusName(status)}
+	<span class="hidden min-[500px]:block">
+		{getFriendlyStatusName(status)}
+	</span>
 </div>
