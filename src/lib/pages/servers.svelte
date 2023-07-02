@@ -9,6 +9,7 @@
 	import { Button, DropdownItem } from 'flowbite-svelte';
 	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
+	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 
 	let selection: any = [];
 
@@ -104,7 +105,7 @@
 					on:click={handleRefreshButton}
 					class="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
 				>
-					<Icon data={mdiRefresh} size={5} class="" />
+					<Icon data={mdiRefresh} size={5}  />
 				</button>
 			</div> -->
 			<div class="self-center">
@@ -122,9 +123,8 @@
 			</div>
 		</PageTitleBanner>
 
-		<!--TODO make table more mobile friendly-->
-		<div class="relative overflow-x-auto shadow-md rounded-b-none sm:rounded-lg">
-			<table class="text-sm w-full text-left text-gray-500 dark:text-gray-400">
+		<div class="relative overflow-x-auto shadow-md rounded-lg">
+			<table class="table-auto text-sm w-full text-left text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" class="p-4">
@@ -139,17 +139,26 @@
 								<label for="checkbox-all-search" class="sr-only">checkbox</label>
 							</div>
 						</th>
-						<th scope="col" class="px-6 py-3">Details</th>
-						<th scope="col" class="px-6 py-3">Status</th>
-						<th scope="col" class="px-6 py-3">Created</th>
-						<th scope="col" class="px-6 py-3">Shortcuts</th>
-						<th scope="col" class="px-6 py-3 text-center">Actions</th>
+						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4">Details</th>
+						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 hidden md:table-cell text-center">Status</th>
+						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 hidden lg:table-cell text-center">Created</th>
+						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 text-center">Shortcuts</th>
+						<th scope="col" class="px-3 py-2 xl:px-6 xl:py-4 text-center">Actions</th>
 					</tr>
 				</thead>
-				<tbody>
+				<!-- this colgroup HACK prevents the overflow of name & description td -->
+				<colgroup>
+					<col width="0%" />
+					<col width="100%" />
+					<col width="0%" />
+					<col width="0%" />
+					<col width="0%" />
+					<col width="0%" />
+				</colgroup>
+				<tbody class="bg-white dark:bg-gray-800">
 					{#each filteredServers || [] as { serverId, name, description, status, creationDate }}
-						<tr class="bg-white dark:bg-gray-800">
-							<td class="w-4 p-4">
+						<tr>
+							<td class="w-4 p-2 xl:p-4">
 								<div class="flex items-center">
 									<input
 										id="checkbox-table-search-1"
@@ -161,26 +170,30 @@
 									<label for="checkbox-table-search-1" class="sr-only">checkbox</label>
 								</div>
 							</td>
-							<td class="max-w-xs px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-								<div class="flex-col">
+							<td class="px-3 py-2 xl:px-6 xl:py-4 overflow-hidden max-w-[1px] font-medium text-ellipsis text-gray-900 dark:text-white">
+								<span class="flex space-x-3">
 									<p class="text-sm font-medium truncate">{name}</p>
-									<p class="text-sm italic font-light truncate">{description ? description : ' No description for this server.'}</p>
-								</div>
+									<StatusIndicator class="block md:hidden" {status} />
+								</span>
+
+								<p class="text-sm italic font-light truncate">{description ? description : ' No description for this server.'}</p>
 							</td>
-							<td class="px-6 py-4">
+							<td class="px-3 py-2 xl:px-6 xl:py-4 hidden md:table-cell">
+								<!-- TODO, what does this comment mean? -->
 								<!-- auto update status -->
-								<div class="flex items-center {getStatusTextColor(status)}">
-									<div class="h-2.5 w-2.5 rounded-full {getStatusBgColor(status)} mr-2" />
-									{getFriendlyStatusName(status)}
+								<StatusIndicator {status} />
+							</td>
+							<td class="px-3 py-2 xl:px-6 xl:py-4 hidden lg:table-cell">
+								<div class="whitespace-pre-wrap xl:whitespace-nowrap">
+									{new Date(creationDate).toLocaleString(navigator.language)}
 								</div>
 							</td>
-							<td class="px-6 py-4">{new Date(creationDate).toLocaleString(navigator.language)}</td>
-							<td class="px-6 py-4">
+							<td class="px-3 py-2 xl:px-6 xl:py-4">
 								<div class="inline-flex rounded-md shadow-sm" role="group">
 									<button
 										type="button"
 										on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}
-										class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+										class="px-2 py-1 xl:px-4 xl:py-2 text-xs xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 									>
 										View Dashboard
 									</button>
@@ -191,20 +204,22 @@
 									>
 									<Dropdown>
 										<!--TODO pages-->
-										<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
-										<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
-										<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
-										<DropdownItem on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Settings</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Scheduler</DropdownItem>
 									</Dropdown>
 								</div>
 							</td>
-							<td class="px-6 py-4 space-x-3 font-medium text-center">
-								<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-								<button on:click={() => confirm(`TODO: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
+							<td>
+								<div class="flex flex-col font-medium">
+									<button on:click={() => confirm(`TODO: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+									<button on:click={() => confirm(`TODO: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button>
+								</div>
 							</td>
 						</tr>
 					{:else}
-						<tr class="bg-white dark:bg-gray-800">
+						<tr>
 							{#if $isLoadingServers}
 								<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
 							{:else}
