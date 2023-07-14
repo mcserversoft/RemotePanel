@@ -16,6 +16,7 @@
 	import SettingsPage from '$lib/pages/settings.svelte';
 	import UsersOverviewPage from '$lib/pages/users/overview.svelte';
 	import UsersCreatePage from '$lib/pages/users/create.svelte';
+	import UsersEditPage from '$lib/pages/users/edit.svelte';
 	import OfflineWarning from '$lib/components/offlineWarning.svelte';
 	import SideNav from '$lib/components/navigation/sideNav.svelte';
 	import { Page } from '../types';
@@ -76,6 +77,8 @@
 				<UsersOverviewPage />
 			{:else if $selectedPage == Page.UsersCreate}
 				<UsersCreatePage />
+			{:else if $selectedPage == Page.UsersEdit}
+				<UsersEditPage />
 			{/if}
 		</div>
 

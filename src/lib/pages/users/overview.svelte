@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
-	import { deletePanelUser, fetchPanelUsers, servers } from '$lib/code/api';
+	import { deletePanelUser, fetchPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type PanelUser } from '../../../types';
+	import { Page, type IPanelUser } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { onMount } from 'svelte';
 
-	let users: PanelUser[] = [];
+	let users: IPanelUser[] = [];
 	let isLoading = true;
 
 	onMount(async () => {
@@ -17,8 +17,10 @@
 
 	function load() {
 		fetchPanelUsers(
-			(data: PanelUser[]) => {
+			(data: IPanelUser[]) => {
 				users = data;
+
+				console.log(users);
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
@@ -32,9 +34,8 @@
 		load();
 	}
 
-	//TODO handleEditPanelUser
-	function handleEditPanelUser() {
-		console.log('edit');
+	function handleEditPanelUser(userId: string) {
+		navigateToPage(Page.UsersEdit, userId);
 	}
 
 	function handleDeletePanelUser(e: any) {
@@ -109,12 +110,13 @@
 							</td>
 							<td class="px-6 py-4">
 								<!--FUTURE hover dialog with more info? -->
-								<span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{user.hasAccessToAllServers ? 'All' : Object.keys(user.customServerPermissions).length}</span>
+								<!-- <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{user.serverAccessDetails?.hasAccessToAllServers ? 'All' : Object.keys(user.serverAccessDetails?.serverPermissions ?? 0).length}</span> -->
+								<span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{user.serverAccessDetails?.hasAccessToAllServers ? 'All' : user.serverAccessDetails?.getCustomServerCount()}</span>
 							</td>
 							<td class="px-6 py-4">{new Date(user.lastModifiedAt).toLocaleString(navigator.language)}</td>
 							<td class="px-6 py-4">{new Date(user.createdAt).toLocaleString(navigator.language)}</td>
 							<td class="flex px-6 py-4 space-x-3">
-								<form on:submit|preventDefault={handleEditPanelUser}>
+								<form on:submit|preventDefault={() => handleEditPanelUser(user.userId)}>
 									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 								</form>
 								<form on:submit|preventDefault={handleDeletePanelUser}>

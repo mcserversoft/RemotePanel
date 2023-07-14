@@ -1,49 +1,55 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { mdiAccountMultiple, mdiAccountPlus, mdiArrowULeftTop, mdiRefreshCircle } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, type INewPanelUser, ServerAccessDetails } from '../../../types';
-	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import { Page, type IPanelUser, ServerAccessDetails } from '../../../types';
 	import { getRandomPassword } from '$lib/code/shared';
-	import { createPanelUser } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
-	import Input from '$lib/components/elements/input.svelte';
+	import { getPanelUser } from '$lib/code/api';
+	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
 
 	let username: string;
 	let password: string;
+	let passwordConfirm: string;
 	let isAdmin: boolean = false;
 	let isEnabled: boolean = true;
-	let hasAccessToAllServers: boolean = false;
-	let serverAccessDetails: ServerAccessDetails = new ServerAccessDetails();
+	let serverAccessDetails: ServerAccessDetails;
 
-	function generateRandomPassword() {
-		password = getRandomPassword();
+	onMount(async () => {
+		load();
+	});
+
+	function load() {
+		let userId = get(selectedPageProps) ?? '';
+		getUser(userId);
 	}
 
-	function createUser() {
-		let newUser: INewPanelUser = {
-			username: username,
-			password: password,
-			passwordRepeat: password,
-			isAdmin: isAdmin,
-			enabled: isEnabled,
-			hasAccessToAllServers: hasAccessToAllServers,
-			serverAccessDetails: serverAccessDetails
-		};
-
-		createPanelUser(newUser, (wasSuccess: boolean) => {
-			if (wasSuccess) {
-				confirm(`User '${username}' was successfully created.`);
+	function getUser(userId: string) {
+		getPanelUser(userId, (wasSuccess: boolean, user: IPanelUser) => {
+			if (!wasSuccess) {
+				confirm(`Unable to load this page, does the user exist?`);
 				navigateBack();
 			} else {
-				confirm(`Failed to create user '${username}'.`);
+				username = user.username;
+				isAdmin = user.isAdmin;
+				isEnabled = user.enabled;
+				serverAccessDetails = user.serverAccessDetails;
 			}
 		});
+	}
+
+	function updateUser() {
+		//TODO updateUser
+	}
+
+	function generateRandomPassword() {
+		password = passwordConfirm = getRandomPassword();
 	}
 
 	function navigateBack() {
@@ -60,15 +66,13 @@
 		icon={mdiAccountMultiple}
 		items={[
 			{ name: 'Users', page: Page.Users, isClickable: true },
-			{ name: 'Create', page: Page.Empty, isClickable: false }
+			{ name: 'Edit', page: Page.Empty, isClickable: false }
 		]}
 	/>
 
-	<PageTitleBanner title="Add User" caption="Create a new user for the remote web panel." />
+	<PageTitleBanner title="Edit User" caption="You are modifying user: '{username}'." />
 
-	<form on:submit|preventDefault={createUser} class="space-y-3">
-		<Input bind:value={username} label={'Username'} type={'text'} placeholder={'Username'} required={true} />
-
+	<form on:submit|preventDefault={updateUser} class="space-y-3">
 		<div class="flex relative">
 			<PeekableInput bind:value={password} label={'Password'} placeholder={'••••••••••••••••••'} required={true} class="mr-12" />
 			<div class="absolute bottom-0 right-0">
@@ -80,24 +84,22 @@
 			</div>
 		</div>
 
-		<div class="py-5">
+		<div class="flex relative">
+			<PeekableInput bind:value={passwordConfirm} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={true} />
+		</div>
+
+		<div class="py-6">
 			<ServerPermSelector {serverAccessDetails} />
 		</div>
 
-		<div class="pb-3">
-			<Toggle bind:value={isAdmin} label={'Assign admin rights'}>
-				Grant this user
-				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
-			</Toggle>
-
-			<Toggle bind:value={isEnabled} label={'Enabled'}>
-				<p class=" text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
-			</Toggle>
+		<div class="flex space-x-2 pb-6">
+			<Toggle bind:value={isEnabled} label={'Enabled'} />
+			<Toggle bind:value={isAdmin} label={'Admin rights'} />
 		</div>
 
 		<div class="flex space-x-3">
 			<Button type="submit">
-				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Create User
+				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Save User
 			</Button>
 			<Button type="button" on:click={navigateBack} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel

@@ -10,12 +10,7 @@ export class Server implements IServer {
     serverPermissions = new Array<Permission>();
 }
 
-export class ServerPermission implements IServerPermission {
-    viewStats = false;
-    viewConsole = false;
-    useConsole = false;
-    useServerActions = false;
-}
+
 
 export interface IServer {
     serverId: string;
@@ -26,12 +21,6 @@ export interface IServer {
     serverPermissions: Permission[];
 }
 
-export interface IServerPermission {
-    viewStats: boolean;
-    viewConsole: boolean;
-    useConsole: boolean;
-    useServerActions: boolean;
-}
 
 
 export interface IServerSettings {
@@ -97,6 +86,7 @@ export enum Page {
     Settings,
     Users,
     UsersCreate,
+    UsersEdit
 }
 
 export interface PageReference {
@@ -111,25 +101,105 @@ export interface BreadcrumbItem {
     isClickable: boolean;
 }
 
-export interface PanelUser {
+/**** NEW START ****/
+// start of the final approved/refactored code
+
+/* User */
+export interface IPanelUser {
     userId: string;
     username: string;
     enabled: boolean;
     isAdmin: boolean;
-    hasAccessToAllServers: boolean;
-    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
     createdAt: Date;
     lastModifiedAt: Date;
+    serverAccessDetails: ServerAccessDetails;
 }
 
-export interface NewPanelUser {
+export interface INewPanelUser {
     username: string;
     password: string;
     passwordRepeat: string;
     enabled: boolean;
     isAdmin: boolean;
     hasAccessToAllServers: boolean;
-    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+    serverAccessDetails: ServerAccessDetails;
+}
+
+/* User Permissions */
+export class ServerAccessDetails {
+
+    // constructor(hasAccessToAllServers: boolean, serverPermissions: ServerPermissions[]) {
+    //     // this.hasAccessToAllServers = false;
+    //     // this.serverPermissions = new Array<ServerPermissions>();
+    // }
+
+
+    //TODO take a look at this
+    // constructor() {
+    //     this.hasAccessToAllServers = false;
+    //     this.serverPermissions = new Array<ServerPermissions>();
+    // }
+    hasAccessToAllServers = false;
+    serverPermissions = new Array<ServerPermissions>();
+
+    init(hasAccessToAllServers: boolean, customServerPermissions: Record<string, Partial<ICustomServerPermission>>) {
+        this.hasAccessToAllServers = hasAccessToAllServers;
+
+        //TODO this should return all perms when hasAccessToAllServers is true (edit mcss api) 
+        // or maybe not?
+        Object.entries(customServerPermissions).forEach((perm) => {
+            this.serverPermissions.push({
+                serverId: perm[0],
+                permissions: {
+                    viewStats: perm[1]?.viewStats ?? false,
+                    viewConsole: perm[1]?.viewConsole ?? false,
+                    useConsole: perm[1]?.useConsole ?? false,
+                    useServerActions: perm[1]?.useServerActions ?? false,
+                }
+            })
+        });
+    }
+
+
+
+    getServerIds() {
+        return this.serverPermissions.map(perm => perm.serverId);
+    }
+
+    getServerPermissionIds() {
+        const truePermissions = [];
+
+        for (const permission of this.serverPermissions) {
+            const { serverId, permissions }: any = permission;
+            const trueKeys = Object.keys(permissions).filter(key => permissions[key] == true);
+
+            const formattedPermissions = trueKeys.map(key => `${serverId}-${key}`);
+            truePermissions.push(...formattedPermissions);
+        }
+
+        return truePermissions;
+    }
+
+    getCustomServerCount() {
+        return this.serverPermissions?.length;
+        //  Object.keys(user.serverAccessDetails?.serverPermissions ?? 0).length;
+    }
+
+    update(serverSelection: string[], permissionSelection: string[]) {
+        throw new Error('Method not implemented.');
+    }
+}
+
+export class ServerPermissions {
+    serverId = "";
+    permissions = new Permissions;
+}
+
+export class Permissions {
+    viewStats = false;
+    viewConsole = false;
+    useConsole = false;
+    useServerActions = false;
 }
 
 export interface ICustomServerPermission {
@@ -138,6 +208,9 @@ export interface ICustomServerPermission {
     useConsole: boolean;
     useServerActions: boolean;
 }
+
+// beyond this code block ends the final approved/refactored code
+/**** END NEW ****/
 
 export interface Backup {
     backupId: string;

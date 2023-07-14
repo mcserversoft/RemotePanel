@@ -12,18 +12,20 @@ import {
     writable
 } from 'svelte/store';
 
-import type {
-    Backup,
-    IServer,
-    Memory,
-    PanelUser,
-    Server,
-    Stats,
-    ServerAction,
-    NewPanelUser,
-    IServerSettings
+import {
+    type Backup,
+    type IServer,
+    type Memory,
+    type IPanelUser,
+    type Server,
+    type Stats,
+    type ServerAction,
+    type INewPanelUser,
+    type IServerSettings,
+    ServerAccessDetails,
 } from '../../types';
 import { Filter } from '../../types';
+import type { IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
 
 // global in-memory store
 export const isOffline = writable(false);
@@ -297,7 +299,7 @@ export function isServerConsoleOutdated(serverId: string, secondLastLine: string
         })
 }
 
-export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function fetchPanelUsers(report: (users: IPanelUser[]) => void, completed: (wasSuccess: boolean) => void): void {
     axiosClient().get(`/api/v2/users`)
         .then((response) => {
             if (response?.status !== 200) {
@@ -309,17 +311,82 @@ export function fetchPanelUsers(report: (users: PanelUser[]) => void, completed:
                 console.log(response?.data)
             }
 
-            report(response?.data ?? []);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IGetUsersListResponse;
+        })
+        .then((data) => {
+            let users: IPanelUser[] = [];
+            data.forEach((data: any) => {
+                let user: IPanelUser = {
+                    userId: data.userId,
+                    username: data.username,
+                    enabled: data.enabled,
+                    isAdmin: data.isAdmin,
+                    serverAccessDetails: new ServerAccessDetails(),
+                    createdAt: data.createdAt,
+                    lastModifiedAt: data.lastModifiedAt
+                }
+                user.serverAccessDetails.init(data.hasAccessToAllServers, data.customServerPermissions);
+                users.push(user);
+            });
+
+            report(users);
             completed(true);
         })
 
         .catch((error) => {
-            console.error(`Failed to fetch panel users with Error: ${error}`)
+            console.error(`Failed to fetch panel users with error: ${error}`)
             completed(false);
         })
 }
 
-export function createPanelUser(newUser: NewPanelUser, completed: (wasSuccess: boolean) => void) {
+export function getPanelUser(userId: string, report: (wasSuccess: boolean, user: IPanelUser) => void) {
+    axiosClient().get(`/api/v2/users/${userId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("getPanelUser:")
+                console.log(response?.data)
+            }
+
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            //TODO add DTO responses in a different class (as show below)
+            return rawResponse as IGetUserDetailsResponse;
+        })
+        .then((data) => {
+
+            console.log("data")
+            let user: IPanelUser = {
+                userId: data.userId,
+                username: data.username,
+                enabled: data.enabled,
+                isAdmin: data.isAdmin,
+                serverAccessDetails: new ServerAccessDetails(),
+                createdAt: data.createdAt,
+                lastModifiedAt: data.lastModifiedAt
+            }
+            user.serverAccessDetails.init(data.hasAccessToAllServers, data.customServerPermissions);
+            console.log("ussServers")
+            console.log(user.serverAccessDetails.hasAccessToAllServers)
+
+
+            report(true, user);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get panel user with id: ${userId} Error: ${error}`)
+            report(false, null);
+        })
+}
+
+export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: boolean) => void) {
     axiosClient().post(`/api/v2/users`, JSON.stringify(newUser))
         .then((response) => {
             if (response?.status !== 201) {

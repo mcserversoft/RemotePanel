@@ -1,36 +1,23 @@
 <script lang="ts">
-	import { onMount } from 'svelte/internal';
 	import { Button, Modal } from 'flowbite-svelte';
 	import Icon from '../elements/icon.svelte';
 	import { mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
 	import { isLoadingServers, servers } from '$lib/code/api';
 	import Spinner from '../elements/spinner.svelte';
-	import type { ICustomServerPermission } from '../../../types';
+	import type { ServerAccessDetails } from '../../../types';
 
-	export let customServerPermissions: Record<string, Partial<ICustomServerPermission>> = {};
+	export let serverAccessDetails: ServerAccessDetails;
 	export let isCustomServerSelected: boolean = false;
 
-	let permissionSelection: any = [];
-	let selection: any = [];
-	let savedSelection: any = [];
+	let permissionSelection: string[] = [];
+	let serverSelection: string[] = [];
 	let showCustomServersModal: boolean = false;
 
-	onMount(() => {
-		load();
-	});
+	$: isCustomServerSelected = !serverAccessDetails?.hasAccessToAllServers;
 
-	function load() {
-		// init if empty
-		if (Object.entries(customServerPermissions).length <= 0) {
-			$servers.forEach((server) => {
-				customServerPermissions[server.serverId] = {
-					viewStats: false,
-					viewConsole: false,
-					useConsole: false,
-					useServerActions: false
-				};
-			});
-		}
+	function loadData() {
+		serverSelection = serverAccessDetails?.getServerIds();
+		permissionSelection = serverAccessDetails?.getServerPermissionIds();
 	}
 
 	function handleModalCustomServersToggle() {
@@ -41,62 +28,40 @@
 		let checked = event.target.checked;
 
 		// toggle all
-		customServerPermissions[serverId].viewStats = checked;
-		customServerPermissions[serverId].viewConsole = checked;
-		customServerPermissions[serverId].useConsole = checked;
-		customServerPermissions[serverId].useServerActions = checked;
-
 		if (checked) {
-			permissionSelection.push('0-' + serverId);
-			permissionSelection.push('1-' + serverId);
-			permissionSelection.push('2-' + serverId);
-			permissionSelection.push('3-' + serverId);
-		} else {
-			permissionSelection.pop('0-' + serverId);
-			permissionSelection.pop('1-' + serverId);
-			permissionSelection.pop('2-' + serverId);
-			permissionSelection.pop('3-' + serverId);
-		}
+			let enabledPermissions: string[] = [];
+			enabledPermissions.push(`${serverId}-viewStats`);
+			enabledPermissions.push(`${serverId}-viewConsole`);
+			enabledPermissions.push(`${serverId}-useConsole`);
+			enabledPermissions.push(`${serverId}-useServerActions`);
 
-		// trigger reactivity
-		permissionSelection = permissionSelection;
+			permissionSelection = permissionSelection.concat(enabledPermissions);
+		} else {
+			permissionSelection = permissionSelection.filter((s) => !s.startsWith(serverId));
+		}
 	}
 
 	function handlePermissionInput(event: any, serverId: string) {
-		let value = event.target.value;
 		let checked = event.target.checked;
 
-		if (!customServerPermissions[serverId]) {
-			return;
-		}
-
-		if (value.startsWith(0)) {
-			customServerPermissions[serverId].viewStats = checked;
-		} else if (value.startsWith(1)) {
-			customServerPermissions[serverId].viewConsole = checked;
-		} else if (value.startsWith(2)) {
-			customServerPermissions[serverId].useConsole = checked;
-		} else if (value.startsWith(3)) {
-			customServerPermissions[serverId].useServerActions = checked;
+		// check if toggle is first to be checked
+		let shouldToggleParent = checked && permissionSelection.filter((s) => s.includes(serverId)).length <= 1 && !serverSelection.includes(serverId);
+		if (shouldToggleParent) {
+			serverSelection = [...serverSelection, serverId];
 		}
 	}
 
 	function handleSave() {
+		console.log('TODO handleSave');
+
 		showCustomServersModal = false;
 		isCustomServerSelected = true;
-		savedSelection = selection;
 
-		// remove non selected items
-		Object.entries(customServerPermissions).forEach((object: any) => {
-			if (!savedSelection.includes(object[0])) {
-				delete customServerPermissions[object[0]];
-			}
-		});
+		serverAccessDetails.update(serverSelection, permissionSelection);
 	}
 
 	function handleDiscard() {
 		showCustomServersModal = false;
-		selection = savedSelection;
 	}
 </script>
 
@@ -124,11 +89,11 @@
 			type="radio"
 			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 		/>
-		<label for="radio-selection-custom" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Custom ({selection.length})</label>
+		<label for="radio-selection-custom" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Custom ({serverAccessDetails?.serverPermissions?.length})</label>
 	</div>
 	<div class="flex items-center">
 		<form on:submit|preventDefault={handleModalCustomServersToggle}>
-			<button type="submit" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Set Servers</button>
+			<button type="submit" on:click={loadData} class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Set Servers</button>
 		</form>
 	</div>
 </div>
@@ -140,7 +105,7 @@
 				<label class="flex items-center p-3 text-base font-bold">
 					<input
 						id="checkbox-custom-server-{index}"
-						bind:group={selection}
+						bind:group={serverSelection}
 						on:change={(event) => handleServerSelection(event, serverId)}
 						value={serverId}
 						type="checkbox"
@@ -159,7 +124,7 @@
 							<input
 								id="checkbox-permission-view-stats-{index}-{serverId}"
 								type="checkbox"
-								value="0-{serverId}"
+								value="{serverId}-viewStats"
 								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
@@ -172,7 +137,7 @@
 							<input
 								id="checkbox-permission-view-console-{index}-{serverId}"
 								type="checkbox"
-								value="1-{serverId}"
+								value="{serverId}-viewConsole"
 								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
@@ -185,7 +150,7 @@
 							<input
 								id="checkbox-permission-use-console-{index}-{serverId}"
 								type="checkbox"
-								value="2-{serverId}"
+								value="{serverId}-useConsole"
 								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
@@ -198,7 +163,7 @@
 							<input
 								id="checkbox-permission-use-server-actions-{index}-{serverId}"
 								type="checkbox"
-								value="3-{serverId}"
+								value="{serverId}-useServerActions"
 								bind:group={permissionSelection}
 								on:change={(event) => handlePermissionInput(event, serverId)}
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
