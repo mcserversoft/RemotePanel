@@ -362,7 +362,6 @@ export function getPanelUser(userId: string, report: (wasSuccess: boolean, user:
         })
         .then((data) => {
 
-            console.log("data")
             let user: IPanelUser = {
                 userId: data.userId,
                 username: data.username,
@@ -373,9 +372,6 @@ export function getPanelUser(userId: string, report: (wasSuccess: boolean, user:
                 lastModifiedAt: data.lastModifiedAt
             }
             user.serverAccessDetails.init(data.hasAccessToAllServers, data.customServerPermissions);
-            console.log("ussServers")
-            console.log(user.serverAccessDetails.hasAccessToAllServers)
-
 
             report(true, user);
         })

@@ -13,8 +13,6 @@
 	let serverSelection: string[] = [];
 	let showCustomServersModal: boolean = false;
 
-	$: isCustomServerSelected = !serverAccessDetails?.hasAccessToAllServers;
-
 	function loadData() {
 		serverSelection = serverAccessDetails?.getServerIds();
 		permissionSelection = serverAccessDetails?.getServerPermissionIds();

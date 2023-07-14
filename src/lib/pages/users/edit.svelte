@@ -6,7 +6,7 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, type IPanelUser, ServerAccessDetails } from '../../../types';
+	import { Page, type IPanelUser, ServerAccessDetails, type INewPanelUser } from '../../../types';
 	import { getRandomPassword } from '$lib/code/shared';
 	import { getPanelUser } from '$lib/code/api';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
@@ -19,7 +19,8 @@
 	let passwordConfirm: string;
 	let isAdmin: boolean = false;
 	let isEnabled: boolean = true;
-	let serverAccessDetails: ServerAccessDetails;
+	let isCustomServerSelected: boolean = false;
+	let serverAccessDetails: ServerAccessDetails = new ServerAccessDetails();
 
 	onMount(async () => {
 		load();
@@ -40,6 +41,7 @@
 				isAdmin = user.isAdmin;
 				isEnabled = user.enabled;
 				serverAccessDetails = user.serverAccessDetails;
+				isCustomServerSelected = !user.serverAccessDetails.hasAccessToAllServers;
 			}
 		});
 	}
@@ -89,7 +91,7 @@
 		</div>
 
 		<div class="py-6">
-			<ServerPermSelector {serverAccessDetails} />
+			<ServerPermSelector {isCustomServerSelected} {serverAccessDetails} />
 		</div>
 
 		<div class="flex space-x-2 pb-6">

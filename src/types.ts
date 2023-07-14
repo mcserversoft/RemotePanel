@@ -121,7 +121,14 @@ export interface INewPanelUser {
     passwordRepeat: string;
     enabled: boolean;
     isAdmin: boolean;
-    hasAccessToAllServers: boolean;
+    serverAccessDetails: ServerAccessDetails;
+}
+
+export interface IEditPanelUser {
+    password: string;
+    passwordRepeat: string;
+    enabled: boolean;
+    isAdmin: boolean;
     serverAccessDetails: ServerAccessDetails;
 }
 
