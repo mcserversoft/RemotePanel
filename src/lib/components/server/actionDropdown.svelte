@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { clickOutside } from '$lib/code/shared';
-	import { sendServerAction, selectedServerId } from '$lib/code/api';
+	import { postServerAction } from '$lib/code/api';
 	import { ServerAction } from '../../../types';
 	import Icon from '../elements/icon.svelte';
 	import { mdiMenuDown } from '@mdi/js';
+	import { selectedServerId } from '$lib/code/global';
 
 	export let statusName: string;
 
@@ -24,7 +25,7 @@
 		if (!serverId) {
 			return;
 		}
-		sendServerAction(serverId, action.toLowerCase());
+		postServerAction(serverId, action.toLowerCase());
 	}
 </script>
 

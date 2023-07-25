@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
-	import { fetchBackups, selectedServerId } from '$lib/code/api';
+	import { getBackups } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type Backup } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { get } from 'svelte/store';
+	import { selectedServerId } from '$lib/code/global';
 
 	let backups: Backup[] = [];
 	let isLoading = true;
@@ -24,7 +25,7 @@
 			return;
 		}
 
-		fetchBackups(
+		getBackups(
 			'',
 			(data: Backup[]) => {
 				backups = data;

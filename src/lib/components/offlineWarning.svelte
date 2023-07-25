@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { isOffline } from '$lib/code/api';
 	import { mdiRefresh } from '@mdi/js';
 	import Icon from './elements/icon.svelte';
+	import { isOffline } from '$lib/code/global';
 </script>
 
 {#if $isOffline}

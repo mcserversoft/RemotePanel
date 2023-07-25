@@ -3,11 +3,12 @@
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
-	import { fetchServerConsole, isServerConsoleOutdated, selectedServerId, sendServerCommand } from '$lib/code/api';
+	import { getServerConsole, getIsServerConsoleOutdated, postServerCommand } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import { mdiBullhorn, mdiRefresh, mdiSend } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
+	import { selectedServerId } from '$lib/code/global';
 
 	export let fillScreen: boolean = false;
 
@@ -52,7 +53,7 @@
 
 		loadingConsole = true;
 
-		fetchServerConsole(
+		getServerConsole(
 			serverId,
 			(consoleLines: string[]) => {
 				serverConsole = consoleLines;
@@ -79,7 +80,7 @@
 		let secondLastLine: string = encodeURIComponent(lines[length - 1]);
 		let lastLine: string = encodeURIComponent(lines[length]);
 
-		isServerConsoleOutdated(
+		getIsServerConsoleOutdated(
 			serverId,
 			secondLastLine,
 			lastLine,
@@ -101,7 +102,7 @@
 			return;
 		}
 
-		sendServerCommand(serverId, consoleInput);
+		postServerCommand(serverId, consoleInput);
 		consoleInput = '';
 	}
 
@@ -145,7 +146,7 @@
 	</div>
 	<div class="bg-white rounded-b-lg dark:bg-gray-800">
 		<!-- don't put tabs before </textarea> -->
-		<!-- this messes up the isServerConsoleOutdated check -->
+		<!-- this messes up the getIsServerConsoleOutdated check -->
 		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'}  md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
 	</div>
 </div>

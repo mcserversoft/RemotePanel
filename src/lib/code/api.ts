@@ -1,73 +1,33 @@
 import axiosClient from '$lib/code/axiosClient';
-import {
-    hasPermission,
-    Permission
-} from '$lib/code/permissions';
+import { hasPermission, Permission } from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
-import { persisted } from 'svelte-local-storage-store';
-import {
-    derived,
-    get,
-    writable
-} from 'svelte/store';
+import { get } from 'svelte/store';
 
 import {
     type Backup,
-    type IServer,
     type Memory,
     type IPanelUser,
-    type Server,
     type Stats,
     type ServerAction,
     type INewPanelUser,
     type IServerSettings,
     ServerAccessDetails,
-    type ICustomServerPermission,
-    ServerPermissions,
     type IEditPanelUser,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
 import type { ICreateUserRequest, IUpdateUserRequest } from '../../apiRequests';
-
-// global in-memory store
-export const isOffline = writable(false);
-export const isLoadingServers = writable(false);
-
-// global persistent store
-
-//FUTURE add global caching store to reduce requests
-export const servers = persisted<Server[]>('servers', new Array<Server>());
-export const selectedServerId = persisted('selectedServerId', '');
-
-// this should maybe be moved, api should only have api stuff
-
-// global translations
-export const getSelectedServer = derived(servers, ($servers) => {
-    if ($servers) {
-        return $servers.find((s: IServer) => s.serverId == get(selectedServerId));
-    }
-    return {
-        serverId: '',
-        name: '',
-        description: '',
-        type: '',
-        status: 0,
-        permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
-    };
-})
-
-function isInDebuggingMode(): boolean {
-    return get(settings)?.debugging ?? false;
-}
+import { log } from '$lib/code/logger';
+import { isLoadingServers, isOffline, servers } from '$lib/code/global';
 
 /*
 *  API Requests
 */
-export function fetchServers(filter: Filter = Filter.None): void {
+export function getServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 
+    // no logging here on purpose, too many requests
     axiosClient().get(`/api/v2/servers?filter=${filter}`)
         .then((response) => {
             if (response?.status !== 200) {
@@ -75,9 +35,8 @@ export function fetchServers(filter: Filter = Filter.None): void {
             }
             return response.data;
         })
-
-        .then((json) => {
-            servers.set(json);
+        .then((serverDetails) => {
+            servers.set(serverDetails);
         })
         .catch((error) => {
             isOffline.set(true)
@@ -88,38 +47,38 @@ export function fetchServers(filter: Filter = Filter.None): void {
 }
 
 export function getServer(serverId: string, report: (wasSuccess: boolean, server: IServerSettings) => void) {
+    log("API Request: getServer");
     axiosClient().get(`/api/v2/servers/${serverId}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("getServer:")
-                console.log(response?.data)
-            }
-
-            report(true, response?.data ?? null);
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((serverDetails) => {
+            report(true, serverDetails);
         })
 
         .catch((error) => {
             console.error(`Failed to get server with id: ${serverId} Error: ${error}`)
+            //@ts-ignore 
             report(false, null);
         })
 }
 
-export function putServerSettings(serverId: string, settings: IServerSettings, report: (wasSuccess: boolean) => void) {
+export function editServer(serverId: string, settings: IServerSettings, report: (wasSuccess: boolean) => void) {
+    log("API Request: editServer");
     axiosClient().put(`/api/v2/servers/${serverId}`, JSON.stringify(settings))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("putServerSettings:")
-                console.log(response?.data)
-            }
-
+            log(response?.status);
+            log(response?.data);
             report(true);
         })
 
@@ -129,17 +88,21 @@ export function putServerSettings(serverId: string, settings: IServerSettings, r
         })
 }
 
-export async function sendServerAction(serverId: string, action: string) {
+export async function postServerAction(serverId: string, action: string) {
     if (!serverId || !hasPermission(Permission.useServerActions, serverId)) {
         console.log()
         return;
     }
 
+    log("API Request: postServerAction");
     axiosClient().post(`/api/v2/servers/${serverId}/execute/action`, JSON.stringify({ action: action }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
+
+            log(response?.status);
+            log(response?.data);
             return response.data;
         })
 
@@ -148,20 +111,21 @@ export async function sendServerAction(serverId: string, action: string) {
         })
 }
 
-export async function sendMassServerAction(serverIds: string[], action: ServerAction, completed: (wasSuccess: boolean) => void) {
+export async function postMassServerAction(serverIds: string[], action: ServerAction, completed: (wasSuccess: boolean) => void) {
     // we don't check perm here, the backend will do that
     if (!serverIds || serverIds.length <= 0) {
         return;
     }
 
+    log("API Request: postMassServerAction");
     axiosClient().post(`/api/v2/servers/execute/action`, JSON.stringify({ action: action, serverIds: serverIds }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
-            return response.data;
-        })
-        .then((data) => {
+
+            log(response?.status);
+            log(response?.data);
             completed(true);
         })
         .catch((error) => {
@@ -170,7 +134,7 @@ export async function sendMassServerAction(serverIds: string[], action: ServerAc
         })
 }
 
-export async function sendServerCommand(serverId: string, input: string) {
+export async function postServerCommand(serverId: string, input: string) {
     if (!serverId || !input || !hasPermission(Permission.useConsole, serverId)) {
         return;
     }
@@ -181,53 +145,56 @@ export async function sendServerCommand(serverId: string, input: string) {
         }
     }
 
-    if (isInDebuggingMode()) {
-        console.log(`[DEBUG] sendServerCommand: ${input}`)
-    }
-
+    log("API Request: postServerCommand");
     axiosClient().post(`/api/v2/servers/${serverId}/execute/command`, JSON.stringify({ command: input }))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
+
+            log(response?.status);
+            log(response?.data);
             return response.data;
         })
-
         .catch((error) => {
             console.error(`Failed to execute command: ${input} on server: ${serverId} Error: ${error}`)
         })
 }
 
-export function fetchServerStatus(serverId: string, report: (latestStats: Stats) => void, completed: (wasSuccess: boolean) => void): void {
+export function getServerStatus(serverId: string, report: (latestStats: Stats) => void, completed: (wasSuccess: boolean) => void): void {
     if (!serverId || !hasPermission(Permission.viewStats, serverId)) {
         return;
     }
 
+    log("API Request: getServerStatus");
     axiosClient().get(`/api/v2/servers/${serverId}/stats`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
-            return response?.data?.latest;
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data?.latest ?? {};
         })
-        .then((data) => {
+        .then((latestStats) => {
             const memory: Memory = {
-                current: data.memoryUsed ?? 0,
-                max: data.memoryLimit ?? 0,
-                free: (data.max - data.current),
+                current: latestStats.memoryUsed ?? 0,
+                max: latestStats.memoryLimit ?? 0,
+                free: (latestStats.max - latestStats.current),
                 percentageFree: 0
             }
             memory.percentageFree = Math.round((memory.current / memory.max) * 100);
 
             const stats: Stats = {
-                cpu: data.cpu ?? 0,
+                cpu: latestStats.cpu ?? 0,
                 memory: memory,
-                playersOnline: data.playersOnline ?? 0,
-                playerLimit: data.playerLimit ?? 0,
+                playersOnline: latestStats.playersOnline ?? 0,
+                playerLimit: latestStats.playerLimit ?? 0,
 
-                uptime: calculateUptime(data.startDate),
-                startDateUnix: data.startDate,
-                startDate: new Date(data.startDate * 1000).toLocaleString(window.navigator.language, {
+                uptime: calculateUptime(latestStats.startDate),
+                startDateUnix: latestStats.startDate,
+                startDate: new Date(latestStats.startDate * 1000).toLocaleString(window.navigator.language, {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -236,21 +203,16 @@ export function fetchServerStatus(serverId: string, report: (latestStats: Stats)
                 })
             }
 
-            if (isInDebuggingMode()) {
-                console.log(`[DEBUG] fetchServerStatus: ${data}`)
-            }
-
-            report(stats ?? false);
+            report(stats);
             completed(true);
         })
-
         .catch((error) => {
             console.error(`Failed to check if console is outdated on server: ${serverId} Error: ${error}`)
             completed(false);
         })
 }
 
-export function fetchServerConsole(serverId: string, report: (consoleLines: string[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getServerConsole(serverId: string, report: (consoleLines: string[]) => void, completed: (wasSuccess: boolean) => void): void {
     if (!serverId || !hasPermission(Permission.viewConsole, serverId)) {
         return;
     }
@@ -258,63 +220,63 @@ export function fetchServerConsole(serverId: string, report: (consoleLines: stri
     const amountOfConsoleLines = get(settings)?.amountOfConsoleLines ?? 50;
     const reverseConsoleLines = get(settings)?.reverseConsoleLines ?? false;
 
+    log("API Request: getServerConsole");
     axiosClient().get(`/api/v2/servers/${serverId}/console?amountOfLines=${amountOfConsoleLines}&reversed=${reverseConsoleLines}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log(`[DEBUG] fetchServerConsole, amount of lines: ${response?.data?.length}`)
-            }
-
-            report(response?.data?.join('\r\n') ?? []);
+            log(response?.status);
+            log(`amount of lines: ${response?.data?.length}`);
+            return response?.data?.join('\r\n') ?? [];
+        })
+        .then((consoleLines) => {
+            report(consoleLines);
             completed(true);
         })
-
         .catch((error) => {
             console.error(`Failed to fetch console on server: ${serverId} Error: ${error}`)
             completed(false);
         })
 }
 
-export function isServerConsoleOutdated(serverId: string, secondLastLine: string, lastLine: string, report: (isOutdated: boolean) => void, completed: (wasSuccess: boolean) => void): void {
+export function getIsServerConsoleOutdated(serverId: string, secondLastLine: string, lastLine: string, report: (isOutdated: boolean) => void, completed: (wasSuccess: boolean) => void): void {
     if (!serverId || !hasPermission(Permission.viewConsole, serverId)) {
         return;
     }
 
+    log("API Request: getIsServerConsoleOutdated");
     axiosClient().get(`/api/v2/servers/${serverId}/console/outdated?secondLastLine=${secondLastLine}&lastLine=${lastLine}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log(`[DEBUG] isServerConsoleOutdated: ${response?.data}`)
-            }
-
-            report(response?.data?.isOutdated ?? false);
+            log(response?.status);
+            log(response?.data);
+            return response?.data?.isOutdated ?? false;
+        })
+        .then((isConsoleOutdated) => {
+            report(isConsoleOutdated);
             completed(true);
         })
-
         .catch((error) => {
             console.error(`Failed to check if console is outdated on server: ${serverId} Error: ${error}`)
             completed(false);
         })
 }
 
-export function fetchPanelUsers(report: (users: IPanelUser[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getPanelUsers(report: (users: IPanelUser[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getPanelUsers");
     axiosClient().get(`/api/v2/users`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("fetchPanelUsers:")
-                console.log(response?.data)
-            }
-
+            log(response?.status);
+            log(response?.data);
             return response?.data ?? [];
         })
         .then((rawResponse) => {
@@ -347,21 +309,18 @@ export function fetchPanelUsers(report: (users: IPanelUser[]) => void, completed
 }
 
 export function getPanelUser(userId: string, report: (wasSuccess: boolean, user: IPanelUser) => void) {
+    log("API Request: getPanelUser");
     axiosClient().get(`/api/v2/users/${userId}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("getPanelUser:")
-                console.log(response?.data)
-            }
-
+            log(response?.status);
+            log(response?.data);
             return response?.data ?? [];
         })
         .then((rawResponse) => {
-            //TODO add DTO responses in a different class (as show below)
             return rawResponse as IGetUserDetailsResponse;
         })
         .then((data) => {
@@ -382,6 +341,7 @@ export function getPanelUser(userId: string, report: (wasSuccess: boolean, user:
 
         .catch((error) => {
             console.error(`Failed to get panel user with id: ${userId} Error: ${error}`)
+            //@ts-ignore 
             report(false, null);
         })
 }
@@ -406,17 +366,15 @@ export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: 
         }
     });
 
+    log("API Request: createPanelUser");
     axiosClient().post(`/api/v2/users`, JSON.stringify(requestBody))
         .then((response) => {
             if (response?.status !== 201) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("createPanelUser:")
-                console.log(response?.data)
-            }
-
+            log(response?.status);
+            log(response?.data);
             completed(true);
         })
 
@@ -445,17 +403,15 @@ export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSucces
         }
     });
 
+    log("API Request: editPanelUser");
     axiosClient().put(`/api/v2/users/${updatedUser.userId}`, JSON.stringify(requestBody))
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("editPanelUser:")
-                console.log(response?.data)
-            }
-
+            log(response?.status);
+            log(response?.data);
             completed(true);
         })
 
@@ -466,16 +422,15 @@ export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSucces
 }
 
 export function deletePanelUser(userId: string, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: deletePanelUser");
     axiosClient().delete(`/api/v2/users/${userId}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log(`[DEBUG] deletePanelUser: ${response?.data}`)
-            }
-
+            log(response?.status);
+            log(response?.data);
             completed(true);
         })
 
@@ -485,22 +440,23 @@ export function deletePanelUser(userId: string, completed: (wasSuccess: boolean)
         })
 }
 
-export function fetchBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+    //TODO add DTO responses in a different class (as show in getPanelUsers)
+    log("API Request: getBackups");
     axiosClient().get(`/api/v2/${serverId}/backups`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
 
-            if (isInDebuggingMode()) {
-                console.log("fetchBackups:")
-                console.log(response?.data)
-            }
-
-            report(response?.data ?? []);
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((backups) => {
+            report(backups ?? []);
             completed(true);
         })
-
         .catch((error) => {
             console.error(`Failed to fetch panel users with Error: ${error}`)
             completed(false);

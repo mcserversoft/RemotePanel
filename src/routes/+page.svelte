@@ -2,7 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
-	import { fetchServers } from '$lib/code/api';
+	import { getServers } from '$lib/code/api';
 	import { selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
 	import AboutPage from '$lib/pages/about.svelte';
@@ -27,7 +27,7 @@
 	if (browser) {
 		const updateServers = setInterval(() => {
 			if (isAuthenticated) {
-				fetchServers();
+				getServers();
 			}
 		}, $settings.serversRefreshRate * 1000 ?? 5000);
 		onDestroy(() => clearInterval(updateServers));
@@ -38,7 +38,7 @@
 				isAuthenticated = true;
 
 				// quicky load servers when first logging in
-				fetchServers();
+				getServers();
 			} else {
 				isAuthenticated = false;
 			}

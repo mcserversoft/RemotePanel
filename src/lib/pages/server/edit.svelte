@@ -4,7 +4,7 @@
 	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import { Page, type IServerSettings, KeepOnline } from '../../../types';
-	import { getServer, putServerSettings } from '$lib/code/api';
+	import { getServer, editServer } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import Input from '$lib/components/elements/input.svelte';
@@ -73,7 +73,7 @@
 			keepOnline: keepOnline
 		};
 
-		putServerSettings(serverId, editedServer, (wasSuccess: boolean) => {
+		editServer(serverId, editedServer, (wasSuccess: boolean) => {
 			if (wasSuccess) {
 				confirm(`Settings for server '${name}' were successfully saved.`);
 				navigateBack();

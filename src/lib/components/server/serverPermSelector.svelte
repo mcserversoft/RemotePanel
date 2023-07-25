@@ -2,9 +2,9 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import Icon from '../elements/icon.svelte';
 	import { mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
-	import { isLoadingServers, servers } from '$lib/code/api';
 	import Spinner from '../elements/spinner.svelte';
 	import type { ServerAccessDetails } from '../../../types';
+	import { isLoadingServers, servers } from '$lib/code/global';
 
 	export let serverAccessDetails: ServerAccessDetails;
 

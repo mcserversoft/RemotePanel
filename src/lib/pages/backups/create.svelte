@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
-	import { fetchPanelUsers } from '$lib/code/api';
+	import { getPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page } from '../../../types';

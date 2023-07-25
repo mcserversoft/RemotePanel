@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fetchServers, getSelectedServer, selectedServerId } from '$lib/code/api';
+	import { getServers } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Console from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
@@ -8,11 +8,12 @@
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
 	import Statistics from '$lib/components/server/statistics.svelte';
 	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
+	import { selectedServerId, getSelectedServer } from '$lib/code/global';
 
 	let console: any;
 
 	function handleRefreshButton() {
-		fetchServers();
+		getServers();
 		console.refreshConsole();
 	}
 </script>

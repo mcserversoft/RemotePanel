@@ -2,10 +2,11 @@
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { fetchServerStatus, selectedServerId } from '$lib/code/api';
+	import { getServerStatus } from '$lib/code/api';
 	import type { Stats } from '../../../types';
 	import ServerStatistic from './stat.svelte';
 	import { mdiAccountCowboyHat, mdiChartArc, mdiChip, mdiClockTimeEight } from '@mdi/js';
+	import { selectedServerId } from '$lib/code/global';
 
 	let stats: Stats = {
 		cpu: 0,
@@ -40,7 +41,7 @@
 			return;
 		}
 
-		fetchServerStatus(
+		getServerStatus(
 			serverId,
 			(latestStats: Stats) => {
 				stats = latestStats;

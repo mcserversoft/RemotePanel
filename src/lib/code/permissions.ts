@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { servers } from '$lib/code/api';
+import { servers } from '$lib/code/global';
 
 export enum Permission {
     viewStats = "VIEW_STATS",

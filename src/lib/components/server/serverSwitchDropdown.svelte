@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { clickOutside, getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
-	import { getSelectedServer, selectedServerId, servers } from '$lib/code/api';
 	import { mdiMenuDown } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
+	import { selectedServerId, servers, getSelectedServer } from '$lib/code/global';
 
 	let dropdownVisible: boolean = false;
 

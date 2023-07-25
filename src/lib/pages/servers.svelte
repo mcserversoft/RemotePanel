@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { derived, writable } from 'svelte/store';
 	import { navigateToPage } from '$lib/code/routing';
-	import { servers, isLoadingServers, selectedServerId, sendMassServerAction, fetchServers } from '$lib/code/api';
+	import { postMassServerAction, getServers } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
@@ -10,6 +10,7 @@
 	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
+	import { isLoadingServers, selectedServerId, servers } from '$lib/code/global';
 
 	let selection: any = [];
 	const searchTerm = writable('');
@@ -38,7 +39,7 @@
 		// when search is active, we only want to get the selected searched results
 		let servers = getCommonServerIds($filteredServers, selection);
 
-		sendMassServerAction(servers, action, (wasSuccess: boolean) => {
+		postMassServerAction(servers, action, (wasSuccess: boolean) => {
 			if (!wasSuccess) {
 				confirm('Something went wrong triggering the server action.');
 			}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
-	import { deletePanelUser, fetchPanelUsers } from '$lib/code/api';
+	import { deletePanelUser, getPanelUsers } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type IPanelUser } from '../../../types';
@@ -16,7 +16,7 @@
 	});
 
 	function load() {
-		fetchPanelUsers(
+		getPanelUsers(
 			(data: IPanelUser[]) => {
 				users = data;
 			},
