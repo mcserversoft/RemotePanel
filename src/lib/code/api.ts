@@ -23,9 +23,13 @@ import {
     type INewPanelUser,
     type IServerSettings,
     ServerAccessDetails,
+    type ICustomServerPermission,
+    ServerPermissions,
+    type IEditPanelUser,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
+import type { ICreateUserRequest, IUpdateUserRequest } from '../../apiRequests';
 
 // global in-memory store
 export const isOffline = writable(false);
@@ -383,7 +387,26 @@ export function getPanelUser(userId: string, report: (wasSuccess: boolean, user:
 }
 
 export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: boolean) => void) {
-    axiosClient().post(`/api/v2/users`, JSON.stringify(newUser))
+    //formulate proper request
+    var requestBody: ICreateUserRequest = {
+        username: newUser.username,
+        password: newUser.password,
+        passwordRepeat: newUser.passwordRepeat,
+        enabled: newUser.enabled,
+        isAdmin: newUser.isAdmin,
+        customServerPermissions: {}
+    }
+
+    Object.entries(newUser.serverAccessDetails.serverPermissions).forEach((perms) => {
+        requestBody.customServerPermissions[perms[1].serverId] = {
+            viewStats: perms[1]?.permissions.viewStats ?? false,
+            viewConsole: perms[1]?.permissions.viewConsole ?? false,
+            useConsole: perms[1]?.permissions.useConsole ?? false,
+            useServerActions: perms[1]?.permissions.useServerActions ?? false,
+        }
+    });
+
+    axiosClient().post(`/api/v2/users`, JSON.stringify(requestBody))
         .then((response) => {
             if (response?.status !== 201) {
                 return Promise.reject(response);
@@ -399,6 +422,45 @@ export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: 
 
         .catch((error) => {
             console.error(`Failed to create panel user: ${newUser.username} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUpdateUserRequest = {
+        password: updatedUser.password,
+        passwordRepeat: updatedUser.passwordRepeat,
+        enabled: updatedUser.enabled,
+        isAdmin: updatedUser.isAdmin,
+        customServerPermissions: {}
+    }
+
+    Object.entries(updatedUser.serverAccessDetails.serverPermissions).forEach((perms) => {
+        requestBody.customServerPermissions[perms[1].serverId] = {
+            viewStats: perms[1]?.permissions.viewStats ?? false,
+            viewConsole: perms[1]?.permissions.viewConsole ?? false,
+            useConsole: perms[1]?.permissions.useConsole ?? false,
+            useServerActions: perms[1]?.permissions.useServerActions ?? false,
+        }
+    });
+
+    axiosClient().put(`/api/v2/users/${updatedUser.userId}`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            if (isInDebuggingMode()) {
+                console.log("editPanelUser:")
+                console.log(response?.data)
+            }
+
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to edit panel user with id: ${updatedUser.userId} Error: ${error}`)
             completed(false);
         })
 }

@@ -18,7 +18,6 @@
 	let password: string;
 	let isAdmin: boolean = false;
 	let isEnabled: boolean = true;
-	let hasAccessToAllServers: boolean = false;
 	let serverAccessDetails: ServerAccessDetails = new ServerAccessDetails();
 
 	function generateRandomPassword() {
@@ -32,7 +31,6 @@
 			passwordRepeat: password,
 			isAdmin: isAdmin,
 			enabled: isEnabled,
-			hasAccessToAllServers: hasAccessToAllServers,
 			serverAccessDetails: serverAccessDetails
 		};
 

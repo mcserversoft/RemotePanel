@@ -124,12 +124,8 @@ export interface INewPanelUser {
     serverAccessDetails: ServerAccessDetails;
 }
 
-export interface IEditPanelUser {
-    password: string;
-    passwordRepeat: string;
-    enabled: boolean;
-    isAdmin: boolean;
-    serverAccessDetails: ServerAccessDetails;
+export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
+    userId: string;
 }
 
 /* User Permissions */
@@ -167,7 +163,28 @@ export class ServerAccessDetails {
         });
     }
 
+    update(serverSelection: string[], permissionSelection: string[]) {
+        // reset existing 
+        this.serverPermissions = []
 
+        serverSelection.forEach(serverId => {
+            let permissions = permissionSelection.filter(s => s.includes(serverId))
+
+            this.serverPermissions.push({
+                serverId: serverId,
+                permissions: {
+                    viewStats: permissions.some(s => s.includes("viewStats")) ?? false,
+                    viewConsole: permissions.some(s => s.includes("viewConsole")) ?? false,
+                    useConsole: permissions.some(s => s.includes("useConsole")) ?? false,
+                    useServerActions: permissions.some(s => s.includes("useServerActions")) ?? false,
+                }
+            })
+        });
+    }
+
+    getCustomServerCount() {
+        return this.serverPermissions?.length;
+    }
 
     getServerIds() {
         return this.serverPermissions.map(perm => perm.serverId);
@@ -185,15 +202,6 @@ export class ServerAccessDetails {
         }
 
         return truePermissions;
-    }
-
-    getCustomServerCount() {
-        return this.serverPermissions?.length;
-        //  Object.keys(user.serverAccessDetails?.serverPermissions ?? 0).length;
-    }
-
-    update(serverSelection: string[], permissionSelection: string[]) {
-        throw new Error('Method not implemented.');
     }
 }
 

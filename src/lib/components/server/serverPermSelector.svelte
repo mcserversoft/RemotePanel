@@ -7,13 +7,12 @@
 	import type { ServerAccessDetails } from '../../../types';
 
 	export let serverAccessDetails: ServerAccessDetails;
-	export let isCustomServerSelected: boolean = false;
 
 	let permissionSelection: string[] = [];
 	let serverSelection: string[] = [];
 	let showCustomServersModal: boolean = false;
 
-	function loadData() {
+	function loadModalData() {
 		serverSelection = serverAccessDetails?.getServerIds();
 		permissionSelection = serverAccessDetails?.getServerPermissionIds();
 	}
@@ -50,12 +49,9 @@
 	}
 
 	function handleSave() {
-		console.log('TODO handleSave');
-
-		showCustomServersModal = false;
-		isCustomServerSelected = true;
-
 		serverAccessDetails.update(serverSelection, permissionSelection);
+		serverAccessDetails.hasAccessToAllServers = false;
+		showCustomServersModal = false;
 	}
 
 	function handleDiscard() {
@@ -71,8 +67,8 @@
 		<input
 			id="radio-selection-all"
 			name="radio-selection"
-			value={false}
-			bind:group={isCustomServerSelected}
+			value={true}
+			bind:group={serverAccessDetails.hasAccessToAllServers}
 			type="radio"
 			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 		/>
@@ -82,8 +78,8 @@
 		<input
 			id="radio-selection-custom"
 			name="radio-selection"
-			value={true}
-			bind:group={isCustomServerSelected}
+			value={false}
+			bind:group={serverAccessDetails.hasAccessToAllServers}
 			type="radio"
 			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 		/>
@@ -91,7 +87,7 @@
 	</div>
 	<div class="flex items-center">
 		<form on:submit|preventDefault={handleModalCustomServersToggle}>
-			<button type="submit" on:click={loadData} class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Set Servers</button>
+			<button type="submit" on:click={loadModalData} class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Set Servers</button>
 		</form>
 	</div>
 </div>
