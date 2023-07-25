@@ -130,26 +130,12 @@ export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
 
 /* User Permissions */
 export class ServerAccessDetails {
-
-    // constructor(hasAccessToAllServers: boolean, serverPermissions: ServerPermissions[]) {
-    //     // this.hasAccessToAllServers = false;
-    //     // this.serverPermissions = new Array<ServerPermissions>();
-    // }
-
-
-    //TODO take a look at this
-    // constructor() {
-    //     this.hasAccessToAllServers = false;
-    //     this.serverPermissions = new Array<ServerPermissions>();
-    // }
     hasAccessToAllServers = false;
     serverPermissions = new Array<ServerPermissions>();
 
     init(hasAccessToAllServers: boolean, customServerPermissions: Record<string, Partial<ICustomServerPermission>>) {
         this.hasAccessToAllServers = hasAccessToAllServers;
 
-        //TODO this should return all perms when hasAccessToAllServers is true (edit mcss api) 
-        // or maybe not?
         Object.entries(customServerPermissions).forEach((perm) => {
             this.serverPermissions.push({
                 serverId: perm[0],

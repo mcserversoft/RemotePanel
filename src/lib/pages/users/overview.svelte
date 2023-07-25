@@ -19,8 +19,6 @@
 		fetchPanelUsers(
 			(data: IPanelUser[]) => {
 				users = data;
-
-				console.log(users);
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
