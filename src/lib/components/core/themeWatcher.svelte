@@ -15,7 +15,7 @@
 	// listen on system theme changes
 	onMount(async () => {
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-			if (get(settings).useSystemTheme) {
+			if (get(settings).panelTheme == PanelTheme.System) {
 				setPanelTheme(event.matches ? PanelTheme.Dark : PanelTheme.Light);
 			}
 		});
@@ -28,11 +28,11 @@
 		}
 		const theme = getPanelTheme();
 		switch (theme) {
-			case PanelTheme.Light:
-				document.documentElement.classList.remove('dark');
-				break;
 			case PanelTheme.Dark:
 				document.documentElement.classList.add('dark');
+				break;
+			case PanelTheme.Light:
+				document.documentElement.classList.remove('dark');
 				break;
 			default:
 				break;

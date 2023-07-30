@@ -4,7 +4,7 @@ import { PanelTheme } from '../../types';
 import { settings } from './storage';
 
 export function getPanelTheme(): PanelTheme {
-    const useSystemTheme = get(settings).useSystemTheme;
+    const useSystemTheme = get(settings).panelTheme == PanelTheme.System;
     if (useSystemTheme) {
         return getThemeFromSystem();
     }
@@ -17,7 +17,7 @@ export function setPanelTheme(theme: PanelTheme) {
 }
 
 export function togglePanelTheme() {
-    const currentTheme = get(settings).panelTheme;
+    const currentTheme = getPanelTheme();
     setPanelTheme(currentTheme == PanelTheme.Dark ? PanelTheme.Light : PanelTheme.Dark);
 }
 

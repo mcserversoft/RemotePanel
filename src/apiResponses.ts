@@ -1,4 +1,4 @@
-import type { ICustomServerPermission } from "./types";
+import type { ICustomServerPermission, PanelTheme } from "./types";
 
 export interface IGetUserDetailsResponse {
     userId: string;
@@ -12,3 +12,14 @@ export interface IGetUserDetailsResponse {
 }
 
 export interface IGetUsersListResponse extends Array<IGetUserDetailsResponse> { }
+
+export interface IGetPanelUserSettingsResponse {
+    panelTheme: PanelTheme,
+    serverRefreshRate: number,
+    consoleRefreshRate: number,
+    amountOfConsoleLines: number,
+    enableAutomaticConsoleScrolling: boolean,
+    enableConsoleChatMode: boolean,
+    enableDebugging: boolean
+    lastModifiedAt: Date
+}

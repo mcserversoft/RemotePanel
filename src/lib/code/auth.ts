@@ -2,7 +2,8 @@ import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
 import { baseUrl } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
-import { PanelTheme } from '../../types';
+import { getPanelUserSettings } from './api';
+import { PanelTheme, type IPanelSettings } from '../../types';
 
 export enum LoginFailureReason {
     Unauthorized,
@@ -37,20 +38,35 @@ export function login(username: string, password: string, report: (failureReason
                 username: data.username,
             });
 
-            // set default settings
-            if (get(settings) == null) {
-                settings.set({
-                    serversRefreshRate: 5,
-                    consoleRefreshRate: 5,
-                    autoScrollConsole: true,
-                    chatModeConsole: false,
-                    amountOfConsoleLines: 50,
-                    reverseConsoleLines: false,
-                    panelTheme: PanelTheme.Light,
-                    useSystemTheme: true,
-                    debugging: false
-                })
-            }
+            getPanelUserSettings((wasSuccess: boolean, fetchedSettings: IPanelSettings) => {
+                if (wasSuccess) {
+                    settings.set({
+                        serversRefreshRate: fetchedSettings.serverRefreshRate,
+                        consoleRefreshRate: fetchedSettings.consoleRefreshRate,
+                        autoScrollConsole: fetchedSettings.enableAutomaticConsoleScrolling,
+                        chatModeConsole: fetchedSettings.enableConsoleChatMode,
+                        amountOfConsoleLines: fetchedSettings.amountOfConsoleLines,
+                        reverseConsoleLines: false,
+                        panelTheme: fetchedSettings.panelTheme,
+                        debugging: fetchedSettings.enableDebugging,
+                        loadedSuccessfully: true
+                    })
+                } else {
+                    confirm(`Unable to fetch users settings, reverting to default.`);
+                    settings.set({
+                        serversRefreshRate: 5,
+                        consoleRefreshRate: 5,
+                        autoScrollConsole: true,
+                        chatModeConsole: false,
+                        amountOfConsoleLines: 50,
+                        reverseConsoleLines: false,
+                        panelTheme: PanelTheme.Light,
+                        debugging: false,
+                        loadedSuccessfully: false
+                    })
+                }
+            });
+
         })
         .catch((error) => {
             if (error.status === 401) {

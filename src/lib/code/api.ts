@@ -14,10 +14,12 @@ import {
     type IServerSettings,
     ServerAccessDetails,
     type IEditPanelUser,
+    type IPanelSettings,
+    type IEditPanelSettings,
 } from '../../types';
 import { Filter } from '../../types';
-import type { IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateUserRequest, IUpdateUserRequest } from '../../apiRequests';
+import type { IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
+import type { ICreateUserRequest, IUpdatePanelUserSettingsRequest, IUpdateUserRequest } from '../../apiRequests';
 import { log } from '$lib/code/logger';
 import { isLoadingServers, isOffline, servers } from '$lib/code/global';
 
@@ -324,7 +326,6 @@ export function getPanelUser(userId: string, report: (wasSuccess: boolean, user:
             return rawResponse as IGetUserDetailsResponse;
         })
         .then((data) => {
-
             let user: IPanelUser = {
                 userId: data.userId,
                 username: data.username,
@@ -440,6 +441,73 @@ export function deletePanelUser(userId: string, completed: (wasSuccess: boolean)
         })
 }
 
+export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSettings: IPanelSettings) => void) {
+    log("API Request: getPanelUserSettings");
+    axiosClient().get(`/api/v2/users/current/settings`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IGetPanelUserSettingsResponse;
+        })
+        .then((data) => {
+
+            let userSettings: IPanelSettings = {
+                amountOfConsoleLines: data.amountOfConsoleLines,
+                consoleRefreshRate: data.consoleRefreshRate,
+                panelTheme: data.panelTheme,
+                serverRefreshRate: data.serverRefreshRate,
+                enableAutomaticConsoleScrolling: data.enableAutomaticConsoleScrolling,
+                enableConsoleChatMode: data.enableConsoleChatMode,
+                enableDebugging: data.enableDebugging,
+            }
+
+            report(true, userSettings);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get panel user settings. Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function editPanelSettings(updatedSettings: IEditPanelSettings, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUpdatePanelUserSettingsRequest = {
+        amountOfConsoleLines: updatedSettings.amountOfConsoleLines,
+        consoleRefreshRate: updatedSettings.consoleRefreshRate,
+        panelTheme: updatedSettings.panelTheme,
+        serverRefreshRate: updatedSettings.serverRefreshRate,
+        enableAutomaticConsoleScrolling: updatedSettings.enableAutomaticConsoleScrolling,
+        enableConsoleChatMode: updatedSettings.enableConsoleChatMode,
+        enableDebugging: updatedSettings.enableDebugging
+    }
+
+    log("API Request: editPanelSettings");
+    axiosClient().put(`/api/v2/users/current/settings`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to edit panel user settings. Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function getBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     //TODO add DTO responses in a different class (as show in getPanelUsers)
     log("API Request: getBackups");
@@ -458,7 +526,7 @@ export function getBackups(serverId: string, report: (users: Backup[]) => void, 
             completed(true);
         })
         .catch((error) => {
-            console.error(`Failed to fetch panel users with Error: ${error}`)
+            console.error(`Failed to fetch panel users with error: ${error}`)
             completed(false);
         })
 }

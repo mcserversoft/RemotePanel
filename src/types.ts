@@ -68,11 +68,22 @@ export enum ServerAction {
     Kill = 3
 }
 
-export enum PanelTheme {
-    Light,
-    Dark
+export interface PageReference {
+    name: string;
+    page: Page;
+    isActive: boolean;
 }
 
+export interface BreadcrumbItem {
+    name: string;
+    page: Page;
+    isClickable: boolean;
+}
+
+/**** NEW START ****/
+// start of the final approved/refactored code
+
+/* Panel */
 export enum Page {
     Empty,
     About,
@@ -89,20 +100,21 @@ export enum Page {
     UsersEdit
 }
 
-export interface PageReference {
-    name: string;
-    page: Page;
-    isActive: boolean;
+export enum PanelTheme {
+    Dark,
+    Light,
+    System
 }
 
-export interface BreadcrumbItem {
-    name: string;
-    page: Page;
-    isClickable: boolean;
+export interface IPanelSettings {
+    panelTheme: PanelTheme,
+    serverRefreshRate: number,
+    consoleRefreshRate: number,
+    amountOfConsoleLines: number,
+    enableAutomaticConsoleScrolling: boolean,
+    enableConsoleChatMode: boolean,
+    enableDebugging: boolean
 }
-
-/**** NEW START ****/
-// start of the final approved/refactored code
 
 /* User */
 export interface IPanelUser {
@@ -127,6 +139,8 @@ export interface INewPanelUser {
 export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
     userId: string;
 }
+
+export interface IEditPanelSettings extends Omit<IPanelSettings, 'lastModifiedAt'> { }
 
 /* User Permissions */
 export class ServerAccessDetails {
