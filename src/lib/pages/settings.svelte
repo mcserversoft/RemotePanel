@@ -108,17 +108,17 @@
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Input bind:value={serversRefreshRate} on:input={handleInputChange} error={inputErrorServersRefreshRate} label={'Server Refresh Rate'} type={'number'} placeholder={'Username'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds.</Input>
+				<Input bind:value={serversRefreshRate} on:input={handleInputChange} error={inputErrorServersRefreshRate} label={'Server Refresh Rate'} type={'number'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds.</Input>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Input bind:value={consoleRefreshRate} on:input={handleInputChange} error={inputErrorConsoleRefreshRate} label={'Console Refresh Rate'} type={'number'} placeholder={'Username'} min="1" max="3600" required={true}>
+				<Input bind:value={consoleRefreshRate} on:input={handleInputChange} error={inputErrorConsoleRefreshRate} label={'Console Refresh Rate'} type={'number'} min="1" max="3600" required={true}>
 					Value between 1 and 3600 seconds. Fast refresh rates can lead to performance issues.</Input
 				>
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<Input bind:value={amountOfConsoleLines} on:input={handleInputChange} error={inputErrorAmountOfConsoleLines} label={'Amount of Console Lines'} type={'number'} placeholder={'Username'} min="1" max="1000" required={true}>
+				<Input bind:value={amountOfConsoleLines} on:input={handleInputChange} error={inputErrorAmountOfConsoleLines} label={'Amount of Console Lines'} type={'number'} min="1" max="1000" required={true}>
 					Value between 1 and 1000. Higher numbers can lead to performance issues.</Input
 				>
 			</div>
