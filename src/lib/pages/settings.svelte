@@ -96,7 +96,7 @@
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how the panel interacts with the MCSS API.</p>
-		<p class="italic">These settings are now synced to mcss. <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">NEW</span></p>
+		<p class="italic">These settings are now saved to mcss. <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">NEW</span></p>
 
 		<!-- TODO check if failed to load at login, if so provide a way to refetch here -->
 	</div>
