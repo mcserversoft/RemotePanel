@@ -114,12 +114,17 @@ export function openInNewTab(url: string) {
 
 export function getRandomPassword() {
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-={}[]|:;"<>,.?/';
+    let length = getNumberBetween(25, 35);
     let password = '';
 
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * charset.length);
         password += charset[randomIndex];
     }
 
     return password;
+}
+
+function getNumberBetween(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
 }
