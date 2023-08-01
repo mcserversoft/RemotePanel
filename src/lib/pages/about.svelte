@@ -16,7 +16,7 @@
 		<p>A web panel to easily access MC Server Soft remotely.</p>
 
 		<div class="mt-12">
-			<img src="fire_avatar.png" alt="Avatar of Fireblade" class="mx-auto" />
+			<img class="w-16 h-16 mx-auto rounded-full" src="fire_avatar.png" alt="Avatar of Fireblade" />
 			<p class="italic pt-1 -mb-2">"Help maintain my work on MC Server Soft."</p>
 			<a href="https://mcserversoft.com/donate" target="_blank" rel="noopener noreferrer">
 				<img src="kofi_banner.png" alt="Support me on Ko-fi" class="scale-50 mx-auto" />
