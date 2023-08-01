@@ -6,6 +6,7 @@
 	import { selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
 	import AboutPage from '$lib/pages/about.svelte';
+	import AccountPage from '$lib/pages/account.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import BackupsPage from '$lib/pages/backups/overview.svelte';
 	import DonatePage from '$lib/pages/donate.svelte';
@@ -79,6 +80,8 @@
 				<UsersCreatePage />
 			{:else if $selectedPage == Page.UsersEdit}
 				<UsersEditPage />
+			{:else if $selectedPage == Page.Account}
+				<AccountPage />
 			{/if}
 		</div>
 

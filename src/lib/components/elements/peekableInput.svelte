@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
 	import Icon from './icon.svelte';
 	import { mdiEye, mdiEyeOff } from '@mdi/js';
@@ -13,6 +14,11 @@
 	let showPassword: boolean = false;
 	$: type = showPassword ? ('text' as HTMLInputTypeAttribute) : ('password' as HTMLInputTypeAttribute);
 
+	const dispatch = createEventDispatcher();
+
+	function handleInputChange() {
+		dispatch('input', value);
+	}
 	function toggleViewPassword() {
 		showPassword = !showPassword;
 	}
@@ -23,6 +29,7 @@
 	<input
 		{...{ type }}
 		bind:value
+		on:input={handleInputChange}
 		id={label}
 		class="block w-full p-2.5 text-sm rounded-lg bg-gray-50 text-gray-900 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:border-blue-500 focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500"
 		{placeholder}

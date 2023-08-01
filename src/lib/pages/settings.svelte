@@ -7,6 +7,7 @@
 	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
 	import { PanelTheme, type IEditPanelSettings } from '../../types';
 	import { editPanelSettings } from '$lib/code/api';
+	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 
 	let serversRefreshRate: number = $settings.serversRefreshRate;
 	let consoleRefreshRate: number = $settings.consoleRefreshRate;
@@ -96,13 +97,13 @@
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how the panel interacts with the MCSS API.</p>
-		<p class="italic">These settings are now saved to mcss. <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">NEW</span></p>
+		<p class="italic">These settings are now saved to mcss. <NewIndicator /></p>
 
 		<!-- TODO check if failed to load at login, if so provide a way to refetch here -->
 	</div>
 
 	<form on:submit|preventDefault={handleFormSave} class="max-w-3xl mx-auto my-6">
-		<div class="form-control mb-6">
+		<div class="mb-6">
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<Label>
 					Panel Theme
