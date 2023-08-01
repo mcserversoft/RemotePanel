@@ -122,7 +122,7 @@
 
 		<div class="flex space-x-3">
 			<Button type="submit">
-				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Save User{isPasswordRequired}
+				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Save User
 			</Button>
 			<Button type="button" on:click={navigateBack} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel

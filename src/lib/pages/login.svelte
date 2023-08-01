@@ -57,11 +57,11 @@
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
 				<form on:submit|preventDefault={onLogin}>
-					<div class="form-control mb-3">
+					<div class="mb-3">
 						<Input bind:value={username} label={'Username'} type={'text'} required={true} />
 					</div>
 
-					<div class="form-control mb-6">
+					<div class="mb-6">
 						<PeekableInput bind:value={password} label={'Password'} required={true} />
 					</div>
 
