@@ -4,10 +4,11 @@
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiArrowULeftTop, mdiPencil, mdiRefreshCircle } from '@mdi/js';
-	import type { IEditAccountSettings } from '../../types';
+	import type { IDeleteUserAccount, IEditUserAccount } from '../../types';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import { getRandomPassword } from '$lib/code/shared';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
+	import { deleteUserAccount, editUserAccount } from '$lib/code/api';
 
 	let password: string = '';
 	let newPassword: string = '';
@@ -42,22 +43,37 @@
 		areButtonsDisabled = true;
 	}
 
-	function handleUpdateUser() {
-		// we don't need this incase filled in
-		if (isFlaggedForDeletion) {
-			newPassword = '';
-			newPasswordConfirm = '';
-		}
-
-		let updatedAccount: IEditAccountSettings = {
-			currentPassword: password,
+	function handleUpdateAccount() {
+		let updatedAccount: IEditUserAccount = {
+			password: password,
 			newPassword: newPassword,
-			newPasswordRepeat: newPasswordConfirm,
-			deleteAccount: isFlaggedForDeletion
+			newPasswordRepeat: newPasswordConfirm
 		};
 
-		console.log(updatedAccount);
+		editUserAccount(updatedAccount, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				handleFormReset();
+				confirm(`Successfully updated account settings.`);
+			} else {
+				confirm(`Failed to save account settings, see logs.`);
+			}
+		});
+	}
 
+	function handleDeleteAccount() {
+		let toDeleteAccount: IDeleteUserAccount = {
+			password: password,
+			confirm: isFlaggedForDeletion
+		};
+
+		deleteUserAccount(toDeleteAccount, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				handleFormReset();
+				confirm(`Your account was deleted.`);
+			} else {
+				confirm(`Failed to delete account, see logs.`);
+			}
+		});
 	}
 
 	function generateRandomPassword() {
@@ -76,19 +92,23 @@
 		<p class="italic">View or adjust your avatar and other account-related details. <NewIndicator /></p>
 	</div>
 
-	<form on:submit|preventDefault={handleUpdateUser} class="max-w-3xl mx-auto my-6">
+	<form on:submit|preventDefault={isFlaggedForDeletion ? handleDeleteAccount : handleUpdateAccount} class="max-w-3xl mx-auto my-6">
 		<div class="mb-6">
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<div class="flex items-center space-x-4">
 					<div class="relative">
 						<img class="w-16 h-16 rounded-full" src="fire_avatar.png" alt="" />
-						<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1 bg-blue-600 border-2 border-white dark:border-gray-800 rounded-full" data={mdiPencil} size={8} />
+						{#key isFlaggedForDeletion}
+							{#if !isFlaggedForDeletion}
+								<!--TODO button avatar edit -->
+								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1 bg-blue-600 border-2 border-white dark:border-gray-800 rounded-full" data={mdiPencil} size={8} />
+							{/if}
+						{/key}
 					</div>
 					<div class="font-medium dark:text-white">
 						<div>{$auth.username}</div>
 						<!--TODO add join date-->
-						<!-- <div class="text-sm text-gray-500 dark:text-gray-400">Joined in August 2014</div> -->
-						<div class="text-sm text-gray-500 dark:text-gray-400">Joined in August 2014</div>
+						<div class="text-sm text-gray-500 dark:text-gray-400">{isFlaggedForDeletion ? 'May the odds be ever in your favor.' : 'Joined in August 2014'}</div>
 					</div>
 				</div>
 			</div>

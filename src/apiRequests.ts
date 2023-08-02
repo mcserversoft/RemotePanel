@@ -14,7 +14,7 @@ export interface IUpdateUserRequest extends Omit<ICreateUserRequest, 'username' 
     passwordRepeat?: string;
 };
 
-export interface IUpdatePanelUserSettingsRequest {
+export interface IEditPanelSettingsRequest {
     panelTheme: PanelTheme,
     serverRefreshRate: number,
     consoleRefreshRate: number,
@@ -22,4 +22,16 @@ export interface IUpdatePanelUserSettingsRequest {
     enableAutomaticConsoleScrolling: boolean,
     enableConsoleChatMode: boolean,
     enableDebugging: boolean
+}
+
+export interface IUpdateUserAccountRequest {
+    //todo avatar here? (base64)
+    password: string,
+    newPassword: string,
+    newPasswordRepeat: string,
+}
+
+export interface IDeleteUserAccountRequest {
+    password: string,
+    delete: boolean,
 }

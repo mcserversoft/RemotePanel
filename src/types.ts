@@ -143,6 +143,18 @@ export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
 
 export interface IEditPanelSettings extends Omit<IPanelSettings, 'lastModifiedAt'> { }
 
+/* User Account */
+export interface IEditUserAccount {
+    password: string;
+    newPassword: string;
+    newPasswordRepeat: string;
+}
+
+export interface IDeleteUserAccount {
+    password: string;
+    confirm: boolean
+}
+
 /* User Permissions */
 export class ServerAccessDetails {
     hasAccessToAllServers = false;

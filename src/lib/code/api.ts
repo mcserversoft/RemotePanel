@@ -14,12 +14,14 @@ import {
     type IServerSettings,
     ServerAccessDetails,
     type IEditPanelUser,
-    type IPanelSettings,
     type IEditPanelSettings,
+    type IDeleteUserAccount,
+    type IEditUserAccount,
+    type IPanelSettings,
 } from '../../types';
 import { Filter } from '../../types';
-import type { IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateUserRequest, IUpdatePanelUserSettingsRequest, IUpdateUserRequest } from '../../apiRequests';
+import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
+import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest } from '../../apiRequests';
 import { log } from '$lib/code/logger';
 import { isLoadingServers, isOffline, servers } from '$lib/code/global';
 
@@ -441,6 +443,57 @@ export function deletePanelUser(userId: string, completed: (wasSuccess: boolean)
         })
 }
 
+export function editUserAccount(updatedUserAccount: IEditUserAccount, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUpdateUserAccountRequest = {
+        password: updatedUserAccount.password,
+        newPassword: updatedUserAccount.newPassword,
+        newPasswordRepeat: updatedUserAccount.newPasswordRepeat,
+    }
+
+    log("API Request: editUserAccount");
+    axiosClient().put(`/api/v2/users/current/account`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to edit user account Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function deleteUserAccount(deleteUserAccount: IDeleteUserAccount, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IDeleteUserAccountRequest = {
+        password: deleteUserAccount.password,
+        delete: deleteUserAccount.confirm,
+    }
+
+    log("API Request: deleteUserAccount");
+    axiosClient().post(`/api/v2/users/current/account`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete user account Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSettings: IPanelSettings) => void) {
     log("API Request: getPanelUserSettings");
     axiosClient().get(`/api/v2/users/current/settings`)
@@ -454,7 +507,7 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
             return response?.data ?? [];
         })
         .then((rawResponse) => {
-            return rawResponse as IGetPanelUserSettingsResponse;
+            return rawResponse as IGetPanelSettingsResponse;
         })
         .then((data) => {
 
@@ -480,7 +533,7 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
 
 export function editPanelSettings(updatedSettings: IEditPanelSettings, completed: (wasSuccess: boolean) => void) {
     //formulate proper request
-    var requestBody: IUpdatePanelUserSettingsRequest = {
+    var requestBody: IEditPanelSettingsRequest = {
         amountOfConsoleLines: updatedSettings.amountOfConsoleLines,
         consoleRefreshRate: updatedSettings.consoleRefreshRate,
         panelTheme: updatedSettings.panelTheme,
