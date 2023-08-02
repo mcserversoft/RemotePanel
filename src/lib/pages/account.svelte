@@ -18,7 +18,7 @@
 	let areButtonsDisabled: boolean = true;
 
 	$: {
-		isPasswordRequired = !(password == '' && newPassword == '' && newPasswordConfirm == '') && !isFlaggedForDeletion;
+		isPasswordRequired = !isFlaggedForDeletion;
 	}
 
 	function handleInputChange() {
@@ -86,6 +86,7 @@
 					</div>
 					<div class="font-medium dark:text-white">
 						<div>{$auth.username}</div>
+						<!--TODO add join date-->
 						<!-- <div class="text-sm text-gray-500 dark:text-gray-400">Joined in August 2014</div> -->
 						<div class="text-sm text-gray-500 dark:text-gray-400">Joined in August 2014</div>
 					</div>
@@ -93,7 +94,7 @@
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
-				<PeekableInput bind:value={password} on:input={handleInputChange} label={'Current Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="" />
+				<PeekableInput bind:value={password} on:input={handleInputChange} label={'Current Password'} placeholder={'••••••••••••••••••'} required={true} class="" />
 
 				{#key isFlaggedForDeletion}
 					{#if !isFlaggedForDeletion}

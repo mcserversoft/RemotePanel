@@ -97,7 +97,8 @@ export enum Page {
     Settings,
     Users,
     UsersCreate,
-    UsersEdit
+    UsersEdit,
+    Account
 }
 
 export enum PanelTheme {

@@ -28,12 +28,15 @@
 		</button>
 
 		{#if isOpen}
-			<div class="absolute right-0 rounded-lg divide-y w-44 bg-white divide-gray-100 dark:bg-gray-700 dark:divide-gray-600">
+			<div class="absolute right-0 rounded-lg divide-y w-48 bg-white divide-gray-100 dark:bg-gray-700 dark:divide-gray-600">
 				<div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
 					<div class="capitalize">{getGreeting()}, <span class="normal-case font-semibold">{$auth.username}</span> 👋</div>
 					<!-- <div class="font-medium truncate">{$auth.username} 👋</div> -->
 				</div>
 				<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+					<li>
+						<button on:click={() => navigateClick(Page.Account)} class="px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account & Profile</button>
+					</li>
 					<li>
 						<button on:click={() => navigateClick(Page.Settings)} class="px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</button>
 					</li>
@@ -42,7 +45,7 @@
 					</li>
 				</ul>
 				<div class="py-2">
-					<button on:click={logout} class=" px-4 py-2 w-full text-left text-sm text-red-500 hover:bg-gray-100 hover:dark:bg-red-500 dark:text-red-500 dark:hover:bg-gray-600 dark:hover:text-white">Log Out</button>
+					<button on:click={logout} class=" px-4 py-2 w-full text-left text-sm text-red-500 hover:bg-gray-100 hover:dark:bg-red-500 dark:text-red-500 dark:hover:bg-gray-600 dark:hover:text-white">Sign Out</button>
 				</div>
 			</div>
 
