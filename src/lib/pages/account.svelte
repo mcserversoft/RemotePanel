@@ -3,17 +3,20 @@
 	import { auth } from '$lib/code/auth';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
-	import { mdiContentSave, mdiArrowULeftTop, mdiPencil, mdiRefreshCircle } from '@mdi/js';
+	import { mdiContentSave, mdiArrowULeftTop, mdiPencil, mdiRefreshCircle, mdiLoading } from '@mdi/js';
 	import type { IDeleteUserAccount, IEditUserAccount } from '../../types';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import { getRandomPassword, getShortDateSince } from '$lib/code/shared';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
-	import { deleteUserAccount, editUserAccount } from '$lib/code/api';
+	import { deleteUserAccount, editUserAccount, uploadUserAvatar } from '$lib/code/api';
+	import AvatarPicker from '$lib/components/elements/avatarPicker.svelte';
 
 	let password: string = '';
 	let newPassword: string = '';
 	let newPasswordConfirm: string = '';
 
+	let showAvatarUpload: boolean = false;
+	let isLoadingAvatar: boolean = false;
 	let isFlaggedForDeletion: boolean = false;
 	let isPasswordRequired: boolean = false;
 	let areButtonsDisabled: boolean = true;
@@ -76,6 +79,21 @@
 		});
 	}
 
+	function handleAvatarUploadToggle() {
+		showAvatarUpload = !showAvatarUpload;
+	}
+
+	function avatarPickComplete(e: CustomEvent) {
+		showAvatarUpload = false;
+		isLoadingAvatar = true;
+
+		console.log(e);
+		console.log(e.detail);
+	}
+	function avatarPickCanceled() {
+		showAvatarUpload = false;
+	}
+
 	function generateRandomPassword() {
 		newPassword = newPasswordConfirm = getRandomPassword();
 		handleInputChange();
@@ -96,20 +114,26 @@
 		<div class="mb-6">
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 				<div class="flex items-center space-x-4">
-					<div class="relative">
-						<img class="w-16 h-16 rounded-full" src="fire_avatar.png" alt="" />
-						{#key isFlaggedForDeletion}
-							{#if !isFlaggedForDeletion}
-								<!--TODO button avatar edit -->
-								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 bg-blue-600 border-2 border-white dark:border-gray-800 text-white rounded-full" data={mdiPencil} size={8} />
-							{/if}
-						{/key}
-					</div>
+					<form on:submit|preventDefault={handleAvatarUploadToggle}>
+						<button type="submit" disabled={isLoadingAvatar}>
+							<div class="relative">
+								<img class="w-16 h-16 rounded-full" src="fire_avatar.png" alt="" />
+								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 bg-blue-600 border-2 border-white dark:border-gray-800 text-white rounded-full {isLoadingAvatar ? 'animate-spin' : ''}" data={isLoadingAvatar ? mdiLoading : mdiPencil} size={8} />
+							</div>
+						</button>
+					</form>
 					<div class="font-medium dark:text-white">
 						<div>{$auth.username}</div>
 						<div class="text-sm text-gray-500 dark:text-gray-400">{isFlaggedForDeletion ? 'May the odds be ever in your favor.' : `Joined in ${getShortDateSince($auth.userJoinDate)}`}</div>
 					</div>
 				</div>
+				{#key showAvatarUpload}
+					{#if showAvatarUpload}
+						<div class="mt-6">
+							<AvatarPicker on:cropped={avatarPickComplete} on:canceled={avatarPickCanceled} />
+						</div>
+					{/if}
+				{/key}
 			</div>
 
 			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
