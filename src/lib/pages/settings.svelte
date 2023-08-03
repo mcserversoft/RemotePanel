@@ -8,13 +8,14 @@
 	import { PanelTheme, type IEditPanelSettings } from '../../types';
 	import { editPanelSettings } from '$lib/code/api';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
+	import { onMount } from 'svelte';
 
-	let serversRefreshRate: number = $settings.serversRefreshRate;
-	let consoleRefreshRate: number = $settings.consoleRefreshRate;
-	let amountOfConsoleLines: number = $settings.amountOfConsoleLines;
-	let autoScrollConsole: boolean = $settings.autoScrollConsole;
-	let chatModeConsole: boolean = $settings.chatModeConsole;
-	let debugging: boolean = $settings.debugging;
+	let serversRefreshRate: number;
+	let consoleRefreshRate: number;
+	let amountOfConsoleLines: number;
+	let autoScrollConsole: boolean;
+	let chatModeConsole: boolean;
+	let debugging: boolean;
 
 	let inputErrorServersRefreshRate: boolean;
 	let inputErrorConsoleRefreshRate: boolean;
@@ -27,7 +28,22 @@
 		{ value: 2, name: 'System' }
 	];
 
-	let selectedTheme: number = $settings.panelTheme;
+	let selectedTheme: number;
+
+	onMount(async () => {
+		load();
+	});
+
+	function load() {
+		serversRefreshRate = $settings.serversRefreshRate;
+		consoleRefreshRate = $settings.consoleRefreshRate;
+		amountOfConsoleLines = $settings.amountOfConsoleLines;
+		autoScrollConsole = $settings.autoScrollConsole;
+		chatModeConsole = $settings.chatModeConsole;
+		debugging = $settings.debugging;
+
+		selectedTheme = $settings.panelTheme;
+	}
 
 	// reactivity incase the theme is toggled from the side nav
 	$: handleThemeChange.bind($settings.panelTheme)();
