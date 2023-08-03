@@ -1,16 +1,27 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { afterUpdate, createEventDispatcher } from 'svelte';
 
 	export let color: string = 'blue';
 	export let label: string;
 	export let value: boolean = true;
 
 	const dispatch = createEventDispatcher();
+	let isInitialized = false;
+
+	afterUpdate(() => {
+		isInitialized = false;
+	});
 
 	$: handleInputChange(value);
 
 	function handleInputChange(value: boolean) {
-		dispatch('toggle', value);
+		// don't trigger on the initial load
+		// this doesn't seem an issue with other controls
+		if (isInitialized) {
+			dispatch('toggle', value);
+		} else {
+			isInitialized = true;
+		}
 	}
 
 	function getColorLabelInfo(): string {
