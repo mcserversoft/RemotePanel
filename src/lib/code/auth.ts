@@ -14,6 +14,7 @@ export enum LoginFailureReason {
 export const auth = persisted('user', {
     apiKey: '',
     username: '',
+    userJoinDate: 0,
 })
 
 export let username: string = get(auth).username;
@@ -36,6 +37,7 @@ export function login(username: string, password: string, report: (failureReason
             auth.set({
                 apiKey: data.apiKey,
                 username: data.username,
+                userJoinDate: data.userJoinDate
             });
 
             getPanelUserSettings((wasSuccess: boolean, fetchedSettings: IPanelSettings) => {
@@ -83,5 +85,6 @@ export function logout() {
     auth.set({
         apiKey: '',
         username: '',
+        userJoinDate: 0
     });
 }

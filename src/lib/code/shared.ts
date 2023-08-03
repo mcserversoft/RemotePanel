@@ -1,5 +1,3 @@
-import type { Url } from "./urlLibrary";
-
 export function getFriendlyStatusName(status: number = 0) {
     if (status === 0) {
         return "Offline";
@@ -60,6 +58,13 @@ export function getGreeting() {
     } else {
         return "hi";
     }
+}
+
+export function getShortDateSince(unixTimestamp: number) {
+    //e.g. convert 1659359233 into August 2022
+    const date = new Date(unixTimestamp * 1000);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
+    return date.toLocaleString(undefined, options);
 }
 
 export function calculateUptime(startUnixTimestamp: number): string {

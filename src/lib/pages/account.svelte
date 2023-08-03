@@ -6,7 +6,7 @@
 	import { mdiContentSave, mdiArrowULeftTop, mdiPencil, mdiRefreshCircle } from '@mdi/js';
 	import type { IDeleteUserAccount, IEditUserAccount } from '../../types';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
-	import { getRandomPassword } from '$lib/code/shared';
+	import { getRandomPassword, getShortDateSince } from '$lib/code/shared';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 	import { deleteUserAccount, editUserAccount } from '$lib/code/api';
 
@@ -107,8 +107,7 @@
 					</div>
 					<div class="font-medium dark:text-white">
 						<div>{$auth.username}</div>
-						<!--TODO add join date-->
-						<div class="text-sm text-gray-500 dark:text-gray-400">{isFlaggedForDeletion ? 'May the odds be ever in your favor.' : 'Joined in August 2014'}</div>
+						<div class="text-sm text-gray-500 dark:text-gray-400">{isFlaggedForDeletion ? 'May the odds be ever in your favor.' : `Joined in ${getShortDateSince($auth.userJoinDate)}`}</div>
 					</div>
 				</div>
 			</div>
