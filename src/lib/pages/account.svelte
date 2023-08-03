@@ -101,7 +101,7 @@
 						{#key isFlaggedForDeletion}
 							{#if !isFlaggedForDeletion}
 								<!--TODO button avatar edit -->
-								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1 bg-blue-600 border-2 border-white dark:border-gray-800 rounded-full" data={mdiPencil} size={8} />
+								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 bg-blue-600 border-2 border-white dark:border-gray-800 text-white rounded-full" data={mdiPencil} size={8} />
 							{/if}
 						{/key}
 					</div>
