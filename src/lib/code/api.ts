@@ -21,7 +21,7 @@ import {
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest } from '../../apiRequests';
+import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
 import { log } from '$lib/code/logger';
 import { isLoadingServers, isOffline, servers } from '$lib/code/global';
 
@@ -557,6 +557,30 @@ export function editPanelSettings(updatedSettings: IEditPanelSettings, completed
 
         .catch((error) => {
             console.error(`Failed to edit panel user settings. Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUserAvatarRequest = {
+        image: base64
+    }
+
+    log("API Request: uploadUserAvatar");
+    axiosClient().post(`/api/v2/users/current/avatar`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to upload user avatar Error: ${error}`)
             completed(false);
         })
 }

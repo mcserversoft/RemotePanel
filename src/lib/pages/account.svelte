@@ -10,6 +10,7 @@
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 	import { deleteUserAccount, editUserAccount, uploadUserAvatar } from '$lib/code/api';
 	import AvatarPicker from '$lib/components/elements/avatarPicker.svelte';
+	import { getURLToCurrentUserAvatar as getURLToCurrentUserAvatar } from '$lib/code/urlLibrary';
 
 	let password: string = '';
 	let newPassword: string = '';
@@ -89,6 +90,21 @@
 
 		console.log(e);
 		console.log(e.detail);
+
+		let base64 = e.detail;
+
+		uploadUserAvatar(base64, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				// timeout to show animation
+				setTimeout(function () {
+					isLoadingAvatar = false;
+					location.reload();
+				}, 1000);
+			} else {
+				isLoadingAvatar = false;
+				confirm(`Failed to upload avatar, see logs.`);
+			}
+		});
 	}
 	function avatarPickCanceled() {
 		showAvatarUpload = false;
@@ -117,7 +133,7 @@
 					<form on:submit|preventDefault={handleAvatarUploadToggle}>
 						<button type="submit" disabled={isLoadingAvatar}>
 							<div class="relative">
-								<img class="w-16 h-16 rounded-full" src="fire_avatar.png" alt="" />
+								<img class="w-16 h-16 rounded-full" src={getURLToCurrentUserAvatar()} alt="user avatar" />
 								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 bg-blue-600 border-2 border-white dark:border-gray-800 text-white rounded-full {isLoadingAvatar ? 'animate-spin' : ''}" data={isLoadingAvatar ? mdiLoading : mdiPencil} size={8} />
 							</div>
 						</button>

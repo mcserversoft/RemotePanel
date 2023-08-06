@@ -6,7 +6,7 @@
 	import { selectedPage, navigateToPage } from '$lib/code/routing';
 	import { Page } from '../../../types';
 	import NavItem from './navItem.svelte';
-	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import { Url, getURLToCurrentUserAvatar, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../elements/icon.svelte';
 	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
@@ -61,8 +61,7 @@
 			<div class="flex items-center justify-start">
 				<UserDropdown>
 					<span class="sr-only">Open user menu</span>
-					<!--TODO avatar-->
-					<img class="w-8 h-8 rounded-full" src="http://127.0.0.1:5173/fire_avatar.png" alt="user avatar" />
+					<img class="w-8 h-8 rounded-full" src={getURLToCurrentUserAvatar()} alt="user avatar" />
 				</UserDropdown>
 			</div>
 		</div>

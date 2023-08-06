@@ -24,8 +24,11 @@ export interface IEditPanelSettingsRequest {
     enableDebugging: boolean
 }
 
+export interface IUserAvatarRequest {
+    image: string,
+}
+
 export interface IUpdateUserAccountRequest {
-    //todo avatar here? (base64)
     password: string,
     newPassword: string,
     newPasswordRepeat: string,

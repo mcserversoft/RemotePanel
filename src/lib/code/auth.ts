@@ -13,6 +13,8 @@ export enum LoginFailureReason {
 
 export const auth = persisted('user', {
     apiKey: '',
+    sharedAccessSignature: '',
+    userId: '',
     username: '',
     userJoinDate: 0,
 })
@@ -36,6 +38,8 @@ export function login(username: string, password: string, report: (failureReason
         .then((data) => {
             auth.set({
                 apiKey: data.apiKey,
+                sharedAccessSignature: data.sharedAccessSignature,
+                userId: data.userId,
                 username: data.username,
                 userJoinDate: data.userJoinDate
             });
@@ -68,7 +72,6 @@ export function login(username: string, password: string, report: (failureReason
                     })
                 }
             });
-
         })
         .catch((error) => {
             if (error.status === 401) {
@@ -84,6 +87,8 @@ export function login(username: string, password: string, report: (failureReason
 export function logout() {
     auth.set({
         apiKey: '',
+        sharedAccessSignature: '',
+        userId: '',
         username: '',
         userJoinDate: 0
     });
