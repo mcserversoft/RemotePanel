@@ -98,6 +98,7 @@
 				// timeout to show animation
 				setTimeout(function () {
 					isLoadingAvatar = false;
+					confirm(`Avatar was updated! You might need to reload the page or clear the cache.`);
 					location.reload();
 				}, 1000);
 			} else {

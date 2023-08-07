@@ -586,7 +586,6 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
 }
 
 export function getBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
-    //TODO add DTO responses in a different class (as show in getPanelUsers)
     log("API Request: getBackups");
     axiosClient().get(`/api/v2/${serverId}/backups`)
         .then((response) => {

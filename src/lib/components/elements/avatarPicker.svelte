@@ -44,7 +44,6 @@
 	}
 
 	async function handleCrop() {
-		//TODO close or show some animation
 		croppedImage = await getCroppedImg(image, pixelCrop);
 		dispatch('cropped', croppedImage);
 	}
