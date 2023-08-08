@@ -578,7 +578,6 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
             log(response?.data);
             completed(true);
         })
-
         .catch((error) => {
             console.error(`Failed to upload user avatar Error: ${error}`)
             completed(false);
