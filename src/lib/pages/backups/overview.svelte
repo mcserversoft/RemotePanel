@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { onMount } from 'svelte';
 	import { mdiAccountPlus, mdiCheck, mdiClose } from '@mdi/js';
 	import { getBackups } from '$lib/code/api';
@@ -98,4 +98,4 @@
 			</table>
 		</div>
 	</div>
-</section>
+</section> -->
