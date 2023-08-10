@@ -46,14 +46,12 @@
 		aria-expanded={dropdownVisible}
 		class="inline-flex px-2 justify-center items-center group rounded-lg text-gray-800 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
 	>
-		<div class="flex items-center space-x-2 text-lg font-semibold truncate text-zinc-100">
-			<span class="inline-flex rounded-full h-2 w-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
-			<!-- TODO fix server name overflow -->
-			<span>{$getSelectedServer?.name}</span>
+		<div class="flex items-center space-x-2 text-lg font-semibold text-zinc-100">
+			<span class="inline-flex rounded-full h-2 w-2 pr-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
+			<span class="line-clamp-1 text-left">{$getSelectedServer?.name}</span>
 		</div>
 		<Icon data={mdiMenuDown} size={5} class="" />
 	</button>
-
 	{#if dropdownVisible}
 		<div id="dropdown" class="absolute top-full z-20 left-0 py-1.5 mt-2 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
 			<div class="p-3">
@@ -83,7 +81,7 @@
 						<button on:click={() => changeSelectedServer(serverId)} class="overflow-hidden rounded text-ellipsis p-2 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
 							<div class="flex items-center space-x-2 text-lg truncate">
 								<p class="inline-flex rounded-full h-2 w-2 shrink-0 {getStatusBgColor(status)}" title={getFriendlyStatusName(status)} />
-								<p class="truncate">{name}</p>
+								<p>{name}</p>
 							</div>
 							<p class="text-left truncate">{description ? description : 'No description'}</p>
 						</button>

@@ -115,7 +115,7 @@
 		<p>Control how the panel interacts with the MCSS API.</p>
 		<p class="italic">These settings are now saved to mcss. <NewIndicator /></p>
 
-		<!-- TODO check if failed to load at login, if so provide a way to refetch here -->
+		<!-- FUTURE check if failed to load at login, if so provide a way to refetch here -->
 	</div>
 
 	<form on:submit|preventDefault={handleFormSave} class="max-w-3xl mx-auto my-6">
