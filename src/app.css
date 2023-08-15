@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* default values */
+@layer base {
+    html {
+        @apply text-gray-800;
+
+        &.dark {
+            @apply text-white;
+        }
+    }
+}
