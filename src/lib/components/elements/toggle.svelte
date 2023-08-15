@@ -1,27 +1,14 @@
 <script lang="ts">
-	import { afterUpdate, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let color: string = 'blue';
 	export let label: string;
 	export let value: boolean = true;
 
 	const dispatch = createEventDispatcher();
-	let isInitialized = false;
 
-	afterUpdate(() => {
-		isInitialized = false;
-	});
-
-	$: handleInputChange(value);
-
-	function handleInputChange(value: boolean) {
-		// don't trigger on the initial load
-		// this doesn't seem an issue with other controls
-		if (isInitialized) {
-			dispatch('toggle', value);
-		} else {
-			isInitialized = true;
-		}
+	function handleInputChange() {
+		dispatch('toggle', value);
 	}
 
 	function getColorLabelInfo(): string {
@@ -41,7 +28,7 @@
 </script>
 
 <label class="relative inline-flex items-center cursor-pointer">
-	<input bind:checked={value} type="checkbox" value="toggle" class="sr-only peer" />
+	<input bind:checked={value} on:click={handleInputChange} type="checkbox" value="toggle" class="sr-only peer" />
 	<div
 		class="w-11 h-6 rounded-full peer peer-focus:ring-4 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 {getColorToggleInfo()}"
 	/>

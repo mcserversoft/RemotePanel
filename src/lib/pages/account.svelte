@@ -27,6 +27,14 @@
 		isPasswordRequired = !isFlaggedForDeletion;
 	}
 
+	function handleDeleteClick() {
+		//HACK this event is raised by a click event, this happens before isFlaggedForDeletion is updated, that's why we're adding a delay here to let that update first
+		setTimeout(() => {
+			handleInputChange();
+			console.log('setTimeout done');
+		}, 100);
+	}
+
 	function handleInputChange() {
 		if (isFlaggedForDeletion) {
 			areButtonsDisabled = isEmpty(password);
@@ -175,7 +183,8 @@
 			</BoxedContainer>
 
 			<BoxedContainer class="bg-red-50 border-red-200 dark:border-red-700">
-				<Toggle bind:value={isFlaggedForDeletion} on:toggle={handleInputChange} label={'Delete Account'} color={'red'}>This will delete your account & settings. Servers and other data remain unaffected.</Toggle>
+				<!-- <Toggle bind:value={isFlaggedForDeletion} on:toggle={handleInputChange} label={'Delete Account'} color={'red'}>This will delete your account & settings. Servers and other data remain unaffected.</Toggle> -->
+				<Toggle bind:value={isFlaggedForDeletion} on:toggle={handleDeleteClick} label={'Delete Account'} color={'red'}>This will delete your account & settings. Servers and other data remain unaffected.</Toggle>
 			</BoxedContainer>
 
 			<Button type="submit" disabled={areButtonsDisabled} color={isFlaggedForDeletion ? 'red' : 'blue'}>
