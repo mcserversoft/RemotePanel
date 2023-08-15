@@ -103,7 +103,6 @@
 	<title>MCSS Remote Panel | Editing Server</title>
 </svelte:head>
 
-<!-- TODO add edit server perms, off by default for existing users -->
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<Breadcrumb
 		icon={mdiAccountMultiple}

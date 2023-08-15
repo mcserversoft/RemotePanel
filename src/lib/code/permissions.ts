@@ -6,6 +6,7 @@ export enum Permission {
     viewConsole = "VIEW_CONSOLE",
     useConsole = "USE_CONSOLE",
     useServerActions = "USE_SERVER_ACTIONS",
+    editServer = "EDIT_SERVER",
 }
 
 export function hasPermission(perm: Permission, serverId: string): boolean {

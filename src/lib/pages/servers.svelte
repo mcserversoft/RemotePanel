@@ -11,6 +11,7 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 	import { isLoadingServers, selectedServerId, servers } from '$lib/code/global';
+	import { Permission, hasPermission } from '$lib/code/permissions';
 
 	let selection: any = [];
 	const searchTerm = writable('');
@@ -205,7 +206,17 @@
 								<!-- <td class="px-3"> -->
 								<!-- <div class="flex flex-col font-medium"> -->
 								<div class=" font-medium">
-									<button on:click={() => handleEditServer(serverId)} class="text-blue-600 dark:text-blue-500 hover:underline"><Icon data={mdiPencil} /></button>
+									{#key $selectedServerId}
+										{#if hasPermission(Permission.editServer, $selectedServerId)}
+											<button on:click={() => handleEditServer(serverId)} class="text-blue-600 dark:text-blue-500 hover:underline"><Icon data={mdiPencil} /></button>
+										{:else}
+											<button id="edit-server-disabled" class="text-blue-600 dark:text-gray-500 hover:underline cursor-help" title="You don't have permissions to edit this server.">
+												<Icon data={mdiPencil} />
+												<label for="edit-server-disabled" class="sr-only">You don't have permissions to edit this server.</label>
+											</button>
+										{/if}
+									{/key}
+
 									<!-- <button on:click={() => confirm(`WIP: Edit server`)} class="text-blue-600 dark:text-blue-500 hover:underline">Edit</button> -->
 									<!-- <button on:click={() => confirm(`WIP: Are you sure you want to delete server '${name}'?`)} class="text-red-600 dark:text-red-500 hover:underline">Remove</button> -->
 								</div>

@@ -171,6 +171,7 @@ export class ServerAccessDetails {
                     viewConsole: perm[1]?.viewConsole ?? false,
                     useConsole: perm[1]?.useConsole ?? false,
                     useServerActions: perm[1]?.useServerActions ?? false,
+                    editServer: perm[1]?.editServer ?? false,
                 }
             })
         });
@@ -190,6 +191,7 @@ export class ServerAccessDetails {
                     viewConsole: permissions.some(s => s.includes("viewConsole")) ?? false,
                     useConsole: permissions.some(s => s.includes("useConsole")) ?? false,
                     useServerActions: permissions.some(s => s.includes("useServerActions")) ?? false,
+                    editServer: permissions.some(s => s.includes("editServer")) ?? false,
                 }
             })
         });
@@ -228,6 +230,7 @@ export class Permissions {
     viewConsole = false;
     useConsole = false;
     useServerActions = false;
+    editServer = false;
 }
 
 export interface ICustomServerPermission {
@@ -235,6 +238,7 @@ export interface ICustomServerPermission {
     viewConsole: boolean;
     useConsole: boolean;
     useServerActions: boolean;
+    editServer: boolean;
 }
 
 // beyond this code block ends the final approved/refactored code
