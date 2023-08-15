@@ -586,9 +586,9 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
         })
 }
 
-export function getBackups(serverId: string, report: (users: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackups(serverId: string, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackups");
-    axiosClient().get(`/api/v2/${serverId}/backups`)
+    axiosClient().get(`/api/v2/servers/${serverId}/backups`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -603,7 +603,7 @@ export function getBackups(serverId: string, report: (users: Backup[]) => void, 
             completed(true);
         })
         .catch((error) => {
-            console.error(`Failed to fetch panel users with error: ${error}`)
+            console.error(`Failed to fetch backups with error: ${error}`)
             completed(false);
         })
 }
