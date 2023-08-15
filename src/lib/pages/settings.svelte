@@ -9,6 +9,7 @@
 	import { editPanelSettings } from '$lib/code/api';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 	import { onMount } from 'svelte';
+	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 
 	let serversRefreshRate: number;
 	let consoleRefreshRate: number;
@@ -109,7 +110,7 @@
 	<title>MCSS Remote Panel | Settings</title>
 </svelte:head>
 
-<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white py-12">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 py-12">
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how the panel interacts with the MCSS API.</p>
@@ -120,39 +121,39 @@
 
 	<form on:submit|preventDefault={handleFormSave} class="max-w-3xl mx-auto my-6">
 		<div class="mb-6">
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Label>
 					Panel Theme
 					<Select bind:value={selectedTheme} on:input={handleInputChange} items={themeOptions} class="mt-2" />
 				</Label>
 				<p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Choose between light or dark. You can also use the theme defined by your system.</p>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Input bind:value={serversRefreshRate} on:input={handleInputChange} error={inputErrorServersRefreshRate} label={'Server Refresh Rate'} type={'number'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds.</Input>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Input bind:value={consoleRefreshRate} on:input={handleInputChange} error={inputErrorConsoleRefreshRate} label={'Console Refresh Rate'} type={'number'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds. Fast refresh rates can lead to performance issues.</Input>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Input bind:value={amountOfConsoleLines} on:input={handleInputChange} error={inputErrorAmountOfConsoleLines} label={'Amount of Console Lines'} type={'number'} min="1" max="1000" required={true}>Value between 1 and 1000. High numbers can lead to performance issues.</Input>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Toggle bind:value={autoScrollConsole} on:toggle={handleInputChange} label={'Automatic Console Scrolling'}>When the console is updated, automatically scroll to the bottom.</Toggle>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Toggle bind:value={chatModeConsole} on:toggle={handleInputChange} label={'Console Chat Mode'}>
 					Automatically convert your console input to the <span class="p-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">/say &lt;input&gt;</span> format.
 				</Toggle>
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<Toggle bind:value={debugging} on:toggle={handleInputChange} label={'Debugging'}>Developer option to enable verbose logging in the browser's console.</Toggle>
-			</div>
+			</BoxedContainer>
 
 			<Button type="submit" disabled={areButtonsDisabled}>
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" /> Save

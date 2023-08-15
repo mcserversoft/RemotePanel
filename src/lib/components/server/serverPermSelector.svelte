@@ -18,7 +18,7 @@
 	}
 
 	function handleModalCustomServersToggle() {
-		showCustomServersModal = true;
+		showCustomServersModal = false;
 	}
 
 	function handleServerSelection(event: any, serverId: string) {
@@ -92,10 +92,11 @@
 	</div>
 </div>
 
+<!-- FUTURE this has a weird white line in dark mode -->
 <Modal bind:open={showCustomServersModal} title="Custom Server Access & Permissions" class="overflow-hidden my-0 sm:my-20">
 	<ul class="space-y-3">
 		{#each $servers || [] as { serverId, name, description }, index}
-			<li class=" text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+			<li class="text-gray-800 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white border border-gray-200 dark:border-gray-600">
 				<label class="flex items-center p-3 text-base font-bold">
 					<input
 						id="checkbox-custom-server-{index}"
@@ -103,7 +104,7 @@
 						on:change={(event) => handleServerSelection(event, serverId)}
 						value={serverId}
 						type="checkbox"
-						class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+						class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 					/>
 					<label for="checkbox-custom-server-{index}" class="sr-only">checkbox</label>
 					<div class="ml-3 w-full pr-9">
@@ -112,7 +113,7 @@
 					</div>
 				</label>
 
-				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-t-none rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-gray-50 rounded-t-none rounded-lg sm:flex dark:bg-gray-700 border border-l-0 border-r-0 border-b-0 border-gray-200 dark:border-gray-600 dark:text-white">
 					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 						<div class="flex items-center">
 							<input

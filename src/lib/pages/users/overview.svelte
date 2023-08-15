@@ -83,9 +83,9 @@
 			</div>
 		</PageTitleBanner>
 
-		<div class="relative overflow-x-auto shadow-md rounded-b-none sm:rounded-lg">
+		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
 			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" class="px-6 py-3">Username</th>
 						<th scope="col" class="px-6 py-3">Enabled</th>
@@ -99,7 +99,7 @@
 				<tbody>
 					{#each users as user}
 						<tr class="bg-white dark:bg-gray-800">
-							<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.username}</td>
+							<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{user.username}</td>
 							<td class="px-6 py-4">
 								<Icon data={user.enabled ? mdiCheck : mdiClose} class="{user.enabled ? 'text-green-400' : 'text-red-400'} " />
 							</td>

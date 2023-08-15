@@ -101,6 +101,7 @@
 					<span class="flex">Action <Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" /></span>
 				</Button>
 				<!--FUTURE make own dropdown implementation, this is hard to customize-->
+				<!-- This already exists, see if it can be reused -->
 				<Dropdown>
 					<DropdownItem on:click={() => handleMassAction(ServerAction.Start)}>Start</DropdownItem>
 					<DropdownItem on:click={() => handleMassAction(ServerAction.Stop)}>Stop</DropdownItem>
@@ -110,8 +111,8 @@
 			</div>
 		</PageTitleBanner>
 
-		<div class="relative overflow-x-auto shadow-md rounded-lg">
-			<table class="table-auto text-sm w-full text-left text-gray-500 dark:text-gray-400">
+		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
+			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" class="p-4">

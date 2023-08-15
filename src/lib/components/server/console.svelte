@@ -5,7 +5,7 @@
 	import { settings } from '$lib/code/storage';
 	import { getServerConsole, getIsServerConsoleOutdated, postServerCommand } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import { mdiBullhorn, mdiRefresh, mdiSend } from '@mdi/js';
+	import { mdiBullhorn, mdiChat, mdiRefresh, mdiSend } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
 	import { selectedServerId } from '$lib/code/global';
@@ -144,7 +144,7 @@
 			<label for="autoScrollConsole" class="ml-2 text-sm cursor-pointer select-none font-medium text-gray-900 dark:text-gray-300">Auto scroll</label>
 		</div>
 	</div>
-	<div class="bg-white rounded-b-lg dark:bg-gray-800">
+	<div class="bg-white dark:bg-gray-800">
 		<!-- don't put tabs before </textarea> -->
 		<!-- this messes up the getIsServerConsoleOutdated check -->
 		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'}  md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
@@ -153,11 +153,11 @@
 
 {#key $selectedServerId}
 	{#if hasPermission(Permission.useConsole, $selectedServerId)}
-		<form on:submit|preventDefault={sendCommand}>
-			<div class="flex items-center px-3 py-2 rounded-t-none rounded-lg bg-gray-50 dark:bg-gray-700">
+		<form on:submit|preventDefault={sendCommand} class="">
+			<div class="flex items-center px-3 py-2 border rounded-b-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
 				<form on:submit|preventDefault={toggleChatMode}>
 					<button id="placement-right" type="submit" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 {$settings.chatModeConsole ? 'text-green-400 dark:text-green-400  ' : 'text-gray-400 dark:text-gray-400  '}  dark:hover:bg-gray-600">
-						<Icon data={mdiBullhorn} size={6} />
+						<Icon data={mdiChat} size={6} />
 						<span class="sr-only">Chat mode</span>
 					</button>
 				</form>

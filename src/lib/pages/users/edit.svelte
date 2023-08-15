@@ -13,6 +13,8 @@
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
+	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
+	import { Url, getUrl } from '$lib/code/urlLibrary';
 
 	let userId: string;
 	let username: string = '';
@@ -96,29 +98,38 @@
 	<PageTitleBanner title="Edit User" caption="You are modifying user: '{username}'." />
 
 	<form on:submit|preventDefault={updateUser} class="space-y-3">
-		<div class="flex relative">
-			<PeekableInput bind:value={password} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="mr-12" />
-			<div class="absolute bottom-0 right-0">
-				<form on:submit|preventDefault={generateRandomPassword}>
-					<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
-						<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
-					</button>
-				</form>
+		<BoxedContainer>
+			<div class="flex relative">
+				<PeekableInput bind:value={password} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="mr-12" />
+				<div class="absolute bottom-0 right-0">
+					<form on:submit|preventDefault={generateRandomPassword}>
+						<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
+							<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
+						</button>
+					</form>
+				</div>
 			</div>
-		</div>
 
-		<div class="flex relative">
-			<PeekableInput bind:value={passwordConfirm} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} />
-		</div>
+			<div class="flex relative pt-6">
+				<PeekableInput bind:value={passwordConfirm} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} />
+			</div>
+		</BoxedContainer>
 
-		<div class="py-6">
+		<BoxedContainer>
 			<ServerPermSelector {serverAccessDetails} />
-		</div>
+		</BoxedContainer>
 
-		<div class="flex space-x-2 pb-6">
-			<Toggle bind:value={isEnabled} label={'Enabled'} />
-			<Toggle bind:value={isAdmin} label={'Admin rights'} />
-		</div>
+		<BoxedContainer>
+			<Toggle bind:value={isAdmin} label={'Admin rights'}>
+				Grant this user
+				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
+			</Toggle>
+
+			<div class="pt-6">
+				<Toggle bind:value={isEnabled} label={'Enabled'} />
+				<p class=" text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
+			</div>
+		</BoxedContainer>
 
 		<div class="flex space-x-3">
 			<Button type="submit">

@@ -10,7 +10,7 @@
 </script>
 
 <li>
-	<button on:click type="button" class="flex items-center w-full p-2 transition duration-75 rounded-lg group {textColor} {isActive ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}">
+	<button on:click type="button" class="flex items-center w-full p-2 transition duration-75 rounded-lg group {textColor} {isActive ? 'bg-gray-150 dark:bg-gray-700' : 'hover:bg-gray-150 dark:hover:bg-gray-700'}">
 		<slot />
 		<span class="flex-1 ml-3 text-left whitespace-nowrap">{name}</span>
 		{#if isExternal}

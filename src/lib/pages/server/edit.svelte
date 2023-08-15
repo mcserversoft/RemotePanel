@@ -11,6 +11,7 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
+	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 
 	let loadedServerSettings: IServerSettings;
 	let serverId: string;
@@ -124,12 +125,12 @@
 	{/if}
 
 	<form on:submit|preventDefault={updateServer} class="space-y-3">
-		<div class="pb-3">
+		<BoxedContainer>
 			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'text'} placeholder={'My Server Name'} required={true} />
 			<Input bind:value={description} on:input={handleInputChange} label={'Description'} type={'text'} placeholder={'My Cool Server'} required={true} />
-		</div>
+		</BoxedContainer>
 
-		<div class="pb-3">
+		<BoxedContainer>
 			<Input bind:value={javaAllocatedMemory} on:input={handleInputChange} label={'Amount of Memory'} type={'number'} required={true} />
 
 			<Label>
@@ -141,15 +142,17 @@
 				<li><span class="font-bold">Elevated:</span> If the server crashes or is stopped by NON-MCSS input it will automatically restart.</li>
 				<li><span class="font-bold">Aggressive:</span> If the server crashes or is stopped by ANY input it will automatically restart. This option can conflict with scheduler and backup tasks.</li>
 			</ul>
-		</div>
+		</BoxedContainer>
 
-		<div class="pb-3">
+		<BoxedContainer>
 			<Toggle bind:value={isSetToAutoStart} on:toggle={handleInputChange} label={'Autostart'}>Start server when MC Server Soft is launched.</Toggle>
 
-			<Toggle bind:value={forceSaveOnStop} on:toggle={handleInputChange} label={'Force Save'}>
-				<p class=" text-sm text-gray-500 dark:text-gray-400">Send the /save-all command before shutting down the server.</p>
-			</Toggle>
-		</div>
+			<div class="pt-6">
+				<Toggle bind:value={forceSaveOnStop} on:toggle={handleInputChange} label={'Force Save'}>
+					<p class=" text-sm text-gray-500 dark:text-gray-400">Send the /save-all command before shutting down the server.</p>
+				</Toggle>
+			</div>
+		</BoxedContainer>
 
 		<div class="flex space-x-3">
 			<Button type="submit" disabled={areButtonsDisabled}>

@@ -9,7 +9,6 @@
 	import AccountPage from '$lib/pages/account.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import BackupsPage from '$lib/pages/backups/overview.svelte';
-	import DonatePage from '$lib/pages/donate.svelte';
 	import ConsolePage from '$lib/pages/console.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
 	import ServersPage from '$lib/pages/servers.svelte';
@@ -54,7 +53,7 @@
 {#if isPageLoadedYet}
 	{#if isAuthenticated}
 		<SideNav />
-		<div class="mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
+		<div class="mt-14 md:ml-64 bg-gray-50 dark:bg-gray-900">
 			{#if $selectedPage == Page.About}
 				<AboutPage />
 			{:else if $selectedPage == Page.Backups}
@@ -63,8 +62,6 @@
 				<ConsolePage />
 			{:else if $selectedPage == Page.Dashboard}
 				<DashboardPage />
-			{:else if $selectedPage == Page.Donate}
-				<DonatePage />
 			{:else if $selectedPage == Page.Servers}
 				<ServersPage />
 			{:else if $selectedPage == Page.ServerEdit}

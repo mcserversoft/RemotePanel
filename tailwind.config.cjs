@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       colors: {
         'mcss-green': '#7ca740',
-        'mcss-gray': '#212529'
+        'mcss-gray': '#212529',
+        'gray-150': '#ECEEF1'
       },
       backgroundImage: {
         'login-background': "url('/bg.jpg')",
@@ -18,6 +19,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('postcss-nested'),
     require('flowbite/plugin')
   ],
 }

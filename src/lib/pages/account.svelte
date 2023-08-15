@@ -11,6 +11,7 @@
 	import { deleteUserAccount, editUserAccount, uploadUserAvatar } from '$lib/code/api';
 	import AvatarPicker from '$lib/components/elements/avatarPicker.svelte';
 	import { getURLToCurrentUserAvatar as getURLToCurrentUserAvatar } from '$lib/code/urlLibrary';
+	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 
 	let password: string = '';
 	let newPassword: string = '';
@@ -120,7 +121,7 @@
 	<title>MCSS Remote Panel | Account</title>
 </svelte:head>
 
-<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white py-12">
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 py-12">
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Account Settings</h1>
 		<p class="italic">View or adjust your avatar and other account-related details. <NewIndicator /></p>
@@ -128,17 +129,17 @@
 
 	<form on:submit|preventDefault={isFlaggedForDeletion ? handleDeleteAccount : handleUpdateAccount} class="max-w-3xl mx-auto my-6">
 		<div class="mb-6">
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<div class="flex items-center space-x-4">
 					<form on:submit|preventDefault={handleAvatarUploadToggle}>
 						<button type="submit" disabled={isLoadingAvatar}>
 							<div class="relative">
 								<img class="w-16 h-16 rounded-full" src={getURLToCurrentUserAvatar()} alt="user avatar" />
-								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 bg-blue-600 border-2 border-white dark:border-gray-800 text-white rounded-full {isLoadingAvatar ? 'animate-spin' : ''}" data={isLoadingAvatar ? mdiLoading : mdiPencil} size={8} />
+								<Icon class="-bottom-1 left-10 absolute w-4 h-4 p-1.5 text-white bg-blue-600 border-2 border-white dark:border-gray-800  rounded-full {isLoadingAvatar ? 'animate-spin' : ''}" data={isLoadingAvatar ? mdiLoading : mdiPencil} size={8} />
 							</div>
 						</button>
 					</form>
-					<div class="font-medium dark:text-white">
+					<div class="font-medium">
 						<div>{$auth.username}</div>
 						<div class="text-sm text-gray-500 dark:text-gray-400">{isFlaggedForDeletion ? 'May the odds be ever in your favor.' : `Joined in ${getShortDateSince($auth.userJoinDate)}`}</div>
 					</div>
@@ -150,9 +151,9 @@
 						</div>
 					{/if}
 				{/key}
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+			<BoxedContainer>
 				<PeekableInput bind:value={password} on:input={handleInputChange} label={'Current Password'} placeholder={'••••••••••••••••••'} required={true} class="" />
 
 				{#key isFlaggedForDeletion}
@@ -161,7 +162,7 @@
 							<PeekableInput bind:value={newPassword} on:input={handleInputChange} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class=" mr-12" />
 							<div class="absolute bottom-0 right-0">
 								<form on:submit|preventDefault={generateRandomPassword}>
-									<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
+									<button type="submit" class="p-2.5 ml-2 text-sm font-medium bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
 										<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
 									</button>
 								</form>
@@ -171,11 +172,11 @@
 						<PeekableInput bind:value={newPasswordConfirm} on:input={handleInputChange} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} />
 					{/if}
 				{/key}
-			</div>
+			</BoxedContainer>
 
-			<div class="rounded-xl my-4 p-6 dark:bg-gray-900 border border-red-200 dark:border-red-700">
+			<BoxedContainer class="bg-red-50 border-red-200 dark:border-red-700">
 				<Toggle bind:value={isFlaggedForDeletion} on:toggle={handleInputChange} label={'Delete Account'} color={'red'}>This will delete your account & settings. Servers and other data remain unaffected.</Toggle>
-			</div>
+			</BoxedContainer>
 
 			<Button type="submit" disabled={areButtonsDisabled} color={isFlaggedForDeletion ? 'red' : 'blue'}>
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />

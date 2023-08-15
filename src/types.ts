@@ -91,7 +91,6 @@ export enum Page {
     BackupsCreate,
     Console,
     Dashboard,
-    Donate,
     Servers,
     ServerEdit,
     Settings,
