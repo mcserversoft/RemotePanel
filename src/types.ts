@@ -87,17 +87,18 @@ export interface BreadcrumbItem {
 export enum Page {
     Empty,
     About,
+    Account,
     Backups,
     BackupsCreate,
+    BackupsEdit,
     Console,
     Dashboard,
-    Servers,
     ServerEdit,
+    Servers,
     Settings,
     Users,
     UsersCreate,
     UsersEdit,
-    Account
 }
 
 export enum PanelTheme {

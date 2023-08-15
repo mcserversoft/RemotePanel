@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-	<title>MCSS Remote Panel | Users Overview</title>
+	<title>MCSS Remote Panel | Edit User</title>
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
