@@ -7,17 +7,21 @@
 
 	let serverSwitchDropdownComponent: any;
 
-	function handleServerSwitchSelectorToggle() {
+	function handleToggle() {
 		serverSwitchDropdownComponent.toggle();
+	}
+
+	function handleClickOutside() {
+		serverSwitchDropdownComponent.close();
 	}
 </script>
 
-<span use:clickOutside on:click_outside={handleServerSwitchSelectorToggle}>
+<span use:clickOutside on:click_outside={handleClickOutside}>
 	<div class="flex pb-3 space-x-2">
 		<div class="self-center grow">
 			<div class="flex p-1">
 				<button
-					on:click={handleServerSwitchSelectorToggle}
+					on:click={handleToggle}
 					aria-controls="dropdown"
 					class="inline-flex px-2 justify-center items-center rounded-lg text-gray-800 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
 				>

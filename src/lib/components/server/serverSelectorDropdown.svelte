@@ -12,6 +12,10 @@
 		dropdownVisible = !dropdownVisible;
 	}
 
+	export function close() {
+		dropdownVisible = false;
+	}
+
 	function handleSearch() {
 		filterServers();
 	}
