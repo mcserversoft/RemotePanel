@@ -38,7 +38,7 @@
 			if (updatedAuth.apiKey) {
 				isAuthenticated = true;
 
-				// quicky load servers when first logging in
+				// quickly load servers when first logging in
 				getServers();
 			} else {
 				isAuthenticated = false;
@@ -53,10 +53,7 @@
 <!-- isPageLoadedYet prevents page ghosting on F5 -->
 {#if isPageLoadedYet}
 	{#if isAuthenticated}
-		<!-- <Header /> -->
-
 		<SideNav />
-		<!-- <div class="pl-6 pt-6 pr-3 pb-3 mt-14 md:ml-64 dark:bg-gray-900 dark:text-white"> -->
 		<div class="mt-14 md:ml-64 dark:bg-gray-900 dark:text-white">
 			{#if $selectedPage == Page.About}
 				<AboutPage />
@@ -85,8 +82,7 @@
 			{/if}
 		</div>
 
-		<!--	<OfflineWarning /> -->
-		<!-- <BottomNav /> -->
+		<OfflineWarning />
 	{:else}
 		<LoginPage />
 	{/if}
