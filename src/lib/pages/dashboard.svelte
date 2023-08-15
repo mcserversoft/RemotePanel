@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { getServers } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import Console from '$lib/components/server/console.svelte';
-	import Icon from '$lib/components/elements/icon.svelte';
 	import { mdiRefresh } from '@mdi/js';
 	import { getFriendlyStatusName } from '$lib/code/shared';
+	import { selectedServerId, getSelectedServer } from '$lib/code/global';
+	import Console from '$lib/components/server/console.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
 	import Statistics from '$lib/components/server/statistics.svelte';
+	import ServerSwitchSelector from '$lib/components/server/serverSwitchSelector.svelte';
 	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
-	import { selectedServerId, getSelectedServer } from '$lib/code/global';
 
 	let console: any;
+	let w: any;
+	let dropdownVisible: boolean;
 
 	function handleRefreshButton() {
 		getServers();
@@ -23,12 +26,13 @@
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
-	<div class="flex pb-3 space-x-2">
-		<div class="self-center grow">
-			<ServerSwitchDropdown />
+	<div class="flex mb-3">
+		<div class="grow self-center min-w-0 overflow-hidden">
+			<ServerSwitchSelector bind:dropdownVisible />
 			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
 		</div>
-		<div class="self-center">
+
+		<div class="self-center pr-1.5">
 			<button
 				type="button"
 				on:click={handleRefreshButton}
@@ -36,9 +40,9 @@
 			>
 				<Icon data={mdiRefresh} size={5} />
 			</button>
-			<span class="sr-only">Reload UI</span>
 		</div>
 		<div class="self-center">
+			<span class="sr-only">Reload UI</span>
 			{#key $selectedServerId}
 				{#if hasPermission(Permission.useServerActions, $selectedServerId)}
 					<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
@@ -46,6 +50,7 @@
 			{/key}
 		</div>
 	</div>
+	<ServerSwitchDropdown {dropdownVisible} />
 
 	{#if $selectedServerId}
 		{#key $selectedServerId}

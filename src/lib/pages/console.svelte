@@ -3,10 +3,12 @@
 	import Console from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { mdiRefresh } from '@mdi/js';
-	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 	import { selectedServerId, getSelectedServer } from '$lib/code/global';
+	import ServerSwitchSelector from '$lib/components/server/serverSwitchSelector.svelte';
+	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
 
 	let console: any;
+	let dropdownVisible: boolean;
 
 	function handleRefreshButton() {
 		console.refreshConsole();
@@ -20,7 +22,7 @@
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<div class="flex pb-3 space-x-2">
 		<div class="self-center grow">
-			<ServerSwitchDropdown />
+			<ServerSwitchSelector bind:dropdownVisible />
 			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
 		</div>
 		<div class="self-center">
@@ -34,6 +36,7 @@
 			<span class="sr-only">Reload Console</span>
 		</div>
 	</div>
+	<ServerSwitchDropdown {dropdownVisible} />
 
 	{#if $selectedServerId}
 		{#key $selectedServerId}

@@ -1,18 +1,12 @@
 <script lang="ts">
 	import { clickOutside, getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
-	import { mdiMenuDown } from '@mdi/js';
-	import Icon from '../elements/icon.svelte';
-	import { selectedServerId, servers, getSelectedServer } from '$lib/code/global';
+	import { selectedServerId, servers } from '$lib/code/global';
 
-	let dropdownVisible: boolean = false;
+	export let dropdownVisible: boolean = false;
 
 	let searchTerm: string;
 	const serverList = $servers;
 	let filteredServers = serverList;
-
-	function toggleDropdown() {
-		dropdownVisible = !dropdownVisible;
-	}
 
 	function handleClickOutside() {
 		dropdownVisible = false;
@@ -39,21 +33,9 @@
 	}
 </script>
 
-<div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
-	<button
-		on:click={toggleDropdown}
-		aria-controls="dropdown"
-		aria-expanded={dropdownVisible}
-		class="inline-flex px-2 justify-center items-center group rounded-lg text-gray-800 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
-	>
-		<div class="flex items-center space-x-2 text-lg font-semibold text-zinc-100">
-			<span class="inline-flex rounded-full h-2 w-2 pr-2 {getStatusBgColor($getSelectedServer?.status)}" title={getFriendlyStatusName($getSelectedServer?.status)} />
-			<span class="line-clamp-1 text-left">{$getSelectedServer?.name}</span>
-		</div>
-		<Icon data={mdiMenuDown} size={5} class="" />
-	</button>
-	{#if dropdownVisible}
-		<div id="dropdown" class="absolute top-full z-20 left-0 py-1.5 mt-2 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
+{#if dropdownVisible}
+	<div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
+		<div id="dropdown" class="absolute top-full z-20 left-0 py-1.5 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
 			<div class="p-3">
 				<label for="input-group-search" class="sr-only">Search</label>
 				<div class="relative">
@@ -93,5 +75,5 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
-</div>
+	</div>
+{/if}
