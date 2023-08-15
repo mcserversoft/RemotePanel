@@ -159,7 +159,7 @@
 				{#key isFlaggedForDeletion}
 					{#if !isFlaggedForDeletion}
 						<div class="flex relative mt-6 mb-6">
-							<PeekableInput bind:value={newPassword} on:input={handleInputChange} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class=" mr-12" />
+							<PeekableInput bind:value={newPassword} on:input={handleInputChange} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="mr-12" />
 							<div class="absolute bottom-0 right-0">
 								<form on:submit|preventDefault={generateRandomPassword}>
 									<button type="submit" class="p-2.5 ml-2 text-sm font-medium bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">

@@ -25,7 +25,7 @@
 </script>
 
 <div class="relative w-full {className} ">
-	<label for={label} class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</label>
+	<label for={label} class="block mb-2 text-sm font-medium">{label}</label>
 	<input
 		{...{ type }}
 		bind:value
