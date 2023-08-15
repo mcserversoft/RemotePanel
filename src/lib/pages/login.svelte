@@ -76,8 +76,14 @@
 							<span slot="header" class="!text-gray-400">How do I create an account?</span>
 
 							<div class=" text-gray-300 text-center">
-								<p>Accounts can be created in the Web Panel section of MC Server Soft.</p>
-								<a href="https://docs.mcserversoft.com/webpanel/users" target="_blank" rel="noopener noreferrer" class="text-mcss-green">View documentation</a>
+								<p>Accounts can only be created by an administrator. If you are the administrator please check the <a href="https://docs.mcserversoft.com/webpanel/users" target="_blank" rel="noopener noreferrer" class="text-mcss-green">documentation</a> for more information.</p>
+							</div>
+						</AccordionItem>
+						<AccordionItem class="!text-gray-400" defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl">
+							<span slot="header" class="!text-gray-400">How do I reset my password?</span>
+
+							<div class=" text-gray-300 text-center">
+								<p>Passwords must be reset by an administrator.</p>
 							</div>
 						</AccordionItem>
 					</Accordion>
