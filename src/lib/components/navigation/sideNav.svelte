@@ -11,6 +11,9 @@
 	import Icon from '../elements/icon.svelte';
 	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
 
+	// @ts-ignore
+	const version: string = __VERSION__;
+
 	let isOpen = false;
 	let wasOpenBeforeAutoClose = true;
 	let screenWidth: any;
@@ -148,7 +151,7 @@
 					<CurrentThemeIcon class="text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" />
 				</NavItem>
 				<li>
-					<p class="mt-3 text-sm text-center text-gray-500 dark:text-gray-500">Panel v6.0.0.0</p>
+					<p class="mt-3 text-sm text-center text-gray-500 dark:text-gray-500">Panel v{version}</p>
 				</li>
 			</ul>
 		</div>
