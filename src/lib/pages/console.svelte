@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import Console from '$lib/components/server/console.svelte';
-	import Icon from '$lib/components/elements/icon.svelte';
+	import { selectedServerId } from '$lib/code/global';
+	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 	import { mdiRefresh } from '@mdi/js';
-	import { selectedServerId, getSelectedServer } from '$lib/code/global';
-	import ServerSwitchSelector from '$lib/components/server/serverSwitchSelector.svelte';
-	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
 
-	let console: any;
-	let dropdownVisible: boolean;
+	let consoleComponent: any;
 
 	function handleRefreshButton() {
-		console.refreshConsole();
+		consoleComponent.refreshConsole();
 	}
 </script>
 
@@ -20,11 +18,7 @@
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
-	<div class="flex pb-3 space-x-2">
-		<div class="self-center grow">
-			<ServerSwitchSelector bind:dropdownVisible />
-			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
-		</div>
+	<ServerSelector>
 		<div class="self-center">
 			<button
 				type="button"
@@ -35,13 +29,12 @@
 			</button>
 			<span class="sr-only">Reload Console</span>
 		</div>
-	</div>
-	<ServerSwitchDropdown {dropdownVisible} />
+	</ServerSelector>
 
 	{#if $selectedServerId}
 		{#key $selectedServerId}
 			{#if hasPermission(Permission.viewConsole, $selectedServerId)}
-				<Console bind:this={console} fillScreen={true} />
+				<Console bind:this={consoleComponent} fillScreen={true} />
 			{:else}
 				<p>You don't have permission to view the console.</p>
 			{/if}

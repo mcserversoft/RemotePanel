@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { clickOutside, getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
+	import { getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
 	import { selectedServerId, servers } from '$lib/code/global';
 
-	export let dropdownVisible: boolean = false;
-
+	let dropdownVisible: boolean = false;
 	let searchTerm: string;
+
 	const serverList = $servers;
 	let filteredServers = serverList;
 
-	function handleClickOutside() {
-		dropdownVisible = false;
+	export function toggle() {
+		dropdownVisible = !dropdownVisible;
 	}
 
 	function handleSearch() {
@@ -34,8 +34,8 @@
 </script>
 
 {#if dropdownVisible}
-	<div class="relative" use:clickOutside on:click_outside={handleClickOutside}>
-		<div id="dropdown" class="absolute top-full z-20 left-0 rounded shadow-lg overflow-hidden bg-white dark:bg-gray-600">
+	<div class="relative">
+		<div id="dropdown" class="absolute top-full w-full z-20 left-0 rounded shadow-lg overflow-hidden bg-white dark:bg-gray-600">
 			<div class="p-4">
 				<label for="input-group-search" class="sr-only">Search</label>
 				<div class="relative -mt-1.5">

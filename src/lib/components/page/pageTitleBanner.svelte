@@ -3,7 +3,7 @@
 	export let caption: string;
 </script>
 
-<div class="flex pb-6 space-x-2">
+<div class="flex p-3 -mt-1 space-x-2">
 	<div class="self-center grow">
 		<div class="pr-3 self-nonecenter">
 			<span class="text-lg font-semibold">{title}</span>

@@ -4,20 +4,17 @@
 	import { mdiRefresh } from '@mdi/js';
 	import { getFriendlyStatusName } from '$lib/code/shared';
 	import { selectedServerId, getSelectedServer } from '$lib/code/global';
-	import Console from '$lib/components/server/console.svelte';
+	import ConsoleComponent from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
 	import Statistics from '$lib/components/server/statistics.svelte';
-	import ServerSwitchSelector from '$lib/components/server/serverSwitchSelector.svelte';
-	import ServerSwitchDropdown from '$lib/components/server/serverSwitchDropdown.svelte';
+	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 
-	let console: any;
-	let w: any;
-	let dropdownVisible: boolean;
+	let consoleComponent: any;
 
 	function handleRefreshButton() {
 		getServers();
-		console.refreshConsole();
+		consoleComponent.refreshConsole();
 	}
 </script>
 
@@ -26,12 +23,7 @@
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
-	<div class="flex mb-3">
-		<div class="grow self-center min-w-0 overflow-hidden">
-			<ServerSwitchSelector bind:dropdownVisible />
-			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$getSelectedServer?.description}</p>
-		</div>
-
+	<ServerSelector>
 		<div class="self-center pr-1.5">
 			<button
 				type="button"
@@ -49,8 +41,7 @@
 				{/if}
 			{/key}
 		</div>
-	</div>
-	<ServerSwitchDropdown {dropdownVisible} />
+	</ServerSelector>
 
 	{#if $selectedServerId}
 		{#key $selectedServerId}
@@ -59,7 +50,7 @@
 			{/if}
 
 			{#if hasPermission(Permission.viewConsole, $selectedServerId)}
-				<Console bind:this={console} />
+				<ConsoleComponent bind:this={consoleComponent} />
 			{/if}
 		{/key}
 	{:else}
