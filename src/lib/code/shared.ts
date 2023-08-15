@@ -50,11 +50,11 @@ export function getGreeting() {
     var currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-        return "good morning";
+        return "morning";
     } else if (currentHour >= 5 && currentHour < 18) {
-        return "good afternoon";
+        return "afternoon";
     } else if (currentHour >= 18 && currentHour <= 22) {
-        return "good evening";
+        return "evening";
     } else {
         return "hi";
     }

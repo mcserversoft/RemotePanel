@@ -100,6 +100,7 @@
 				>
 					<span class="flex">Action <Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" /></span>
 				</Button>
+				<!--FUTURE make own dropdown implementation, this is hard to customize-->
 				<Dropdown>
 					<DropdownItem on:click={() => handleMassAction(ServerAction.Start)}>Start</DropdownItem>
 					<DropdownItem on:click={() => handleMassAction(ServerAction.Stop)}>Stop</DropdownItem>

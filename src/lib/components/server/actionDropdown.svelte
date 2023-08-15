@@ -38,11 +38,11 @@
 	</button>
 
 	{#if dropdownVisible}
-		<div id="dropdown" class="absolute top-full z-20 right-0 min-w-44 py-1.5 mt-1 rounded shadow-lg overflow-hidden bg-custom-gray-lightest">
+		<div id="dropdown" class="absolute top-full z-20 right-0 min-w-44 py-1.5 mt-1 rounded shadow-lg overflow-hidden bg-white divide-gray-100 dark:bg-gray-600 dark:divide-gray-500">
 			<ul class="w-28">
 				{#each Object.values(ServerAction).filter((element) => typeof element === 'string') as action}
 					<li>
-						<button on:click={() => serverActionClick(action)} class="flex w-full py-1 px-3 text-sm capitalize text-gray-300 hover:bg-zinc-600">{action}</button>
+						<button on:click={() => serverActionClick(action)} class="flex w-full py-1 px-3 text-sm capitalize text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">{action}</button>
 					</li>
 				{/each}
 			</ul>
