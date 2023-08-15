@@ -188,7 +188,9 @@ export function getServerStatus(serverId: string, report: (latestStats: Stats) =
                 free: (latestStats.max - latestStats.current),
                 percentageFree: 0
             }
-            memory.percentageFree = Math.round((memory.current / memory.max) * 100);
+
+            let calculatedFreePercentage = Math.round((memory.current / memory.max)) * 100;
+            memory.percentageFree = isNaN(calculatedFreePercentage) ? 0 : calculatedFreePercentage;
 
             const stats: Stats = {
                 cpu: latestStats.cpu ?? 0,
