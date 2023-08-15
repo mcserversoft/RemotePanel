@@ -18,7 +18,7 @@
 	}
 
 	function handleModalCustomServersToggle() {
-		showCustomServersModal = false;
+		showCustomServersModal = !showCustomServersModal;
 	}
 
 	function handleServerSelection(event: any, serverId: string) {

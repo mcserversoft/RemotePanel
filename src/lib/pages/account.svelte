@@ -31,7 +31,6 @@
 		//HACK this event is raised by a click event, this happens before isFlaggedForDeletion is updated, that's why we're adding a delay here to let that update first
 		setTimeout(() => {
 			handleInputChange();
-			console.log('setTimeout done');
 		}, 100);
 	}
 
