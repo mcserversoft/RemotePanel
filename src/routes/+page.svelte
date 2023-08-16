@@ -39,7 +39,7 @@
 			if (updatedAuth.apiKey) {
 				isAuthenticated = true;
 
-				// quickly load servers when first logging in
+				// quickly load servers upon page refresh & login
 				getServers();
 			} else {
 				isAuthenticated = false;

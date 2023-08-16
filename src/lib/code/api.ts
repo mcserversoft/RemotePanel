@@ -23,7 +23,7 @@ import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
 import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
 import { log } from '$lib/code/logger';
-import { isLoadingServers, isOffline, servers } from '$lib/code/global';
+import { isLoadingServers, isOffline, selectedServerId, servers } from '$lib/code/global';
 
 /*
 *  API Requests
@@ -41,6 +41,16 @@ export function getServers(filter: Filter = Filter.None): void {
         })
         .then((serverDetails) => {
             servers.set(serverDetails);
+
+            // incase there is no selectedServer
+            // in an ideal world this code belongs in  +page.svelte
+            // or even better in a caching layer
+            if (!get(selectedServerId)) {
+                let firstServerId = get(servers)[0]?.serverId ?? null;
+                if (firstServerId != null) {
+                    selectedServerId.set(firstServerId);
+                }
+            }
         })
         .catch((error) => {
             isOffline.set(true)

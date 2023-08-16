@@ -1,9 +1,9 @@
 import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
-import { baseUrl } from '$lib/code/routing';
+import { baseUrl, navigateToPage } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
 import { getPanelUserSettings } from './api';
-import { PanelTheme, type IPanelSettings } from '../../types';
+import { PanelTheme, type IPanelSettings, Page } from '../../types';
 
 export enum LoginFailureReason {
     Unauthorized,
@@ -72,6 +72,8 @@ export function login(username: string, password: string, report: (failureReason
                     })
                 }
             });
+
+            navigateToPage(Page.Servers);
         })
         .catch((error) => {
             if (error.status === 401) {
