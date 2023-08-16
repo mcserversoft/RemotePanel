@@ -155,7 +155,7 @@
 				<Toggle bind:value={debugging} on:toggle={handleInputChange} label={'Debugging'}>Developer option to enable verbose logging in the browser's console.</Toggle>
 			</BoxedContainer>
 
-			<Button type="submit" disabled={areButtonsDisabled}>
+			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" /> Save
 			</Button>
 			<Button type="button" disabled={areButtonsDisabled} on:click={handleFormReset} color="alternative">

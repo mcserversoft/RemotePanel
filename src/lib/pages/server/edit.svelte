@@ -155,7 +155,7 @@
 		</BoxedContainer>
 
 		<div class="flex space-x-3">
-			<Button type="submit" disabled={areButtonsDisabled}>
+			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save
 			</Button>
 			<Button type="button" on:click={handleFormReset} color="alternative" disabled={areButtonsDisabled}>

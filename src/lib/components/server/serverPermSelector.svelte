@@ -181,10 +181,10 @@
 
 	<svelte:fragment slot="footer">
 		<div class="flex justify-end space-x-1 w-full">
-			<Button type="submit" disabled={false} on:click={handleDiscard} color="alternative">
+			<Button disabled={false} on:click={handleDiscard} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Discard
 			</Button>
-			<Button type="submit" disabled={false} on:click={handleSave}>
+			<Button disabled={false} on:click={handleSave} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" /> Save
 			</Button>
 		</div>

@@ -70,7 +70,7 @@
 	</div>
 
 	<div class="flex items-center justify-center space-x-3 mt-6">
-		<Button type="button" on:click={handleCrop}>
+		<Button type="button" on:click={handleCrop} color="blue">
 			<Icon data={mdiCrop} class="mr-2 -ml-1" /> Crop
 		</Button>
 
