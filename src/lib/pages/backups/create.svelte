@@ -99,7 +99,7 @@
 		</BoxedContainer>
 
 		<div class="flex space-x-3">
-			<Button type="submit">
+			<Button type="submit" color="blue">
 				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Create User
 			</Button>
 			<Button type="button" on:click={navigateBack} color="alternative">
