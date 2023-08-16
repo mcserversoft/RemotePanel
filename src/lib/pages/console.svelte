@@ -17,6 +17,8 @@
 	<title>MCSS Remote Panel | Dashboard</title>
 </svelte:head>
 
+<!-- FUTURE implement console stream version -->
+
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<ServerSelector>
 		<div class="self-center">

@@ -5,7 +5,7 @@
 	import { settings } from '$lib/code/storage';
 	import { getServerConsole, getIsServerConsoleOutdated, postServerCommand } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import { mdiBullhorn, mdiChat, mdiRefresh, mdiSend } from '@mdi/js';
+	import { mdiChat, mdiRefresh, mdiSend } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
 	import { selectedServerId } from '$lib/code/global';
