@@ -13,5 +13,5 @@
 		<p class="text-xl lg:text-2xl font-extrabold dark:text-gray-300">{value}</p>
 		<p class="text-xs lg:text-sm">{caption}</p>
 	</div>
-	<Icon data={icon} size={9} class={'mr-2  text-gray-600 dark:text-gray-300'} />
+	<Icon data={icon} size={9} class={'mr-3 self-center text-gray-600 dark:text-gray-300'} />
 </div>

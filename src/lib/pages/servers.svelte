@@ -185,7 +185,7 @@
 										View Dashboard
 									</button>
 									<Button
-										btnClass="px-2 py-2 text-gray-900 bg-white border border-gray-200 rounded-md lg:rounded-l-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+										class="px-2 py-2 text-gray-900 bg-white border border-gray-200 rounded-md lg:rounded-l-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
 									>
 										<Icon data={mdiChevronDown} size={4} viewBox={20} class="mb-1" />
 									</Button>
