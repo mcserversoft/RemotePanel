@@ -522,7 +522,6 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
             return rawResponse as IGetPanelSettingsResponse;
         })
         .then((data) => {
-
             let userSettings: IPanelSettings = {
                 amountOfConsoleLines: data.amountOfConsoleLines,
                 consoleRefreshRate: data.consoleRefreshRate,
@@ -531,6 +530,7 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
                 enableAutomaticConsoleScrolling: data.enableAutomaticConsoleScrolling,
                 enableConsoleChatMode: data.enableConsoleChatMode,
                 enableDebugging: data.enableDebugging,
+                lastModifiedAt: data.lastModifiedAt
             }
 
             report(true, userSettings);

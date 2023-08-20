@@ -115,6 +115,7 @@ export interface IPanelSettings {
     enableAutomaticConsoleScrolling: boolean,
     enableConsoleChatMode: boolean,
     enableDebugging: boolean
+    lastModifiedAt: Date
 }
 
 /* User */

@@ -48,30 +48,26 @@ export function login(username: string, password: string, report: (failureReason
 
             getPanelUserSettings((wasSuccess: boolean, fetchedSettings: IPanelSettings) => {
                 if (wasSuccess) {
-                    settings.set({
-                        serversRefreshRate: fetchedSettings.serverRefreshRate,
-                        consoleRefreshRate: fetchedSettings.consoleRefreshRate,
-                        autoScrollConsole: fetchedSettings.enableAutomaticConsoleScrolling,
-                        chatModeConsole: fetchedSettings.enableConsoleChatMode,
-                        amountOfConsoleLines: fetchedSettings.amountOfConsoleLines,
-                        reverseConsoleLines: false,
-                        panelTheme: fetchedSettings.panelTheme,
-                        debugging: fetchedSettings.enableDebugging,
-                        loadedSuccessfully: true
-                    })
+                    // check against empty C# DateTime
+                    if (fetchedSettings.lastModifiedAt.toString() == '0001-01-01T00:00:00') {
+                        setDefaultSettings();
+                    } else {
+                        settings.set({
+                            serversRefreshRate: fetchedSettings.serverRefreshRate,
+                            consoleRefreshRate: fetchedSettings.consoleRefreshRate,
+                            autoScrollConsole: fetchedSettings.enableAutomaticConsoleScrolling,
+                            chatModeConsole: fetchedSettings.enableConsoleChatMode,
+                            amountOfConsoleLines: fetchedSettings.amountOfConsoleLines,
+                            reverseConsoleLines: false,
+                            panelTheme: fetchedSettings.panelTheme,
+                            debugging: fetchedSettings.enableDebugging,
+                            loadedSuccessfully: true
+                        })
+                    }
+
                 } else {
                     confirm(`Unable to fetch users settings, reverting to default.`);
-                    settings.set({
-                        serversRefreshRate: 5,
-                        consoleRefreshRate: 5,
-                        autoScrollConsole: true,
-                        chatModeConsole: false,
-                        amountOfConsoleLines: 50,
-                        reverseConsoleLines: false,
-                        panelTheme: PanelTheme.Light,
-                        debugging: false,
-                        loadedSuccessfully: false
-                    })
+                    setDefaultSettings();
                 }
             });
 
@@ -97,4 +93,19 @@ export function logout() {
         username: '',
         userJoinDate: 0
     });
+}
+
+
+function setDefaultSettings() {
+    settings.set({
+        serversRefreshRate: 5,
+        consoleRefreshRate: 5,
+        autoScrollConsole: true,
+        chatModeConsole: false,
+        amountOfConsoleLines: 50,
+        reverseConsoleLines: false,
+        panelTheme: PanelTheme.Light,
+        debugging: false,
+        loadedSuccessfully: false
+    })
 }
