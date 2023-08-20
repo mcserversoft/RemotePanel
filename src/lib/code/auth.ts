@@ -13,6 +13,7 @@ export enum LoginFailureReason {
 
 export const auth = persisted('user', {
     apiKey: '',
+    showAdminFeatures: false,
     sharedAccessSignature: '',
     userId: '',
     username: '',
@@ -38,6 +39,7 @@ export function login(username: string, password: string, report: (failureReason
         .then((data) => {
             auth.set({
                 apiKey: data.apiKey,
+                showAdminFeatures: data.isAdmin,
                 sharedAccessSignature: data.sharedAccessSignature,
                 userId: data.userId,
                 username: data.username,
@@ -89,6 +91,7 @@ export function login(username: string, password: string, report: (failureReason
 export function logout() {
     auth.set({
         apiKey: '',
+        showAdminFeatures: false,
         sharedAccessSignature: '',
         userId: '',
         username: '',

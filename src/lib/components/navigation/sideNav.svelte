@@ -10,6 +10,8 @@
 	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../elements/icon.svelte';
 	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
+	import { get } from 'svelte/store';
+	import { auth } from '$lib/code/auth';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
@@ -128,9 +130,11 @@
 				</NavDropdown> 
 				-->
 
-				<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
-					<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
-				</NavItem>
+				{#if get(auth).showAdminFeatures}
+					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
+						<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
+					</NavItem>
+				{/if}
 				<!-- 
 				<NavItem name="API Keys">
 					<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />
