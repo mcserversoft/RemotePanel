@@ -49,8 +49,7 @@
 	}
 
 	function handleSave() {
-		serverAccessDetails.update(serverSelection, permissionSelection);
-		serverAccessDetails.hasAccessToAllServers = false;
+		serverAccessDetails.update(serverSelection, permissionSelection, serverAccessDetails.hasAccessToAllServers);
 		showCustomServersModal = false;
 	}
 

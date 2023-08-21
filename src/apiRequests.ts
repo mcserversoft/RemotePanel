@@ -6,6 +6,7 @@ export interface ICreateUserRequest {
     passwordRepeat: string;
     enabled: boolean;
     isAdmin: boolean;
+    hasAccessToAllServers: boolean;
     customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
 }
 

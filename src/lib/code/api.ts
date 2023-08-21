@@ -369,6 +369,7 @@ export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: 
         passwordRepeat: newUser.passwordRepeat,
         enabled: newUser.enabled,
         isAdmin: newUser.isAdmin,
+        hasAccessToAllServers: newUser.serverAccessDetails.hasAccessToAllServers,
         customServerPermissions: {}
     }
 
@@ -406,6 +407,7 @@ export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSucces
         passwordRepeat: updatedUser.passwordRepeat,
         enabled: updatedUser.enabled,
         isAdmin: updatedUser.isAdmin,
+        hasAccessToAllServers: updatedUser.serverAccessDetails.hasAccessToAllServers,
         customServerPermissions: {}
     }
 
