@@ -17,6 +17,9 @@ module.exports = {
         'hero-pattern': "url('/bg.jpg')",
       }
     },
+    fontFamily: {
+      'consolas': ['"Consolas"']
+    },
   },
   plugins: [
     require('postcss-nested'),

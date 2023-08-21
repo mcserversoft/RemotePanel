@@ -147,7 +147,7 @@
 	<div class="bg-white dark:bg-gray-800">
 		<!-- don't put tabs before </textarea> -->
 		<!-- this messes up the getIsServerConsoleOutdated check -->
-		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'}  md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
+		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'} font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
 	</div>
 </div>
 
