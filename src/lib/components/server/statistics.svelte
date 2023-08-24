@@ -10,7 +10,7 @@
 
 	let stats: Stats = {
 		cpu: 0,
-		memory: { current: 0, max: 0, free: 0, percentageFree: 0 },
+		memory: { current: 0, max: 0, free: 0 },
 		playersOnline: 0,
 		playerLimit: 0,
 		startDateUnix: 0,
@@ -51,12 +51,16 @@
 			}
 		);
 	}
+
+	function calculateFreePercentage(current: number, max: number) {
+		return Math.round((current / max) * 100);
+	}
 </script>
 
 <!-- this fixes a visual bug when loading -->
 <div class="grid grid-cols-2 md:grid-cols-3 gap-3 pb-3" class:md:grid-cols-4={stats.playerLimit != 0}>
 	<ServerStatistic title="CPU" value={stats.cpu.toString() + '%'} caption="current CPU usage" icon={mdiChip} />
-	<ServerStatistic title="Memory" value={stats.memory.current.toString() + 'MB'} caption="{stats.memory.percentageFree}% used of {stats.memory.max} MB" icon={mdiChartArc} />
+	<ServerStatistic title="Memory" value={stats.memory.current.toString() + 'MB'} caption="{calculateFreePercentage(stats.memory.current, stats.memory.max)}% used of {stats.memory.max} MB" icon={mdiChartArc} />
 
 	{#if stats.playerLimit != 0}
 		<ServerStatistic title="Players" value={stats.playersOnline.toString()} caption="out of {stats.playerLimit}" icon={mdiAccountCowboyHat} />

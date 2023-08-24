@@ -47,7 +47,6 @@ export interface Memory {
     current: number;
     max: number;
     free: number;
-    percentageFree: number;
 }
 
 export enum Filter {
