@@ -68,7 +68,8 @@ const config: UserConfig = {
 			},
 
 		}),
-		zipPack({ inDir: 'build', outDir: 'build', outFileName: 'panel.zip' })],
+		//zipPack({ inDir: 'build', outDir: 'build', outFileName: 'panel.zip' })
+    ],
 	define: {
 		__VERSION__: JSON.stringify(process.env.npm_package_version)
 	}

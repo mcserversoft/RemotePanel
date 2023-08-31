@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, beforeUpdate, afterUpdate } from 'svelte';
+	import { onDestroy, beforeUpdate, afterUpdate, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
@@ -9,6 +9,7 @@
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
 	import { selectedServerId } from '$lib/code/global';
+    import XTerminal from '$lib/code/XTerminal';
 
 	export let fillScreen: boolean = false;
 
@@ -17,6 +18,8 @@
 		reloadConsole(serverId);
 	}
 
+    let terminalElement: HTMLDivElement;
+    let term: XTerminal;
 	let loadingConsole: boolean;
 	let serverConsole: string[] = [];
 	let consoleInput: string;
@@ -28,6 +31,10 @@
 			reloadConsole(newServerId);
 		});
 
+        onMount(() => {
+            term = new XTerminal(terminalElement);
+        });
+
 		const updateConsole = setInterval(() => {
 			updateConsoleIfNeeded();
 		}, $settings.consoleRefreshRate * 1000 ?? 5000);
@@ -35,16 +42,6 @@
 		onDestroy(unsubscribe);
 		onDestroy(() => clearInterval(updateConsole));
 	}
-
-	beforeUpdate(() => {
-		consoleRequiresUpdate = textarea && textarea.offsetHeight + textarea.scrollTop > textarea.scrollHeight - 20;
-	});
-
-	afterUpdate(() => {
-		if (consoleRequiresUpdate) {
-			scrollToBottom();
-		}
-	});
 
 	async function reloadConsole(serverId: string) {
 		if (!serverId) {
@@ -56,8 +53,7 @@
 		getServerConsole(
 			serverId,
 			(consoleLines: string[]) => {
-				serverConsole = consoleLines;
-				scrollToBottom();
+                term.update(consoleLines);
 			},
 			(wasSuccess: boolean) => {
 				loadingConsole = false;
@@ -85,10 +81,7 @@
 			secondLastLine,
 			lastLine,
 			(isOutdated: boolean) => {
-				if (isOutdated) {
-					reloadConsole(serverId);
-					scrollToBottom();
-				}
+                if(isOutdated) return reloadConsole(serverId);
 			},
 			(wasSuccess: boolean) => {
 				loadingConsole = false;
@@ -113,7 +106,7 @@
 	}
 
 	function clearConsole() {
-		serverConsole = [];
+		term.clear();
 	}
 
 	function toggleChatMode() {
@@ -144,11 +137,7 @@
 			<label for="autoScrollConsole" class="ml-2 text-sm cursor-pointer select-none font-medium text-gray-900 dark:text-gray-300">Auto scroll</label>
 		</div>
 	</div>
-	<div class="bg-white dark:bg-gray-800">
-		<!-- don't put tabs before </textarea> -->
-		<!-- this messes up the getIsServerConsoleOutdated check -->
-		<textarea bind:this={textarea} readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'} font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
-	</div>
+	<div bind:this={terminalElement} class="bg-white dark:bg-gray-800"></div>
 </div>
 
 {#key $selectedServerId}
