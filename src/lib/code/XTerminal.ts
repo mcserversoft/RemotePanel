@@ -5,12 +5,14 @@ import '../../../node_modules/xterm/css/xterm.css';
 export default class XTerminal {
     terminal: Terminal;
     fitAddon: FitAddon;
+    console: string[];
     constructor(terminalElement: HTMLDivElement) {
         this.terminal = new Terminal({ cursorBlink: false, cursorStyle: "underline", fontSize: 12, theme: { background: '#1f2937'} });
         this.fitAddon = new FitAddon();
         this.terminal.loadAddon(this.fitAddon);
         this.terminal.open(terminalElement);
         this.fitAddon.fit();
+        this.console = [];
     }
 
     minecraftToAnsiColor(inputString: string): string {
@@ -60,9 +62,14 @@ export default class XTerminal {
     update(consoleLines: any) {
         this.clear();
         let consoleArray = consoleLines.split("\n");
+        this.console = consoleArray;
         consoleArray.forEach((line: string) => {
             this.terminal.writeln(this.minecraftToAnsiColor(line + " §r"))
         });
+    }
+
+    getConsole() {
+        return this.console;
     }
 
     scroll() {

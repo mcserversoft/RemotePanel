@@ -21,32 +21,28 @@
     let terminalElement: HTMLDivElement;
     let term: XTerminal;
 	let loadingConsole: boolean;
-	let serverConsole: string[] = [];
 	let consoleInput: string;
-	let textarea: HTMLTextAreaElement;
-	let consoleRequiresUpdate: boolean;
 
 	if (browser) {
-		const unsubscribe = selectedServerId.subscribe((newServerId) => {
-			reloadConsole(newServerId);
-		});
-
         onMount(() => {
+            const unsubscribe = selectedServerId.subscribe((newServerId) => {
+                reloadConsole(newServerId);
+            });
+
             term = new XTerminal(terminalElement);
+
+            const updateConsole = setInterval(() => {
+                updateConsoleIfNeeded();
+                console.log("Reload Triggered!")
+            }, $settings.consoleRefreshRate * 1000 ?? 5000);
+
+            onDestroy(unsubscribe);
+            onDestroy(() => clearInterval(updateConsole));
         });
-
-		const updateConsole = setInterval(() => {
-			updateConsoleIfNeeded();
-		}, $settings.consoleRefreshRate * 1000 ?? 5000);
-
-		onDestroy(unsubscribe);
-		onDestroy(() => clearInterval(updateConsole));
 	}
 
 	async function reloadConsole(serverId: string) {
-		if (!serverId) {
-			return;
-		}
+		if (!serverId) return;
 
 		loadingConsole = true;
 
@@ -54,27 +50,25 @@
 			serverId,
 			(consoleLines: string[]) => {
                 term.update(consoleLines);
+                term.scroll();
 			},
 			(wasSuccess: boolean) => {
 				loadingConsole = false;
 			}
 		);
+
 	}
 
 	async function updateConsoleIfNeeded() {
 		const serverId = get(selectedServerId);
-
-		if (!serverId) {
-			return;
-		}
+		if (!serverId) return;
 
 		loadingConsole = true;
 
-		let lines = textarea.value.split('\n');
-		let length: number = lines.length - 1;
+        let lines:string[] = term.getConsole();
 
-		let secondLastLine: string = encodeURIComponent(lines[length - 1]);
-		let lastLine: string = encodeURIComponent(lines[length]);
+		let secondLastLine:string = lines[lines.length - 2];
+		let lastLine:string = lines[lines.length - 1];
 
 		getIsServerConsoleOutdated(
 			serverId,
@@ -97,12 +91,6 @@
 
 		postServerCommand(serverId, consoleInput);
 		consoleInput = '';
-	}
-
-	function scrollToBottom() {
-		if (get(settings).autoScrollConsole) {
-			textarea?.scrollTo(0, textarea.scrollHeight);
-		}
 	}
 
 	function clearConsole() {
