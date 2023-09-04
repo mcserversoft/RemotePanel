@@ -1,6 +1,9 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
+		"types": [
+			"vite-plugin-pwa/info"
+		],
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,
