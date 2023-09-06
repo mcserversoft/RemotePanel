@@ -9,3 +9,6 @@ node_modules
 # custom
 panel.zip
 .save
+
+package-lock.json
+pnpm-lock.yaml
