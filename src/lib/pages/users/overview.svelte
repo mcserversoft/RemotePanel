@@ -118,8 +118,8 @@
 									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 								</form>
 								<form on:submit|preventDefault={handleDeletePanelUser}>
-									<input type="text" id="userId" name="userId" value={user.userId} hidden />
-									<input type="text" id="username" name="username" value={user.username} hidden />
+									<input type="text" id="userId" name="userId" value={user.userId} autocomplete="off" hidden />
+									<input type="text" id="username" name="username" value={user.username} autocomplete="off" hidden />
 									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
 								</form>
 							</td>
