@@ -1,12 +1,17 @@
 <script lang="ts">
-	import { getFriendlyStatusName, getStatusBgColor } from '$lib/code/shared';
 	import { selectedServerId, servers } from '$lib/code/global';
+	import { derived, writable } from 'svelte/store';
+	import StatusIndicator from './statusIndicator.svelte';
 
 	let dropdownVisible: boolean = false;
-	let searchTerm: string;
 
-	const serverList = $servers;
-	let filteredServers = serverList;
+	const searchTerm = writable('');
+	const filteredServers = derived([searchTerm, servers], ([$term, $servers]) =>
+		$servers.filter((server) => {
+			let searchableProperties = (server.name + server.description + server.type).toLowerCase();
+			return searchableProperties.includes($term.toLowerCase());
+		})
+	);
 
 	export function toggle() {
 		dropdownVisible = !dropdownVisible;
@@ -15,17 +20,6 @@
 	export function close() {
 		dropdownVisible = false;
 	}
-
-	function handleSearch() {
-		filterServers();
-	}
-
-	const filterServers = () => {
-		return (filteredServers = serverList.filter((server) => {
-			let searchableProperties = server.name.toLowerCase() + server.description.toLowerCase() + server.type.toLowerCase();
-			return searchableProperties.includes(searchTerm.toLowerCase());
-		}));
-	};
 
 	function changeSelectedServer(serverId: string) {
 		if (!serverId) {
@@ -50,8 +44,7 @@
 					</div>
 					<form on:submit|preventDefault>
 						<input
-							bind:value={searchTerm}
-							on:input={handleSearch}
+							bind:value={$searchTerm}
 							type="text"
 							id="input-group-search"
 							class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -62,11 +55,11 @@
 			</div>
 
 			<ul class="grid grid-cols-1 sm:grid-cols-2 -mt-3 xl:grid-cols-4 gap-3 h-48 overflow-y-auto overflow-x-hidden p-3 text-sm">
-				{#each filteredServers || [] as { serverId, name, description, status }}
+				{#each $filteredServers || [] as { serverId, name, description, status }}
 					<li class="flex flex-col max-h-16 rounded bg-gray-200 dark:bg-gray-500 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-400">
 						<button on:click={() => changeSelectedServer(serverId)} class="overflow-hidden rounded text-ellipsis p-2 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
 							<div class="flex items-center pl-1 space-x-2 text-lg truncate">
-								<p class="inline-flex rounded-full h-2 w-2 shrink-0 {getStatusBgColor(status)}" title={getFriendlyStatusName(status)} />
+								<StatusIndicator {status} hideTitle={true} class="-mr-2" />
 								<p class="font-semibold">{name}</p>
 							</div>
 							<p class="text-left truncate">{description ? description : 'No description'}</p>

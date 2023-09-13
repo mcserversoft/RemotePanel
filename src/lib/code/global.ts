@@ -10,10 +10,10 @@ export const isLoadingServers = writable(false);
 export const servers = persisted<Server[]>('servers', new Array<Server>());
 export const selectedServerId = persisted('selectedServerId', '');
 
-// global translations
-export const getSelectedServer = derived(servers, ($servers) => {
-    if ($servers) {
-        return $servers.find((s: IServer) => s.serverId == get(selectedServerId));
+// global functions
+export function getServer(serverId: any) {
+    if (get(servers)) {
+        return get(servers).find((s: IServer) => s.serverId == serverId);
     }
     return {
         serverId: '',
@@ -23,4 +23,4 @@ export const getSelectedServer = derived(servers, ($servers) => {
         status: 0,
         permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
     };
-})
+}

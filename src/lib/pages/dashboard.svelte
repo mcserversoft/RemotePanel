@@ -3,7 +3,7 @@
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import { mdiRefresh } from '@mdi/js';
 	import { getFriendlyStatusName } from '$lib/code/shared';
-	import { selectedServerId, getSelectedServer } from '$lib/code/global';
+	import { selectedServerId, getServer } from '$lib/code/global';
 	import ConsoleComponent from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
@@ -37,7 +37,7 @@
 			<span class="sr-only">Reload UI</span>
 			{#key $selectedServerId}
 				{#if hasPermission(Permission.useServerActions, $selectedServerId)}
-					<ActionDropdown statusName={getFriendlyStatusName($getSelectedServer?.status)} />
+					<ActionDropdown statusName={getFriendlyStatusName(getServer($selectedServerId)?.status)} />
 				{/if}
 			{/key}
 		</div>
