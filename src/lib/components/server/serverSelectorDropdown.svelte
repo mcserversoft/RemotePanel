@@ -33,7 +33,7 @@
 
 {#if dropdownVisible}
 	<div class="relative">
-		<div id="dropdown" class="absolute top-full w-full z-20 left-0 border border-gray-300 dark:border-gray-600 rounded shadow-lg overflow-hidden bg-gray-100 dark:bg-gray-600">
+		<div id="dropdown" class="absolute top-full w-full z-20 left-0 border border-gray-300 dark:border-gray-600 rounded shadow-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
 			<div class="p-4">
 				<label for="input-group-search" class="sr-only">Search</label>
 				<div class="relative -mt-1.5">
@@ -56,7 +56,7 @@
 
 			<ul class="grid grid-cols-1 sm:grid-cols-2 -mt-3 xl:grid-cols-4 gap-3 h-48 overflow-y-auto overflow-x-hidden p-3 text-sm">
 				{#each $filteredServers || [] as { serverId, name, description, status }}
-					<li class="flex flex-col max-h-16 rounded bg-gray-200 dark:bg-gray-500 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-400">
+					<li class="flex flex-col max-h-16 rounded bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500">
 						<button on:click={() => changeSelectedServer(serverId)} class="overflow-hidden rounded text-ellipsis p-2 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
 							<div class="flex items-center pl-1 space-x-2 text-lg truncate">
 								<StatusIndicator {status} hideTitle={true} class="-mr-2" />
