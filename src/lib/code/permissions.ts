@@ -9,7 +9,11 @@ export enum Permission {
     editServer = "EDIT_SERVER",
 }
 
-export function hasPermission(perm: Permission, serverId: string): boolean {
+export function hasPermission(perm: Permission, serverId?: string): boolean {
+    if (serverId == undefined) {
+        return false;
+    }
+
     const server = get(servers).find((s) => s.serverId == serverId);
     if (!server) {
         return false;

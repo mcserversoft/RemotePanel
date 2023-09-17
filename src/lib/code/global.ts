@@ -24,3 +24,16 @@ export function getServer(serverId: any) {
         permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
     };
 }
+
+export const selectedServer = derived([servers, selectedServerId], ([$servers, $selectedServerId]) => {
+    if ($servers) {
+        return $servers.find((s: IServer) => s.serverId == $selectedServerId);
+    }
+    return {
+        serverId: '',
+        name: '',
+        description: '',
+        status: 0,
+        permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
+    };
+})
