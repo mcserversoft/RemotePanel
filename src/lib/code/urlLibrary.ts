@@ -6,8 +6,8 @@ export enum Url {
     Contribute = "https://mcserversoft.com/donate",
     Website = "https://mcserversoft.com",
     Documentation = "https://mcserversoft.com/documentation",
-    DocumentationPanel = "https://docs.mcserversoft.com/webpanel/getting-started",
-    DocumentationAdminApi = "https://docs.mcserversoft.com/API/admin",
+    DocumentationPanel = "https://url.mcserversoft.com/WebPanelDocs",
+    DocumentationAdminApi = "https://url.mcserversoft.com/AdminPermissionsDocs",
 }
 
 export function getUrl(url: Url) {
