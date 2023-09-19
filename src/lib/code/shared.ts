@@ -50,14 +50,21 @@ export function getGreeting() {
     var currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-        return "good morning";
+        return "morning";
     } else if (currentHour >= 5 && currentHour < 18) {
-        return "good afternoon";
+        return "afternoon";
     } else if (currentHour >= 18 && currentHour <= 22) {
-        return "good evening";
+        return "evening";
     } else {
         return "hi";
     }
+}
+
+export function getShortDateSince(unixTimestamp: number) {
+    //e.g. convert 1659359233 into August 2022
+    const date = new Date(unixTimestamp * 1000);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
+    return date.toLocaleString(undefined, options);
 }
 
 export function calculateUptime(startUnixTimestamp: number): string {
@@ -104,4 +111,25 @@ export function clickOutside(node: any): any {
             document.removeEventListener('click', handleClick, true);
         }
     }
+}
+
+export function openInNewTab(url: string) {
+    window.open(url, "_blank", "noopener noreferrer")
+}
+
+export function getRandomPassword() {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-={}[]|:;"<>,.?/';
+    let length = getNumberBetween(25, 35);
+    let password = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+
+    return password;
+}
+
+function getNumberBetween(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
 }

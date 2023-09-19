@@ -1,12 +1,8 @@
-import {
-	auth,
-	logout
-} from '$lib/code/auth';
+import { auth, logout } from '$lib/code/auth';
 import { baseUrl } from '$lib/code/routing';
 import axios, { type AxiosInstance } from 'axios';
 import { get } from 'svelte/store';
-
-import { isOffline } from './api';
+import { isOffline } from '$lib/code/global';
 
 function axiosClient(): AxiosInstance {
 

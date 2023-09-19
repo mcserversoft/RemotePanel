@@ -1,17 +1,16 @@
-import { writable } from 'svelte-local-storage-store';
-
-export enum Page {
-    About,
-    Dashboard,
-    Servers,
-    Settings,
-}
+import { persisted } from 'svelte-local-storage-store';
+import { Page } from '../../types';
 
 // used for testing purposes
 export const baseUrl = '';
 
-export const selectedPage = writable('selectedPage', Page.Dashboard);
+export const selectedPage = persisted('selectedPage', Page.Dashboard);
+export const selectedPageProps = persisted('selectedPageProps', null);
 
-export function navigateToPage(pageName: Page) {
+export function navigateToPage(pageName: Page, props: any = null) {
     selectedPage.set(pageName);
+
+    if (props) {
+        selectedPageProps.set(props);
+    }
 }

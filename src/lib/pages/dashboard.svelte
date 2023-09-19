@@ -1,40 +1,57 @@
 <script lang="ts">
-	import { selectedServerId } from '$lib/code/api';
+	import { getServers } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
-	import Sidebar from '$lib/components/sidebar.svelte';
-	import Server from '$lib/components/server.svelte';
-	import Console from '$lib/components/console.svelte';
-	import ServerStats from '$lib/components/serverStats.svelte';
+	import { mdiRefresh } from '@mdi/js';
+	import { getFriendlyStatusName } from '$lib/code/shared';
+	import { selectedServer } from '$lib/code/global';
+	import ConsoleComponent from '$lib/components/server/console.svelte';
+	import Icon from '$lib/components/elements/icon.svelte';
+	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
+	import Statistics from '$lib/components/server/statistics.svelte';
+	import ServerSelector from '$lib/components/server/serverSelector.svelte';
+
+	let consoleComponent: any;
+
+	function handleRefreshButton() {
+		getServers();
+		consoleComponent.refreshConsole();
+	}
 </script>
 
 <svelte:head>
-	<title>MCSS Remote Panel | Panel</title>
+	<title>MCSS Remote Panel | Dashboard</title>
 </svelte:head>
 
-<div class="">
-	<div class="flex flex-col lg:flex-row">
-		<div class="flex-none hidden lg:block">
-			<Sidebar />
+<section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
+	<ServerSelector>
+		<div class="self-center pr-1.5">
+			<button
+				type="button"
+				on:click={handleRefreshButton}
+				class="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
+			>
+				<Icon data={mdiRefresh} size={5} />
+			</button>
 		</div>
-		<div class="flex-grow p-6">
-			<div class="mb-20">
-				{#if $selectedServerId}
-					<Server />
-					{#key $selectedServerId}
-						{#if hasPermission(Permission.viewStats, $selectedServerId)}
-							<ServerStats />
-						{/if}
+		<div class="self-center">
+			<span class="sr-only">Reload UI</span>
+			{#if hasPermission(Permission.useServerActions, $selectedServer?.serverId)}
+				<ActionDropdown statusName={getFriendlyStatusName($selectedServer?.status)} />
+			{/if}
+		</div>
+	</ServerSelector>
 
-						{#if hasPermission(Permission.viewConsole, $selectedServerId)}
-							<Console />
-						{/if}
-					{/key}
-				{:else}
-					<div class="text-center">
-						<span class="text-sm font-medium italic text-slate-400">No server selected.</span>
-					</div>
-				{/if}
-			</div>
+	{#if $selectedServer?.serverId}
+		{#if hasPermission(Permission.viewStats, $selectedServer?.serverId)}
+			<Statistics />
+		{/if}
+
+		{#if hasPermission(Permission.viewConsole, $selectedServer?.serverId)}
+			<ConsoleComponent bind:this={consoleComponent} />
+		{/if}
+	{:else}
+		<div class="text-center">
+			<span class="text-sm font-medium italic text-slate-400">No server selected.</span>
 		</div>
-	</div>
-</div>
+	{/if}
+</section>

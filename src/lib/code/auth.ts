@@ -1,7 +1,9 @@
 import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
-import { baseUrl } from '$lib/code/routing';
+import { baseUrl, navigateToPage } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
+import { getPanelUserSettings } from './api';
+import { PanelTheme, type IPanelSettings, Page } from '../../types';
 
 export enum LoginFailureReason {
     Unauthorized,
@@ -11,7 +13,11 @@ export enum LoginFailureReason {
 
 export const auth = persisted('user', {
     apiKey: '',
+    showAdminFeatures: false,
+    sharedAccessSignature: '',
+    userId: '',
     username: '',
+    userJoinDate: 0,
 })
 
 export let username: string = get(auth).username;
@@ -33,19 +39,39 @@ export function login(username: string, password: string, report: (failureReason
         .then((data) => {
             auth.set({
                 apiKey: data.apiKey,
+                showAdminFeatures: data.isAdmin,
+                sharedAccessSignature: data.sharedAccessSignature,
+                userId: data.userId,
                 username: data.username,
+                userJoinDate: data.userJoinDate
             });
 
-            // set default settings
-            if (get(settings) == null) {
-                settings.set({
-                    serversRefreshRate: 5,
-                    consoleRefreshRate: 5,
-                    autoScrollConsole: true,
-                    amountOfConsoleLines: 50,
-                    reverseConsoleLines: false,
-                })
-            }
+            getPanelUserSettings((wasSuccess: boolean, fetchedSettings: IPanelSettings) => {
+                if (wasSuccess) {
+                    // check against empty C# DateTime
+                    if (fetchedSettings.lastModifiedAt.toString() == '0001-01-01T00:00:00') {
+                        setDefaultSettings();
+                    } else {
+                        settings.set({
+                            serversRefreshRate: fetchedSettings.serverRefreshRate,
+                            consoleRefreshRate: fetchedSettings.consoleRefreshRate,
+                            autoScrollConsole: fetchedSettings.enableAutomaticConsoleScrolling,
+                            chatModeConsole: fetchedSettings.enableConsoleChatMode,
+                            amountOfConsoleLines: fetchedSettings.amountOfConsoleLines,
+                            reverseConsoleLines: false,
+                            panelTheme: fetchedSettings.panelTheme,
+                            debugging: fetchedSettings.enableDebugging,
+                            loadedSuccessfully: true
+                        })
+                    }
+
+                } else {
+                    confirm(`Unable to fetch users settings, reverting to default.`);
+                    setDefaultSettings();
+                }
+            });
+
+            navigateToPage(Page.Servers);
         })
         .catch((error) => {
             if (error.status === 401) {
@@ -61,6 +87,25 @@ export function login(username: string, password: string, report: (failureReason
 export function logout() {
     auth.set({
         apiKey: '',
+        showAdminFeatures: false,
+        sharedAccessSignature: '',
+        userId: '',
         username: '',
+        userJoinDate: 0
     });
+}
+
+
+function setDefaultSettings() {
+    settings.set({
+        serversRefreshRate: 5,
+        consoleRefreshRate: 5,
+        autoScrollConsole: true,
+        chatModeConsole: false,
+        amountOfConsoleLines: 50,
+        reverseConsoleLines: false,
+        panelTheme: PanelTheme.Light,
+        debugging: false,
+        loadedSuccessfully: false
+    })
 }

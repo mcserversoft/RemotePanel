@@ -50,17 +50,17 @@ const config: UserConfig = {
 						purpose: 'any',
 					},
 					{
-						src: 'icons/icons-192.png',
+						src: 'icons/icon-192.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: 'icons/icons-384.png',
+						src: 'icons/icon-384.png',
 						sizes: '384x384',
 						type: 'image/png',
 					},
 					{
-						src: 'icons/icons-512.png',
+						src: 'icons/icon-512.png',
 						sizes: '512x512',
 						type: 'image/png',
 					}

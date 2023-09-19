@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { login, LoginFailureReason } from '$lib/code/auth';
 	import FormError from '$lib/components/formError.svelte';
-	import Logo from '$lib/svgs/Logo.svelte';
+	import Logo from '$lib/components/elements/logo.svelte';
+	import { Accordion, AccordionItem } from 'flowbite-svelte';
+	import Input from '$lib/components/elements/input.svelte';
+	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 
 	interface Error {
 		visible: boolean;
@@ -54,33 +57,36 @@
 				<p class="mb-4 text-xl text-center font-semibold">Remote Login</p>
 
 				<form on:submit|preventDefault={onLogin}>
-					<div class="form-control mb-3">
-						<label class="label" for="username">
-							<span class="label-text">Username</span>
-						</label>
-						<input bind:value={username} required id="username" name="username" type="text" placeholder="" class="input input-bordered " />
+					<div class="mb-3">
+						<Input bind:value={username} label={'Username'} type={'text'} required={true} inputClass="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500 focus:ring-blue-50" />
 					</div>
 
-					<div class="form-control mb-6">
-						<label class="label" for="password">
-							<span class="label-text">Password</span>
-						</label>
-						<input bind:value={password} required id="password" name="password" type="password" placeholder="" class="input input-bordered " />
+					<div class="mb-6">
+						<PeekableInput bind:value={password} label={'Password'} required={true} inputClass="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500 focus:ring-blue-50" />
 					</div>
 
-					<button type="submit" class="btn btn-primary btn-block mb-3">Login</button>
+					<button type="submit" class="w-full text-white bg-mcss-green hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login</button>
+
 					{#if error.visible}
 						<FormError title={error.title} message={error.message} />
 					{/if}
 
-					<div class="collapse text-center">
-						<input type="checkbox" />
-						<div class="collapse-title text-gray-400 px-0">How do I create an account?</div>
-						<div class="collapse-content text-gray-300">
-							<p>Accounts can be created/edited in the Web Panel section of MC Server Soft.</p>
-							<a href="https://docs.mcserversoft.com/webpanel/users" target="_blank" rel="noopener noreferrer" class="link link-primary">View documentation</a>
-						</div>
-					</div>
+					<Accordion flush>
+						<AccordionItem class="!text-gray-400" defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl">
+							<span slot="header" class="!text-gray-400">How do I create an account?</span>
+
+							<div class=" text-gray-300 text-center">
+								<p>Accounts can only be created by an administrator. If you are the administrator please check the <a href="https://docs.mcserversoft.com/webpanel/users" target="_blank" rel="noopener noreferrer" class="text-mcss-green">documentation</a> for more information.</p>
+							</div>
+						</AccordionItem>
+						<AccordionItem class="!text-gray-400" defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl">
+							<span slot="header" class="!text-gray-400">How do I reset my password?</span>
+
+							<div class=" text-gray-300 text-center">
+								<p>Passwords must be reset by an administrator.</p>
+							</div>
+						</AccordionItem>
+					</Accordion>
 				</form>
 			</div>
 		</div>
