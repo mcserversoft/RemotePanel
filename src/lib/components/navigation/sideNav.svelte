@@ -12,6 +12,7 @@
 	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/code/auth';
+	import NavDropdown from './navDropdown.svelte';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
@@ -87,7 +88,7 @@
 					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<!--TODO other pages-->
-				<!--
+
 				<NavDropdown
 					name="Backups"
 					items={[
@@ -98,19 +99,19 @@
 						},
 						{
 							name: 'History',
-							page: Page.Empty,
-							isActive: false
+							page: Page.BackupHistory,
+							isActive: $selectedPage == Page.BackupHistory
 						},
 						{
 							name: 'Settings',
-							page: Page.Empty,
-							isActive: false
+							page: Page.BackupSettings,
+							isActive: $selectedPage == Page.BackupSettings
 						}
 					]}
 				>
 					<Icon data={mdiArchive} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown>
-
+				<!--
 				<NavDropdown
 					name="Scheduler"
 					items={[

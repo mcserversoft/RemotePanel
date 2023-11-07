@@ -54,6 +54,7 @@ export enum Filter {
     Minimal,
     Status
 }
+
 export enum KeepOnline {
     None,
     Elevated,
@@ -82,6 +83,12 @@ export interface BreadcrumbItem {
 /**** NEW START ****/
 // start of the final approved/refactored code
 
+/* API */
+export enum BackupFilter {
+    None,
+    WithoutHistory
+}
+
 /* Panel */
 export enum Page {
     Empty,
@@ -90,6 +97,8 @@ export enum Page {
     Backups,
     BackupsCreate,
     BackupsEdit,
+    BackupHistory,
+    BackupSettings,
     Console,
     Dashboard,
     ServerEdit,
@@ -242,9 +251,7 @@ export interface ICustomServerPermission {
     editServer: boolean;
 }
 
-// beyond this code block ends the final approved/refactored code
-/**** END NEW ****/
-
+/* Backups */
 export interface Backup {
     backupId: string;
     name: string;
@@ -256,6 +263,16 @@ export interface Backup {
     fileBlacklist: any;
     folderBlacklist: any;
     completedAt: Date;
+    //TODO BackupHistory + check mcss, might need to add backupId or something to the config history
+    history: BackupHistory[];
+}
+
+export interface BackupHistory {
+    destination: string;
+    lastRun: Date;
+    logMessage: string;
+    name: string;
+    status: BackupStatus;
 }
 
 export enum BackupCompression {

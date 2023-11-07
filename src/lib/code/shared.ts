@@ -1,3 +1,6 @@
+import { mdiArchiveSync, mdiCircleOutline, mdiCheckCircle, mdiHelpCircle, mdiCloseCircle } from "@mdi/js";
+import { BackupStatus } from "../../types";
+
 export function getFriendlyStatusName(status: number = 0) {
     if (status === 0) {
         return "Offline";
@@ -44,6 +47,47 @@ export function getStatusTextColor(status: number = 0) {
     } else {
         return "text-gray-500";
     }
+}
+
+export function getBackupStatusIcon(status: BackupStatus) {
+    switch (status) {
+        case BackupStatus.InProgress:
+            return mdiArchiveSync;
+
+        case BackupStatus.NeverRun:
+            return mdiCircleOutline;
+
+        case BackupStatus.Completed:
+            return mdiCheckCircle;
+
+        case BackupStatus.Failed:
+        case BackupStatus.Canceled:
+            return mdiCloseCircle;
+
+        default:
+            return mdiHelpCircle;
+    }
+}
+
+export function getBackupStatusColor(status: BackupStatus) {
+    switch (status) {
+        // case BackupStatus.InProgress:
+        // case BackupStatus.NeverRun:
+
+        case BackupStatus.Completed:
+            return 'text-green-400';
+
+        case BackupStatus.Failed:
+        case BackupStatus.Canceled:
+            return 'text-red-400';
+
+        default:
+            return 'text-inherit';
+    }
+}
+
+export function getBackupStatusName(status: BackupStatus) {
+    return BackupStatus[status]
 }
 
 export function getGreeting() {

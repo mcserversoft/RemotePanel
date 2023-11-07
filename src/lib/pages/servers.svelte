@@ -194,7 +194,7 @@
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
 										<!--TODO other pages-->
 										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Settings</DropdownItem> -->
-										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem> -->
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
 										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Scheduler</DropdownItem> -->
 									</Dropdown>
 								</div>

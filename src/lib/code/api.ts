@@ -18,6 +18,8 @@ import {
     type IDeleteUserAccount,
     type IEditUserAccount,
     type IPanelSettings,
+    BackupFilter,
+    type BackupHistory,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
@@ -594,10 +596,34 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
         })
 }
 
-export function getBackups(serverId: string, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackups(serverId: string, filter: BackupFilter = BackupFilter.None, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackups");
-    axiosClient().get(`/api/v2/servers/${serverId}/backups`)
+    axiosClient().get(`/api/v2/servers/${serverId}/backups?filter=${filter}`)
         .then((response) => {
+            console.log(response)
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((backups) => {
+            report(backups ?? []);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch backups with filter: ${filter} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getBackups");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
+        .then((response) => {
+            console.log(response)
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
