@@ -620,7 +620,7 @@ export function getBackups(serverId: string, filter: BackupFilter = BackupFilter
 }
 
 export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
-    log("API Request: getBackups");
+    log("API Request: getBackupHistory");
     axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
         .then((response) => {
             console.log(response)
@@ -638,6 +638,25 @@ export function getBackupHistory(serverId: string, report: (backups: BackupHisto
         })
         .catch((error) => {
             console.error(`Failed to fetch backups with error: ${error}`)
+            completed(false);
+        })
+}
+
+export function deleteBackupHistory(serverId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteBackupHistory");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups/history/clear`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete backup history Error: ${error}`)
             completed(false);
         })
 }

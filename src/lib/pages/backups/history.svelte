@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { mdiArchive, mdiArchiveRemove, mdiRefresh } from '@mdi/js';
-	import { getBackupHistory } from '$lib/code/api';
+	import { deleteBackupHistory, getBackupHistory } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { Page, type BackupHistory } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
@@ -42,8 +42,20 @@
 		load();
 	}
 
-	function handleClearBackupHistory() {
-		console.log('todo handleClearBackupHistory');
+	function handleClearBackupHistory(e: any) {
+		let allowedToDelete = confirm(`Are you sure you want to delete the backup history for this server?`);
+		if (!allowedToDelete) {
+			return;
+		}
+
+		deleteBackupHistory(get(selectedServerId), (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`Backup history was successfully deleted.`);
+				handleRefreshButton();
+			} else {
+				confirm(`Failed to delete backup history.`);
+			}
+		});
 	}
 </script>
 
@@ -72,7 +84,7 @@
 			<span class="sr-only">Reload Backups</span>
 		</div>
 		<div class="self-center">
-			<Button icon={mdiArchiveRemove} text={'Clear History'} color="red" on:click={() => handleClearBackupHistory()} reactive={true} />
+			<Button icon={mdiArchiveRemove} text={'Clear History'} color="red" on:click={handleClearBackupHistory} reactive={true} />
 		</div>
 	</ServerSelector>
 
@@ -103,7 +115,7 @@
 							{#if isLoading}
 								<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
 							{:else}
-								<td class="px-6 py-4 text-center" colspan="7">No backups were found.</td>
+								<td class="px-6 py-4 text-center" colspan="7">No backup history was found.</td>
 							{/if}
 						</tr>
 					{/each}
