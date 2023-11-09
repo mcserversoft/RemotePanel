@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { mdiArchive, mdiArchivePlus, mdiCheck, mdiClose, mdiPlay, mdiRefresh } from '@mdi/js';
-	import { getBackups } from '$lib/code/api';
+	import { getBackups, runBackup } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type Backup, BackupFilter, BackupStatus } from '../../../types';
@@ -52,7 +52,19 @@
 	}
 
 	function handleRunBackup(backupId: string) {
-		console.log('todo handleRunBackup');
+		let allowedToDelete = confirm(`Are you sure you want to run this backup now?`);
+		if (!allowedToDelete) {
+			return;
+		}
+
+		runBackup($selectedServerId, backupId, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`Backup run  was successfully triggered.`);
+				handleRefreshButton();
+			} else {
+				confirm(`Failed to trigger backup run.`);
+			}
+		});
 	}
 
 	function handleDeleteBackup(backupId: string) {
