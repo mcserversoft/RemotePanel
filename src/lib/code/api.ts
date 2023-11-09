@@ -638,6 +638,26 @@ export function runBackup(serverId: string, backupId: string, completed: (wasSuc
         })
 }
 
+
+export function deleteBackup(serverId: string, backupId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteBackup");
+    axiosClient().delete(`/api/v2/servers/${serverId}/backups/${backupId}`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete backup with Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackupHistory");
     axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
