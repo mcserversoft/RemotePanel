@@ -22,10 +22,11 @@ import {
     type BackupHistory,
     type IBackupDetails,
     type IEditBackup,
+    type INewBackup,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
+import type { ICreateBackupRequest, ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
 import { log } from '$lib/code/logger';
 import { isLoadingServers, isOffline, selectedServerId, servers } from '$lib/code/global';
 
@@ -682,10 +683,40 @@ export function runBackup(serverId: string, backupId: string, completed: (wasSuc
         })
 }
 
+export function createBackup(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateBackupRequest = {
+        name: newBackup.name,
+        destination: newBackup.destination,
+        suspend: newBackup.suspend,
+        deleteOldBackups: newBackup.deleteOldBackups,
+        compression: newBackup.compression,
+        runBackupAfterCreation: newBackup.runBackupAfterCreation,
+        fileBlacklist: newBackup.fileBlacklist,
+        folderBlacklist: newBackup.folderBlacklist
+    }
+
+    log("API Request: createBackup");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to create backup: ${newBackup.name} Error: ${error}`)
+            completed(false);
+        })
+}
 
 export function deleteBackup(serverId: string, backupId: string, completed: (wasSuccess: boolean) => void) {
     log("API Request: deleteBackup");
-    axiosClient().delete(`/api/v2/servers/${serverId}/backups/${backupId}`,)
+    axiosClient().delete(`/ api / v2 / servers / ${serverId} / backups / ${backupId}`,)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -697,14 +728,14 @@ export function deleteBackup(serverId: string, backupId: string, completed: (was
         })
 
         .catch((error) => {
-            console.error(`Failed to delete backup with Error: ${error}`)
+            console.error(`Failed to delete backup with Error: ${error} `)
             completed(false);
         })
 }
 
 export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackupHistory");
-    axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
+    axiosClient().get(`/ api / v2 / servers / ${serverId} /backups/history`)
         .then((response) => {
             console.log(response)
             if (response?.status !== 200) {
@@ -720,14 +751,14 @@ export function getBackupHistory(serverId: string, report: (backups: BackupHisto
             completed(true);
         })
         .catch((error) => {
-            console.error(`Failed to fetch backups with error: ${error}`)
+            console.error(`Failed to fetch backups with error: ${error} `)
             completed(false);
         })
 }
 
 export function deleteBackupHistory(serverId: string, completed: (wasSuccess: boolean) => void) {
     log("API Request: deleteBackupHistory");
-    axiosClient().post(`/api/v2/servers/${serverId}/backups/history/clear`,)
+    axiosClient().post(`/ api / v2 / servers / ${serverId} /backups/history / clear`,)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -739,7 +770,7 @@ export function deleteBackupHistory(serverId: string, completed: (wasSuccess: bo
         })
 
         .catch((error) => {
-            console.error(`Failed to delete backup history Error: ${error}`)
+            console.error(`Failed to delete backup history Error: ${error} `)
             completed(false);
         })
 }

@@ -137,7 +137,6 @@
 			<Button type="submit" color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Backup
 			</Button>
-			<!-- TODO should this be revert or cancel? edit server & edit user behaves different -->
 			<Button type="button" on:click={navigateBack} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
 			</Button>

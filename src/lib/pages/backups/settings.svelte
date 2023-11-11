@@ -19,8 +19,11 @@
 		console.log('TODO updateBackupSettings');
 	}
 
-	function navigateBack() {
-		navigateToPage(Page.Backups);
+	function handleFormReset() {
+		// see panel settings
+		console.log('TODO handleFormReset');
+
+		//	areButtonsDisabled = true;
 	}
 </script>
 
@@ -53,8 +56,8 @@
 			<Button type="submit" color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Settings
 			</Button>
-			<Button type="button" on:click={navigateBack} color="alternative">
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
+			<Button type="button" on:click={handleFormReset} color="alternative">
+				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Revert
 			</Button>
 		</div>
 	</form>
