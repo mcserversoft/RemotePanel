@@ -23,6 +23,7 @@ import {
     type IBackupDetails,
     type IEditBackup,
     type INewBackup,
+    type BackupStats,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
@@ -618,6 +619,29 @@ export function getBackups(serverId: string, filter: BackupFilter = BackupFilter
         })
         .catch((error) => {
             console.error(`Failed to fetch backups with filter: ${filter} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getBackupStats(serverId: string, report: (stats: BackupStats) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getBackupStats");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/stats`)
+        .then((response) => {
+            console.log(response)
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((stats) => {
+            report(stats);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch backup stats Error: ${error}`)
             completed(false);
         })
 }

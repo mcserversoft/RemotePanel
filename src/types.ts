@@ -263,8 +263,13 @@ export interface Backup {
     fileBlacklist: any;
     folderBlacklist: any;
     completedAt: Date;
-    //TODO BackupHistory + check mcss, might need to add backupId or something to the config history
-    history: BackupHistory[];
+}
+
+export interface BackupStats {
+    scheduled: number;
+    completed: number;
+    canceled: number;
+    failed: number;
 }
 
 export interface IBackupDetails {

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { mdiArchive, mdiArchivePlus, mdiCheck, mdiClose, mdiPlay, mdiRefresh } from '@mdi/js';
-	import { deleteBackup, getBackups, runBackup } from '$lib/code/api';
+	import { deleteBackup, getBackupStats, getBackups, runBackup } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type Backup, BackupFilter, BackupStatus } from '../../../types';
+	import { Page, type Backup, BackupFilter, type BackupStats } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
@@ -14,6 +14,7 @@
 	import { getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
 
 	let backups: Backup[] = [];
+	let backupStats: BackupStats;
 	let isLoading = true;
 
 	// this loads it on mount & when the server changes
@@ -34,6 +35,16 @@
 			BackupFilter.WithoutHistory,
 			(data: Backup[]) => {
 				backups = data;
+			},
+			(wasSuccess: boolean) => {
+				isLoading = false;
+			}
+		);
+
+		getBackupStats(
+			serverId,
+			(data: BackupStats) => {
+				backupStats = data;
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
@@ -114,7 +125,7 @@
 		</div>
 	</ServerSelector>
 
-	<BackupProgressView />
+	<BackupProgressView stats={backupStats} />
 
 	<div class="relative overflow-x-auto">
 		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
