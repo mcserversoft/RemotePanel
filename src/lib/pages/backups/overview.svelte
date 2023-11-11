@@ -48,7 +48,7 @@
 	}
 
 	function handleEditBackup(backupId: string) {
-		console.log('todo handleEditBackup');
+		navigateToPage(Page.BackupsEdit, backupId);
 	}
 
 	function handleRunBackup(backupId: string) {
