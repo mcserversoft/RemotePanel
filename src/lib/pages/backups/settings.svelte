@@ -8,6 +8,8 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Input from '$lib/components/elements/input.svelte';
+	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 
 	//TODO load backup settings
 	export let zipFileFormat: string = 'Backup of [servername]_[backupname] [unix]';
@@ -40,6 +42,7 @@
 	<form on:submit|preventDefault={updateBackupSettings} class="space-y-3">
 		<BoxedContainer>
 			<Input bind:value={zipFileFormat} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}>Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input>
+			<OpenInNewTab url={getUrl(Url.DocumentationCustomZipFileFormat)} text={'More info about custom formats and parameters.'} />
 		</BoxedContainer>
 
 		<BoxedContainer>

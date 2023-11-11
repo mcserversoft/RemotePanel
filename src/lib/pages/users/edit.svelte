@@ -15,6 +15,7 @@
 	import { Button } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 
 	let userId: string;
 	let username: string = '';
@@ -122,7 +123,7 @@
 		<BoxedContainer>
 			<Toggle bind:value={isAdmin} label={'Admin rights'}>
 				Grant this user
-				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
+				<OpenInNewTab url={getUrl(Url.DocumentationAdminApi)} text={'management permissions'} inline={true} /> (does not override server access & perms).
 			</Toggle>
 
 			<div class="pt-6">
