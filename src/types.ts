@@ -267,6 +267,32 @@ export interface Backup {
     history: BackupHistory[];
 }
 
+export interface IBackupDetails {
+    backupId: string;
+    name: string;
+    destination: string;
+    suspend: boolean;
+    deleteOldBackups: boolean;
+    compression: BackupCompression;
+    lastStatus: BackupStatus;
+    completedAt: Date;
+    fileBlacklist: any;
+    folderBlacklist: any;
+}
+
+export interface INewBackup {
+    name: string;
+    destination: string;
+    suspend: boolean;
+    deleteOldBackups: boolean;
+    compression: BackupCompression;
+    runBackupAfterCreation: boolean;
+    fileBlacklist: any;
+    folderBlacklist: any;
+}
+
+export interface IEditBackup extends Omit<INewBackup, 'runBackupAfterCreation'> { }
+
 export interface BackupHistory {
     destination: string;
     lastRun: Date;

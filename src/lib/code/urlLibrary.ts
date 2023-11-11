@@ -8,6 +8,7 @@ export enum Url {
     Documentation = "https://mcserversoft.com/documentation",
     DocumentationPanel = "https://url.mcserversoft.com/WebPanelDocs",
     DocumentationAdminApi = "https://url.mcserversoft.com/AdminPermissionsDocs",
+    DocumentationCustomZipFileFormat = "https://url.mcserversoft.com/BackupCustomZipFormatDocs",
 }
 
 export function getUrl(url: Url) {

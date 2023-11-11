@@ -20,6 +20,8 @@ import {
     type IPanelSettings,
     BackupFilter,
     type BackupHistory,
+    type IBackupDetails,
+    type IEditBackup,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
@@ -616,6 +618,48 @@ export function getBackups(serverId: string, filter: BackupFilter = BackupFilter
         .catch((error) => {
             console.error(`Failed to fetch backups with filter: ${filter} Error: ${error}`)
             completed(false);
+        })
+}
+
+export function getBackupDetails(serverId: string, backupId: string, report: (wasSuccess: boolean, backupDetails: IBackupDetails) => void) {
+    log("API Request: getBackup");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/${backupId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((backupDetails) => {
+            report(true, backupDetails);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get backup with id: ${backupId} Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function editBackup(serverId: string, backupId: string, backupSettings: IEditBackup, report: (wasSuccess: boolean) => void) {
+    log("API Request: editServer");
+    axiosClient().put(`/api/v2/servers/${serverId}/backups/${backupId}`, JSON.stringify(backupSettings))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save settings of backup with id: ${backupId} Error: ${error}`)
+            report(false);
         })
 }
 

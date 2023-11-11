@@ -1,84 +1,92 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { mdiAccountMultiple, mdiAccountPlus, mdiArrowULeftTop, mdiRefreshCircle } from '@mdi/js';
+	import { mdiAlertRhombus, mdiArchive, mdiArrowULeftTop, mdiContentSave, mdiRefreshCircle } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, type IPanelUser, ServerAccessDetails, type IEditPanelUser } from '../../../types';
-	import { getRandomPassword } from '$lib/code/shared';
-	import { editPanelUser, getPanelUser } from '$lib/code/api';
+	import { Page, BackupCompression, type IBackupDetails, type IEditBackup } from '../../../types';
+	import { getServer, selectedServerId } from '$lib/code/global';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
-	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
-	import { Button } from 'flowbite-svelte';
+	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
-	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import Input from '$lib/components/elements/input.svelte';
+	import { editBackup, getBackupDetails } from '$lib/code/api';
+	import Warning from '$lib/components/elements/warning.svelte';
 
-	let userId: string;
-	let username: string = '';
-	let password: string = '';
-	let passwordConfirm: string = '';
-	let isAdmin: boolean = false;
-	let isEnabled: boolean = true;
-	let serverAccessDetails: ServerAccessDetails = new ServerAccessDetails();
+	let backupId: string;
+	let name: string = '';
+	let destination: string = '';
+	let compression: BackupCompression;
+	let deleteOldBackups: boolean = false;
+	let suspendServer: boolean = false;
+	//TODO fileBlacklist & folderBlacklist
+	let fileBlacklist: any;
+	let folderBlacklist: any;
 
-	let isPasswordRequired: boolean = false;
+	let originalName: string = '';
+	let showError: boolean;
+	let errorMessage: string;
+	let areButtonsDisabled: boolean = true;
 
-	$: {
-		isPasswordRequired = !(password == '' && passwordConfirm == '');
-	}
+	let compressionOptions = [
+		{ value: 0, name: 'High' },
+		{ value: 1, name: 'Low' },
+		{ value: 2, name: 'None' }
+	];
 
 	onMount(async () => {
 		load();
 	});
 
 	function load() {
-		userId = get(selectedPageProps) ?? '';
-		getUser(userId);
+		backupId = get(selectedPageProps) ?? '';
+		getBackup(backupId);
 	}
 
-	function getUser(userId: string) {
-		getPanelUser(userId, (wasSuccess: boolean, user: IPanelUser) => {
+	function getBackup(backupId: string) {
+		getBackupDetails($selectedServerId, backupId, (wasSuccess: boolean, backupDetails: IBackupDetails) => {
 			if (!wasSuccess) {
-				confirm(`Unable to load this page, does the user exist?`);
-				navigateBack();
+				showError = true;
+				errorMessage = 'Unable to load this page, does the backup exist?';
 			} else {
-				username = user.username;
-				isAdmin = user.isAdmin;
-				isEnabled = user.enabled;
-				serverAccessDetails = user.serverAccessDetails;
+				originalName = backupDetails.name;
+
+				name = backupDetails.name;
+				destination = backupDetails.destination;
+				suspendServer = backupDetails.suspend;
+				deleteOldBackups = backupDetails.deleteOldBackups;
+				compression = backupDetails.compression;
+				fileBlacklist = backupDetails.fileBlacklist;
+				folderBlacklist = backupDetails.folderBlacklist;
 			}
 		});
 	}
 
-	function updateUser() {
-		let updatedUser: IEditPanelUser = {
-			userId: userId,
-			password: password,
-			passwordRepeat: password,
-			isAdmin: isAdmin,
-			enabled: isEnabled,
-			serverAccessDetails: serverAccessDetails
+	function updateBackup() {
+		let updatedBackup: IEditBackup = {
+			name: name,
+			destination: destination,
+			suspend: suspendServer,
+			deleteOldBackups: deleteOldBackups,
+			compression: compression,
+			fileBlacklist: fileBlacklist,
+			folderBlacklist: folderBlacklist
 		};
-
-		editPanelUser(updatedUser, (wasSuccess: boolean) => {
+		editBackup($selectedServerId, backupId, updatedBackup, (wasSuccess: boolean) => {
 			if (wasSuccess) {
-				confirm(`User '${username}' was successfully edited.`);
+				confirm(`Backup: '${updatedBackup.name}' was successfully edited.`);
 				navigateBack();
 			} else {
-				confirm(`Failed to edit user '${username}'.`);
+				showError = true;
+				errorMessage = `Failed to save changes for backup: '${updatedBackup.name}'.`;
 			}
 		});
-	}
-
-	function generateRandomPassword() {
-		password = passwordConfirm = getRandomPassword();
 	}
 
 	function navigateBack() {
-		navigateToPage(Page.Users);
+		navigateToPage(Page.Backups);
 	}
 </script>
 
@@ -88,56 +96,51 @@
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<Breadcrumb
-		icon={mdiAccountMultiple}
+		icon={mdiArchive}
 		items={[
-			{ name: 'Users', page: Page.Users, isClickable: true },
+			{ name: 'Backups', page: Page.Backups, isClickable: true },
 			{ name: 'Edit', page: Page.Empty, isClickable: false }
 		]}
 	/>
 
-	<PageTitleBanner title="Edit Backup" caption="You are modifying user: '{username}'." />
+	<PageTitleBanner title="Edit Backup" caption="You are modifying backup: '{originalName}' from server: {getServer($selectedServerId)?.name ?? 'Unknown server.'}." />
 
-	<form on:submit|preventDefault={updateUser} class="space-y-3">
+	{#if showError}
+		<Warning message={errorMessage} />
+	{/if}
+
+	<form on:submit|preventDefault={updateBackup} class="space-y-3">
 		<BoxedContainer>
-			<div class="flex relative">
-				<PeekableInput bind:value={password} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="mr-12" />
-				<div class="absolute bottom-0 right-0">
-					<form on:submit|preventDefault={generateRandomPassword}>
-						<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
-							<Icon data={mdiRefreshCircle} size={5} /> <span class="sr-only">Generate Password</span>
-						</button>
-					</form>
-				</div>
-			</div>
+			<Input bind:value={name} label={'Name'} type={'string'} required={true} />
+			<!-- TODO hidden because there is no file explorer yet -->
+			<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
 
-			<div class="flex relative pt-6">
-				<PeekableInput bind:value={passwordConfirm} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} />
-			</div>
+			<Label>
+				Compression
+				<Select bind:value={compression} items={compressionOptions} class="mt-2" />
+			</Label>
 		</BoxedContainer>
 
 		<BoxedContainer>
-			<ServerPermSelector {serverAccessDetails} />
-		</BoxedContainer>
-
-		<BoxedContainer>
-			<Toggle bind:value={isAdmin} label={'Admin rights'}>
-				Grant this user
-				<a href={getUrl(Url.DocumentationAdminApi)} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> management permissions</a>. (does not override server access & perms).
+			<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
+				<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
+				<p class=" text-sm text-gray-500 dark:text-gray-400">Keep 12 backups before deleting the old ones. You can edit this number in the backup settings.</p>
 			</Toggle>
 
 			<div class="pt-6">
-				<Toggle bind:value={isEnabled} label={'Enabled'} />
-				<p class=" text-sm text-gray-500 dark:text-gray-400">You can choose to temporarily enable/disable this user account.</p>
+				<Toggle bind:value={suspendServer} label={'Suspend server'} />
+				<p class=" text-sm text-gray-500 dark:text-gray-400">Shutdown the server during the backup and start it when the backup is finished.</p>
 			</div>
 		</BoxedContainer>
 
 		<div class="flex space-x-3">
 			<Button type="submit" color="blue">
-				<Icon data={mdiAccountPlus} class="mr-2 -ml-1" />Save User
+				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Backup
 			</Button>
+			<!-- TODO should this be revert or cancel? edit server & edit user behaves different -->
 			<Button type="button" on:click={navigateBack} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
 			</Button>
 		</div>
 	</form>
-</section> -->
+</section>
