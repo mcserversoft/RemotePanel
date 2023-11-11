@@ -716,7 +716,7 @@ export function createBackup(serverId: string, newBackup: INewBackup, completed:
 
 export function deleteBackup(serverId: string, backupId: string, completed: (wasSuccess: boolean) => void) {
     log("API Request: deleteBackup");
-    axiosClient().delete(`/ api / v2 / servers / ${serverId} / backups / ${backupId}`,)
+    axiosClient().delete(`/api/v2/servers/${serverId}/backups/${backupId}`,)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -735,7 +735,7 @@ export function deleteBackup(serverId: string, backupId: string, completed: (was
 
 export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackupHistory");
-    axiosClient().get(`/ api / v2 / servers / ${serverId} /backups/history`)
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
         .then((response) => {
             console.log(response)
             if (response?.status !== 200) {
@@ -758,7 +758,7 @@ export function getBackupHistory(serverId: string, report: (backups: BackupHisto
 
 export function deleteBackupHistory(serverId: string, completed: (wasSuccess: boolean) => void) {
     log("API Request: deleteBackupHistory");
-    axiosClient().post(`/ api / v2 / servers / ${serverId} /backups/history / clear`,)
+    axiosClient().post(`/api/v2/servers/${serverId}/backups/history/clear`,)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
