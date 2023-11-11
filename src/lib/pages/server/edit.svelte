@@ -12,6 +12,7 @@
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
+	import Warning from '$lib/components/elements/warning.svelte';
 
 	let loadedServerSettings: IServerSettings;
 	let serverId: string;
@@ -115,13 +116,7 @@
 	<PageTitleBanner title="Edit Server" caption="You are modifying server: '{name}'." />
 
 	{#if showError}
-		<div class="flex items-center w-full p-3 -mt-2 mb-3 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-			<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
-				<Icon data={mdiAlertRhombus} />
-				<span class="sr-only">Warning icon</span>
-			</div>
-			<div class="ml-3 text-sm font-normal">{errorMessage}</div>
-		</div>
+		<Warning message={errorMessage} />
 	{/if}
 
 	<form on:submit|preventDefault={updateServer} class="space-y-3">
@@ -158,6 +153,7 @@
 			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save
 			</Button>
+			<!-- TODO should this be revert or cancel? edit server & edit user behaves different -->
 			<Button type="button" on:click={handleFormReset} color="alternative" disabled={areButtonsDisabled}>
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
 			</Button>
