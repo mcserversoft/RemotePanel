@@ -24,6 +24,7 @@ import {
     type IEditBackup,
     type INewBackup,
     type BackupStats,
+    McssSettingsSection,
 } from '../../types';
 import { Filter } from '../../types';
 import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
@@ -34,6 +35,49 @@ import { isLoadingServers, isOffline, selectedServerId, servers } from '$lib/cod
 /*
 *  API Requests
 */
+
+export function getMcssSettings(section: McssSettingsSection, report: (settings: any) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getMcssSettings");
+    axiosClient().get(`/api/v2/mcss/settings/${section}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((settings) => {
+            report(settings);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get mcss settings Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function updateMcssSettings(settings: any, report: (wasSuccess: boolean) => void) {
+    log("API Request: editServer");
+    axiosClient().patch(`/api/v2/mcss/settings`, JSON.stringify(settings))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save mcss settings Error: ${error}`)
+            report(false);
+        })
+}
+
 export function getServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 

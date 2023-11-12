@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { mdiArchive, mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
+	import { mdiArchive, mdiClose, mdiContentSave } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page } from '../../../types';
+	import { McssSettingsSection, Page } from '../../../types';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Button } from 'flowbite-svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
@@ -10,20 +9,65 @@
 	import Input from '$lib/components/elements/input.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
+	import { onMount } from 'svelte';
+	import { getMcssSettings, updateMcssSettings } from '$lib/code/api';
+	import Warning from '$lib/components/elements/warning.svelte';
 
-	//TODO load backup settings
-	export let zipFileFormat: string = 'Backup of [servername]_[backupname] [unix]';
-	export let deleteOldBackupThreshold: number = 12;
+	export let zipFileFormat: string;
+	export let deleteOldBackupsThreshold: number;
 
-	function updateBackupSettings() {
-		console.log('TODO updateBackupSettings');
+	let showError: boolean;
+	let errorMessage: string;
+	let areButtonsDisabled: boolean = true;
+
+	let inputDeleteOldBackupsThreshold: boolean;
+
+	onMount(async () => {
+		load();
+	});
+
+	function load() {
+		getMcssSettings(
+			McssSettingsSection.Backups,
+			(data: any) => {
+				zipFileFormat = data.customZipFileFormat;
+				deleteOldBackupsThreshold = data.deleteOldBackupsThreshold;
+			},
+			(wasSuccess: boolean) => {
+				if (!wasSuccess) {
+					showError = true;
+					errorMessage = 'Unable to load the mcss settings.';
+				}
+			}
+		);
+	}
+
+	function handleInputChange() {
+		inputDeleteOldBackupsThreshold = !(deleteOldBackupsThreshold >= 5 && deleteOldBackupsThreshold <= 100);
+		areButtonsDisabled = false;
 	}
 
 	function handleFormReset() {
-		// see panel settings
-		console.log('TODO handleFormReset');
+		load();
+		areButtonsDisabled = true;
+	}
 
-		//	areButtonsDisabled = true;
+	function saveBackupSettings() {
+		console.log('TODO updateBackupSettings');
+
+		let updatedSettings: any = {
+			customZipFileFormat: zipFileFormat,
+			deleteOldBackupsThreshold: deleteOldBackupsThreshold
+		};
+
+		updateMcssSettings(updatedSettings, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`Settings were successfully saved.`);
+				areButtonsDisabled = true;
+			} else {
+				confirm(`Failed to save settings, see logs.`);
+			}
+		});
 	}
 </script>
 
@@ -42,22 +86,30 @@
 
 	<PageTitleBanner title="Editing Backup Settings" caption="You are modifying global backup settings." />
 
-	<form on:submit|preventDefault={updateBackupSettings} class="space-y-3">
+	{#if showError}
+		<Warning message={errorMessage} />
+	{/if}
+
+	<form on:submit|preventDefault={saveBackupSettings} class="space-y-3">
 		<BoxedContainer>
-			<Input bind:value={zipFileFormat} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}>Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input>
+			<Input bind:value={zipFileFormat} on:input={handleInputChange} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}
+				>Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input
+			>
 			<OpenInNewTab url={getUrl(Url.DocumentationCustomZipFileFormat)} text={'More info about custom formats and parameters.'} />
 		</BoxedContainer>
 
 		<BoxedContainer>
-			<Input bind:value={deleteOldBackupThreshold} label={'Delete Old Backups Threshold'} type={'number'} min="5" max="100" required={true}>The amount of backups in a destination folder that should be kept before being deleted by age.<br />Value between 5 and 100 backups.</Input>
+			<Input bind:value={deleteOldBackupsThreshold} error={inputDeleteOldBackupsThreshold} on:input={handleInputChange} label={'Delete Old Backups Threshold'} type={'number'} min="5" max="100" required={true}
+				>The amount of backups in a destination folder that should be kept before being deleted by age.<br />Value between 5 and 100 backups.</Input
+			>
 		</BoxedContainer>
 
 		<div class="flex space-x-3">
-			<Button type="submit" color="blue">
+			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Settings
 			</Button>
-			<Button type="button" on:click={handleFormReset} color="alternative">
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Revert
+			<Button type="button" disabled={areButtonsDisabled} on:click={handleFormReset} color="alternative">
+				<Icon data={mdiClose} class="mr-2 -ml-1" />Revert
 			</Button>
 		</div>
 	</form>

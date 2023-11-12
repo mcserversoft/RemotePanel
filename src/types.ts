@@ -83,6 +83,12 @@ export interface BreadcrumbItem {
 /**** NEW START ****/
 // start of the final approved/refactored code
 
+export enum McssSettingsSection {
+    InvalidOrEmpty,
+    All,
+    Backups,
+}
+
 /* API */
 export enum BackupFilter {
     None,
