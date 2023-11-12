@@ -5,14 +5,14 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupCompression, type IBackupDetails, type IEditBackup } from '../../../types';
+	import { Page, BackupCompression, type IBackupDetails, type IEditBackup, McssSettingsSection } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Input from '$lib/components/elements/input.svelte';
-	import { editBackup, getBackupDetails } from '$lib/code/api';
+	import { editBackup, getBackupDetails, getMcssSettings } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 
 	let backupId: string;
@@ -30,6 +30,8 @@
 	let errorMessage: string;
 	let areButtonsDisabled: boolean = true;
 
+	let deleteOldBackupsThresholdSetting: any;
+
 	let compressionOptions = [
 		{ value: 0, name: 'High' },
 		{ value: 1, name: 'Low' },
@@ -38,6 +40,18 @@
 
 	onMount(async () => {
 		load();
+
+		getMcssSettings(
+			McssSettingsSection.Backups,
+			(data: any) => {
+				deleteOldBackupsThresholdSetting = data.deleteOldBackupsThreshold;
+			},
+			(wasSuccess: boolean) => {
+				if (!wasSuccess) {
+					deleteOldBackupsThresholdSetting = '? (unable to load)';
+				}
+			}
+		);
 	});
 
 	function load() {
@@ -85,6 +99,10 @@
 		});
 	}
 
+	function handleInputChange() {
+		areButtonsDisabled = false;
+	}
+
 	function navigateBack() {
 		navigateToPage(Page.Backups);
 	}
@@ -111,33 +129,38 @@
 
 	<form on:submit|preventDefault={updateBackup} class="space-y-3">
 		<BoxedContainer>
-			<Input bind:value={name} label={'Name'} type={'string'} required={true} />
+			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'string'} required={true} />
 			<!-- TODO hidden because there is no file explorer yet -->
 			<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
 
 			<Label>
 				Compression
-				<Select bind:value={compression} items={compressionOptions} class="mt-2" />
+				<Select bind:value={compression} on:input={handleInputChange} items={compressionOptions} class="mt-2" />
 			</Label>
 		</BoxedContainer>
 
 		<BoxedContainer>
-			<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
-				<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
-				<p class=" text-sm text-gray-500 dark:text-gray-400">Keep 12 backups before deleting the old ones. You can edit this number in the backup settings.</p>
+			<Toggle bind:value={deleteOldBackups} on:toggle={handleInputChange} label={'Delete old backups'}>
+				<div class="inline-flex">
+					<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
+					<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
+						<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
+					</form>
+					.
+				</div>
 			</Toggle>
 
 			<div class="pt-6">
-				<Toggle bind:value={suspendServer} label={'Suspend server'} />
+				<Toggle bind:value={suspendServer} on:toggle={handleInputChange} label={'Suspend server'} />
 				<p class=" text-sm text-gray-500 dark:text-gray-400">Shutdown the server during the backup and start it when the backup is finished.</p>
 			</div>
 		</BoxedContainer>
 
 		<div class="flex space-x-3">
-			<Button type="submit" color="blue">
+			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Backup
 			</Button>
-			<Button type="button" on:click={navigateBack} color="alternative">
+			<Button type="button" disabled={areButtonsDisabled} on:click={navigateBack} color="alternative">
 				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
 			</Button>
 		</div>

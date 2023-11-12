@@ -3,30 +3,51 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupCompression, type INewBackup } from '../../../types';
+	import { Page, BackupCompression, type INewBackup, McssSettingsSection } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
-	import { createBackup } from '$lib/code/api';
+	import { createBackup, getMcssSettings } from '$lib/code/api';
 	import { navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
+	import { onMount } from 'svelte';
 
 	let name: string = '';
 	let destination: string = '';
-	let compression: BackupCompression;
+	let compression: BackupCompression = BackupCompression.High;
 	let deleteOldBackups: boolean = false;
-	let suspendServer: boolean = false;
+	let suspendServer: boolean = true;
 	let backupNow: boolean = false;
 	//TODO fileBlacklist & folderBlacklist
 	let fileBlacklist: any;
 	let folderBlacklist: any;
+
+	let deleteOldBackupsThresholdSetting: any;
 
 	let compressionOptions = [
 		{ value: 0, name: 'High' },
 		{ value: 1, name: 'Low' },
 		{ value: 2, name: 'None' }
 	];
+
+	onMount(async () => {
+		load();
+	});
+
+	function load() {
+		getMcssSettings(
+			McssSettingsSection.Backups,
+			(data: any) => {
+				deleteOldBackupsThresholdSetting = data.deleteOldBackupsThreshold;
+			},
+			(wasSuccess: boolean) => {
+				if (!wasSuccess) {
+					deleteOldBackupsThresholdSetting = '? (unable to load)';
+				}
+			}
+		);
+	}
 
 	function createNewBackup() {
 		let newBackup: INewBackup = {
@@ -72,7 +93,7 @@
 
 	<form on:submit|preventDefault={createNewBackup} class="space-y-3">
 		<BoxedContainer>
-			<Input bind:value={name} label={'Name'} type={'string'} required={true} />
+			<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Backup name'} required={true} />
 			<!-- TODO hidden because there is no file explorer yet -->
 			<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
 
@@ -84,8 +105,14 @@
 
 		<BoxedContainer>
 			<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
-				<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
-				<p class=" text-sm text-gray-500 dark:text-gray-400">Keep 12 backups before deleting the old ones. You can edit this number in the backup settings.</p>
+				<div class="inline-flex">
+					<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
+					<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
+					<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
+						<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
+					</form>
+					.
+				</div>
 			</Toggle>
 
 			<div class="pt-6">

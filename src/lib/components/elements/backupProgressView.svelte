@@ -5,6 +5,9 @@
 	export let stats: BackupStats = { canceled: 0, completed: 0, failed: 0, scheduled: 0 };
 
 	function calculateWidthRatio(stat: number) {
+		if (!stat) {
+			return 0;
+		}
 		let total = stats.canceled + stats.completed + stats.failed + stats.scheduled;
 		return (stat / total) * 100;
 	}

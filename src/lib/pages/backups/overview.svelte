@@ -21,14 +21,11 @@
 	$: $selectedServerId, load();
 
 	function load() {
-		console.log('load');
-
 		const serverId = get(selectedServerId);
 		if (!serverId) {
 			isLoading = false;
 			return;
 		}
-		console.log(serverId);
 
 		getBackups(
 			serverId,
