@@ -92,15 +92,15 @@
 
 	<form on:submit|preventDefault={saveBackupSettings} class="space-y-3">
 		<BoxedContainer>
-			<Input bind:value={zipFileFormat} on:input={handleInputChange} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}
-				>Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input
+			<Input bind:value={zipFileFormat} on:input={handleInputChange} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}>
+				Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input
 			>
 			<OpenInNewTab url={getUrl(Url.DocumentationCustomZipFileFormat)} text={'More info about custom formats and parameters.'} />
 		</BoxedContainer>
 
 		<BoxedContainer>
-			<Input bind:value={deleteOldBackupsThreshold} error={inputDeleteOldBackupsThreshold} on:input={handleInputChange} label={'Delete Old Backups Threshold'} type={'number'} min="5" max="100" required={true}
-				>The amount of backups in a destination folder that should be kept before being deleted by age.<br />Value between 5 and 100 backups.</Input
+			<Input bind:value={deleteOldBackupsThreshold} error={inputDeleteOldBackupsThreshold} on:input={handleInputChange} label={'Delete Old Backups Threshold'} type={'number'} min="5" max="100" required={true}>
+				The amount of backups in a destination folder that should be kept before being deleted by age.<br />Value between 5 and 100 backups.</Input
 			>
 		</BoxedContainer>
 
