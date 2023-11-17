@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { mdiAlertRhombus, mdiArchive, mdiArrowULeftTop, mdiContentSave, mdiRefreshCircle } from '@mdi/js';
+	import { mdiArchive, mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupCompression, type IBackupDetails, type IEditBackup, McssSettingsSection } from '../../../types';
+	import { Page, BackupCompression, type IBackupDetails, type IEditBackup, McssSettingsSection, BackupFilterListDetails } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import Toggle from '$lib/components/elements/toggle.svelte';
@@ -14,6 +14,7 @@
 	import Input from '$lib/components/elements/input.svelte';
 	import { editBackup, getBackupDetails, getMcssSettings } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import BackupDenylistSelector from '$lib/components/backup/backupFilterListSelector.svelte';
 
 	let backupId: string;
 	let name: string = '';
@@ -21,9 +22,7 @@
 	let compression: BackupCompression;
 	let deleteOldBackups: boolean = false;
 	let suspendServer: boolean = false;
-	//TODO fileBlacklist & folderBlacklist
-	let fileBlacklist: any;
-	let folderBlacklist: any;
+	let backupFilterList: BackupFilterListDetails = new BackupFilterListDetails();
 
 	let originalName: string = '';
 	let showError: boolean;
@@ -65,15 +64,14 @@
 				showError = true;
 				errorMessage = 'Unable to load this page, does the backup exist?';
 			} else {
-				originalName = backupDetails.name;
-
 				name = backupDetails.name;
 				destination = backupDetails.destination;
 				suspendServer = backupDetails.suspend;
 				deleteOldBackups = backupDetails.deleteOldBackups;
 				compression = backupDetails.compression;
-				fileBlacklist = backupDetails.fileBlacklist;
-				folderBlacklist = backupDetails.folderBlacklist;
+				backupFilterList.fileBlacklist = backupDetails.fileBlacklist;
+				backupFilterList.folderBlacklist = backupDetails.folderBlacklist;
+				originalName = backupDetails.name;
 			}
 		});
 	}
@@ -85,8 +83,8 @@
 			suspend: suspendServer,
 			deleteOldBackups: deleteOldBackups,
 			compression: compression,
-			fileBlacklist: fileBlacklist,
-			folderBlacklist: folderBlacklist
+			fileBlacklist: backupFilterList.fileBlacklist,
+			folderBlacklist: backupFilterList.folderBlacklist
 		};
 		editBackup($selectedServerId, backupId, updatedBackup, (wasSuccess: boolean) => {
 			if (wasSuccess) {
@@ -140,9 +138,14 @@
 		</BoxedContainer>
 
 		<BoxedContainer>
+			<BackupDenylistSelector {backupFilterList} on:update={handleInputChange} />
+		</BoxedContainer>
+
+		<BoxedContainer>
 			<Toggle bind:value={deleteOldBackups} on:toggle={handleInputChange} label={'Delete old backups'}>
 				<div class="inline-flex">
 					<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
+					<!--TODO this has a weird flex on mobile-->
 					<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
 						<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
 					</form>

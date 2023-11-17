@@ -325,3 +325,27 @@ export enum BackupStatus {
     Failed,
     Canceled
 }
+
+export class BackupFilterListDetails {
+    fileBlacklist: any = [];
+    folderBlacklist: any = [];
+
+    init(fileBlacklist: string[], folderBlacklist: string[]) {
+        this.fileBlacklist = fileBlacklist;
+        this.folderBlacklist = folderBlacklist;
+    }
+
+    update(fileBlacklist: string[], folderBlacklist: string[]) {
+        this.fileBlacklist = fileBlacklist
+        this.folderBlacklist = folderBlacklist
+    }
+
+    getCount() {
+        let count = this.fileBlacklist?.length + this.folderBlacklist?.length;
+        if (!count) {
+            return 0;
+        }
+
+        return count;
+    }
+}

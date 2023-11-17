@@ -1,36 +1,56 @@
 import axiosClient from '$lib/code/axiosClient';
-import { hasPermission, Permission } from '$lib/code/permissions';
+import {
+  isLoadingServers,
+  isOffline,
+  selectedServerId,
+  servers,
+} from '$lib/code/global';
+import { log } from '$lib/code/logger';
+import {
+  hasPermission,
+  Permission,
+} from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
+import type {
+  ICreateBackupRequest,
+  ICreateUserRequest,
+  IDeleteUserAccountRequest,
+  IEditPanelSettingsRequest,
+  IUpdateUserAccountRequest,
+  IUpdateUserRequest,
+  IUserAvatarRequest,
+} from '../../apiRequests';
+import type {
+  IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
+  IGetUserDetailsResponse,
+  IGetUsersListResponse,
+} from '../../apiResponses';
 import {
-    type Backup,
-    type Memory,
-    type IPanelUser,
-    type Stats,
-    type ServerAction,
-    type INewPanelUser,
-    type IServerSettings,
-    ServerAccessDetails,
-    type IEditPanelUser,
-    type IEditPanelSettings,
-    type IDeleteUserAccount,
-    type IEditUserAccount,
-    type IPanelSettings,
-    BackupFilter,
-    type BackupHistory,
-    type IBackupDetails,
-    type IEditBackup,
-    type INewBackup,
-    type BackupStats,
-    McssSettingsSection,
+  type Backup,
+  BackupFilter,
+  type BackupHistory,
+  type BackupStats,
+  Filter,
+  type IBackupDetails,
+  type IDeleteUserAccount,
+  type IEditBackup,
+  type IEditPanelSettings,
+  type IEditPanelUser,
+  type IEditUserAccount,
+  type INewBackup,
+  type INewPanelUser,
+  type IPanelSettings,
+  type IPanelUser,
+  type IServerSettings,
+  McssSettingsSection,
+  type Memory,
+  ServerAccessDetails,
+  type ServerAction,
+  type Stats,
 } from '../../types';
-import { Filter } from '../../types';
-import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateBackupRequest, ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
-import { log } from '$lib/code/logger';
-import { isLoadingServers, isOffline, selectedServerId, servers } from '$lib/code/global';
 
 /*
 *  API Requests
@@ -154,7 +174,6 @@ export function editServer(serverId: string, settings: IServerSettings, report: 
 
 export async function postServerAction(serverId: string, action: string) {
     if (!serverId || !hasPermission(Permission.useServerActions, serverId)) {
-        console.log()
         return;
     }
 
@@ -648,7 +667,6 @@ export function getBackups(serverId: string, filter: BackupFilter = BackupFilter
     log("API Request: getBackups");
     axiosClient().get(`/api/v2/servers/${serverId}/backups?filter=${filter}`)
         .then((response) => {
-            console.log(response)
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
@@ -671,7 +689,6 @@ export function getBackupStats(serverId: string, report: (stats: BackupStats) =>
     log("API Request: getBackupStats");
     axiosClient().get(`/api/v2/servers/${serverId}/backups/stats`)
         .then((response) => {
-            console.log(response)
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
@@ -713,6 +730,7 @@ export function getBackupDetails(serverId: string, backupId: string, report: (wa
         })
 }
 
+//TODO fix format of blacklist arrays
 export function editBackup(serverId: string, backupId: string, backupSettings: IEditBackup, report: (wasSuccess: boolean) => void) {
     log("API Request: editServer");
     axiosClient().put(`/api/v2/servers/${serverId}/backups/${backupId}`, JSON.stringify(backupSettings))
@@ -720,7 +738,6 @@ export function editBackup(serverId: string, backupId: string, backupSettings: I
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }
-
             log(response?.status);
             log(response?.data);
             report(true);
@@ -751,6 +768,7 @@ export function runBackup(serverId: string, backupId: string, completed: (wasSuc
         })
 }
 
+//TODO fix format of blacklist arrays
 export function createBackup(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
     //formulate proper request
     var requestBody: ICreateBackupRequest = {
@@ -805,7 +823,6 @@ export function getBackupHistory(serverId: string, report: (backups: BackupHisto
     log("API Request: getBackupHistory");
     axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
         .then((response) => {
-            console.log(response)
             if (response?.status !== 200) {
                 return Promise.reject(response);
             }

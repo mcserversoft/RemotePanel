@@ -177,3 +177,29 @@ export function getRandomPassword() {
 function getNumberBetween(min: number, max: number) {
     return Math.floor(Math.random() * (max - min) + min);
 }
+
+export function doesContainsInvalidWindowsExplorerCharacters(input: string) {
+    /*
+     https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
+    < (less than)
+    > (greater than)
+    : (colon - sometimes works, but is actually NTFS Alternate Data Streams)
+    " (double quote)
+    / (forward slash)
+    \ (backslash)
+    | (vertical bar or pipe)
+    ? (question mark)
+    * (asterisk)
+
+    files/folders:
+    CON, PRN, AUX, NUL 
+    COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9
+    LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, LPT9
+
+    we allow / \ for folder nesting
+    */
+    const specialCharsRegex = /[<>:"|?*]/;
+    const reservedNamesRegex = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
+
+    return specialCharsRegex.test(input) || reservedNamesRegex.test(input);
+}
