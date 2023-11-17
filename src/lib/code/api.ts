@@ -1,55 +1,55 @@
 import axiosClient from '$lib/code/axiosClient';
 import {
-  isLoadingServers,
-  isOffline,
-  selectedServerId,
-  servers,
+    isLoadingServers,
+    isOffline,
+    selectedServerId,
+    servers,
 } from '$lib/code/global';
 import { log } from '$lib/code/logger';
 import {
-  hasPermission,
-  Permission,
+    hasPermission,
+    Permission,
 } from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
 import type {
-  ICreateBackupRequest,
-  ICreateUserRequest,
-  IDeleteUserAccountRequest,
-  IEditPanelSettingsRequest,
-  IUpdateUserAccountRequest,
-  IUpdateUserRequest,
-  IUserAvatarRequest,
+    ICreateBackupRequest,
+    ICreateUserRequest,
+    IDeleteUserAccountRequest,
+    IEditPanelSettingsRequest,
+    IUpdateUserAccountRequest,
+    IUpdateUserRequest,
+    IUserAvatarRequest,
 } from '../../apiRequests';
 import type {
-  IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
-  IGetUserDetailsResponse,
-  IGetUsersListResponse,
+    IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
+    IGetUserDetailsResponse,
+    IGetUsersListResponse,
 } from '../../apiResponses';
 import {
-  type Backup,
-  BackupFilter,
-  type BackupHistory,
-  type BackupStats,
-  Filter,
-  type IBackupDetails,
-  type IDeleteUserAccount,
-  type IEditBackup,
-  type IEditPanelSettings,
-  type IEditPanelUser,
-  type IEditUserAccount,
-  type INewBackup,
-  type INewPanelUser,
-  type IPanelSettings,
-  type IPanelUser,
-  type IServerSettings,
-  McssSettingsSection,
-  type Memory,
-  ServerAccessDetails,
-  type ServerAction,
-  type Stats,
+    type Backup,
+    BackupFilter,
+    type BackupHistory,
+    type BackupStats,
+    Filter,
+    type IBackupDetails,
+    type IDeleteUserAccount,
+    type IEditBackup,
+    type IEditPanelSettings,
+    type IEditPanelUser,
+    type IEditUserAccount,
+    type INewBackup,
+    type INewPanelUser,
+    type IPanelSettings,
+    type IPanelUser,
+    type IServerSettings,
+    McssSettingsSection,
+    type Memory,
+    ServerAccessDetails,
+    type ServerAction,
+    type Stats,
 } from '../../types';
 
 /*
@@ -730,9 +730,13 @@ export function getBackupDetails(serverId: string, backupId: string, report: (wa
         })
 }
 
-//TODO fix format of blacklist arrays
 export function editBackup(serverId: string, backupId: string, backupSettings: IEditBackup, report: (wasSuccess: boolean) => void) {
     log("API Request: editServer");
+
+    // this solves some incorrect formatting of arrays
+    backupSettings.fileBlacklist = backupSettings.fileBlacklist.map(a => a);
+    backupSettings.folderBlacklist = backupSettings.folderBlacklist.map(a => a);
+
     axiosClient().put(`/api/v2/servers/${serverId}/backups/${backupId}`, JSON.stringify(backupSettings))
         .then((response) => {
             if (response?.status !== 200) {
@@ -768,7 +772,6 @@ export function runBackup(serverId: string, backupId: string, completed: (wasSuc
         })
 }
 
-//TODO fix format of blacklist arrays
 export function createBackup(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
     //formulate proper request
     var requestBody: ICreateBackupRequest = {
@@ -778,8 +781,9 @@ export function createBackup(serverId: string, newBackup: INewBackup, completed:
         deleteOldBackups: newBackup.deleteOldBackups,
         compression: newBackup.compression,
         runBackupAfterCreation: newBackup.runBackupAfterCreation,
-        fileBlacklist: newBackup.fileBlacklist,
-        folderBlacklist: newBackup.folderBlacklist
+        // this solves some incorrect formatting of arrays
+        fileBlacklist: newBackup.fileBlacklist.map(a => a),
+        folderBlacklist: newBackup.folderBlacklist.map(a => a)
     }
 
     log("API Request: createBackup");

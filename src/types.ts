@@ -1,4 +1,4 @@
-import type { Permission } from "$lib/code/permissions";
+import type { Permission } from '$lib/code/permissions';
 
 export class Server implements IServer {
     serverId = "";
@@ -266,8 +266,8 @@ export interface Backup {
     deleteOldBackups: boolean;
     compression: BackupCompression;
     lastStatus: BackupStatus;
-    fileBlacklist: any;
-    folderBlacklist: any;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
     completedAt: Date;
 }
 
@@ -287,8 +287,8 @@ export interface IBackupDetails {
     compression: BackupCompression;
     lastStatus: BackupStatus;
     completedAt: Date;
-    fileBlacklist: any;
-    folderBlacklist: any;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
 }
 
 export interface INewBackup {
@@ -298,8 +298,8 @@ export interface INewBackup {
     deleteOldBackups: boolean;
     compression: BackupCompression;
     runBackupAfterCreation: boolean;
-    fileBlacklist: any;
-    folderBlacklist: any;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
 }
 
 export interface IEditBackup extends Omit<INewBackup, 'runBackupAfterCreation'> { }
@@ -327,8 +327,8 @@ export enum BackupStatus {
 }
 
 export class BackupFilterListDetails {
-    fileBlacklist: any = [];
-    folderBlacklist: any = [];
+    fileBlacklist: string[] = [];
+    folderBlacklist: string[] = [];
 
     init(fileBlacklist: string[], folderBlacklist: string[]) {
         this.fileBlacklist = fileBlacklist;
