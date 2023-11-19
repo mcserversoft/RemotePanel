@@ -55,8 +55,6 @@
 	}
 
 	function saveBackupSettings() {
-		console.log('TODO updateBackupSettings');
-
 		let updatedSettings: any = {
 			customZipFileFormat: zipFileFormat,
 			deleteOldBackupsThreshold: deleteOldBackupsThreshold

@@ -47,7 +47,7 @@
 
 	function handleAddFile() {
 		if (!inputFileName || doesFileAlreadyExist(inputFileName) || doesContainsInvalidWindowsExplorerCharacters(inputFileName)) {
-			confirm('TODO failed to add file');
+			confirm('Failed to add file');
 			return;
 		}
 
@@ -62,7 +62,7 @@
 
 	function handleAddFolder() {
 		if (!inputFolderName || doesFolderAlreadyExist(inputFolderName) || doesContainsInvalidWindowsExplorerCharacters(inputFolderName)) {
-			confirm('TODO failed to add folder');
+			confirm('Failed to add folder.');
 			return;
 		}
 
@@ -164,6 +164,7 @@
 					<li class="flex items-center p-1 rounded hover:bg-gray-100 hover:dark:bg-gray-700 text-gray-800 dark:text-white">
 						<span class="grow">{blockedItem}</span>
 
+						<!-- TODO backup: this has no function -->
 						<form on:submit|preventDefault={() => handleDuplicateItem(blockedItem)}>
 							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" aria-label="Duplicate item text"><Icon data={mdiContentDuplicate} size={4} class={'text-blue-500 mr-2'} /></button>
 						</form>

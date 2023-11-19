@@ -156,7 +156,7 @@
 								</td>
 								<td class="px-6 py-4 inline-flex items-center whitespace-nowrap">
 									<Icon data={getBackupStatusIcon(backup.lastStatus)} class={getBackupStatusColor(backup.lastStatus)} />
-									<span class="ml-1">{new Date(backup.completedAt).toLocaleString(navigator.language)}</span>
+									<span class="ml-1">{new Date(backup.completedAt).toLocaleString(navigator.language) ?? 'never'}</span>
 								</td>
 
 								<td class=" px-6 py-4 space-x-3 whitespace-nowrap">
