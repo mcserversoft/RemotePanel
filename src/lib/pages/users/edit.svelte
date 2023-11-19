@@ -99,7 +99,7 @@
 	<PageTitleBanner title="Edit User" caption="You are modifying user: '{username}'." />
 
 	<form on:submit|preventDefault={updateUser} class="space-y-3">
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<div class="flex relative">
 				<PeekableInput bind:value={password} label={'Password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} class="mr-12" />
 				<div class="absolute bottom-0 right-0">
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 
-			<div class="flex relative pt-6">
+			<div class="flex relative">
 				<PeekableInput bind:value={passwordConfirm} label={'Confirm password'} placeholder={'••••••••••••••••••'} required={isPasswordRequired} />
 			</div>
 		</BoxedContainer>

@@ -130,8 +130,7 @@
 		<form on:submit|preventDefault={updateBackup} class="space-y-3">
 			<BoxedContainer>
 				<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'string'} required={true} />
-				<!-- TODO hidden because there is no file explorer yet -->
-				<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
+				<Input bind:value={destination} label={'Destination'} type={'string'} required={true} />
 
 				<Label>
 					Compression

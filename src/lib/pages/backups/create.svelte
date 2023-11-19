@@ -93,11 +93,10 @@
 	<PageTitleBanner title="Create Backup" caption="Create a new backup for server: {getServer($selectedServerId)?.name ?? 'Unknown server.'}." />
 
 	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
-		<form on:submit|preventDefault={createNewBackup} class="space-y-3">
-			<BoxedContainer>
+		<form on:submit|preventDefault={createNewBackup}>
+			<BoxedContainer class="space-y-3">
 				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Backup name'} required={true} />
-				<!-- TODO hidden because there is no file explorer yet -->
-				<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
+				<Input bind:value={destination} label={'Destination'} type={'string'} required={true} />
 
 				<Label>
 					Compression
@@ -109,24 +108,24 @@
 				<BackupDenyListSelector {backupFilterList} />
 			</BoxedContainer>
 
-			<BoxedContainer>
-				<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
-					<div class="inline-flex">
-						<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
-						<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
-						<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
-							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
-						</form>
-						.
-					</div>
-				</Toggle>
-
-				<div class="pt-6">
+			<BoxedContainer class="space-y-4">
+				<div>
+					<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
+						<div class="inline-flex">
+							<!-- TODO fetch max backup count setting, instead of just displaying 12 -->
+							<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
+							<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
+								<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
+							</form>
+							.
+						</div>
+					</Toggle>
+				</div>
+				<div>
 					<Toggle bind:value={suspendServer} label={'Suspend server'} />
 					<p class=" text-sm text-gray-500 dark:text-gray-400">Shutdown the server during the backup and start it when the backup is finished.</p>
 				</div>
-
-				<div class="pt-6">
+				<div>
 					<Toggle bind:value={backupNow} label={'Backup now'} />
 					<p class=" text-sm text-gray-500 dark:text-gray-400">Start the backup after creating this backup.</p>
 				</div>

@@ -120,12 +120,12 @@
 	{/if}
 
 	<form on:submit|preventDefault={updateServer} class="space-y-3">
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'text'} placeholder={'My Server Name'} required={true} />
 			<Input bind:value={description} on:input={handleInputChange} label={'Description'} type={'text'} placeholder={'My Cool Server'} required={true} />
 		</BoxedContainer>
 
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<Input bind:value={javaAllocatedMemory} on:input={handleInputChange} label={'Amount of Memory'} type={'number'} required={true} />
 
 			<Label>

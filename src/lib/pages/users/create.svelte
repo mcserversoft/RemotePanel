@@ -67,7 +67,7 @@
 	<PageTitleBanner title="Add User" caption="Create a new user for the remote web panel." />
 
 	<form on:submit|preventDefault={createUser} class="space-y-3">
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<Input bind:value={username} label={'Username'} type={'text'} placeholder={'Username'} required={true} />
 
 			<div class="flex relative">
