@@ -13,6 +13,8 @@
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/code/auth';
 	import NavDropdown from './navDropdown.svelte';
+	import { Permission, hasPermission } from '$lib/code/permissions';
+	import { selectedServerId } from '$lib/code/global';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
@@ -95,17 +97,20 @@
 						{
 							name: 'Overview',
 							page: Page.Backups,
-							isActive: $selectedPage == Page.Backups
+							isActive: $selectedPage == Page.Backups,
+							hasPermission: true
 						},
 						{
 							name: 'History',
 							page: Page.BackupHistory,
-							isActive: $selectedPage == Page.BackupHistory
+							isActive: $selectedPage == Page.BackupHistory,
+							hasPermission: true
 						},
 						{
 							name: 'Settings',
 							page: Page.BackupSettings,
-							isActive: $selectedPage == Page.BackupSettings
+							isActive: $selectedPage == Page.BackupSettings,
+							hasPermission: get(auth).showAdminFeatures
 						}
 					]}
 				>

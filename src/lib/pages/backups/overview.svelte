@@ -4,7 +4,7 @@
 	import { deleteBackup, getBackupStats, getBackups, runBackup } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type Backup, BackupFilter, type BackupStats } from '../../../types';
+	import { Page, type Backup, BackupFilter, type BackupStats, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
@@ -12,6 +12,8 @@
 	import BackupProgressView from '$lib/components/elements/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
 	import { getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
+	import { Permission, hasPermission } from '$lib/code/permissions';
+	import Warning from '$lib/components/elements/warning.svelte';
 
 	let backups: Backup[] = [];
 	let backupStats: BackupStats;
@@ -117,145 +119,87 @@
 			<!-- <Button icon={mdiRefresh} on:click={handleRefreshButton} /> -->
 			<span class="sr-only">Reload Backups</span>
 		</div>
-		<div class="self-center">
-			<Button icon={mdiArchivePlus} text={'Create Backup'} on:click={() => navigateToPage(Page.BackupsCreate)} reactive={true} />
-		</div>
+
+		{#if hasPermission(Permission.createBackup, $selectedServerId)}
+			<div class="self-center">
+				<Button icon={mdiArchivePlus} text={'Create Backup'} on:click={() => navigateToPage(Page.BackupsCreate)} reactive={true} />
+			</div>
+		{/if}
 	</ServerSelector>
 
-	<BackupProgressView stats={backupStats} />
+	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
+		<BackupProgressView stats={backupStats} />
 
-	<div class="relative overflow-x-auto">
-		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
-			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<!-- this colgroup HACK auto fills the first column to max width -->
-				<colgroup>
-					<col class="w-full" />
-				</colgroup>
-				<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="px-6 py-3">Name</th>
-						<th scope="col" class="px-6 py-3">Suspend</th>
-						<th scope="col" class="px-6 py-3">Last Run</th>
-						<th scope="col" class="px-6 py-3">Trigger</th>
-						<th scope="col" class="px-6 py-3">Action</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					{#each backups as backup}
-						<tr class="bg-white dark:bg-gray-800">
-							<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{backup.name}</td>
-							<td class="px-6 py-4">
-								<Icon data={backup.suspend ? mdiCheck : mdiClose} class="{backup.suspend ? 'text-green-400' : 'text-red-400'} " />
-							</td>
-							<td class="px-6 py-4 inline-flex items-center whitespace-nowrap">
-								<Icon data={getBackupStatusIcon(backup.lastStatus)} class={getBackupStatusColor(backup.lastStatus)} />
-								<span class="ml-1">{new Date(backup.completedAt).toLocaleString(navigator.language)}</span>
-							</td>
-
-							<td class=" px-6 py-4 space-x-3 whitespace-nowrap">
-								<form on:submit|preventDefault={() => handleRunBackup(backup.backupId)}>
-									<button type="submit" class=" text-blue-600 dark:text-blue-500 hover:underline">
-										<button type="button" class="font-medium rounded-lg text-xs px-2 inline-flex items-center text-center py-[0.15rem] focus:ring-4 focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-											<Icon data={mdiPlay} size={4} />
-											<span class="whitespace-nowrap">Run Now</span>
-										</button>
-									</button>
-								</form>
-							</td>
-
-							<td class="flex px-6 py-4 space-x-3">
-								<form on:submit|preventDefault={() => handleEditBackup(backup.backupId)}>
-									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-								</form>
-
-								<form on:submit|preventDefault={() => handleDeleteBackup(backup.backupId)}>
-									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-								</form>
-							</td>
+		<div class="relative overflow-x-auto">
+			<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
+				<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+					<!-- this colgroup HACK auto fills the first column to max width -->
+					<colgroup>
+						<col class="w-full" />
+					</colgroup>
+					<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+						<tr>
+							<th scope="col" class="px-6 py-3">Name</th>
+							<th scope="col" class="px-6 py-3">Suspend</th>
+							<th scope="col" class="px-6 py-3">Last Run</th>
+							<th scope="col" class="px-6 py-3">{hasPermission(Permission.triggerBackup, $selectedServerId) ? 'Trigger' : ''} </th>
+							<th scope="col" class="px-6 py-3">{hasPermission(Permission.editBackup, $selectedServerId) || hasPermission(Permission.deleteBackups, $selectedServerId) ? 'Action' : ''} </th>
 						</tr>
-					{:else}
-						<tr class="bg-white dark:bg-gray-800">
-							{#if isLoading}
-								<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
-							{:else}
-								<td class="px-6 py-4 text-center" colspan="7">No backups were found.</td>
-							{/if}
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</div>
+					</thead>
 
-	<!-- <div class="relative overflow-x-auto mt-6">
-		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
-			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<!- this colgroup HACK auto fills the first column to max width --
-				<colgroup>
-					<col class="w-full" />
-				</colgroup>
-				<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="px-6 py-3">Name</th>
-						<!- <th scope="col" class="px-6 py-3">Suspend</th>
-						<th scope="col" class="px-6 py-3">DeleteOldBackups</th>
-						<th scope="col" class="px-6 py-3">Compression</th> --
-						<th scope="col" class="px-6 py-3">LastStatus</th>
-						<th scope="col" class="px-6 py-3">CompletedAt</th>
-						<th scope="col" class="px-6 py-3">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="bg-white dark:bg-gray-800">
-						<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">Test</td>
-						<td class="px-6 py-4 whitespace-nowrap">01/01/1970, 01:00:00</td>
-						<td class="px-6 py-4 whitespace-nowrap">01/01/1, 00:00:00</td>
-						<td class="flex px-6 py-4 space-x-3">
-							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Run</button>
-							<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-						</td>
-					</tr>
+					<tbody>
+						{#each backups as backup}
+							<tr class="bg-white dark:bg-gray-800">
+								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{backup.name}</td>
+								<td class="px-6 py-4">
+									<Icon data={backup.suspend ? mdiCheck : mdiClose} class="{backup.suspend ? 'text-green-400' : 'text-red-400'} " />
+								</td>
+								<td class="px-6 py-4 inline-flex items-center whitespace-nowrap">
+									<Icon data={getBackupStatusIcon(backup.lastStatus)} class={getBackupStatusColor(backup.lastStatus)} />
+									<span class="ml-1">{new Date(backup.completedAt).toLocaleString(navigator.language)}</span>
+								</td>
 
-					{#each backups as backup}
-						{#each backup.history as history}
-							<div>{history}</div>
+								<td class=" px-6 py-4 space-x-3 whitespace-nowrap">
+									{#if hasPermission(Permission.triggerBackup, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleRunBackup(backup.backupId)}>
+											<button type="submit" class=" text-blue-600 dark:text-blue-500 hover:underline">
+												<button type="button" class="font-medium rounded-lg text-xs px-2 inline-flex items-center text-center py-[0.15rem] focus:ring-4 focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+													<Icon data={mdiPlay} size={4} />
+													<span class="whitespace-nowrap">Run Now</span>
+												</button>
+											</button>
+										</form>
+									{/if}
+								</td>
+
+								<td class="flex px-6 py-4 space-x-3">
+									{#if hasPermission(Permission.editBackup, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleEditBackup(backup.backupId)}>
+											<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+										</form>
+									{/if}
+
+									{#if hasPermission(Permission.deleteBackups, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleDeleteBackup(backup.backupId)}>
+											<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+										</form>
+									{/if}
+								</td>
+							</tr>
+						{:else}
+							<tr class="bg-white dark:bg-gray-800">
+								{#if isLoading}
+									<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
+								{:else}
+									<td class="px-6 py-4 text-center" colspan="7">No backups were found.</td>
+								{/if}
+							</tr>
 						{/each}
-						<tr class="bg-white dark:bg-gray-800">
-							<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{backup.name}</td>
-							<!- <td class="px-6 py-4">
-								<Icon data={backup.suspend ? mdiCheck : mdiClose} class="{backup.suspend ? 'text-green-400' : 'text-red-400'} " />
-							</td>
-							<td class="px-6 py-4">
-								<Icon data={backup.deleteOldBackups ? mdiCheck : mdiClose} class="{backup.deleteOldBackups ? 'text-green-400' : 'text-red-400'} " />
-							</td>
-							<td class="px-6 py-4">{BackupCompression[backup.compression]}</td> --
-							<td class="px-6 py-4 whitespace-nowrap">{new Date(backup.compression).toLocaleString(navigator.language)}</td>
-							<td class="px-6 py-4 whitespace-nowrap">{new Date(backup.completedAt).toLocaleString(navigator.language)}</td>
-							<td class="flex px-6 py-4 space-x-3">
-								<form on:submit|preventDefault={() => handleEditBackup(backup.backupId)}>
-									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-								</form>
-								<form on:submit|preventDefault={() => handleEditBackup(backup.backupId)}>
-									<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Run</button>
-								</form>
-								<form on:submit|preventDefault={() => handleDeleteBackup(backup.backupId)}>
-									<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-								</form>
-							</td>
-						</tr>
-					{:else}
-						<tr class="bg-white dark:bg-gray-800">
-							{#if isLoading}
-								<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
-							{:else}
-								<td class="px-6 py-4 text-center" colspan="7">No backups were found.</td>
-							{/if}
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div> -->
+	{:else}
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+	{/if}
 </section>

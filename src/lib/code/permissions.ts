@@ -7,6 +7,11 @@ export enum Permission {
     useConsole = "USE_CONSOLE",
     useServerActions = "USE_SERVER_ACTIONS",
     editServer = "EDIT_SERVER",
+    viewBackups = "VIEW_BACKUPS",
+    createBackup = "CREATE_BACKUP",
+    editBackup = "EDIT_BACKUP",
+    deleteBackups = "DELETE_BACKUPS",
+    triggerBackup = "TRIGGER_BACKUP",
 }
 
 export function hasPermission(perm: Permission, serverId?: string): boolean {

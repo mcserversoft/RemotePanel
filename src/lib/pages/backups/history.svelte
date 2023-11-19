@@ -3,13 +3,15 @@
 	import { mdiArchive, mdiArchiveRemove, mdiRefresh } from '@mdi/js';
 	import { deleteBackupHistory, getBackupHistory } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { Page, type BackupHistory } from '../../../types';
+	import { Page, type BackupHistory, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import Button from '$lib/components/elements/button.svelte';
 	import { getBackupStatusColor, getBackupStatusIcon, getBackupStatusName } from '$lib/code/shared';
+	import { Permission, hasPermission } from '$lib/code/permissions';
+	import Warning from '$lib/components/elements/warning.svelte';
 
 	let backups: BackupHistory[] = [];
 	let isLoading = true;
@@ -83,44 +85,50 @@
 			</button>
 			<span class="sr-only">Reload Backups</span>
 		</div>
-		<div class="self-center">
-			<Button icon={mdiArchiveRemove} text={'Clear History'} color="red" on:click={handleClearBackupHistory} reactive={true} />
-		</div>
+		{#if hasPermission(Permission.deleteBackups, $selectedServerId)}
+			<div class="self-center">
+				<Button icon={mdiArchiveRemove} text={'Clear History'} color="red" on:click={handleClearBackupHistory} reactive={true} />
+			</div>
+		{/if}
 	</ServerSelector>
 
-	<div class="relative overflow-x-auto">
-		<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
-			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="px-6 py-3">Run At</th>
-						<th scope="col" class="px-6 py-3">Status</th>
-						<th scope="col" class="px-6 py-3">Name</th>
-						<th scope="col" class="px-6 py-3">Log Message</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each backups as backup}
-						<tr class="bg-white dark:bg-gray-800">
-							<td class="px-6 py-4 whitespace-nowrap">{new Date(backup.lastRun).toLocaleString(navigator.language)} </td>
-							<td class="px-6 py-4 whitespace-nowrap inline-flex items-center">
-								<Icon data={getBackupStatusIcon(backup.status)} class={getBackupStatusColor(backup.status) + ' mr-1.5'} />
-								{getBackupStatusName(backup.status)}
-							</td>
-							<td class="px-6 py-4 whitespace-nowrap">{backup.name}</td>
-							<td class="px-6 py-4 whitespace-nowrap overflow-hidden w-full max-w-[1px] text-ellipsis">{backup.logMessage}</td>
+	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
+		<div class="relative overflow-x-auto">
+			<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
+				<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+						<tr>
+							<th scope="col" class="px-6 py-3">Run At</th>
+							<th scope="col" class="px-6 py-3">Status</th>
+							<th scope="col" class="px-6 py-3">Name</th>
+							<th scope="col" class="px-6 py-3">Log Message</th>
 						</tr>
-					{:else}
-						<tr class="bg-white dark:bg-gray-800">
-							{#if isLoading}
-								<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
-							{:else}
-								<td class="px-6 py-4 text-center" colspan="7">No backup history was found.</td>
-							{/if}
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{#each backups as backup}
+							<tr class="bg-white dark:bg-gray-800">
+								<td class="px-6 py-4 whitespace-nowrap">{new Date(backup.lastRun).toLocaleString(navigator.language)} </td>
+								<td class="px-6 py-4 whitespace-nowrap inline-flex items-center">
+									<Icon data={getBackupStatusIcon(backup.status)} class={getBackupStatusColor(backup.status) + ' mr-1.5'} />
+									{getBackupStatusName(backup.status)}
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap">{backup.name}</td>
+								<td class="px-6 py-4 whitespace-nowrap overflow-hidden w-full max-w-[1px] text-ellipsis">{backup.logMessage}</td>
+							</tr>
+						{:else}
+							<tr class="bg-white dark:bg-gray-800">
+								{#if isLoading}
+									<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
+								{:else}
+									<td class="px-6 py-4 text-center" colspan="7">No backup history was found.</td>
+								{/if}
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+	{:else}
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+	{/if}
 </section>

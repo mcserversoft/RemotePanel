@@ -5,7 +5,7 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupCompression, type IBackupDetails, type IEditBackup, McssSettingsSection, BackupFilterListDetails } from '../../../types';
+	import { Page, BackupCompression, type IBackupDetails, type IEditBackup, McssSettingsSection, BackupFilterListDetails, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import Toggle from '$lib/components/elements/toggle.svelte';
@@ -15,6 +15,7 @@
 	import { editBackup, getBackupDetails, getMcssSettings } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import BackupDenylistSelector from '$lib/components/backup/backupFilterListSelector.svelte';
+	import { Permission, hasPermission } from '$lib/code/permissions';
 
 	let backupId: string;
 	let name: string = '';
@@ -121,51 +122,55 @@
 
 	<PageTitleBanner title="Edit Backup" caption="You are modifying backup: '{originalName}' from server: {getServer($selectedServerId)?.name ?? 'Unknown server.'}." />
 
-	{#if showError}
-		<Warning message={errorMessage} />
-	{/if}
+	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
+		{#if showError}
+			<Warning message={errorMessage} />
+		{/if}
 
-	<form on:submit|preventDefault={updateBackup} class="space-y-3">
-		<BoxedContainer>
-			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'string'} required={true} />
-			<!-- TODO hidden because there is no file explorer yet -->
-			<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
+		<form on:submit|preventDefault={updateBackup} class="space-y-3">
+			<BoxedContainer>
+				<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'string'} required={true} />
+				<!-- TODO hidden because there is no file explorer yet -->
+				<!-- <Input bind:value={destination} label={'Destination'} type={'string'} required={true} /> -->
 
-			<Label>
-				Compression
-				<Select bind:value={compression} on:input={handleInputChange} items={compressionOptions} class="mt-2" />
-			</Label>
-		</BoxedContainer>
+				<Label>
+					Compression
+					<Select bind:value={compression} on:input={handleInputChange} items={compressionOptions} class="mt-2" />
+				</Label>
+			</BoxedContainer>
 
-		<BoxedContainer>
-			<BackupDenylistSelector {backupFilterList} on:update={handleInputChange} />
-		</BoxedContainer>
+			<BoxedContainer>
+				<BackupDenylistSelector {backupFilterList} on:update={handleInputChange} />
+			</BoxedContainer>
 
-		<BoxedContainer>
-			<Toggle bind:value={deleteOldBackups} on:toggle={handleInputChange} label={'Delete old backups'}>
-				<div class="inline-flex">
-					<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
-					<!--TODO this has a weird flex on mobile-->
-					<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
-						<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
-					</form>
-					.
+			<BoxedContainer>
+				<Toggle bind:value={deleteOldBackups} on:toggle={handleInputChange} label={'Delete old backups'}>
+					<div class="inline-flex">
+						<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
+						<!--TODO this has a weird flex on mobile-->
+						<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
+							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
+						</form>
+						.
+					</div>
+				</Toggle>
+
+				<div class="pt-6">
+					<Toggle bind:value={suspendServer} on:toggle={handleInputChange} label={'Suspend server'} />
+					<p class=" text-sm text-gray-500 dark:text-gray-400">Shutdown the server during the backup and start it when the backup is finished.</p>
 				</div>
-			</Toggle>
+			</BoxedContainer>
 
-			<div class="pt-6">
-				<Toggle bind:value={suspendServer} on:toggle={handleInputChange} label={'Suspend server'} />
-				<p class=" text-sm text-gray-500 dark:text-gray-400">Shutdown the server during the backup and start it when the backup is finished.</p>
+			<div class="flex space-x-3">
+				<Button type="submit" disabled={areButtonsDisabled} color="blue">
+					<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Backup
+				</Button>
+				<Button type="button" disabled={areButtonsDisabled} on:click={navigateBack} color="alternative">
+					<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
+				</Button>
 			</div>
-		</BoxedContainer>
-
-		<div class="flex space-x-3">
-			<Button type="submit" disabled={areButtonsDisabled} color="blue">
-				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Backup
-			</Button>
-			<Button type="button" disabled={areButtonsDisabled} on:click={navigateBack} color="alternative">
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
-			</Button>
-		</div>
-	</form>
+		</form>
+	{:else}
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+	{/if}
 </section>

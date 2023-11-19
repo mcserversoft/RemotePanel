@@ -72,6 +72,7 @@ export interface PageReference {
     name: string;
     page: Page;
     isActive: boolean;
+    hasPermission: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -132,6 +133,13 @@ export interface IPanelSettings {
     lastModifiedAt: Date
 }
 
+export enum WarningType {
+    Error,
+    Warning,
+    Permission,
+    Info
+}
+
 /* User */
 export interface IPanelUser {
     userId: string;
@@ -187,6 +195,11 @@ export class ServerAccessDetails {
                     useConsole: perm[1]?.useConsole ?? false,
                     useServerActions: perm[1]?.useServerActions ?? false,
                     editServer: perm[1]?.editServer ?? false,
+                    viewBackups: perm[1]?.viewBackups ?? false,
+                    createBackup: perm[1]?.createBackup ?? false,
+                    editBackup: perm[1]?.editBackup ?? false,
+                    deleteBackups: perm[1]?.deleteBackups ?? false,
+                    triggerBackup: perm[1]?.triggerBackup ?? false,
                 }
             })
         });
@@ -208,6 +221,11 @@ export class ServerAccessDetails {
                     useConsole: permissions.some(s => s.includes("useConsole")) ?? false,
                     useServerActions: permissions.some(s => s.includes("useServerActions")) ?? false,
                     editServer: permissions.some(s => s.includes("editServer")) ?? false,
+                    viewBackups: permissions.some(s => s.includes("viewBackups")) ?? false,
+                    createBackup: permissions.some(s => s.includes("createBackup")) ?? false,
+                    editBackup: permissions.some(s => s.includes("editBackup")) ?? false,
+                    deleteBackups: permissions.some(s => s.includes("deleteBackups")) ?? false,
+                    triggerBackup: permissions.some(s => s.includes("triggerBackup")) ?? false,
                 }
             })
         });
@@ -247,6 +265,11 @@ export class Permissions {
     useConsole = false;
     useServerActions = false;
     editServer = false;
+    viewBackups = false;
+    createBackup = false;
+    editBackup = false;
+    deleteBackups = false;
+    triggerBackup = false;
 }
 
 export interface ICustomServerPermission {
@@ -255,6 +278,11 @@ export interface ICustomServerPermission {
     useConsole: boolean;
     useServerActions: boolean;
     editServer: boolean;
+    viewBackups: boolean;
+    createBackup: boolean;
+    editBackup: boolean;
+    deleteBackups: boolean;
+    triggerBackup: boolean;
 }
 
 /* Backups */
