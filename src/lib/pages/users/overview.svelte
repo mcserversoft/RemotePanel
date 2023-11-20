@@ -7,6 +7,7 @@
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { onMount } from 'svelte';
+	import Button from '$lib/components/elements/button.svelte';
 
 	let users: IPanelUser[] = [];
 	let isLoading = true;
@@ -72,14 +73,7 @@
 				</button>
 			</div>
 			<div class="self-center">
-				<button
-					on:click={() => navigateToPage(Page.UsersCreate)}
-					type="button"
-					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-[0.45rem] text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-				>
-					<Icon data={mdiAccountPlus} size={5} class="w-5 h-5 mr-2 -ml-1" />
-					Add User
-				</button>
+				<Button icon={mdiAccountPlus} text={'Create User'} on:click={() => navigateToPage(Page.UsersCreate)} reactive={true} />
 			</div>
 		</PageTitleBanner>
 

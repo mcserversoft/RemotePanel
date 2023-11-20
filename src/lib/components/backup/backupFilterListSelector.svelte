@@ -23,6 +23,7 @@
 	$: count = backupFilterList?.getCount();
 
 	let showCustomServersModal: boolean = false;
+	let modalContainingElement: any;
 
 	const dispatch = createEventDispatcher();
 
@@ -82,7 +83,12 @@
 	}
 
 	function handleDuplicateItem(blockedItem: string) {
-		inputFileName = blockedItem;
+		if (folderBlacklist.includes(blockedItem)) {
+			inputFolderName = blockedItem;
+		} else {
+			inputFileName = blockedItem;
+		}
+		modalContainingElement.scrollIntoView();
 	}
 
 	function handleRemoveItem(blockedItem: string) {
@@ -130,7 +136,7 @@
 
 <!-- FUTURE this has a weird white line in dark mode -->
 <Modal bind:open={showCustomServersModal} title="File & Folder Filter" class="overflow-hidden my-0 sm:my-20">
-	<div>
+	<div bind:this={modalContainingElement}>
 		<form on:submit|preventDefault={() => handleAddFile()}>
 			<div class="flex items-end">
 				<Input bind:value={inputFileName} label={'Add file'} placeholder={'Enter a filename or path to the file. E.g. plugins/plugin.jar'} type={'text'} required={true} class={'grow'} />
@@ -159,12 +165,10 @@
 		</div>
 		<div class="rounded-xl px-3 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 			<ul>
-				<!-- {#each [...(localBackupFilter?.folderBlacklist?.sort() || []), ...(localBackupFilter?.fileBlacklist?.sort() || [])] || [] as blockedItem} -->
 				{#each [...(folderBlacklist?.sort() || []), ...(fileBlacklist?.sort() || [])] || [] as blockedItem}
 					<li class="flex items-center p-1 rounded hover:bg-gray-100 hover:dark:bg-gray-700 text-gray-800 dark:text-white">
 						<span class="grow">{blockedItem}</span>
 
-						<!-- TODO backup: this has no function -->
 						<form on:submit|preventDefault={() => handleDuplicateItem(blockedItem)}>
 							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" aria-label="Duplicate item text"><Icon data={mdiContentDuplicate} size={4} class={'text-blue-500 mr-2'} /></button>
 						</form>

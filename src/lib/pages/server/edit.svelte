@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
+	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiClose, mdiContentSave } from '@mdi/js';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import { Page, type IServerSettings, KeepOnline } from '../../../types';
 	import { getServer, editServer } from '$lib/code/api';
@@ -153,9 +153,8 @@
 			<Button type="submit" disabled={areButtonsDisabled} color="blue">
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save
 			</Button>
-			<!-- TODO should this be revert or cancel? edit server & edit user behaves different -->
 			<Button type="button" on:click={handleFormReset} color="alternative" disabled={areButtonsDisabled}>
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
+				<Icon data={mdiClose} class="mr-2 -ml-1" /> Discard
 			</Button>
 		</div>
 	</form>

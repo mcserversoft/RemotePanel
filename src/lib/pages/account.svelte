@@ -191,7 +191,7 @@
 				{isFlaggedForDeletion ? 'Delete Account' : 'Save'}
 			</Button>
 			<Button type="button" disabled={areButtonsDisabled} on:click={handleFormReset} color="alternative">
-				<Icon data={mdiClose} class="mr-2 -ml-1" /> Revert
+				<Icon data={mdiClose} class="mr-2 -ml-1" /> Discard
 			</Button>
 		</div>
 	</form>

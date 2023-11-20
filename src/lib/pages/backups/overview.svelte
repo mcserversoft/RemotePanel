@@ -11,7 +11,7 @@
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import BackupProgressView from '$lib/components/elements/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
-	import { getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
+	import { IsEmptyDateTime, getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 
@@ -156,7 +156,9 @@
 								</td>
 								<td class="px-6 py-4 inline-flex items-center whitespace-nowrap">
 									<Icon data={getBackupStatusIcon(backup.lastStatus)} class={getBackupStatusColor(backup.lastStatus)} />
-									<span class="ml-1">{new Date(backup.completedAt).toLocaleString(navigator.language) ?? 'never'}</span>
+									<span class="ml-1">
+										{IsEmptyDateTime(new Date(backup.completedAt)) ? 'Never' : new Date(backup.completedAt).toLocaleString(navigator.language)}
+									</span>
 								</td>
 
 								<td class=" px-6 py-4 space-x-3 whitespace-nowrap">

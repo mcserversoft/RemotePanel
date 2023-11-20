@@ -7,8 +7,7 @@
 	export let reactive: boolean = false;
 </script>
 
-<!-- TODO button styling -->
-<!-- TODO create color styling lib? -->
+<!-- TODO maybe create color styling lib? -->
 <button
 	on:click
 	type="button"

@@ -111,13 +111,11 @@
 			<BoxedContainer class="space-y-4">
 				<div>
 					<Toggle bind:value={deleteOldBackups} label={'Delete old backups'}>
-						<div class="inline-flex">
-							<p class=" text-sm text-gray-500 dark:text-gray-400">Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the</p>
-							<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="pl-1">
-								<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
-							</form>
+						<form on:submit|preventDefault={() => navigateToPage(Page.BackupSettings)} class="text-sm text-gray-500 dark:text-gray-400">
+							Keep {deleteOldBackupsThresholdSetting} backups before deleting the old ones. You can edit this number in the
+							<button type="submit" class="-mr-1 font-medium text-blue-600 dark:text-blue-500 hover:underline">backup settings</button>
 							.
-						</div>
+						</form>
 					</Toggle>
 				</div>
 				<div>

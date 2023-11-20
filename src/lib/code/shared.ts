@@ -104,6 +104,10 @@ export function getGreeting() {
     }
 }
 
+export function IsEmptyDateTime(date: Date) {
+    return (date.getTime() == -62135597850000)
+}
+
 export function getShortDateSince(unixTimestamp: number) {
     //e.g. convert 1659359233 into August 2022
     const date = new Date(unixTimestamp * 1000);
