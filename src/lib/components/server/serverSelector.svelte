@@ -6,6 +6,7 @@
 	import Icon from '../elements/icon.svelte';
 	import StatusIndicator from './statusIndicator.svelte';
 
+	export let customDescription: string = '';
 	let serverSwitchDropdownComponent: any;
 
 	function handleToggle() {
@@ -34,7 +35,7 @@
 				</button>
 			</div>
 
-			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{$selectedServer?.description}</p>
+			<p class="pl-2 text-sm font-normal text-gray-500 max-sm:hidden dark:text-gray-400">{customDescription ? customDescription : $selectedServer?.description}</p>
 		</div>
 		<slot />
 	</div>

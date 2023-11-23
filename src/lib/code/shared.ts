@@ -1,3 +1,6 @@
+import { mdiArchiveSync, mdiCircleOutline, mdiCheckCircle, mdiHelpCircle, mdiCloseCircle } from "@mdi/js";
+import { BackupStatus } from "../../types";
+
 export function getFriendlyStatusName(status: number = 0) {
     if (status === 0) {
         return "Offline";
@@ -46,6 +49,47 @@ export function getStatusTextColor(status: number = 0) {
     }
 }
 
+export function getBackupStatusIcon(status: BackupStatus) {
+    switch (status) {
+        case BackupStatus.InProgress:
+            return mdiArchiveSync;
+
+        case BackupStatus.NeverRun:
+            return mdiCircleOutline;
+
+        case BackupStatus.Completed:
+            return mdiCheckCircle;
+
+        case BackupStatus.Failed:
+        case BackupStatus.Canceled:
+            return mdiCloseCircle;
+
+        default:
+            return mdiHelpCircle;
+    }
+}
+
+export function getBackupStatusColor(status: BackupStatus) {
+    switch (status) {
+        // case BackupStatus.InProgress:
+        // case BackupStatus.NeverRun:
+
+        case BackupStatus.Completed:
+            return 'text-green-400';
+
+        case BackupStatus.Failed:
+        case BackupStatus.Canceled:
+            return 'text-red-400';
+
+        default:
+            return 'text-inherit';
+    }
+}
+
+export function getBackupStatusName(status: BackupStatus) {
+    return BackupStatus[status]
+}
+
 export function getGreeting() {
     var currentHour = new Date().getHours();
 
@@ -58,6 +102,10 @@ export function getGreeting() {
     } else {
         return "hi";
     }
+}
+
+export function IsEmptyDateTime(date: Date) {
+    return (date.getTime() == -62135597850000)
 }
 
 export function getShortDateSince(unixTimestamp: number) {
@@ -132,4 +180,30 @@ export function getRandomPassword() {
 
 function getNumberBetween(min: number, max: number) {
     return Math.floor(Math.random() * (max - min) + min);
+}
+
+export function doesContainsInvalidWindowsExplorerCharacters(input: string) {
+    /*
+     https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
+    < (less than)
+    > (greater than)
+    : (colon - sometimes works, but is actually NTFS Alternate Data Streams)
+    " (double quote)
+    / (forward slash)
+    \ (backslash)
+    | (vertical bar or pipe)
+    ? (question mark)
+    * (asterisk)
+
+    files/folders:
+    CON, PRN, AUX, NUL 
+    COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9
+    LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, LPT9
+
+    we allow / \ for folder nesting
+    */
+    const specialCharsRegex = /[<>:"|?*]/;
+    const reservedNamesRegex = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
+
+    return specialCharsRegex.test(input) || reservedNamesRegex.test(input);
 }

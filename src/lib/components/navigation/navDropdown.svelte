@@ -30,9 +30,11 @@
 	{#if isOpen}
 		<ul class="py-2 space-y-2">
 			{#each items as item}
-				<li>
-					<button on:click={() => navigateToPage(item.page)} class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group dark:text-white {item.isActive ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}">{item.name}</button>
-				</li>
+				{#if item.hasPermission}
+					<li>
+						<button on:click={() => navigateToPage(item.page)} class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group dark:text-white {item.isActive ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}">{item.name}</button>
+					</li>
+				{/if}
 			{/each}
 		</ul>
 	{/if}

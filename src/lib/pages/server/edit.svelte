@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
+	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiClose, mdiContentSave } from '@mdi/js';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import { Page, type IServerSettings, KeepOnline } from '../../../types';
 	import { getServer, editServer } from '$lib/code/api';
@@ -12,6 +12,7 @@
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
+	import Warning from '$lib/components/elements/warning.svelte';
 
 	let loadedServerSettings: IServerSettings;
 	let serverId: string;
@@ -115,22 +116,16 @@
 	<PageTitleBanner title="Edit Server" caption="You are modifying server: '{name}'." />
 
 	{#if showError}
-		<div class="flex items-center w-full p-3 -mt-2 mb-3 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-			<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
-				<Icon data={mdiAlertRhombus} />
-				<span class="sr-only">Warning icon</span>
-			</div>
-			<div class="ml-3 text-sm font-normal">{errorMessage}</div>
-		</div>
+		<Warning message={errorMessage} />
 	{/if}
 
 	<form on:submit|preventDefault={updateServer} class="space-y-3">
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'text'} placeholder={'My Server Name'} required={true} />
 			<Input bind:value={description} on:input={handleInputChange} label={'Description'} type={'text'} placeholder={'My Cool Server'} required={true} />
 		</BoxedContainer>
 
-		<BoxedContainer>
+		<BoxedContainer class="space-y-3">
 			<Input bind:value={javaAllocatedMemory} on:input={handleInputChange} label={'Amount of Memory'} type={'number'} required={true} />
 
 			<Label>
@@ -159,7 +154,7 @@
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save
 			</Button>
 			<Button type="button" on:click={handleFormReset} color="alternative" disabled={areButtonsDisabled}>
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
+				<Icon data={mdiClose} class="mr-2 -ml-1" /> Discard
 			</Button>
 		</div>
 	</form>

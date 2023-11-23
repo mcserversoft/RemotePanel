@@ -11,6 +11,8 @@
 	import BackupsCreatePage from '$lib/pages/backups/create.svelte';
 	import BackupsEditPage from '$lib/pages/backups/edit.svelte';
 	import BackupsPage from '$lib/pages/backups/overview.svelte';
+	import BackupHistoryPage from '$lib/pages/backups/history.svelte';
+	import BackupSettingsPage from '$lib/pages/backups/settings.svelte';
 	import ConsolePage from '$lib/pages/console.svelte';
 	import DashboardPage from '$lib/pages/dashboard.svelte';
 	import LoginPage from '$lib/pages/login.svelte';
@@ -66,6 +68,10 @@
 				<BackupsCreatePage />
 			{:else if $selectedPage == Page.BackupsEdit}
 				<BackupsEditPage />
+			{:else if $selectedPage == Page.BackupHistory}
+				<BackupHistoryPage />
+			{:else if $selectedPage == Page.BackupSettings}
+				<BackupSettingsPage />
 			{:else if $selectedPage == Page.Console}
 				<ConsolePage />
 			{:else if $selectedPage == Page.Dashboard}

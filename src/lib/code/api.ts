@@ -1,33 +1,103 @@
 import axiosClient from '$lib/code/axiosClient';
-import { hasPermission, Permission } from '$lib/code/permissions';
+import {
+    isLoadingServers,
+    isOffline,
+    selectedServerId,
+    servers,
+} from '$lib/code/global';
+import { log } from '$lib/code/logger';
+import {
+    hasPermission,
+    Permission,
+} from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
+import type {
+    ICreateBackupRequest,
+    ICreateUserRequest,
+    IDeleteUserAccountRequest,
+    IEditPanelSettingsRequest,
+    IUpdateUserAccountRequest,
+    IUpdateUserRequest,
+    IUserAvatarRequest,
+} from '../../apiRequests';
+import type {
+    IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
+    IGetUserDetailsResponse,
+    IGetUsersListResponse,
+} from '../../apiResponses';
 import {
     type Backup,
-    type Memory,
-    type IPanelUser,
-    type Stats,
-    type ServerAction,
-    type INewPanelUser,
-    type IServerSettings,
-    ServerAccessDetails,
-    type IEditPanelUser,
-    type IEditPanelSettings,
+    BackupFilter,
+    type BackupHistory,
+    type BackupStats,
+    Filter,
+    type IBackupDetails,
     type IDeleteUserAccount,
+    type IEditBackup,
+    type IEditPanelSettings,
+    type IEditPanelUser,
     type IEditUserAccount,
+    type INewBackup,
+    type INewPanelUser,
     type IPanelSettings,
+    type IPanelUser,
+    type IServerSettings,
+    McssSettingsSection,
+    type Memory,
+    ServerAccessDetails,
+    type ServerAction,
+    type Stats,
 } from '../../types';
-import { Filter } from '../../types';
-import type { IGetPanelUserSettingsResponse as IGetPanelSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse } from '../../apiResponses';
-import type { ICreateUserRequest, IDeleteUserAccountRequest, IEditPanelSettingsRequest, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from '../../apiRequests';
-import { log } from '$lib/code/logger';
-import { isLoadingServers, isOffline, selectedServerId, servers } from '$lib/code/global';
 
 /*
 *  API Requests
 */
+
+export function getMcssSettings(section: McssSettingsSection, report: (settings: any) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getMcssSettings");
+    axiosClient().get(`/api/v2/mcss/settings/${section}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((settings) => {
+            report(settings);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get mcss settings Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function updateMcssSettings(settings: any, report: (wasSuccess: boolean) => void) {
+    log("API Request: editServer");
+    axiosClient().patch(`/api/v2/mcss/settings`, JSON.stringify(settings))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save mcss settings Error: ${error}`)
+            report(false);
+        })
+}
+
 export function getServers(filter: Filter = Filter.None): void {
     isLoadingServers.set(true);
 
@@ -104,7 +174,6 @@ export function editServer(serverId: string, settings: IServerSettings, report: 
 
 export async function postServerAction(serverId: string, action: string) {
     if (!serverId || !hasPermission(Permission.useServerActions, serverId)) {
-        console.log()
         return;
     }
 
@@ -594,9 +663,9 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
         })
 }
 
-export function getBackups(serverId: string, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackups(serverId: string, filter: BackupFilter = BackupFilter.None, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackups");
-    axiosClient().get(`/api/v2/servers/${serverId}/backups`)
+    axiosClient().get(`/api/v2/servers/${serverId}/backups?filter=${filter}`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -611,7 +680,186 @@ export function getBackups(serverId: string, report: (backups: Backup[]) => void
             completed(true);
         })
         .catch((error) => {
-            console.error(`Failed to fetch backups with error: ${error}`)
+            console.error(`Failed to fetch backups with filter: ${filter} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getBackupStats(serverId: string, report: (stats: BackupStats) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getBackupStats");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/stats`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((stats) => {
+            report(stats);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch backup stats Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getBackupDetails(serverId: string, backupId: string, report: (wasSuccess: boolean, backupDetails: IBackupDetails) => void) {
+    log("API Request: getBackup");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/${backupId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((backupDetails) => {
+            report(true, backupDetails);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get backup with id: ${backupId} Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function editBackup(serverId: string, backupId: string, backupSettings: IEditBackup, report: (wasSuccess: boolean) => void) {
+    log("API Request: editServer");
+
+    // this solves some incorrect formatting of arrays
+    backupSettings.fileBlacklist = backupSettings.fileBlacklist.map(a => a);
+    backupSettings.folderBlacklist = backupSettings.folderBlacklist.map(a => a);
+
+    axiosClient().put(`/api/v2/servers/${serverId}/backups/${backupId}`, JSON.stringify(backupSettings))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save settings of backup with id: ${backupId} Error: ${error}`)
+            report(false);
+        })
+}
+
+export function runBackup(serverId: string, backupId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: runBackup");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups/${backupId}`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to run backup with Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function createBackup(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateBackupRequest = {
+        name: newBackup.name,
+        destination: newBackup.destination,
+        suspend: newBackup.suspend,
+        deleteOldBackups: newBackup.deleteOldBackups,
+        compression: newBackup.compression,
+        runBackupAfterCreation: newBackup.runBackupAfterCreation,
+        // this solves some incorrect formatting of arrays
+        fileBlacklist: newBackup.fileBlacklist.map(a => a),
+        folderBlacklist: newBackup.folderBlacklist.map(a => a)
+    }
+
+    log("API Request: createBackup");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to create backup: ${newBackup.name} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function deleteBackup(serverId: string, backupId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteBackup");
+    axiosClient().delete(`/api/v2/servers/${serverId}/backups/${backupId}`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete backup with Error: ${error} `)
+            completed(false);
+        })
+}
+
+export function getBackupHistory(serverId: string, report: (backups: BackupHistory[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getBackupHistory");
+    axiosClient().get(`/api/v2/servers/${serverId}/backups/history`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((backups) => {
+            report(backups ?? []);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch backups with error: ${error} `)
+            completed(false);
+        })
+}
+
+export function deleteBackupHistory(serverId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteBackupHistory");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups/history/clear`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete backup history Error: ${error} `)
             completed(false);
         })
 }

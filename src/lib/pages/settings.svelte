@@ -4,7 +4,7 @@
 	import Input from '$lib/components/elements/input.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Select, Label, Button } from 'flowbite-svelte';
-	import { mdiContentSave, mdiArrowULeftTop } from '@mdi/js';
+	import { mdiContentSave, mdiClose } from '@mdi/js';
 	import { PanelTheme, type IEditPanelSettings } from '../../types';
 	import { editPanelSettings } from '$lib/code/api';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
@@ -159,7 +159,7 @@
 				<Icon data={mdiContentSave} class="mr-2 -ml-1" /> Save
 			</Button>
 			<Button type="button" disabled={areButtonsDisabled} on:click={handleFormReset} color="alternative">
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
+				<Icon data={mdiClose} class="mr-2 -ml-1" /> Discard
 			</Button>
 		</div>
 	</form>

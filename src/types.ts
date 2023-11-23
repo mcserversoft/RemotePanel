@@ -1,4 +1,4 @@
-import type { Permission } from "$lib/code/permissions";
+import type { Permission } from '$lib/code/permissions';
 
 export class Server implements IServer {
     serverId = "";
@@ -54,6 +54,7 @@ export enum Filter {
     Minimal,
     Status
 }
+
 export enum KeepOnline {
     None,
     Elevated,
@@ -71,6 +72,7 @@ export interface PageReference {
     name: string;
     page: Page;
     isActive: boolean;
+    hasPermission: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -82,6 +84,18 @@ export interface BreadcrumbItem {
 /**** NEW START ****/
 // start of the final approved/refactored code
 
+export enum McssSettingsSection {
+    InvalidOrEmpty,
+    All,
+    Backups,
+}
+
+/* API */
+export enum BackupFilter {
+    None,
+    WithoutHistory
+}
+
 /* Panel */
 export enum Page {
     Empty,
@@ -90,6 +104,8 @@ export enum Page {
     Backups,
     BackupsCreate,
     BackupsEdit,
+    BackupHistory,
+    BackupSettings,
     Console,
     Dashboard,
     ServerEdit,
@@ -115,6 +131,13 @@ export interface IPanelSettings {
     enableConsoleChatMode: boolean,
     enableDebugging: boolean
     lastModifiedAt: Date
+}
+
+export enum WarningType {
+    Error,
+    Warning,
+    Permission,
+    Info
 }
 
 /* User */
@@ -172,6 +195,11 @@ export class ServerAccessDetails {
                     useConsole: perm[1]?.useConsole ?? false,
                     useServerActions: perm[1]?.useServerActions ?? false,
                     editServer: perm[1]?.editServer ?? false,
+                    viewBackups: perm[1]?.viewBackups ?? false,
+                    createBackup: perm[1]?.createBackup ?? false,
+                    editBackup: perm[1]?.editBackup ?? false,
+                    deleteBackups: perm[1]?.deleteBackups ?? false,
+                    triggerBackup: perm[1]?.triggerBackup ?? false,
                 }
             })
         });
@@ -193,6 +221,11 @@ export class ServerAccessDetails {
                     useConsole: permissions.some(s => s.includes("useConsole")) ?? false,
                     useServerActions: permissions.some(s => s.includes("useServerActions")) ?? false,
                     editServer: permissions.some(s => s.includes("editServer")) ?? false,
+                    viewBackups: permissions.some(s => s.includes("viewBackups")) ?? false,
+                    createBackup: permissions.some(s => s.includes("createBackup")) ?? false,
+                    editBackup: permissions.some(s => s.includes("editBackup")) ?? false,
+                    deleteBackups: permissions.some(s => s.includes("deleteBackups")) ?? false,
+                    triggerBackup: permissions.some(s => s.includes("triggerBackup")) ?? false,
                 }
             })
         });
@@ -232,6 +265,11 @@ export class Permissions {
     useConsole = false;
     useServerActions = false;
     editServer = false;
+    viewBackups = false;
+    createBackup = false;
+    editBackup = false;
+    deleteBackups = false;
+    triggerBackup = false;
 }
 
 export interface ICustomServerPermission {
@@ -240,11 +278,14 @@ export interface ICustomServerPermission {
     useConsole: boolean;
     useServerActions: boolean;
     editServer: boolean;
+    viewBackups: boolean;
+    createBackup: boolean;
+    editBackup: boolean;
+    deleteBackups: boolean;
+    triggerBackup: boolean;
 }
 
-// beyond this code block ends the final approved/refactored code
-/**** END NEW ****/
-
+/* Backups */
 export interface Backup {
     backupId: string;
     name: string;
@@ -253,9 +294,50 @@ export interface Backup {
     deleteOldBackups: boolean;
     compression: BackupCompression;
     lastStatus: BackupStatus;
-    fileBlacklist: any;
-    folderBlacklist: any;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
     completedAt: Date;
+}
+
+export interface BackupStats {
+    scheduled: number;
+    completed: number;
+    canceled: number;
+    failed: number;
+}
+
+export interface IBackupDetails {
+    backupId: string;
+    name: string;
+    destination: string;
+    suspend: boolean;
+    deleteOldBackups: boolean;
+    compression: BackupCompression;
+    lastStatus: BackupStatus;
+    completedAt: Date;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
+}
+
+export interface INewBackup {
+    name: string;
+    destination: string;
+    suspend: boolean;
+    deleteOldBackups: boolean;
+    compression: BackupCompression;
+    runBackupAfterCreation: boolean;
+    fileBlacklist: string[];
+    folderBlacklist: string[];
+}
+
+export interface IEditBackup extends Omit<INewBackup, 'runBackupAfterCreation'> { }
+
+export interface BackupHistory {
+    destination: string;
+    lastRun: Date;
+    logMessage: string;
+    name: string;
+    status: BackupStatus;
 }
 
 export enum BackupCompression {
@@ -270,4 +352,28 @@ export enum BackupStatus {
     Completed,
     Failed,
     Canceled
+}
+
+export class BackupFilterListDetails {
+    fileBlacklist: string[] = [];
+    folderBlacklist: string[] = [];
+
+    init(fileBlacklist: string[], folderBlacklist: string[]) {
+        this.fileBlacklist = fileBlacklist;
+        this.folderBlacklist = folderBlacklist;
+    }
+
+    update(fileBlacklist: string[], folderBlacklist: string[]) {
+        this.fileBlacklist = fileBlacklist
+        this.folderBlacklist = folderBlacklist
+    }
+
+    getCount() {
+        let count = this.fileBlacklist?.length + this.folderBlacklist?.length;
+        if (!count) {
+            return 0;
+        }
+
+        return count;
+    }
 }

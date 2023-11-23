@@ -3,7 +3,7 @@
 	import { auth } from '$lib/code/auth';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
-	import { mdiContentSave, mdiArrowULeftTop, mdiPencil, mdiRefreshCircle, mdiLoading } from '@mdi/js';
+	import { mdiContentSave, mdiPencil, mdiRefreshCircle, mdiLoading, mdiClose } from '@mdi/js';
 	import type { IDeleteUserAccount, IEditUserAccount } from '../../types';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import { getRandomPassword, getShortDateSince } from '$lib/code/shared';
@@ -191,7 +191,7 @@
 				{isFlaggedForDeletion ? 'Delete Account' : 'Save'}
 			</Button>
 			<Button type="button" disabled={areButtonsDisabled} on:click={handleFormReset} color="alternative">
-				<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" /> Revert
+				<Icon data={mdiClose} class="mr-2 -ml-1" /> Discard
 			</Button>
 		</div>
 	</form>

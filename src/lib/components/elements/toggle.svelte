@@ -35,6 +35,6 @@
 	<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 {getColorLabelInfo()}">{label}</span>
 </label>
 
-<p class="text-sm text-gray-500 dark:text-gray-400">
+<p class="text-sm empty:hidden text-gray-500 dark:text-gray-400">
 	<slot />
 </p>
