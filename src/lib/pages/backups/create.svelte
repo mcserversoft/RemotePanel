@@ -138,6 +138,6 @@
 			</div>
 		</form>
 	{:else}
-		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.createBackup}`} type={WarningType.Permission} />
 	{/if}
 </section>
