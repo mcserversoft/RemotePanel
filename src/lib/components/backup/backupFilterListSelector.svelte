@@ -170,10 +170,10 @@
 						<span class="grow">{blockedItem}</span>
 
 						<form on:submit|preventDefault={() => handleDuplicateItem(blockedItem)}>
-							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" aria-label="Duplicate item text"><Icon data={mdiContentDuplicate} size={4} class={'text-blue-500 mr-2'} /></button>
+							<button type="submit" class="pt-1" aria-label="Duplicate item text"><Icon data={mdiContentDuplicate} size={4} class={'text-blue-500 mr-2'} /></button>
 						</form>
 						<form on:submit|preventDefault={() => handleRemoveItem(blockedItem)}>
-							<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" aria-label="Remove item"><Icon data={mdiClose} size={5} class={'text-red-500'} /></button>
+							<button type="submit" class="pt-1" aria-label="Remove item"><Icon data={mdiClose} size={5} class={'text-red-500'} /></button>
 						</form>
 					</li>
 				{:else}
