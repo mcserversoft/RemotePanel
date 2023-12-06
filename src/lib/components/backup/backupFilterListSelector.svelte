@@ -58,7 +58,7 @@
 		areButtonsDisabled = false;
 
 		//HACK to update the state
-		folderBlacklist = folderBlacklist;
+		fileBlacklist = fileBlacklist;
 	}
 
 	function handleAddFolder() {
