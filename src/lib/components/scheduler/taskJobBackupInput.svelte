@@ -7,9 +7,11 @@
 	import { get } from 'svelte/store';
 	import { selectedServerId } from '$lib/code/global';
 	import type { Backup } from '../../../types';
+	import type { BackupJobTask } from '$lib/code/scheduler';
 
-	let selectedBackup: string;
+	export let job: any;
 
+	let selectedBackup: string = (job as BackupJobTask)?.backupId;
 	let backups: any = [];
 	const dispatch = createEventDispatcher();
 

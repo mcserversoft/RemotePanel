@@ -52,8 +52,39 @@ export function getTaskEnabledIconColor(task: ISchedulerTask): string {
     return task.enabled ? 'text-green-400' : 'text-red-400';
 }
 
-/* Job */
+/* API */
+export function translateRawResponse(data: any): ISchedulerTask {
+    let task: ISchedulerTask = {
+        taskId: data.taskId,
+        enabled: data.enabled,
+        name: data.name,
+        playerRequirement: data.playerRequirement,
+        timing: new TimelessTaskTiming(),
+        job: new EmptyJobTask()
+    }
 
+    if ('interval' in data.timing) {
+        task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
+    } else if ('time' in data.timing) {
+        task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.timeSpan);
+    } else {
+        task.timing = new TimelessTaskTiming();
+    }
+
+    if ('commands' in data.job) {
+        task.job = new CommandJobTask(data.job.commands as string[]);
+    } else if ('backupIdentifier' in data.job) {
+        task.job = new BackupJobTask(data.job.backupIdentifier as string);
+    } else if ('action' in data.job) {
+        task.job = new ServerActionJobTask(data.job.action as string);
+    } else {
+        task.job = new EmptyJobTask();
+    }
+
+    return task;
+}
+
+/* Job */
 export interface JobTask { }
 
 export class CommandJobTask implements JobTask {

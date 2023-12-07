@@ -50,7 +50,7 @@ import {
     type ServerAction,
     type Stats,
 } from '../../types';
-import { BackupJobTask, CommandJobTask, ServerActionJobTask, type ISchedulerTask, EmptyJobTask, TimelessTaskTiming, FixedTimeTaskTiming, IntervalTaskTiming, type ISchedulerDetails } from './scheduler';
+import { BackupJobTask, CommandJobTask, ServerActionJobTask, type ISchedulerTask, EmptyJobTask, TimelessTaskTiming, FixedTimeTaskTiming, IntervalTaskTiming, type ISchedulerDetails, translateRawResponse } from './scheduler';
 
 /*
 *  API Requests
@@ -880,34 +880,7 @@ export function getSchedulerTasks(serverId: string, report: (backups: IScheduler
         .then((rawData) => {
             let tasks: ISchedulerTask[] = [];
             rawData.forEach((data: any) => {
-                let task: ISchedulerTask = {
-                    taskId: data.taskId,
-                    enabled: data.enabled,
-                    name: data.name,
-                    playerRequirement: data.playerRequirement,
-                    timing: new TimelessTaskTiming(),
-                    job: new EmptyJobTask()
-                }
-
-                if ('interval' in data.timing) {
-                    task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
-                } else if ('time' in data.timing) {
-                    task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.timeSpan);
-                } else {
-                    task.timing = new TimelessTaskTiming();
-                }
-
-                if ('commands' in data.job) {
-                    task.job = new CommandJobTask(data.job.commands as string[]);
-                } else if ('backupIdentifier' in data.job) {
-                    task.job = new BackupJobTask(data.job.backupIdentifier as string);
-                } else if ('action' in data.job) {
-                    task.job = new ServerActionJobTask(data.job.action as string);
-                } else {
-                    task.job = new EmptyJobTask();
-                }
-
-                tasks.push(task);
+                tasks.push(translateRawResponse(data));
             });
 
             report(tasks);
@@ -953,8 +926,8 @@ export function getSchedulerTaskDetails(serverId: string, taskId: string, report
             log(response?.data);
             return response?.data ?? [];
         })
-        .then((taskDetails) => {
-            report(true, taskDetails);
+        .then((rawData) => {
+            report(true, translateRawResponse(rawData));
         })
 
         .catch((error) => {

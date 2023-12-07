@@ -2,14 +2,17 @@
 	import { createEventDispatcher } from 'svelte';
 	import Input from '../elements/input.svelte';
 	import Toggle from '../elements/toggle.svelte';
+	import type { FixedTimeTaskTiming } from '$lib/code/scheduler';
 
-	let fixedTime: string;
-	let suspendServer: boolean = true;
+	export let timing: any;
+
+	let fixedTime: string = (timing as FixedTimeTaskTiming)?.time;
+	let repeat: boolean = (timing as FixedTimeTaskTiming)?.repeat;
 	const dispatch = createEventDispatcher();
 
 	function handleInputChange() {
 		if (fixedTime) {
-			dispatch('update', { fixedTime, suspendServer });
+			dispatch('update', { fixedTime, suspendServer: repeat });
 		}
 	}
 </script>
@@ -25,6 +28,6 @@ Double-digit minutes and seconds from 00 to 59.
 </Input>
 
 <div class="mt-6">
-	<Toggle bind:value={suspendServer} label={'Repeat'} on:toggle={handleInputChange} />
+	<Toggle bind:value={repeat} label={'Repeat'} on:toggle={handleInputChange} />
 	<p class=" text-sm text-gray-500 dark:text-gray-400">Loop this task while the server is online.</p>
 </div>

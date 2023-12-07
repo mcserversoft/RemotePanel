@@ -3,8 +3,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import Icon from '../elements/icon.svelte';
 	import Input from '../elements/input.svelte';
+	import type { CommandJobTask } from '$lib/code/scheduler';
 
-	let commands: any = [];
+	export let job: any;
+
+	let commands: any = (job as CommandJobTask)?.commands;
 	let inputCommand: string;
 
 	const dispatch = createEventDispatcher();
@@ -56,7 +59,7 @@
 	</ul>
 </div>
 
-<form on:submit|preventDefault={() => handleAddCommand()} class="pt-6 mb-2">
+<form on:submit|preventDefault={() => handleAddCommand()} class="mb-2">
 	<div class="flex items-end">
 		<Input bind:value={inputCommand} label={''} placeholder={'Enter a server command, leading slashes (/) will be ignored when triggering.'} type={'text'} required={true} class={'grow'} />
 

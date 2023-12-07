@@ -4,7 +4,7 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupFilterListDetails, WarningType } from '../../../types';
+	import { Page, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createSchedulerTask } from '$lib/code/api';
 	import { navigateToPage } from '$lib/code/routing';
@@ -124,15 +124,15 @@
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
 					<TabItem class="w-full" open>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
-						<TaskJobServerActionInput on:update={handleTaskJobServerActionInput} />
+						<TaskJobServerActionInput job={undefined} on:update={handleTaskJobServerActionInput} />
 					</TabItem>
 					<TabItem class="w-full">
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
-						<TaskJobCommandsInput on:update={handleTaskJobCommandsInput} />
+						<TaskJobCommandsInput job={undefined} on:update={handleTaskJobCommandsInput} />
 					</TabItem>
 					<TabItem class="w-full">
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
-						<TaskJobBackupInput on:update={handleTaskJobBackupInput} />
+						<TaskJobBackupInput job={undefined} on:update={handleTaskJobBackupInput} />
 					</TabItem>
 				</Tabs>
 			</BoxedContainer>
@@ -143,13 +143,13 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full">
-						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
-						<TaskTimingIntervalInput on:update={handleTaskTimingIntervalInput} />
-					</TabItem>
 					<TabItem class="w-full" open>
+						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
+						<TaskTimingIntervalInput timing={undefined} on:update={handleTaskTimingIntervalInput} />
+					</TabItem>
+					<TabItem class="w-full">
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[1].name}</span>
-						<TaskTimingFixedTimeInput on:update={handleTaskTimingFixedTimeInput} />
+						<TaskTimingFixedTimeInput timing={undefined} on:update={handleTaskTimingFixedTimeInput} />
 					</TabItem>
 					<TabItem class="w-full">
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[2].name}</span>
@@ -161,7 +161,7 @@
 			</BoxedContainer>
 
 			<BoxedContainer class="space-y-3">
-				<TaskPlayerRequirementInput on:update={handleTaskPlayerRequirementInput} />
+				<TaskPlayerRequirementInput playerRequirement="0" on:update={handleTaskPlayerRequirementInput} />
 			</BoxedContainer>
 
 			<div class="flex space-x-3">

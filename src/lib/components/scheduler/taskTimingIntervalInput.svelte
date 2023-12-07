@@ -2,14 +2,17 @@
 	import { createEventDispatcher } from 'svelte';
 	import Input from '../elements/input.svelte';
 	import Toggle from '../elements/toggle.svelte';
+	import type { IntervalTaskTiming } from '$lib/code/scheduler';
 
-	let interval: number;
-	let suspendServer: boolean = true;
+	export let timing: any;
+
+	let interval: number = (timing as IntervalTaskTiming)?.interval;
+	let repeat: boolean = (timing as IntervalTaskTiming)?.repeat;
 	const dispatch = createEventDispatcher();
 
 	function handleInputChange() {
 		if (interval) {
-			dispatch('update', { interval, suspendServer });
+			dispatch('update', { interval, suspendServer: repeat });
 		}
 	}
 </script>
@@ -19,6 +22,6 @@
 </Input>
 
 <div class="mt-6">
-	<Toggle bind:value={suspendServer} label={'Repeat'} on:toggle={handleInputChange} />
+	<Toggle bind:value={repeat} label={'Repeat'} on:toggle={handleInputChange} />
 	<p class=" text-sm text-gray-500 dark:text-gray-400">Loop this task while the server is online.</p>
 </div>

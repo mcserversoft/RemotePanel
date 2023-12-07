@@ -14,7 +14,7 @@
 	import { getSchedulerTaskDetails } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
-	import { jobOptions, type ISchedulerTask, timingOptions } from '$lib/code/scheduler';
+	import { jobOptions, type ISchedulerTask, timingOptions, Job, Timing, type JobTask, type TaskTiming, ServerActionJobTask, CommandJobTask, BackupJobTask, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming } from '$lib/code/scheduler';
 	import TaskJobServerActionInput from '$lib/components/scheduler/taskJobServerActionInput.svelte';
 	import TaskJobCommandsInput from '$lib/components/scheduler/taskJobCommandsInput.svelte';
 	import TaskJobBackupInput from '$lib/components/scheduler/taskJobBackupInput.svelte';
@@ -24,6 +24,9 @@
 
 	let taskId: string;
 	let name: string = '';
+	let job: JobTask;
+	let timing: TaskTiming;
+	let playerRequirement: number;
 
 	let originalName: string = '';
 	let showError: boolean;
@@ -46,13 +49,13 @@
 				errorMessage = 'Unable to load this page, does the task exist?';
 			} else {
 				name = taskDetails.name;
-				// destination = taskDetails.destination;
-				// suspendServer = taskDetails.suspend;
-				// deleteOldBackups = taskDetails.deleteOldBackups;
-				// compression = taskDetails.compression;
-				// backupFilterList.fileBlacklist = taskDetails.fileBlacklist;
-				// backupFilterList.folderBlacklist = taskDetails.folderBlacklist;
+				job = taskDetails.job;
+				timing = taskDetails.timing;
+				playerRequirement = taskDetails.playerRequirement;
+
 				originalName = taskDetails.name;
+				console.log(taskDetails);
+				console.log(timing);
 			}
 		});
 	}
@@ -141,17 +144,17 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open>
+					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
-						<TaskJobServerActionInput on:update={handleTaskJobServerActionInput} />
+						<TaskJobServerActionInput {job} on:update={handleTaskJobServerActionInput} />
 					</TabItem>
-					<TabItem class="w-full">
+					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
-						<TaskJobCommandsInput on:update={handleTaskJobCommandsInput} />
+						<TaskJobCommandsInput {job} on:update={handleTaskJobCommandsInput} />
 					</TabItem>
-					<TabItem class="w-full">
+					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
-						<TaskJobBackupInput on:update={handleTaskJobBackupInput} />
+						<TaskJobBackupInput {job} on:update={handleTaskJobBackupInput} />
 					</TabItem>
 				</Tabs>
 			</BoxedContainer>
@@ -162,15 +165,15 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full">
+					<TabItem class="w-full" open={timing instanceof IntervalTaskTiming ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
-						<TaskTimingIntervalInput on:update={handleTaskTimingIntervalInput} />
+						<TaskTimingIntervalInput {timing} on:update={handleTaskTimingIntervalInput} />
 					</TabItem>
-					<TabItem class="w-full" open>
+					<TabItem class="w-full" open={timing instanceof FixedTimeTaskTiming ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[1].name}</span>
-						<TaskTimingFixedTimeInput on:update={handleTaskTimingFixedTimeInput} />
+						<TaskTimingFixedTimeInput {timing} on:update={handleTaskTimingFixedTimeInput} />
 					</TabItem>
-					<TabItem class="w-full">
+					<TabItem class="w-full" open={timing instanceof TimelessTaskTiming ? true : false}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[2].name}</span>
 						<p class="text-sm text-gray-500 dark:text-gray-400 text-center">
 							A <b>timeless</b> task has no timing options.
@@ -180,7 +183,7 @@
 			</BoxedContainer>
 
 			<BoxedContainer class="space-y-3">
-				<TaskPlayerRequirementInput on:update={handleTaskPlayerRequirementInput} />
+				<TaskPlayerRequirementInput {playerRequirement} on:update={handleTaskPlayerRequirementInput} />
 			</BoxedContainer>
 
 			<div class="flex space-x-3">
