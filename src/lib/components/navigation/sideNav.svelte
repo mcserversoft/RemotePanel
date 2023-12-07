@@ -9,12 +9,10 @@
 	import { Url, getURLToCurrentUserAvatar, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../elements/icon.svelte';
-	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiLifebuoy, mdiNotebook, mdiPoll } from '@mdi/js';
+	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiNotebook, mdiPoll } from '@mdi/js';
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/code/auth';
 	import NavDropdown from './navDropdown.svelte';
-	import { Permission, hasPermission } from '$lib/code/permissions';
-	import { selectedServerId } from '$lib/code/global';
 
 	// @ts-ignore
 	const version: string = __VERSION__;
@@ -89,7 +87,6 @@
 				<NavItem on:click={() => handleNavigationRequest(Page.Dashboard)} name="Dashboard" isActive={$selectedPage == Page.Dashboard}>
 					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
-				<!--TODO other pages-->
 
 				<NavDropdown
 					name="Backups"
@@ -116,31 +113,36 @@
 				>
 					<Icon data={mdiArchive} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown>
-				<!--
-				<NavDropdown
+
+				<NavItem on:click={() => handleNavigationRequest(Page.Scheduler)} name="Scheduler" isActive={$selectedPage == Page.Scheduler}>
+					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
+				<!-- <NavDropdown
 					name="Scheduler"
 					items={[
 						{
 							name: 'Overview',
-							page: Page.Empty,
-							isActive: false
+							page: Page.Scheduler,
+							isActive: false,
+							hasPermission: true
 						},
 						{
 							name: 'History',
-							page: Page.Empty,
-							isActive: false
+							page: Page.SchedulerHistory,
+							isActive: false,
+							hasPermission: true
 						}
 					]}
 				>
 					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
-				</NavDropdown> 
-				-->
+				</NavDropdown> -->
 
 				{#if get(auth).showAdminFeatures}
 					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
 						<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
 					</NavItem>
 				{/if}
+				<!--TODO other pages-->
 				<!-- 
 				<NavItem name="API Keys">
 					<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />

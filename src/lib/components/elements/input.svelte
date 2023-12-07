@@ -8,6 +8,7 @@
 	export let type: HTMLInputTypeAttribute = 'text';
 	export let min: string = '';
 	export let max: string = '';
+	export let pattern: string = '';
 	export let required: boolean = false;
 	export let readonly: boolean = false;
 	export let error: boolean = false;
@@ -40,7 +41,12 @@
 
 <div class={className}>
 	<label for={label} class="block mb-2 text-sm font-medium">{label}</label>
-	<input {...{ type }} bind:value on:input={handleInputChange} id={label} class="block w-full p-2.5 text-sm rounded-lg {getStyling()} " {placeholder} {required} {min} {max} {readonly} />
+
+	{#if pattern}
+		<input {...{ type }} bind:value on:input={handleInputChange} id={label} class="block w-full p-2.5 text-sm rounded-lg {getStyling()} " {placeholder} {pattern} {required} {min} {max} {readonly} />
+	{:else}
+		<input {...{ type }} bind:value on:input={handleInputChange} id={label} class="block w-full p-2.5 text-sm rounded-lg {getStyling()} " {placeholder} {required} {min} {max} {readonly} />
+	{/if}
 
 	<p class="mt-3 text-sm empty:hidden text-gray-500 dark:text-gray-400">
 		<slot />

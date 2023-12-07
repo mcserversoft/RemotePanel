@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { BackupStats } from '../../../types';
+	import type { IBackupStats } from '../../../types';
 	import ColoredDot from './coloredDot.svelte';
 
-	export let stats: BackupStats = { canceled: 0, completed: 0, failed: 0, scheduled: 0 };
+	export let stats: IBackupStats = { canceled: 0, completed: 0, failed: 0, scheduled: 0 };
 
 	function calculateWidthRatio(stat: number) {
 		if (!stat) {

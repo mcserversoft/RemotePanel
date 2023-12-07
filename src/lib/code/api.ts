@@ -30,9 +30,8 @@ import type {
 } from '../../apiResponses';
 import {
     type Backup,
-    BackupFilter,
     type BackupHistory,
-    type BackupStats,
+    type IBackupStats,
     Filter,
     type IBackupDetails,
     type IDeleteUserAccount,
@@ -51,6 +50,7 @@ import {
     type ServerAction,
     type Stats,
 } from '../../types';
+import { BackupJobTask, CommandJobTask, ServerActionJobTask, type ISchedulerTask, EmptyJobTask, TimelessTaskTiming, FixedTimeTaskTiming, IntervalTaskTiming, type ISchedulerDetails } from './scheduler';
 
 /*
 *  API Requests
@@ -663,9 +663,9 @@ export function uploadUserAvatar(base64: string, completed: (wasSuccess: boolean
         })
 }
 
-export function getBackups(serverId: string, filter: BackupFilter = BackupFilter.None, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackups(serverId: string, report: (backups: Backup[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackups");
-    axiosClient().get(`/api/v2/servers/${serverId}/backups?filter=${filter}`)
+    axiosClient().get(`/api/v2/servers/${serverId}/backups`)
         .then((response) => {
             if (response?.status !== 200) {
                 return Promise.reject(response);
@@ -680,12 +680,12 @@ export function getBackups(serverId: string, filter: BackupFilter = BackupFilter
             completed(true);
         })
         .catch((error) => {
-            console.error(`Failed to fetch backups with filter: ${filter} Error: ${error}`)
+            console.error(`Failed to fetch backups Error: ${error}`)
             completed(false);
         })
 }
 
-export function getBackupStats(serverId: string, report: (stats: BackupStats) => void, completed: (wasSuccess: boolean) => void): void {
+export function getBackupStats(serverId: string, report: (stats: IBackupStats) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getBackupStats");
     axiosClient().get(`/api/v2/servers/${serverId}/backups/stats`)
         .then((response) => {
@@ -860,6 +860,195 @@ export function deleteBackupHistory(serverId: string, completed: (wasSuccess: bo
 
         .catch((error) => {
             console.error(`Failed to delete backup history Error: ${error} `)
+            completed(false);
+        })
+}
+
+export function getSchedulerTasks(serverId: string, report: (backups: ISchedulerTask[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getSchedulerTasks");
+    axiosClient().get(`/api/v2/servers/${serverId}/scheduler/tasks`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+
+        .then((rawData) => {
+            let tasks: ISchedulerTask[] = [];
+            rawData.forEach((data: any) => {
+                let task: ISchedulerTask = {
+                    taskId: data.taskId,
+                    enabled: data.enabled,
+                    name: data.name,
+                    playerRequirement: data.playerRequirement,
+                    timing: new TimelessTaskTiming(),
+                    job: new EmptyJobTask()
+                }
+
+                if ('interval' in data.timing) {
+                    task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
+                } else if ('time' in data.timing) {
+                    task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.timeSpan);
+                } else {
+                    task.timing = new TimelessTaskTiming();
+                }
+
+                if ('commands' in data.job) {
+                    task.job = new CommandJobTask(data.job.commands as string[]);
+                } else if ('backupIdentifier' in data.job) {
+                    task.job = new BackupJobTask(data.job.backupIdentifier as string);
+                } else if ('action' in data.job) {
+                    task.job = new ServerActionJobTask(data.job.action as string);
+                } else {
+                    task.job = new EmptyJobTask();
+                }
+
+                tasks.push(task);
+            });
+
+            report(tasks);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch Scheduler Tasks Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getSchedulerDetails(serverId: string, report: (stats: ISchedulerDetails) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getSchedulerDetails");
+    axiosClient().get(`/api/v2/servers/${serverId}/scheduler`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((stats) => {
+            report(stats);
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch scheduler details Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getSchedulerTaskDetails(serverId: string, taskId: string, report: (wasSuccess: boolean, taskDetails: ISchedulerTask) => void) {
+    log("API Request: getSchedulerTaskDetails");
+    axiosClient().get(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((taskDetails) => {
+            report(true, taskDetails);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get task with id: ${taskId} Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function editSchedulerTask(serverId: string, taskId: string, updatedTask: ISchedulerTask, report: (wasSuccess: boolean) => void) {
+    log("API Request: editSchedulerTask");
+
+    axiosClient().put(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`, JSON.stringify(updatedTask))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save scheduler task with id: ${taskId} Error: ${error}`)
+            report(false);
+        })
+}
+
+export function runSchedulerTask(serverId: string, taskId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: runSchedulerTask");
+    axiosClient().post(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to run scheduler task with Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function createSchedulerTask(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateBackupRequest = {
+        name: newBackup.name,
+        destination: newBackup.destination,
+        suspend: newBackup.suspend,
+        deleteOldBackups: newBackup.deleteOldBackups,
+        compression: newBackup.compression,
+        runBackupAfterCreation: newBackup.runBackupAfterCreation,
+        // this solves some incorrect formatting of arrays
+        fileBlacklist: newBackup.fileBlacklist.map(a => a),
+        folderBlacklist: newBackup.folderBlacklist.map(a => a)
+    }
+
+    log("API Request: createBackup");
+    axiosClient().post(`/api/v2/servers/${serverId}/backups`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to create backup: ${newBackup.name} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function deleteSchedulerTask(serverId: string, taskId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteSchedulerTask");
+    axiosClient().delete(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete scheduler task with Error: ${error} `)
             completed(false);
         })
 }

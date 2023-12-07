@@ -90,12 +90,6 @@ export enum McssSettingsSection {
     Backups,
 }
 
-/* API */
-export enum BackupFilter {
-    None,
-    WithoutHistory
-}
-
 /* Panel */
 export enum Page {
     Empty,
@@ -114,6 +108,10 @@ export enum Page {
     Users,
     UsersCreate,
     UsersEdit,
+    Scheduler,
+    SchedulerTaskCreate,
+    SchedulerTaskEdit,
+    SchedulerHistory
 }
 
 export enum PanelTheme {
@@ -299,7 +297,7 @@ export interface Backup {
     completedAt: Date;
 }
 
-export interface BackupStats {
+export interface IBackupStats {
     scheduled: number;
     completed: number;
     canceled: number;
