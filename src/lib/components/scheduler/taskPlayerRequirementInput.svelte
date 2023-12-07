@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let playerRequirement: any;
+	export let playerRequirement: number;
 	const dispatch = createEventDispatcher();
 
 	function handleInputChange() {
-		dispatch('update', { radioGroup: playerRequirement });
+		dispatch('update', playerRequirement);
 	}
 </script>
 

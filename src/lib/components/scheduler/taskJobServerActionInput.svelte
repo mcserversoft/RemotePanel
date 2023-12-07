@@ -33,5 +33,5 @@
 </script>
 
 <Label>
-	<Select bind:value={selectedServerAction} items={serverActions} on:change={handleInputChange} />
+	<Select bind:value={selectedServerAction} items={serverActions} on:change={handleInputChange} required={true} />
 </Label>

@@ -28,6 +28,16 @@ export interface ISchedulerTask {
     job: JobTask;
 }
 
+export interface INewSchedulerTask {
+    name: string;
+    enabled: boolean;
+    playerRequirement: number;
+    timing: TaskTiming;
+    job: JobTask;
+}
+
+export interface IEditSchedulerTask extends INewSchedulerTask { }
+
 export function getTaskEnabledIcon(task: ISchedulerTask): string {
     if (task == undefined) {
         return mdiClose;
@@ -104,9 +114,9 @@ export class BackupJobTask implements JobTask {
 }
 
 export class ServerActionJobTask implements JobTask {
-    serverAction: string;
+    serverAction: number;
 
-    constructor(serverAction: string) {
+    constructor(serverAction: number) {
         this.serverAction = serverAction;
     }
 }

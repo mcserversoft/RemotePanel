@@ -12,7 +12,7 @@
 
 	function handleInputChange() {
 		if (fixedTime) {
-			dispatch('update', { fixedTime, suspendServer: repeat });
+			dispatch('update', { fixedTime, repeat });
 		}
 	}
 </script>

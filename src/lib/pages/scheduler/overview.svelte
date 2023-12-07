@@ -33,7 +33,6 @@
 			serverId,
 			(data: ISchedulerTask[]) => {
 				tasks = data;
-				console.log(data);
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
@@ -44,7 +43,6 @@
 			serverId,
 			(data: ISchedulerDetails) => {
 				schedulerDetails = data;
-				console.log(schedulerDetails);
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;

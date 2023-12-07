@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { mdiArchive, mdiArchivePlus, mdiArrowULeftTop } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
@@ -20,40 +19,26 @@
 	import TaskTimingIntervalInput from '$lib/components/scheduler/taskTimingIntervalInput.svelte';
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
-	import { jobOptions, timingOptions } from '$lib/code/scheduler';
+	import { jobOptions, timingOptions, type INewSchedulerTask, type JobTask, type TaskTiming, IntervalTaskTiming, FixedTimeTaskTiming, BackupJobTask, CommandJobTask, ServerActionJobTask } from '$lib/code/scheduler';
 
 	let name: string = '';
+	let job: JobTask;
+	let timing: TaskTiming;
+	let playerRequirement: number;
+
 	const tabItemStyle = 'inline-block text-sm font-medium text-center disabled:cursor-not-allowed p-4 w-full group-first:rounded-l-lg group-last:rounded-r-lg text-white bg-blue-500 focus:ring-4 focus:ring-primary-300 focus:outline-none dark:bg-blue-700 dark:text-white';
 
-	onMount(async () => {
-		load();
-	});
-
-	function load() {
-		// getMcssSettings(
-		// 	McssSettingsSection.Backups,
-		// 	(data: any) => {
-		// 		deleteOldBackupsThresholdSetting = data.deleteOldBackupsThreshold;
-		// 	},
-		// 	(wasSuccess: boolean) => {
-		// 		if (!wasSuccess) {
-		// 			deleteOldBackupsThresholdSetting = '? (unable to load)';
-		// 		}
-		// 	}
-		// );
-	}
-
 	function createNewScheduledTask() {
-		// let newTask: INewBackup = {
-		// 	name: name,
-		// 	destination: destination,
-		// 	suspend: suspendServer,
-		// 	deleteOldBackups: deleteOldBackups,
-		// 	compression: timing,
-		// 	runBackupAfterCreation: backupNow,
-		// 	fileBlacklist: backupFilterList.fileBlacklist,
-		// 	folderBlacklist: backupFilterList.folderBlacklist
-		// };
+		let newTask: INewSchedulerTask = {
+			name: name,
+			enabled: true,
+			job: job,
+			timing: timing,
+			playerRequirement: playerRequirement
+		};
+
+		console.log(newTask);
+
 		// createSchedulerTask($selectedServerId, newTask, (wasSuccess: boolean) => {
 		// 	if (wasSuccess) {
 		// 		confirm(`Task: '${newTask.name}' was successfully created.`);
@@ -65,30 +50,27 @@
 	}
 
 	function handleTaskJobServerActionInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new ServerActionJobTask(event.detail);
 	}
 
 	function handleTaskJobCommandsInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new CommandJobTask(event.detail);
 	}
 
 	function handleTaskJobBackupInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new BackupJobTask(event.detail);
 	}
+
 	function handleTaskTimingIntervalInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		timing = new IntervalTaskTiming(event.detail.repeat, event.detail.interval);
 	}
+
 	function handleTaskTimingFixedTimeInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		timing = new FixedTimeTaskTiming(event.detail.repeat, event.detail.fixedTime);
 	}
+
 	function handleTaskPlayerRequirementInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		playerRequirement = event.detail;
 	}
 
 	function navigateBack() {
@@ -125,15 +107,15 @@
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
 					<TabItem class="w-full" activeClasses={tabItemStyle} open>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
-						<TaskJobServerActionInput job={undefined} on:update={handleTaskJobServerActionInput} />
+						<TaskJobServerActionInput job={new ServerActionJobTask(0)} on:update={handleTaskJobServerActionInput} />
 					</TabItem>
 					<TabItem class="w-full" activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
-						<TaskJobCommandsInput job={undefined} on:update={handleTaskJobCommandsInput} />
+						<TaskJobCommandsInput job={new CommandJobTask([])} on:update={handleTaskJobCommandsInput} />
 					</TabItem>
 					<TabItem class="w-full" activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
-						<TaskJobBackupInput job={undefined} on:update={handleTaskJobBackupInput} />
+						<TaskJobBackupInput job={new BackupJobTask('')} on:update={handleTaskJobBackupInput} />
 					</TabItem>
 				</Tabs>
 			</BoxedContainer>
@@ -146,11 +128,11 @@
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
 					<TabItem class="w-full" activeClasses={tabItemStyle} open>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
-						<TaskTimingIntervalInput timing={undefined} on:update={handleTaskTimingIntervalInput} />
+						<TaskTimingIntervalInput timing={new IntervalTaskTiming(true, 0)} on:update={handleTaskTimingIntervalInput} />
 					</TabItem>
 					<TabItem class="w-full" activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[1].name}</span>
-						<TaskTimingFixedTimeInput timing={undefined} on:update={handleTaskTimingFixedTimeInput} />
+						<TaskTimingFixedTimeInput timing={new FixedTimeTaskTiming(true, '')} on:update={handleTaskTimingFixedTimeInput} />
 					</TabItem>
 					<TabItem class="w-full" activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[2].name}</span>
@@ -162,7 +144,7 @@
 			</BoxedContainer>
 
 			<BoxedContainer class="space-y-3">
-				<TaskPlayerRequirementInput playerRequirement="0" on:update={handleTaskPlayerRequirementInput} />
+				<TaskPlayerRequirementInput playerRequirement={0} on:update={handleTaskPlayerRequirementInput} />
 			</BoxedContainer>
 
 			<div class="flex space-x-3">

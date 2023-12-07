@@ -64,7 +64,7 @@
 		<Input bind:value={inputCommand} label={''} placeholder={'Enter a server command, leading slashes (/) will be ignored when triggering.'} type={'text'} required={true} class={'grow'} />
 
 		<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
-			<Icon data={mdiPlus} size={5} /> <span class="sr-only">Add File</span>
+			<Icon data={mdiPlus} size={5} /> <span class="sr-only">Add Command</span>
 		</button>
 	</div>
 </form>

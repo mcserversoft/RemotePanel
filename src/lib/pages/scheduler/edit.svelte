@@ -14,16 +14,18 @@
 	import { getSchedulerTaskDetails } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
-	import { jobOptions, type ISchedulerTask, timingOptions, Job, Timing, type JobTask, type TaskTiming, ServerActionJobTask, CommandJobTask, BackupJobTask, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming } from '$lib/code/scheduler';
+	import { jobOptions, type ISchedulerTask, timingOptions, type JobTask, type TaskTiming, ServerActionJobTask, CommandJobTask, BackupJobTask, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming, type IEditSchedulerTask } from '$lib/code/scheduler';
 	import TaskJobServerActionInput from '$lib/components/scheduler/taskJobServerActionInput.svelte';
 	import TaskJobCommandsInput from '$lib/components/scheduler/taskJobCommandsInput.svelte';
 	import TaskJobBackupInput from '$lib/components/scheduler/taskJobBackupInput.svelte';
 	import TaskTimingIntervalInput from '$lib/components/scheduler/taskTimingIntervalInput.svelte';
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
+	import Toggle from '$lib/components/elements/toggle.svelte';
 
 	let taskId: string;
 	let name: string = '';
+	let enabled: boolean = true;
 	let job: JobTask;
 	let timing: TaskTiming;
 	let playerRequirement: number;
@@ -56,22 +58,21 @@
 				playerRequirement = taskDetails.playerRequirement;
 
 				originalName = taskDetails.name;
-				console.log(taskDetails);
-				console.log(timing);
 			}
 		});
 	}
 
 	function updateTask() {
-		// let updatedTask: ISchedulerTask = {
-		// 	name: name,
-		// 	// destination: destination,
-		// 	// suspend: suspendServer,
-		// 	// deleteOldBackups: deleteOldBackups,
-		// 	// compression: compression,
-		// 	// fileBlacklist: backupFilterList.fileBlacklist,
-		// 	// folderBlacklist: backupFilterList.folderBlacklist
-		// };
+		let updatedTask: IEditSchedulerTask = {
+			name: name,
+			enabled: enabled,
+			job: job,
+			timing: timing,
+			playerRequirement: playerRequirement
+		};
+
+		console.log(updatedTask);
+
 		// editSchedulerTask($selectedServerId, taskId, updatedTask, (wasSuccess: boolean) => {
 		// 	if (wasSuccess) {
 		// 		confirm(`Task: '${updatedTask.name}' was successfully edited.`);
@@ -84,30 +85,33 @@
 	}
 
 	function handleTaskJobServerActionInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new ServerActionJobTask(event.detail);
+		areButtonsDisabled = false;
 	}
 
 	function handleTaskJobCommandsInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new CommandJobTask(event.detail);
+		areButtonsDisabled = false;
 	}
 
 	function handleTaskJobBackupInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		job = new BackupJobTask(event.detail);
+		areButtonsDisabled = false;
 	}
+
 	function handleTaskTimingIntervalInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		timing = new IntervalTaskTiming(event.detail.repeat, event.detail.interval);
+		areButtonsDisabled = false;
 	}
+
 	function handleTaskTimingFixedTimeInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		timing = new FixedTimeTaskTiming(event.detail.repeat, event.detail.fixedTime);
+		areButtonsDisabled = false;
 	}
+
 	function handleTaskPlayerRequirementInput(event: any) {
-		//	areButtonsDisabled = false;
-		console.log(event.detail);
+		playerRequirement = event.detail;
+		areButtonsDisabled = false;
 	}
 
 	function navigateBack() {
@@ -146,15 +150,15 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false} disabled={job instanceof ServerActionJobTask ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
 						<TaskJobServerActionInput {job} on:update={handleTaskJobServerActionInput} />
 					</TabItem>
-					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false} disabled={job instanceof CommandJobTask ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
 						<TaskJobCommandsInput {job} on:update={handleTaskJobCommandsInput} />
 					</TabItem>
-					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false} disabled={job instanceof BackupJobTask ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
 						<TaskJobBackupInput {job} on:update={handleTaskJobBackupInput} />
 					</TabItem>
@@ -167,15 +171,15 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open={timing instanceof IntervalTaskTiming ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={timing instanceof IntervalTaskTiming ? true : false} disabled={timing instanceof IntervalTaskTiming ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
 						<TaskTimingIntervalInput {timing} on:update={handleTaskTimingIntervalInput} />
 					</TabItem>
-					<TabItem class="w-full" open={timing instanceof FixedTimeTaskTiming ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={timing instanceof FixedTimeTaskTiming ? true : false} disabled={timing instanceof FixedTimeTaskTiming ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[1].name}</span>
 						<TaskTimingFixedTimeInput {timing} on:update={handleTaskTimingFixedTimeInput} />
 					</TabItem>
-					<TabItem class="w-full" open={timing instanceof TimelessTaskTiming ? true : false} activeClasses={tabItemStyle}>
+					<TabItem class="w-full" open={timing instanceof TimelessTaskTiming ? true : false} disabled={timing instanceof TimelessTaskTiming ? false : true} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[2].name}</span>
 						<p class="text-sm text-gray-500 dark:text-gray-400 text-center">
 							A <b>timeless</b> task has no timing options.
@@ -188,12 +192,18 @@
 				<TaskPlayerRequirementInput {playerRequirement} on:update={handleTaskPlayerRequirementInput} />
 			</BoxedContainer>
 
+			{#if timing instanceof TimelessTaskTiming == false}
+				<BoxedContainer>
+					<Toggle bind:value={enabled} label={'Enable Task'} />
+				</BoxedContainer>
+			{/if}
+
 			<div class="flex space-x-3">
-				<Button type="submit" color="blue">
-					<Icon data={mdiContentSave} disabled={areButtonsDisabled} class="mr-2 -ml-1" />Save Task
+				<Button type="submit" color="blue" disabled={areButtonsDisabled}>
+					<Icon data={mdiContentSave} class="mr-2 -ml-1" />Save Task
 				</Button>
-				<Button type="button" on:click={navigateBack} color="alternative">
-					<Icon data={mdiArrowULeftTop} disabled={areButtonsDisabled} class="mr-2 -ml-1" />Cancel
+				<Button type="button" on:click={navigateBack} disabled={areButtonsDisabled} color="alternative">
+					<Icon data={mdiArrowULeftTop} class="mr-2 -ml-1" />Cancel
 				</Button>
 			</div>
 		</form>

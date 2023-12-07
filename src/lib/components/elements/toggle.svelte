@@ -28,7 +28,7 @@
 </script>
 
 <label class="relative inline-flex items-center cursor-pointer" for={label}>
-	<input bind:checked={value} on:click={handleInputChange} id={label} type="checkbox" value="toggle" class="sr-only peer" />
+	<input bind:checked={value} on:change={handleInputChange} id={label} type="checkbox" value="toggle" class="sr-only peer" />
 	<div
 		class="w-11 h-6 rounded-full peer peer-focus:ring-4 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 {getColorToggleInfo()}"
 	/>
