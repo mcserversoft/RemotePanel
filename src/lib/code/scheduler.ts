@@ -66,7 +66,7 @@ export function translateRawResponse(data: any): ISchedulerTask {
     if ('interval' in data.timing) {
         task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
     } else if ('time' in data.timing) {
-        task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.timeSpan);
+        task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.time);
     } else {
         task.timing = new TimelessTaskTiming();
     }
