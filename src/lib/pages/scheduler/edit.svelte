@@ -33,6 +33,8 @@
 	let errorMessage: string;
 	let areButtonsDisabled: boolean = true;
 
+	const tabItemStyle = 'inline-block text-sm font-medium text-center disabled:cursor-not-allowed p-4 w-full group-first:rounded-l-lg group-last:rounded-r-lg text-white bg-blue-500 focus:ring-4 focus:ring-primary-300 focus:outline-none dark:bg-blue-700 dark:text-white';
+
 	onMount(async () => {
 		load();
 	});
@@ -144,15 +146,15 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false}>
+					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
 						<TaskJobServerActionInput {job} on:update={handleTaskJobServerActionInput} />
 					</TabItem>
-					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false}>
+					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
 						<TaskJobCommandsInput {job} on:update={handleTaskJobCommandsInput} />
 					</TabItem>
-					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false}>
+					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
 						<TaskJobBackupInput {job} on:update={handleTaskJobBackupInput} />
 					</TabItem>
@@ -165,15 +167,15 @@
 				</span>
 
 				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open={timing instanceof IntervalTaskTiming ? true : false}>
+					<TabItem class="w-full" open={timing instanceof IntervalTaskTiming ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[0].name}</span>
 						<TaskTimingIntervalInput {timing} on:update={handleTaskTimingIntervalInput} />
 					</TabItem>
-					<TabItem class="w-full" open={timing instanceof FixedTimeTaskTiming ? true : false}>
+					<TabItem class="w-full" open={timing instanceof FixedTimeTaskTiming ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[1].name}</span>
 						<TaskTimingFixedTimeInput {timing} on:update={handleTaskTimingFixedTimeInput} />
 					</TabItem>
-					<TabItem class="w-full" open={timing instanceof TimelessTaskTiming ? true : false}>
+					<TabItem class="w-full" open={timing instanceof TimelessTaskTiming ? true : false} activeClasses={tabItemStyle}>
 						<span class="text-xs sm:text-sm" slot="title">{timingOptions[2].name}</span>
 						<p class="text-sm text-gray-500 dark:text-gray-400 text-center">
 							A <b>timeless</b> task has no timing options.

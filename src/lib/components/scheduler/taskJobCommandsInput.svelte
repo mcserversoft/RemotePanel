@@ -7,7 +7,7 @@
 
 	export let job: any;
 
-	let commands: any = (job as CommandJobTask)?.commands;
+	let commands: any = (job as CommandJobTask)?.commands || [];
 	let inputCommand: string;
 
 	const dispatch = createEventDispatcher();
@@ -40,7 +40,7 @@
 
 <div class="rounded-xl px-3 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 	<ul>
-		{#each [...commands] || [] || [] as command, index}
+		{#each [...commands] || [] as command, index}
 			<li class="flex items-center p-1 rounded hover:bg-gray-100 hover:dark:bg-gray-700 text-gray-800 dark:text-white">
 				<span class="grow"><span class="text-gray-500 pr-1">{index + 1}</span> {command}</span>
 
