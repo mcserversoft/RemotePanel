@@ -16,9 +16,11 @@ import { get } from 'svelte/store';
 
 import type {
     ICreateBackupRequest,
+    ICreateSchedulerTaskRequest,
     ICreateUserRequest,
     IDeleteUserAccountRequest,
     IEditPanelSettingsRequest,
+    IUpdateSchedulerTaskRequest,
     IUpdateUserAccountRequest,
     IUpdateUserRequest,
     IUserAvatarRequest,
@@ -50,7 +52,7 @@ import {
     type ServerAction,
     type Stats,
 } from '../../types';
-import { BackupJobTask, CommandJobTask, ServerActionJobTask, type ISchedulerTask, EmptyJobTask, TimelessTaskTiming, FixedTimeTaskTiming, IntervalTaskTiming, type ISchedulerDetails, translateRawResponse } from './scheduler';
+import { type ISchedulerTask, type ISchedulerDetails, translateRawResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
 
 /*
 *  API Requests
@@ -937,8 +939,17 @@ export function getSchedulerTaskDetails(serverId: string, taskId: string, report
         })
 }
 
-export function editSchedulerTask(serverId: string, taskId: string, updatedTask: ISchedulerTask, report: (wasSuccess: boolean) => void) {
+export function editSchedulerTask(serverId: string, taskId: string, updatedTask: IEditSchedulerTask, report: (wasSuccess: boolean) => void) {
     log("API Request: editSchedulerTask");
+
+    //formulate proper request
+    var requestBody: IUpdateSchedulerTaskRequest = {
+        name: updatedTask.name,
+        enabled: updatedTask.enabled,
+        playerRequirement: updatedTask.playerRequirement,
+        timing: updatedTask.timing,
+        job: updatedTask.job
+    }
 
     axiosClient().put(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`, JSON.stringify(updatedTask))
         .then((response) => {
@@ -958,6 +969,7 @@ export function editSchedulerTask(serverId: string, taskId: string, updatedTask:
 
 export function runSchedulerTask(serverId: string, taskId: string, completed: (wasSuccess: boolean) => void) {
     log("API Request: runSchedulerTask");
+
     axiosClient().post(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`)
         .then((response) => {
             if (response?.status !== 200) {
@@ -975,22 +987,19 @@ export function runSchedulerTask(serverId: string, taskId: string, completed: (w
         })
 }
 
-export function createSchedulerTask(serverId: string, newBackup: INewBackup, completed: (wasSuccess: boolean) => void) {
+export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask, completed: (wasSuccess: boolean) => void) {
+    log("API Request: createBackup");
+
     //formulate proper request
-    var requestBody: ICreateBackupRequest = {
-        name: newBackup.name,
-        destination: newBackup.destination,
-        suspend: newBackup.suspend,
-        deleteOldBackups: newBackup.deleteOldBackups,
-        compression: newBackup.compression,
-        runBackupAfterCreation: newBackup.runBackupAfterCreation,
-        // this solves some incorrect formatting of arrays
-        fileBlacklist: newBackup.fileBlacklist.map(a => a),
-        folderBlacklist: newBackup.folderBlacklist.map(a => a)
+    var requestBody: ICreateSchedulerTaskRequest = {
+        name: newTask.name,
+        enabled: newTask.enabled,
+        playerRequirement: newTask.playerRequirement,
+        timing: newTask.timing,
+        job: newTask.job
     }
 
-    log("API Request: createBackup");
-    axiosClient().post(`/api/v2/servers/${serverId}/backups`, JSON.stringify(requestBody))
+    axiosClient().post(`/api/v2/servers/${serverId}/scheduler/tasks`, JSON.stringify(requestBody))
         .then((response) => {
             if (response?.status !== 201) {
                 return Promise.reject(response);
@@ -1002,7 +1011,7 @@ export function createSchedulerTask(serverId: string, newBackup: INewBackup, com
         })
 
         .catch((error) => {
-            console.error(`Failed to create backup: ${newBackup.name} Error: ${error}`)
+            console.error(`Failed to create scheduler task: ${newTask.name} Error: ${error}`)
             completed(false);
         })
 }

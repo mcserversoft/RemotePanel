@@ -5,7 +5,7 @@
 
 	export let job: any;
 
-	let selectedServerAction: any = (job as ServerActionJobTask)?.serverAction;
+	let selectedServerAction: any = (job as ServerActionJobTask)?.action;
 	let serverActions: any = [];
 	const dispatch = createEventDispatcher();
 

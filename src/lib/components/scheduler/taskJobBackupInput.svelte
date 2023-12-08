@@ -11,7 +11,7 @@
 
 	export let job: any;
 
-	let selectedBackup: string = (job as BackupJobTask)?.backupId;
+	let selectedBackup: string = (job as BackupJobTask)?.BackupIdentifier;
 	let backups: any = [];
 	const dispatch = createEventDispatcher();
 

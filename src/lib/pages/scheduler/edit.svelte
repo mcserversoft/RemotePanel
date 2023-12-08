@@ -11,7 +11,7 @@
 	import { Button, TabItem, Tabs } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Input from '$lib/components/elements/input.svelte';
-	import { getSchedulerTaskDetails } from '$lib/code/api';
+	import { editSchedulerTask, getSchedulerTaskDetails } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import { jobOptions, type ISchedulerTask, timingOptions, type JobTask, type TaskTiming, ServerActionJobTask, CommandJobTask, BackupJobTask, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming, type IEditSchedulerTask } from '$lib/code/scheduler';
@@ -53,6 +53,7 @@
 				errorMessage = 'Unable to load this page, does the task exist?';
 			} else {
 				name = taskDetails.name;
+				enabled = taskDetails.enabled;
 				job = taskDetails.job;
 				timing = taskDetails.timing;
 				playerRequirement = taskDetails.playerRequirement;
@@ -71,17 +72,19 @@
 			playerRequirement: playerRequirement
 		};
 
-		console.log(updatedTask);
+		editSchedulerTask($selectedServerId, taskId, updatedTask, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`Task: '${updatedTask.name}' was successfully edited.`);
+				navigateBack();
+			} else {
+				showError = true;
+				errorMessage = `Failed to save changes for task: '${updatedTask.name}'.`;
+			}
+		});
+	}
 
-		// editSchedulerTask($selectedServerId, taskId, updatedTask, (wasSuccess: boolean) => {
-		// 	if (wasSuccess) {
-		// 		confirm(`Task: '${updatedTask.name}' was successfully edited.`);
-		// 		navigateBack();
-		// 	} else {
-		// 		showError = true;
-		// 		errorMessage = `Failed to save changes for task: '${updatedTask.name}'.`;
-		// 	}
-		// });
+	function handleInputChange() {
+		areButtonsDisabled = false;
 	}
 
 	function handleTaskJobServerActionInput(event: any) {
@@ -194,7 +197,7 @@
 
 			{#if timing instanceof TimelessTaskTiming == false}
 				<BoxedContainer>
-					<Toggle bind:value={enabled} label={'Enable Task'} />
+					<Toggle bind:value={enabled} label={'Enable Task'} on:toggle={handleInputChange} />
 				</BoxedContainer>
 			{/if}
 

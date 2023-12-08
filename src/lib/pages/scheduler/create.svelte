@@ -37,16 +37,14 @@
 			playerRequirement: playerRequirement
 		};
 
-		console.log(newTask);
-
-		// createSchedulerTask($selectedServerId, newTask, (wasSuccess: boolean) => {
-		// 	if (wasSuccess) {
-		// 		confirm(`Task: '${newTask.name}' was successfully created.`);
-		// 		navigateBack();
-		// 	} else {
-		// 		confirm(`Failed to create task: '${newTask.name}'.`);
-		// 	}
-		// });
+		createSchedulerTask($selectedServerId, newTask, (wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`Task: '${newTask.name}' was successfully created.`);
+				navigateBack();
+			} else {
+				confirm(`Failed to create task: '${newTask.name}'.`);
+			}
+		});
 	}
 
 	function handleTaskJobServerActionInput(event: any) {

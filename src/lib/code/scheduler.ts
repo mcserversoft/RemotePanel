@@ -86,7 +86,7 @@ export function translateRawResponse(data: any): ISchedulerTask {
     } else if ('backupIdentifier' in data.job) {
         task.job = new BackupJobTask(data.job.backupIdentifier as string);
     } else if ('action' in data.job) {
-        task.job = new ServerActionJobTask(data.job.action as string);
+        task.job = new ServerActionJobTask(data.job.action as number);
     } else {
         task.job = new EmptyJobTask();
     }
@@ -106,18 +106,18 @@ export class CommandJobTask implements JobTask {
 }
 
 export class BackupJobTask implements JobTask {
-    backupId: string;
+    BackupIdentifier: string;
 
-    constructor(backupId: string) {
-        this.backupId = backupId;
+    constructor(BackupIdentifier: string) {
+        this.BackupIdentifier = BackupIdentifier;
     }
 }
 
 export class ServerActionJobTask implements JobTask {
-    serverAction: number;
+    action: number;
 
-    constructor(serverAction: number) {
-        this.serverAction = serverAction;
+    constructor(action: number) {
+        this.action = action;
     }
 }
 
@@ -147,7 +147,6 @@ export function getTaskJob(job: JobTask): Job {
 }
 
 /* Timing */
-
 export interface TaskTiming { }
 
 export class FixedTimeTaskTiming implements TaskTiming {
