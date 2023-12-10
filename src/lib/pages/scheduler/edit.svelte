@@ -142,6 +142,8 @@
 			<Warning message={errorMessage} />
 		{/if}
 
+		<Warning message="Keep in mind that it's not possible to switch between jobs or timings." type={WarningType.Info} />
+
 		<form on:submit|preventDefault={updateTask}>
 			<BoxedContainer class="space-y-3">
 				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Task name'} required={true} />
