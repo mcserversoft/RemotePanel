@@ -1,7 +1,7 @@
 [![SvelteKit](https://img.shields.io/badge/Svelte-4A4A55?style=flat&logo=svelte&logoColor=FF3E00)](https://kit.svelte.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Discord](https://img.shields.io/discord/335560186930659328?label=MCSS%20Discord)](https://mcserversoft.com/discord)
-[![Maintained](https://img.shields.io/maintenance/yes/2023?label=Maintained)](https://github.com/mcserversoft/RemotePanel)
+[![Maintained](https://img.shields.io/maintenance/yes/2024?label=Maintained)](https://github.com/mcserversoft/RemotePanel)
 [![Kofi](https://img.shields.io/badge/Kofi-F16061.svg?logo=ko-fi&logoColor=white)](https://mcserversoft.com/donate)
 
 
