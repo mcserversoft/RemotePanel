@@ -92,7 +92,7 @@
 
 	<PageTitleBanner title="Create Backup" caption="Create a new backup for server: {getServer($selectedServerId)?.name ?? 'Unknown server.'}." />
 
-	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
+	{#if hasPermission(Permission.createBackup, $selectedServerId)}
 		<form on:submit|preventDefault={createNewBackup}>
 			<BoxedContainer class="space-y-3">
 				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Backup name'} required={true} />
@@ -138,6 +138,6 @@
 			</div>
 		</form>
 	{:else}
-		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.createBackup}`} type={WarningType.Permission} />
 	{/if}
 </section>

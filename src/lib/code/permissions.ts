@@ -12,6 +12,11 @@ export enum Permission {
     editBackup = "EDIT_BACKUP",
     deleteBackups = "DELETE_BACKUPS",
     triggerBackup = "TRIGGER_BACKUP",
+    viewSchedulerTasks = "VIEW_SCHEDULER_TASKS",
+    createSchedulerTask = "CREATE_SCHEDULER_TASK",
+    editSchedulerTask = "EDIT_SCHEDULER_TASK",
+    deleteSchedulerTasks = "DELETE_SCHEDULER_TASKS",
+    triggerSchedulerTask = "TRIGGER_SCHEDULER_TASK",
 }
 
 export function hasPermission(perm: Permission, serverId?: string): boolean {

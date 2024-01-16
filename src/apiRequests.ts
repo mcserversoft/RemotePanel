@@ -50,3 +50,13 @@ export interface ICreateBackupRequest {
     fileBlacklist: any;
     folderBlacklist: any;
 }
+
+export interface ICreateSchedulerTaskRequest {
+    name: string;
+    enabled: boolean;
+    playerRequirement: number
+    timing: object
+    job: object
+}
+
+export interface IUpdateSchedulerTaskRequest extends ICreateSchedulerTaskRequest { }

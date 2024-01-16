@@ -25,7 +25,6 @@
 			isLoading = false;
 			return;
 		}
-		console.log(serverId);
 
 		getBackupHistory(
 			serverId,

@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-	import { mdiArchive, mdiArchivePlus, mdiCheck, mdiClose, mdiPlay, mdiRefresh } from '@mdi/js';
-	import { deleteBackup, getBackupStats, getBackups, runBackup } from '$lib/code/api';
+	import { mdiArchive, mdiPlay, mdiRefresh, mdiTimerPlus } from '@mdi/js';
+	import { deleteSchedulerTask, getSchedulerDetails, getSchedulerTasks, runSchedulerTask } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type Backup, type IBackupStats, WarningType } from '../../../types';
+	import { Page, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import BackupProgressView from '$lib/components/elements/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
-	import { IsEmptyDateTime, getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import { getTaskEnabledIcon, getTaskEnabledIconColor, getTaskJob, getTaskTiming, type ISchedulerDetails, type ISchedulerTask } from '$lib/code/scheduler';
+	import SchedulerOverview from '$lib/components/scheduler/schedulerOverview.svelte';
 
-	let backups: Backup[] = [];
-	let backupStats: IBackupStats;
+	let tasks: ISchedulerTask[] = [];
+	let schedulerDetails: ISchedulerDetails;
 	let isLoading = true;
 
 	// this loads it on mount & when the server changes
@@ -29,20 +29,20 @@
 			return;
 		}
 
-		getBackups(
+		getSchedulerTasks(
 			serverId,
-			(data: Backup[]) => {
-				backups = data;
+			(data: ISchedulerTask[]) => {
+				tasks = data;
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
 			}
 		);
 
-		getBackupStats(
+		getSchedulerDetails(
 			serverId,
-			(data: IBackupStats) => {
-				backupStats = data;
+			(data: ISchedulerDetails) => {
+				schedulerDetails = data;
 			},
 			(wasSuccess: boolean) => {
 				isLoading = false;
@@ -52,61 +52,61 @@
 
 	function handleRefreshButton() {
 		isLoading = true;
-		backups = [];
+		tasks = [];
 		load();
 	}
 
-	function handleEditBackup(backupId: string) {
-		navigateToPage(Page.BackupsEdit, backupId);
+	function handleEditTask(taskId: string) {
+		navigateToPage(Page.SchedulerTaskEdit, taskId);
 	}
 
-	function handleRunBackup(backupId: string) {
-		let allowedToRun = confirm(`Are you sure you want to run this backup now?`);
+	function handleRunTask(taskId: string) {
+		let allowedToRun = confirm(`Are you sure you want to run this task now?`);
 		if (!allowedToRun) {
 			return;
 		}
 
-		runBackup($selectedServerId, backupId, (wasSuccess: boolean) => {
+		runSchedulerTask($selectedServerId, taskId, (wasSuccess: boolean) => {
 			if (wasSuccess) {
-				confirm(`Backup run  was successfully triggered.`);
+				confirm(`Task was successfully triggered.`);
 				handleRefreshButton();
 			} else {
-				confirm(`Failed to trigger backup run.`);
+				confirm(`Failed to run task.`);
 			}
 		});
 	}
 
-	function handleDeleteBackup(backupId: string) {
-		let allowedToDelete = confirm(`Are you sure you want to delete this backup?`);
+	function handleDeleteTask(taskId: string) {
+		let allowedToDelete = confirm(`Are you sure you want to delete this task?`);
 		if (!allowedToDelete) {
 			return;
 		}
 
-		deleteBackup($selectedServerId, backupId, (wasSuccess: boolean) => {
+		deleteSchedulerTask($selectedServerId, taskId, (wasSuccess: boolean) => {
 			if (wasSuccess) {
-				confirm(`Backup was successfully deleted.`);
+				confirm(`Task was successfully deleted.`);
 				handleRefreshButton();
 			} else {
-				confirm(`Failed to delete backup.`);
+				confirm(`Failed to delete task.`);
 			}
 		});
 	}
 </script>
 
 <svelte:head>
-	<title>MCSS Remote Panel | Backups Overview</title>
+	<title>MCSS Remote Panel | Scheduler Overview</title>
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<Breadcrumb
 		icon={mdiArchive}
 		items={[
-			{ name: 'Backups', page: Page.Backups, isClickable: true },
+			{ name: 'Scheduler', page: Page.Scheduler, isClickable: true },
 			{ name: 'Overview', page: Page.Empty, isClickable: false }
 		]}
 	/>
 
-	<ServerSelector customDescription="Overview of all backup profiles and latest run info.">
+	<ServerSelector customDescription="Overview of the Scheduler and its tasks.">
 		<div class="self-center">
 			<button
 				type="button"
@@ -116,18 +116,18 @@
 				<Icon data={mdiRefresh} size={5} />
 			</button>
 			<!-- <Button icon={mdiRefresh} on:click={handleRefreshButton} /> -->
-			<span class="sr-only">Reload Backups</span>
+			<span class="sr-only">Reload Scheduler Tasks</span>
 		</div>
 
-		{#if hasPermission(Permission.createBackup, $selectedServerId)}
+		{#if hasPermission(Permission.createSchedulerTask, $selectedServerId)}
 			<div class="self-center">
-				<Button icon={mdiArchivePlus} text={'Create Backup'} on:click={() => navigateToPage(Page.BackupsCreate)} reactive={true} />
+				<Button icon={mdiTimerPlus} text={'Create Task'} on:click={() => navigateToPage(Page.SchedulerTaskCreate)} reactive={true} />
 			</div>
 		{/if}
 	</ServerSelector>
 
-	{#if hasPermission(Permission.viewBackups, $selectedServerId)}
-		<BackupProgressView stats={backupStats} />
+	{#if hasPermission(Permission.viewSchedulerTasks, $selectedServerId)}
+		<SchedulerOverview stats={schedulerDetails} />
 
 		<div class="relative overflow-x-auto">
 			<div class="relative overflow-x-auto rounded-lg border dark:border-gray-800">
@@ -139,30 +139,28 @@
 					<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
 						<tr>
 							<th scope="col" class="px-6 py-3">Name</th>
-							<th scope="col" class="px-6 py-3">Suspend</th>
-							<th scope="col" class="px-6 py-3">Last Run</th>
-							<th scope="col" class="px-6 py-3">{hasPermission(Permission.triggerBackup, $selectedServerId) ? 'Trigger' : ''} </th>
-							<th scope="col" class="px-6 py-3">{hasPermission(Permission.editBackup, $selectedServerId) || hasPermission(Permission.deleteBackups, $selectedServerId) ? 'Action' : ''} </th>
+							<th scope="col" class="px-6 py-3">Type</th>
+							<th scope="col" class="px-6 py-3">Timing</th>
+							<th scope="col" class="px-6 py-3">Enabled</th>
+							<th scope="col" class="px-6 py-3">{hasPermission(Permission.triggerSchedulerTask, $selectedServerId) ? 'Trigger' : ''} </th>
+							<th scope="col" class="px-6 py-3">{hasPermission(Permission.editSchedulerTask, $selectedServerId) || hasPermission(Permission.deleteSchedulerTasks, $selectedServerId) ? 'Action' : ''} </th>
 						</tr>
 					</thead>
 
 					<tbody>
-						{#each backups as backup}
+						{#each tasks as task}
 							<tr class="bg-white dark:bg-gray-800">
-								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{backup.name}</td>
+								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{task.name}</td>
+								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{getTaskJob(task.job)}</td>
+								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{getTaskTiming(task.timing)}</td>
+
 								<td class="px-6 py-4">
-									<Icon data={backup.suspend ? mdiCheck : mdiClose} class="{backup.suspend ? 'text-green-400' : 'text-red-400'} " />
-								</td>
-								<td class="px-6 py-4 inline-flex items-center whitespace-nowrap">
-									<Icon data={getBackupStatusIcon(backup.lastStatus)} class={getBackupStatusColor(backup.lastStatus)} />
-									<span class="ml-1">
-										{IsEmptyDateTime(new Date(backup.completedAt)) ? 'Never' : new Date(backup.completedAt).toLocaleString(navigator.language)}
-									</span>
+									<Icon data={getTaskEnabledIcon(task)} class={getTaskEnabledIconColor(task)} />
 								</td>
 
 								<td class=" px-6 py-4 space-x-3 whitespace-nowrap">
-									{#if hasPermission(Permission.triggerBackup, $selectedServerId)}
-										<form on:submit|preventDefault={() => handleRunBackup(backup.backupId)}>
+									{#if hasPermission(Permission.triggerSchedulerTask, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleRunTask(task.taskId)}>
 											<button type="submit" class=" text-blue-600 dark:text-blue-500 hover:underline">
 												<button type="button" class="font-medium rounded-lg text-xs px-2 inline-flex items-center text-center py-[0.15rem] focus:ring-4 focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 													<Icon data={mdiPlay} size={4} />
@@ -174,14 +172,14 @@
 								</td>
 
 								<td class="flex px-6 py-4 space-x-3">
-									{#if hasPermission(Permission.editBackup, $selectedServerId)}
-										<form on:submit|preventDefault={() => handleEditBackup(backup.backupId)}>
+									{#if hasPermission(Permission.editSchedulerTask, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleEditTask(task.taskId)}>
 											<button type="submit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
 										</form>
 									{/if}
 
-									{#if hasPermission(Permission.deleteBackups, $selectedServerId)}
-										<form on:submit|preventDefault={() => handleDeleteBackup(backup.backupId)}>
+									{#if hasPermission(Permission.deleteSchedulerTasks, $selectedServerId)}
+										<form on:submit|preventDefault={() => handleDeleteTask(task.taskId)}>
 											<button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
 										</form>
 									{/if}
@@ -192,7 +190,7 @@
 								{#if isLoading}
 									<td class="px-6 py-4 text-center" colspan="7"><Spinner /></td>
 								{:else}
-									<td class="px-6 py-4 text-center" colspan="7">No backups were found.</td>
+									<td class="px-6 py-4 text-center" colspan="7">No tasks were found.</td>
 								{/if}
 							</tr>
 						{/each}
@@ -201,6 +199,6 @@
 			</div>
 		</div>
 	{:else}
-		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewBackups}`} type={WarningType.Permission} />
+		<Warning message={`You are missing the following permissions, to view this page: ${Permission.viewSchedulerTasks}`} type={WarningType.Permission} />
 	{/if}
 </section>

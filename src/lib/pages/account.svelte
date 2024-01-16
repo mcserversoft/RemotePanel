@@ -96,9 +96,6 @@
 		showAvatarUpload = false;
 		isLoadingAvatar = true;
 
-		console.log(e);
-		console.log(e.detail);
-
 		let base64 = e.detail;
 
 		uploadUserAvatar(base64, (wasSuccess: boolean) => {

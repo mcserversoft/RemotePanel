@@ -24,16 +24,22 @@
 	import UsersCreatePage from '$lib/pages/users/create.svelte';
 	import UsersEditPage from '$lib/pages/users/edit.svelte';
 	import UsersOverviewPage from '$lib/pages/users/overview.svelte';
+	import SchedulerPage from '$lib/pages/scheduler/overview.svelte';
+	import SchedulerTaskCreatePage from '$lib/pages/scheduler/create.svelte';
+	import SchedulerTaskEditPage from '$lib/pages/scheduler/edit.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
 
 	if (browser) {
-		const updateServers = setInterval(() => {
-			if (isAuthenticated) {
-				getServers();
-			}
-		}, $settings.serversRefreshRate * 1000 ?? 5000);
+		const updateServers = setInterval(
+			() => {
+				if (isAuthenticated) {
+					getServers();
+				}
+			},
+			$settings.serversRefreshRate * 1000 ?? 5000
+		);
 		onDestroy(() => clearInterval(updateServers));
 
 		const unsubscribe = auth.subscribe((updatedAuth) => {
@@ -82,6 +88,12 @@
 				<ServersPage />
 			{:else if $selectedPage == Page.Settings}
 				<SettingsPage />
+			{:else if $selectedPage == Page.Scheduler}
+				<SchedulerPage />
+			{:else if $selectedPage == Page.SchedulerTaskCreate}
+				<SchedulerTaskCreatePage />
+			{:else if $selectedPage == Page.SchedulerTaskEdit}
+				<SchedulerTaskEditPage />
 			{:else if $selectedPage == Page.UsersCreate}
 				<UsersCreatePage />
 			{:else if $selectedPage == Page.UsersEdit}
