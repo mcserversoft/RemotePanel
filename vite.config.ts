@@ -1,4 +1,4 @@
-import type { UserConfig } from 'vite';
+import { type UserConfig, loadEnv } from 'vite';
 import zipPack from 'vite-plugin-zip-pack';
 
 import { sveltekit } from '@sveltejs/kit/vite';
@@ -70,8 +70,13 @@ const config: UserConfig = {
 		}),
 		zipPack({ inDir: 'build', outDir: 'build', outFileName: 'panel.zip' })],
 	define: {
-		__VERSION__: JSON.stringify(process.env.npm_package_version)
+		__DEBUG_URL__: JSON.stringify(process.env.VITE_DEBUG_URL),
+		__VERSION__: JSON.stringify(process.env.npm_package_version),
 	}
 };
 
-export default config;
+export default ({ mode }: any) => {
+	// Extends 'process.env.*' with local .env.(mode=production|development)'
+	process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+	return config;
+};
