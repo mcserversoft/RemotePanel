@@ -444,14 +444,7 @@ export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: 
         customServerPermissions: {}
     }
 
-    Object.entries(newUser.serverAccessDetails.serverPermissions).forEach((perms) => {
-        requestBody.customServerPermissions[perms[1].serverId] = {
-            viewStats: perms[1]?.permissions.viewStats ?? false,
-            viewConsole: perms[1]?.permissions.viewConsole ?? false,
-            useConsole: perms[1]?.permissions.useConsole ?? false,
-            useServerActions: perms[1]?.permissions.useServerActions ?? false,
-        }
-    });
+    ServerAccessDetails.UpdatePermissionTargetObject(newUser.serverAccessDetails, requestBody);
 
     log("API Request: createPanelUser");
     axiosClient().post(`/api/v2/users`, JSON.stringify(requestBody))
@@ -482,14 +475,7 @@ export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSucces
         customServerPermissions: {}
     }
 
-    Object.entries(updatedUser.serverAccessDetails.serverPermissions).forEach((perms) => {
-        requestBody.customServerPermissions[perms[1].serverId] = {
-            viewStats: perms[1]?.permissions.viewStats ?? false,
-            viewConsole: perms[1]?.permissions.viewConsole ?? false,
-            useConsole: perms[1]?.permissions.useConsole ?? false,
-            useServerActions: perms[1]?.permissions.useServerActions ?? false,
-        }
-    });
+    ServerAccessDetails.UpdatePermissionTargetObject(updatedUser.serverAccessDetails, requestBody);
 
     log("API Request: editPanelUser");
     axiosClient().put(`/api/v2/users/${updatedUser.userId}`, JSON.stringify(requestBody))
@@ -1089,14 +1075,7 @@ export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: bool
         customServerPermissions: {}
     }
 
-    Object.entries(newApiKey.serverAccessDetails.serverPermissions).forEach((perms) => {
-        requestBody.customServerPermissions[perms[1].serverId] = {
-            viewStats: perms[1]?.permissions.viewStats ?? false,
-            viewConsole: perms[1]?.permissions.viewConsole ?? false,
-            useConsole: perms[1]?.permissions.useConsole ?? false,
-            useServerActions: perms[1]?.permissions.useServerActions ?? false,
-        }
-    });
+    ServerAccessDetails.UpdatePermissionTargetObject(newApiKey.serverAccessDetails, requestBody);
 
     log("API Request: createApiKey");
     axiosClient().post(`/api/v2/keys`, JSON.stringify(requestBody))

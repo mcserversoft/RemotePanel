@@ -279,6 +279,27 @@ export class ServerAccessDetails {
 
         return truePermissions;
     }
+
+    static UpdatePermissionTargetObject(serverAccessDetails: ServerAccessDetails, targetObject: any) {
+        Object.entries(serverAccessDetails.serverPermissions).forEach((perms) => {
+            targetObject.customServerPermissions[perms[1].serverId] = {
+                viewStats: perms[1]?.permissions.viewStats ?? false,
+                viewConsole: perms[1]?.permissions.viewConsole ?? false,
+                useConsole: perms[1]?.permissions.useConsole ?? false,
+                editServer: perms[1]?.permissions.editServer ?? false,
+                viewBackups: perms[1]?.permissions.viewBackups ?? false,
+                createBackup: perms[1]?.permissions.createBackup ?? false,
+                editBackup: perms[1]?.permissions.editBackup ?? false,
+                deleteBackups: perms[1]?.permissions.deleteBackups ?? false,
+                triggerBackup: perms[1]?.permissions.triggerBackup ?? false,
+                viewSchedulerTasks: perms[1]?.permissions.viewSchedulerTasks ?? false,
+                createSchedulerTasks: perms[1]?.permissions.createSchedulerTasks ?? false,
+                editSchedulerTask: perms[1]?.permissions.editSchedulerTask ?? false,
+                deleteSchedulerTasks: perms[1]?.permissions.deleteSchedulerTasks ?? false,
+                triggerSchedulerTask: perms[1]?.permissions.triggerSchedulerTask ?? false,
+            };
+        });
+    }
 }
 
 export class ServerPermissions {
