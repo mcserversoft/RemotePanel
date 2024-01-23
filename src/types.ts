@@ -217,6 +217,11 @@ export class ServerAccessDetails {
                     editBackup: perm[1]?.editBackup ?? false,
                     deleteBackups: perm[1]?.deleteBackups ?? false,
                     triggerBackup: perm[1]?.triggerBackup ?? false,
+                    viewSchedulerTasks: perm[1]?.viewSchedulerTasks ?? false,
+                    createSchedulerTasks: perm[1]?.createSchedulerTasks ?? false,
+                    editSchedulerTask: perm[1]?.editSchedulerTask ?? false,
+                    deleteSchedulerTasks: perm[1]?.deleteSchedulerTasks ?? false,
+                    triggerSchedulerTask: perm[1]?.triggerSchedulerTask ?? false,
                 }
             })
         });
@@ -243,6 +248,11 @@ export class ServerAccessDetails {
                     editBackup: permissions.some(s => s.includes("editBackup")) ?? false,
                     deleteBackups: permissions.some(s => s.includes("deleteBackups")) ?? false,
                     triggerBackup: permissions.some(s => s.includes("triggerBackup")) ?? false,
+                    viewSchedulerTasks: permissions.some(s => s.includes("viewSchedulerTasks")) ?? false,
+                    createSchedulerTasks: permissions.some(s => s.includes("createSchedulerTasks")) ?? false,
+                    editSchedulerTask: permissions.some(s => s.includes("editSchedulerTask")) ?? false,
+                    deleteSchedulerTasks: permissions.some(s => s.includes("deleteSchedulerTasks")) ?? false,
+                    triggerSchedulerTask: permissions.some(s => s.includes("triggerSchedulerTask")) ?? false,
                 }
             })
         });
@@ -287,6 +297,11 @@ export class Permissions {
     editBackup = false;
     deleteBackups = false;
     triggerBackup = false;
+    viewSchedulerTasks = false;
+    createSchedulerTasks = false;
+    editSchedulerTask = false;
+    deleteSchedulerTasks = false;
+    triggerSchedulerTask = false;
 }
 
 export interface ICustomServerPermission {
@@ -300,6 +315,11 @@ export interface ICustomServerPermission {
     editBackup: boolean;
     deleteBackups: boolean;
     triggerBackup: boolean;
+    viewSchedulerTasks: boolean;
+    createSchedulerTasks: boolean;
+    editSchedulerTask: boolean;
+    deleteSchedulerTasks: boolean;
+    triggerSchedulerTask: boolean;
 }
 
 /* Backups */

@@ -31,6 +31,11 @@
 			enabledPermissions.push(`${serverId}-viewConsole`);
 			enabledPermissions.push(`${serverId}-useConsole`);
 			enabledPermissions.push(`${serverId}-useServerActions`);
+			enabledPermissions.push(`${serverId}-viewSchedulerTasks`);
+			enabledPermissions.push(`${serverId}-createSchedulerTask`);
+			enabledPermissions.push(`${serverId}-editSchedulerTask`);
+			enabledPermissions.push(`${serverId}-deleteSchedulerTasks`);
+			enabledPermissions.push(`${serverId}-triggerSchedulerTask`);
 
 			permissionSelection = permissionSelection.concat(enabledPermissions);
 		} else {
@@ -112,7 +117,7 @@
 					</div>
 				</label>
 
-				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-gray-50 rounded-t-none rounded-lg sm:flex dark:bg-gray-700 border border-l-0 border-r-0 border-b-0 border-gray-200 dark:border-gray-600 dark:text-white">
+				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-gray-50 sm:flex dark:bg-gray-700 border border-l-0 border-r-0 border-b-0 border-gray-200 dark:border-gray-600 dark:text-white">
 					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 						<div class="flex items-center">
 							<input
@@ -155,6 +160,22 @@
 					<li class="w-full dark:border-gray-600">
 						<div class="flex items-center">
 							<input
+								id="checkbox-permission-edit-server-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-editServer"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-edit-server-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Edit Server</label>
+						</div>
+					</li>
+				</ul>
+
+				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-gray-50 sm:flex dark:bg-gray-700 border border-l-0 border-r-0 border-b-0 border-gray-200 dark:border-gray-600 dark:text-white">
+					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+						<div class="flex items-center">
+							<input
 								id="checkbox-permission-use-server-actions-{index}-{serverId}"
 								type="checkbox"
 								value="{serverId}-useServerActions"
@@ -163,6 +184,77 @@
 								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 							/>
 							<label for="checkbox-permission-use-server-actions-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Use Server Actions</label>
+						</div>
+					</li>
+
+					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+						<div class="flex items-center">
+							<input
+								id="checkbox-permission-view-scheduler-tasks-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-viewSchedulerTasks"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-view-scheduler-tasks-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">View Scheduler Tasks</label>
+						</div>
+					</li>
+					<li class="w-full dark:border-gray-600">
+						<div class="flex items-center">
+							<input
+								id="checkbox-permission-create-scheduler-task-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-createSchedulerTask"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-create-scheduler-task-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Create Scheduler Tasks</label>
+						</div>
+					</li>
+				</ul>
+
+				<ul class="items-center px-3 space-x-3 w-full text-sm font-medium text-gray-900 bg-gray-50 rounded-t-none rounded-lg sm:flex dark:bg-gray-700 border border-l-0 border-r-0 border-b-0 border-gray-200 dark:border-gray-600 dark:text-white">
+					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+						<div class="flex items-center">
+							<input
+								id="checkbox-permission-edit-scheduler-task-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-editSchedulerTask"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-edit-scheduler-task-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Edit Scheduler Task</label>
+						</div>
+					</li>
+
+					<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+						<div class="flex items-center">
+							<input
+								id="checkbox-permission-delete-scheduler-tasks-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-deleteSchedulerTasks"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-delete-scheduler-tasks-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Delete Scheduler Tasks</label>
+						</div>
+					</li>
+
+					<li class="w-full dark:border-gray-600">
+						<div class="flex items-center">
+							<input
+								id="checkbox-permission-trigger-scheduler-task-{index}-{serverId}"
+								type="checkbox"
+								value="{serverId}-triggerSchedulerTask"
+								bind:group={permissionSelection}
+								on:change={(event) => handlePermissionInput(event, serverId)}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+							/>
+							<label for="checkbox-permission-trigger-scheduler-task-{index}-{serverId}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">Trigger Scheduler Task</label>
 						</div>
 					</li>
 				</ul>
