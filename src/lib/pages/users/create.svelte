@@ -64,7 +64,7 @@
 		]}
 	/>
 
-	<PageTitleBanner title="Add User" caption="Create a new user for the remote web panel." />
+	<PageTitleBanner title="Add User" caption="Create a new user for the Remote Web Panel." />
 
 	<form on:submit|preventDefault={createUser} class="space-y-3">
 		<BoxedContainer class="space-y-3">

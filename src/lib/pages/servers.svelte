@@ -193,9 +193,10 @@
 										<DropdownItem class="block lg:hidden text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}>View Dashboard</DropdownItem>
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
 										<!--TODO other pages-->
-										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Settings</DropdownItem> -->
+										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.ServerEdit, serverId))}>View Settings</DropdownItem> -->
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
-										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Scheduler</DropdownItem> -->
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Scheduler))}>View Scheduler</DropdownItem>
+										<!--TODO this is glitched in small list-->
 									</Dropdown>
 								</div>
 							</td>

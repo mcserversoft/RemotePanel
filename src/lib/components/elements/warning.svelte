@@ -45,5 +45,5 @@
 		<Icon data={getIcon()} />
 		<span class="sr-only">Warning icon</span>
 	</div>
-	<div class="ml-3 text-sm font-normal">{message}</div>
+	<div class="ml-3 text-sm font-normal">{message}<slot /></div>
 </div>

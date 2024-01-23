@@ -23,3 +23,14 @@ export interface IGetPanelUserSettingsResponse {
     enableDebugging: boolean
     lastModifiedAt: Date
 }
+
+export interface IGetApiKeyResponse {
+    apiKeyId: string;
+    name: string;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    createdAt: Date;
+    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+}
+
+export interface IGetApiKeyListResponse extends Array<IGetApiKeyResponse> { }

@@ -7,6 +7,7 @@ export enum Url {
     Website = "https://mcserversoft.com",
     Documentation = "https://mcserversoft.com/documentation",
     DocumentationPanel = "https://url.mcserversoft.com/WebPanelDocs",
+    DocumentationApi = "https://url.mcserversoft.com/WebApiDocs",
     DocumentationAdminApi = "https://url.mcserversoft.com/AdminPermissionsDocs",
     DocumentationCustomZipFileFormat = "https://url.mcserversoft.com/BackupCustomZipFormatDocs",
 }

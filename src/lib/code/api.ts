@@ -15,6 +15,7 @@ import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
 import type {
+    ICreateApiKeyRequest,
     ICreateBackupRequest,
     ICreateSchedulerTaskRequest,
     ICreateUserRequest,
@@ -26,6 +27,7 @@ import type {
     IUserAvatarRequest,
 } from '../../apiRequests';
 import type {
+    IGetApiKeyListResponse,
     IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
     IGetUserDetailsResponse,
     IGetUsersListResponse,
@@ -51,6 +53,8 @@ import {
     ServerAccessDetails,
     type ServerAction,
     type Stats,
+    type IApiKey,
+    type INewApiKey,
 } from '../../types';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
 
@@ -1031,6 +1035,102 @@ export function deleteSchedulerTask(serverId: string, taskId: string, completed:
 
         .catch((error) => {
             console.error(`Failed to delete scheduler task with Error: ${error} `)
+            completed(false);
+        })
+}
+
+
+export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getApiKeys");
+    axiosClient().get(`/api/v2/keys`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IGetApiKeyListResponse;
+        })
+        .then((data) => {
+            let apiKeys: IApiKey[] = [];
+            data.forEach((data: any) => {
+                let apiKey: IApiKey = {
+                    apiKeyId: data.apiKeyId,
+                    name: data.name,
+                    isAdmin: data.isAdmin,
+                    hasAccessToAllServers: data.hasAccessToAllServers,
+                    serverAccessDetails: new ServerAccessDetails(),
+                    createdAt: data.createdAt,
+                }
+                apiKey.serverAccessDetails.init(data.hasAccessToAllServers, data.customServerPermissions);
+                apiKeys.push(apiKey);
+            });
+
+            report(apiKeys);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch API Keys with error: ${error}`)
+            completed(false);
+        })
+}
+
+export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateApiKeyRequest = {
+        name: newApiKey.name,
+        isAdmin: newApiKey.isAdmin,
+        hasAccessToAllServers: newApiKey.serverAccessDetails.hasAccessToAllServers,
+        customServerPermissions: {}
+    }
+
+    Object.entries(newApiKey.serverAccessDetails.serverPermissions).forEach((perms) => {
+        requestBody.customServerPermissions[perms[1].serverId] = {
+            viewStats: perms[1]?.permissions.viewStats ?? false,
+            viewConsole: perms[1]?.permissions.viewConsole ?? false,
+            useConsole: perms[1]?.permissions.useConsole ?? false,
+            useServerActions: perms[1]?.permissions.useServerActions ?? false,
+        }
+    });
+
+    log("API Request: createApiKey");
+    axiosClient().post(`/api/v2/keys`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to create API Key: ${newApiKey.name} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function deleteApiKey(apiKeyId: string, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: deleteApiKey");
+    axiosClient().delete(`/api/v2/keys/${apiKeyId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete API Key with id ${apiKeyId} Error: ${error}`)
             completed(false);
         })
 }

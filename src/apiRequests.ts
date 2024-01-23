@@ -15,6 +15,13 @@ export interface IUpdateUserRequest extends Omit<ICreateUserRequest, 'username' 
     passwordRepeat?: string;
 };
 
+export interface ICreateApiKeyRequest {
+    name: string;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    customServerPermissions: Record<string, Partial<ICustomServerPermission>>;
+}
+
 export interface IEditPanelSettingsRequest {
     panelTheme: PanelTheme,
     serverRefreshRate: number,

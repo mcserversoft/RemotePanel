@@ -111,7 +111,9 @@ export enum Page {
     Scheduler,
     SchedulerTaskCreate,
     SchedulerTaskEdit,
-    SchedulerHistory
+    SchedulerHistory,
+    ApiKeysOverview,
+    ApiKeysCreate
 }
 
 export enum PanelTheme {
@@ -163,6 +165,23 @@ export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
 }
 
 export interface IEditPanelSettings extends Omit<IPanelSettings, 'lastModifiedAt'> { }
+
+/* API Key */
+export interface IApiKey {
+    apiKeyId: string;
+    name: string;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    createdAt: Date;
+    serverAccessDetails: ServerAccessDetails;
+}
+
+export interface INewApiKey {
+    name: string;
+    isAdmin: boolean;
+    hasAccessToAllServers: boolean;
+    serverAccessDetails: ServerAccessDetails;
+}
 
 /* User Account */
 export interface IEditUserAccount {

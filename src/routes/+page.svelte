@@ -27,6 +27,8 @@
 	import SchedulerPage from '$lib/pages/scheduler/overview.svelte';
 	import SchedulerTaskCreatePage from '$lib/pages/scheduler/create.svelte';
 	import SchedulerTaskEditPage from '$lib/pages/scheduler/edit.svelte';
+	import ApiKeysOverviewPage from '$lib/pages/apiKeys/overview.svelte';
+	import ApiKeysCreatePage from '$lib/pages/apiKeys/create.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -100,6 +102,10 @@
 				<UsersEditPage />
 			{:else if $selectedPage == Page.Users}
 				<UsersOverviewPage />
+			{:else if $selectedPage == Page.ApiKeysOverview}
+				<ApiKeysOverviewPage />
+			{:else if $selectedPage == Page.ApiKeysCreate}
+				<ApiKeysCreatePage />
 			{/if}
 		</div>
 

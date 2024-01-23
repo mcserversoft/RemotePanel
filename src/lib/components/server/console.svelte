@@ -28,9 +28,12 @@
 			reloadConsole(newServerId);
 		});
 
-		const updateConsole = setInterval(() => {
-			updateConsoleIfNeeded();
-		}, $settings.consoleRefreshRate * 1000 ?? 5000);
+		const updateConsole = setInterval(
+			() => {
+				updateConsoleIfNeeded();
+			},
+			$settings.consoleRefreshRate * 1000 ?? 5000
+		);
 
 		onDestroy(unsubscribe);
 		onDestroy(() => clearInterval(updateConsole));
@@ -176,4 +179,6 @@
 			</div>
 		</form>
 	{/if}
+
+	<!--TODO add saved commands here-->
 {/key}

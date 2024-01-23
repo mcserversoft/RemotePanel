@@ -59,7 +59,7 @@
 </script>
 
 <p class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Server Access & Permissions</p>
-<p class="mb-3 text-sm text-gray-500 dark:text-gray-400">Set what servers & permissions this new user will be able to use.</p>
+<p class="mb-3 text-sm text-gray-500 dark:text-gray-400"><slot>Set what servers & permissions this user will be able to use.</slot></p>
 
 <div class="flex space-x-4">
 	<div class="flex items-center">
