@@ -565,6 +565,25 @@ export function deleteUserAccount(deleteUserAccount: IDeleteUserAccount, complet
         })
 }
 
+export function wipeUserSessions(completed: (wasSuccess: boolean) => void) {
+    log("API Request: wipeUserSessions");
+    axiosClient().post(`/api/v2/users/wipe/sessions`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to wipe user sessions Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSettings: IPanelSettings) => void) {
     log("API Request: getPanelUserSettings");
     axiosClient().get(`/api/v2/users/current/settings`)
@@ -1024,7 +1043,6 @@ export function deleteSchedulerTask(serverId: string, taskId: string, completed:
             completed(false);
         })
 }
-
 
 export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getApiKeys");

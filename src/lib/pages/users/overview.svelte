@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
-	import { deletePanelUser, getPanelUsers } from '$lib/code/api';
+	import { mdiAccountMultipleRemove, mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
+	import { deletePanelUser, getPanelUsers, wipeUserSessions } from '$lib/code/api';
+	import { onMount } from 'svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
 	import { Page, type IPanelUser } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
-	import { onMount } from 'svelte';
 	import Button from '$lib/components/elements/button.svelte';
 
 	let users: IPanelUser[] = [];
@@ -31,6 +31,21 @@
 		isLoading = true;
 		users = [];
 		load();
+	}
+
+	function handleLogOutActiveUsersButton() {
+		let allowedToLogout = confirm(`Are you sure you want to clear all active sessions? All users will need to login again, including you.`);
+		if (!allowedToLogout) {
+			return;
+		}
+
+		wipeUserSessions((wasSuccess: boolean) => {
+			if (wasSuccess) {
+				confirm(`User sessions were cleared.`);
+			} else {
+				confirm(`Failed to wipe user sessions.`);
+			}
+		});
 	}
 
 	function handleEditPanelUser(userId: string) {
@@ -70,6 +85,15 @@
 					class="px-3 py-1.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
 				>
 					<Icon data={mdiRefresh} size={5} class="" />
+				</button>
+			</div>
+			<div class="self-center">
+				<button
+					type="button"
+					on:click={handleLogOutActiveUsersButton}
+					class="px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-500 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-red-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:hover:text-white dark:hover:bg-red-700"
+				>
+					<Icon data={mdiAccountMultipleRemove} size={5} class="" />
 				</button>
 			</div>
 			<div class="self-center">
