@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mdiAlertOctagram, mdiAlertRhombus, mdiInformation, mdiShieldLock } from '@mdi/js';
+	import { mdiAlertOctagram, mdiAlertRhombus, mdiCheck, mdiInformation, mdiShieldLock } from '@mdi/js';
 	import Icon from './icon.svelte';
 	import { WarningType } from '../../../types';
 
@@ -17,6 +17,9 @@
 			case WarningType.Info:
 				return mdiInformation;
 
+			case WarningType.Success:
+				return mdiCheck;
+
 			case WarningType.Error:
 			default:
 				return mdiAlertOctagram;
@@ -32,6 +35,9 @@
 
 			case WarningType.Info:
 				return 'text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-700 dark:text-blue-200';
+
+			case WarningType.Success:
+				return 'text-green-500 bg-green-100 rounded-lg dark:bg-green-700 dark:text-green-200';
 
 			case WarningType.Error:
 			default:

@@ -113,7 +113,8 @@ export enum Page {
     SchedulerTaskEdit,
     SchedulerHistory,
     ApiKeysOverview,
-    ApiKeysCreate
+    ApiKeysCreate,
+    ApiKeysCreated
 }
 
 export enum PanelTheme {
@@ -137,7 +138,8 @@ export enum WarningType {
     Error,
     Warning,
     Permission,
-    Info
+    Info,
+    Success
 }
 
 /* User */

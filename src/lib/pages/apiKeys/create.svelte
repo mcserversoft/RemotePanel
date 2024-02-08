@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mdiAccountMultiple, mdiArrowULeftTop, mdiKeyVariant } from '@mdi/js';
+	import { mdiArrowULeftTop, mdiKeyChainVariant, mdiKeyVariant } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
@@ -27,10 +27,9 @@
 			serverAccessDetails: serverAccessDetails
 		};
 
-		createApiKey(newApiKey, (wasSuccess: boolean) => {
+		createApiKey(newApiKey, (wasSuccess: boolean, plainApiKey: string) => {
 			if (wasSuccess) {
-				confirm(`API Key '${name}' was successfully created.`);
-				navigateBack();
+				navigateToPage(Page.ApiKeysCreated, plainApiKey);
 			} else {
 				confirm(`Failed to create API Key '${name}'.`);
 			}
@@ -48,7 +47,7 @@
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
 	<Breadcrumb
-		icon={mdiAccountMultiple}
+		icon={mdiKeyChainVariant}
 		items={[
 			{ name: 'API Keys', page: Page.ApiKeysOverview, isClickable: true },
 			{ name: 'Create', page: Page.Empty, isClickable: false }

@@ -29,6 +29,7 @@
 	import SchedulerTaskEditPage from '$lib/pages/scheduler/edit.svelte';
 	import ApiKeysOverviewPage from '$lib/pages/apiKeys/overview.svelte';
 	import ApiKeysCreatePage from '$lib/pages/apiKeys/create.svelte';
+	import ApiKeysCreatedPage from '$lib/pages/apiKeys/created.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -106,6 +107,8 @@
 				<ApiKeysOverviewPage />
 			{:else if $selectedPage == Page.ApiKeysCreate}
 				<ApiKeysCreatePage />
+			{:else if $selectedPage == Page.ApiKeysCreated}
+				<ApiKeysCreatedPage />
 			{/if}
 		</div>
 

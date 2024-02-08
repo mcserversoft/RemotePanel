@@ -1084,7 +1084,7 @@ export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasS
         })
 }
 
-export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean) => void) {
+export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean, plainTextApiKey: string) => void) {
     //formulate proper request
     var requestBody: ICreateApiKeyRequest = {
         name: newApiKey.name,
@@ -1103,13 +1103,16 @@ export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: bool
             }
 
             log(response?.status);
-            log(response?.data);
-            completed(true);
+            // don't log the key!
+            // log(response?.data);
+            return response?.data ?? [];
         })
-
+        .then((rawData) => {
+            completed(true, rawData.apiKey);
+        })
         .catch((error) => {
             console.error(`Failed to create API Key: ${newApiKey.name} Error: ${error}`)
-            completed(false);
+            completed(false, "");
         })
 }
 
