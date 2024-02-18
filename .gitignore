@@ -9,3 +9,4 @@ node_modules
 # custom
 panel.zip
 .save
+pnpm-lock.yaml

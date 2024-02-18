@@ -3,7 +3,7 @@ import { Page } from '../../types';
 
 // used for testing purposes
 // @ts-ignore
-export const baseUrl = __DEBUG_URL__;
+export const baseUrl = "https://dev.bosstop.tech"; //__DEBUG_URL__;
 
 export const selectedPage = persisted('selectedPage', Page.Dashboard);
 export const selectedPageProps = persisted('selectedPageProps', null);
