@@ -39,7 +39,7 @@
 
 	<!-- FUTURE add some colors here -->
 	{#if dropdownVisible}
-		<div id="dropdown" class="absolute top-full z-20 right-0 min-w-44 py-1.5 mt-1 rounded-lg overflow-hidden shadow-lg divide-gray-150 dark:divide-gray-500 bg-white dark:bg-gray-600">
+		<div id="dropdown" class="absolute top-full z-20 right-0 py-1.5 mt-1 rounded-lg overflow-hidden shadow-lg divide-gray-150 dark:divide-gray-500 bg-white dark:bg-gray-600">
 			<ul class="w-28 text-gray-700 dark:text-gray-200">
 				{#each Object.values(ServerAction).filter((element) => typeof element === 'string') as action}
 					<li>

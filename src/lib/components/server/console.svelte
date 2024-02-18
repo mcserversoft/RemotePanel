@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, beforeUpdate, afterUpdate } from 'svelte';
+	import { onDestroy, beforeUpdate, afterUpdate, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
@@ -9,6 +9,7 @@
 	import Icon from '../elements/icon.svelte';
 	import { Popover } from 'flowbite-svelte';
 	import { selectedServerId } from '$lib/code/global';
+	import XTerminal from '$lib/code/xTerminal';
 
 	export let fillScreen: boolean = false;
 
@@ -17,8 +18,9 @@
 		reloadConsole(serverId);
 	}
 
+	let term: XTerminal;
 	let loadingConsole: boolean;
-	let serverConsole: string[] = [];
+	//let serverConsole: string[] = [];
 	let consoleInput: string;
 	let textarea: HTMLTextAreaElement;
 	let consoleRequiresUpdate: boolean;
@@ -35,6 +37,10 @@
 		onDestroy(unsubscribe);
 		onDestroy(() => clearInterval(updateConsole));
 	}
+
+	onMount(async() => {
+		term = new XTerminal(document.getElementById('xterm') as HTMLDivElement);
+	});
 
 	beforeUpdate(() => {
 		consoleRequiresUpdate = textarea && textarea.offsetHeight + textarea.scrollTop > textarea.scrollHeight - 20;
@@ -56,7 +62,9 @@
 		getServerConsole(
 			serverId,
 			(consoleLines: string[]) => {
-				serverConsole = consoleLines;
+				//serverConsole = consoleLines;
+				term.update(consoleLines);
+
 				scrollToBottom();
 			},
 			(wasSuccess: boolean) => {
@@ -74,11 +82,11 @@
 
 		loadingConsole = true;
 
-		let lines = textarea.value.split('\n');
+		let lines = term.getLines().split('\n');
 		let length: number = lines.length - 1;
 
-		let secondLastLine: string = encodeURIComponent(lines[length - 1]);
-		let lastLine: string = encodeURIComponent(lines[length]);
+		let secondLastLine: string = lines[length - 1] ?? '';
+		let lastLine: string = lines[length] ?? '';
 
 		getIsServerConsoleOutdated(
 			serverId,
@@ -108,12 +116,13 @@
 
 	function scrollToBottom() {
 		if (get(settings).autoScrollConsole) {
-			textarea?.scrollTo(0, textarea.scrollHeight);
+			term.scroll();
 		}
 	}
 
 	function clearConsole() {
-		serverConsole = [];
+		// serverConsole = [];
+		term.clear();
 	}
 
 	function toggleChatMode() {
@@ -144,10 +153,13 @@
 			<label for="autoScrollConsole" class="ml-2 text-sm cursor-pointer select-none font-medium text-gray-900 dark:text-gray-300">Auto scroll</label>
 		</div>
 	</div>
-	<div class="bg-white dark:bg-gray-800">
+	<div class="bg-white dark:bg-gray-800" style="overflow-x: hidden;">
 		<!-- don't put tabs before </textarea> -->
 		<!-- this messes up the getIsServerConsoleOutdated check -->
-		<textarea bind:this={textarea} id="console" readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'} font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
+		<div id="xterm" style="width: 99%;" class="block {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'} font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"></div>
+		<!--
+			<textarea bind:this={textarea} id="console" readonly class="block w-full {fillScreen ? 'h-[calc(100vh-275px)]' : 'h-96'} font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">{serverConsole}</textarea>
+		-->
 	</div>
 </div>
 
