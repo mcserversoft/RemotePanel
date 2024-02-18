@@ -189,12 +189,3 @@
 		</form>
 	{/if}
 {/key}
-
-
-<style>
-	#xterm::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-		background-color: burlywood !important;
-	}
-</style>
