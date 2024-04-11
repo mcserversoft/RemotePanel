@@ -8,7 +8,7 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Button from '$lib/components/elements/button.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import type { IPanelUser } from '../../../types';
+	import type { IPanelUser } from '$lib/code/user';
 
 	let users: IPanelUser[] = [];
 	let isLoading = true;

@@ -4,44 +4,6 @@ export enum McssSettingsSection {
     Backups,
 }
 
-/* User */
-export interface IPanelUser {
-    userId: string;
-    username: string;
-    enabled: boolean;
-    isAdmin: boolean;
-    createdAt: Date;
-    lastModifiedAt: Date;
-    serverAccessDetails: ServerAccessDetails;
-}
-
-export interface INewPanelUser {
-    username: string;
-    password: string;
-    passwordRepeat: string;
-    enabled: boolean;
-    isAdmin: boolean;
-    serverAccessDetails: ServerAccessDetails;
-}
-
-export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
-    userId: string;
-}
-
-
-
-/* User Account */
-export interface IEditUserAccount {
-    password: string;
-    newPassword: string;
-    newPasswordRepeat: string;
-}
-
-export interface IDeleteUserAccount {
-    password: string;
-    confirm: boolean
-}
-
 /* User Permissions */
 export class ServerAccessDetails {
     hasAccessToAllServers = false;

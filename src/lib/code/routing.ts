@@ -43,3 +43,7 @@ export function navigateToPage(pageName: Page, props: any = null) {
         selectedPageProps.set(props);
     }
 }
+
+export function openInNewTab(url: string) {
+    window.open(url, "_blank", "noopener noreferrer")
+}

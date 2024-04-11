@@ -14,24 +14,7 @@ import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
-import type {
-    ICreateUserRequest,
-    IDeleteUserAccountRequest,
-    IUpdateUserAccountRequest,
-    IUpdateUserRequest,
-    IUserAvatarRequest,
-} from '../../apiRequests';
-import type {
-    IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
-    IGetUserDetailsResponse,
-    IGetUsersListResponse,
-} from '../../apiResponses';
 import {
-    type IDeleteUserAccount,
-    type IEditPanelUser,
-    type IEditUserAccount,
-    type INewPanelUser,
-    type IPanelUser,
     McssSettingsSection,
     ServerAccessDetails,
 } from '../../types';
@@ -42,6 +25,7 @@ import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey 
 import type { IServerSettings, ServerAction } from './server';
 import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
 import type { Memory, Stats } from './statistics';
+import type { ICreateUserRequest, IDeleteUserAccount, IDeleteUserAccountRequest, IEditPanelUser, IEditUserAccount, IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse, INewPanelUser, IPanelUser, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from './user';
 
 export enum Filter {
     None,
@@ -588,7 +572,7 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
             return response?.data ?? [];
         })
         .then((rawResponse) => {
-            return rawResponse as IGetPanelSettingsResponse;
+            return rawResponse as IGetPanelUserSettingsResponse;
         })
         .then((data) => {
             let userSettings: IPanelSettings = {
