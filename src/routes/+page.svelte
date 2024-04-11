@@ -30,6 +30,9 @@
 	import ApiKeysOverviewPage from '$lib/pages/apiKeys/overview.svelte';
 	import ApiKeysCreatePage from '$lib/pages/apiKeys/create.svelte';
 	import ApiKeysCreatedPage from '$lib/pages/apiKeys/created.svelte';
+	import WebhooksPage from '$lib/pages/webhooks/overview.svelte';
+	import WebhooksCreatePage from '$lib/pages/webhooks/create.svelte';
+	import WebhooksEditPage from '$lib/pages/webhooks/edit.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -109,6 +112,12 @@
 				<ApiKeysCreatePage />
 			{:else if $selectedPage == Page.ApiKeysCreated}
 				<ApiKeysCreatedPage />
+			{:else if $selectedPage == Page.Webhooks}
+				<WebhooksPage />
+			{:else if $selectedPage == Page.WebhooksCreate}
+				<WebhooksCreatePage />
+			{:else if $selectedPage == Page.WebhooksEdit}
+				<WebhooksEditPage />
 			{/if}
 		</div>
 

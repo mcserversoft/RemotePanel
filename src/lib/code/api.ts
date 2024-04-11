@@ -56,7 +56,8 @@ import {
     type IApiKey,
     type INewApiKey,
 } from '../../types';
-import { type ISchedulerTask, type ISchedulerDetails, translateRawResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
+import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
+import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
 
 /*
 *  API Requests
@@ -891,7 +892,7 @@ export function getSchedulerTasks(serverId: string, report: (backups: IScheduler
         .then((rawData) => {
             let tasks: ISchedulerTask[] = [];
             rawData.forEach((data: any) => {
-                tasks.push(translateRawResponse(data));
+                tasks.push(translateRawSchedulerResponse(data));
             });
 
             report(tasks);
@@ -938,7 +939,7 @@ export function getSchedulerTaskDetails(serverId: string, taskId: string, report
             return response?.data ?? [];
         })
         .then((rawData) => {
-            report(true, translateRawResponse(rawData));
+            report(true, translateRawSchedulerResponse(rawData));
         })
 
         .catch((error) => {
@@ -1086,6 +1087,7 @@ export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasS
 
 export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean, plainTextApiKey: string) => void) {
     //formulate proper request
+    //TODO does this even work?
     var requestBody: ICreateApiKeyRequest = {
         name: newApiKey.name,
         isAdmin: newApiKey.isAdmin,
@@ -1131,6 +1133,155 @@ export function deleteApiKey(apiKeyId: string, completed: (wasSuccess: boolean) 
 
         .catch((error) => {
             console.error(`Failed to delete API Key with id ${apiKeyId} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getWebhooks(report: (webhooks: IWebhook[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getWebhooks");
+    axiosClient().get(`/api/v2/webhooks`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IRawGetWebhookListResponse;
+        })
+        .then((rawData) => {
+            let webhooks: IWebhook[] = [];
+            rawData.forEach((data: any) => {
+                // webhooks.push(translateRawSchedulerResponse(data));
+                webhooks.push(data);
+            });
+
+            report(webhooks);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch API Keys with error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getWebhookDetails(WebhookId: string, report: (wasSuccess: boolean, webhook: IWebhook) => void) {
+    log("API Request: getWebhookDetails");
+    axiosClient().get(`/api/v2/webhooks/${WebhookId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((response) => {
+            return response as IRawGetWebhookResponse;
+        })
+        .then((rawResponse) => {
+            let webhook: IWebhook = {
+                webhookId: rawResponse.webhookId,
+                name: rawResponse.name,
+                url: rawResponse.url,
+                enabled: rawResponse.enabled,
+                messageFormat: rawResponse.messageFormat,
+                optionalHeaders: rawResponse.optionalHeaders,
+                webhookTriggers: rawResponse.webhookTriggers.map((key: number) => WebhookTrigger[key]),
+                createdAt: rawResponse.createdAt,
+                lastModifiedAt: rawResponse.lastModifiedAt,
+            };
+
+            report(true, webhook);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get webhook with id: ${WebhookId} Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function createWebhook(newWebhook: INewWebhook, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateWebhookRequest = {
+        name: newWebhook.name,
+        url: newWebhook.url,
+        enabled: newWebhook.enabled,
+        messageFormat: newWebhook.messageFormat,
+        webhookTriggers: newWebhook.webhookTriggers,
+        optionalHeaders: convertWebhookHeaderArrayToObject(newWebhook.optionalHeaders),
+    }
+
+    log("API Request: createWebhook");
+    axiosClient().post(`/api/v2/webhooks`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawData) => {
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to create Webhook: ${newWebhook.name} Error: ${error}`)
+            completed(false);
+        })
+}
+
+
+export function editWebhooks(webhookId: string, editedWebhook: IEditWebhook, report: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUpdateWebhookRequest = {
+        name: editedWebhook.name,
+        url: editedWebhook.url,
+        enabled: editedWebhook.enabled,
+        messageFormat: editedWebhook.messageFormat,
+        webhookTriggers: editedWebhook.webhookTriggers,
+        optionalHeaders: convertWebhookHeaderArrayToObject(editedWebhook.optionalHeaders),
+    }
+
+    log("API Request: editWebhooks");
+    axiosClient().put(`/api/v2/webhooks/${webhookId}`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save settings of webhook with id: ${webhookId} Error: ${error}`)
+            report(false);
+        })
+}
+
+export function deleteWebhook(webhookId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteWebhook");
+    axiosClient().delete(`/api/v2/webhooks/${webhookId}`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete webhook with Error: ${error} `)
             completed(false);
         })
 }

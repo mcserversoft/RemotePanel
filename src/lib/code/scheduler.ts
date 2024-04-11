@@ -63,7 +63,7 @@ export function getTaskEnabledIconColor(task: ISchedulerTask): string {
 }
 
 /* API */
-export function translateRawResponse(data: any): ISchedulerTask {
+export function translateRawSchedulerResponse(data: any): ISchedulerTask {
     let task: ISchedulerTask = {
         taskId: data.taskId,
         enabled: data.enabled,

@@ -9,7 +9,7 @@
 	import { Url, getURLToCurrentUserAvatar, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../elements/icon.svelte';
-	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardText, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiNotebook, mdiPoll, mdiText, mdiTextBox } from '@mdi/js';
+	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiNotebook, mdiPoll, mdiText, mdiWebhook } from '@mdi/js';
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/code/auth';
 	import NavDropdown from './navDropdown.svelte';
@@ -151,6 +151,10 @@
 
 					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate || $selectedPage == Page.UsersEdit}>
 						<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
+					</NavItem>
+
+					<NavItem on:click={() => handleNavigationRequest(Page.Webhooks)} name="Webhooks" isActive={$selectedPage == Page.Webhooks || $selectedPage == Page.WebhooksCreate || $selectedPage == Page.WebhooksEdit}>
+						<Icon data={mdiWebhook} size={6} class={'text-gray-500 dark:text-gray-400'} />
 					</NavItem>
 				{/if}
 

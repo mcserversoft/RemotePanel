@@ -114,7 +114,10 @@ export enum Page {
     SchedulerHistory,
     ApiKeysOverview,
     ApiKeysCreate,
-    ApiKeysCreated
+    ApiKeysCreated,
+    Webhooks,
+    WebhooksCreate,
+    WebhooksEdit,
 }
 
 export enum PanelTheme {
