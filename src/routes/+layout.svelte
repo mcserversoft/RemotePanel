@@ -1,5 +1,5 @@
 <script>
-	import ThemeWatcher from '$lib/components/core/themeWatcher.svelte';
+	import ThemeWatcher from '$lib/components/theme/themeWatcher.svelte';
 	import { pwaInfo } from 'virtual:pwa-info';
 	import '../app.css';
 

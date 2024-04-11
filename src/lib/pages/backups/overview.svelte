@@ -8,7 +8,7 @@
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import BackupProgressView from '$lib/components/elements/backupProgressView.svelte';
+	import BackupProgressView from '$lib/components/backup/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
 	import { IsEmptyDateTime } from '$lib/code/shared';
 	import { Permission, hasPermission } from '$lib/code/permissions';

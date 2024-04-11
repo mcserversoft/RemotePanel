@@ -1058,7 +1058,6 @@ export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasS
 
 export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean, plainTextApiKey: string) => void) {
     //formulate proper request
-    //TODO does this even work?
     var requestBody: ICreateApiKeyRequest = {
         name: newApiKey.name,
         isAdmin: newApiKey.isAdmin,

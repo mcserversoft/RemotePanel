@@ -68,7 +68,7 @@ export class ServerAccessDetails {
     update(serverSelection: string[], permissionSelection: string[], hasAccessToAllServers: boolean) {
         // reset existing 
         this.serverPermissions = []
-        hasAccessToAllServers = hasAccessToAllServers;
+        this.hasAccessToAllServers = hasAccessToAllServers;
 
         serverSelection.forEach(serverId => {
             let permissions = permissionSelection.filter(s => s.includes(serverId))
