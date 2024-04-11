@@ -4,7 +4,6 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { ServerAccessDetails } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { getRandomPassword } from '$lib/code/shared';
 	import { createPanelUser } from '$lib/code/api';
@@ -16,6 +15,7 @@
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 	import type { INewPanelUser } from '$lib/code/user';
+	import { ServerAccessDetails } from '$lib/code/permissions';
 
 	let username: string;
 	let password: string;

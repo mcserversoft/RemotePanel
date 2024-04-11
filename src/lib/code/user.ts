@@ -1,5 +1,5 @@
-import type { ICustomServerPermission, ServerAccessDetails } from "../../types";
 import type { PanelTheme } from "./panel";
+import type { ICustomServerPermission, ServerAccessDetails } from "./permissions";
 
 //TODO merge panelUser and user
 

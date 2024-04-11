@@ -9,15 +9,11 @@ import { log } from '$lib/code/logger';
 import {
     hasPermission,
     Permission,
+    ServerAccessDetails,
 } from '$lib/code/permissions';
 import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
-
-import {
-    McssSettingsSection,
-    ServerAccessDetails,
-} from '../../types';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
 import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
 import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
@@ -26,6 +22,7 @@ import type { IServerSettings, ServerAction } from './server';
 import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
 import type { Memory, Stats } from './statistics';
 import type { ICreateUserRequest, IDeleteUserAccount, IDeleteUserAccountRequest, IEditPanelUser, IEditUserAccount, IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse, INewPanelUser, IPanelUser, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from './user';
+import type { McssSettingsSection } from '../../types';
 
 export enum Filter {
     None,

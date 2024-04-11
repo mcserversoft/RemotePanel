@@ -6,7 +6,6 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { ServerAccessDetails } from '../../../types';
 	import { getRandomPassword } from '$lib/code/shared';
 	import { editPanelUser, getPanelUser } from '$lib/code/api';
 	import { Page, navigateToPage, selectedPageProps } from '$lib/code/routing';
@@ -17,6 +16,7 @@
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 	import type { IEditPanelUser, IPanelUser } from '$lib/code/user';
+	import { ServerAccessDetails } from '$lib/code/permissions';
 
 	let userId: string;
 	let username: string = '';

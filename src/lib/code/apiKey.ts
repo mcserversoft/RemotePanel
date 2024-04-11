@@ -1,4 +1,4 @@
-import type { ICustomServerPermission, ServerAccessDetails } from "../../types";
+import type { ICustomServerPermission, ServerAccessDetails } from "./permissions";
 
 export interface IApiKey {
     apiKeyId: string;

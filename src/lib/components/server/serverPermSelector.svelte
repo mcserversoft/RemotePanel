@@ -3,8 +3,8 @@
 	import Icon from '../elements/icon.svelte';
 	import { mdiArrowULeftTop, mdiContentSave } from '@mdi/js';
 	import Spinner from '../elements/spinner.svelte';
-	import type { ServerAccessDetails } from '../../../types';
 	import { isLoadingServers, servers } from '$lib/code/global';
+	import type { ServerAccessDetails } from '$lib/code/permissions';
 
 	export let serverAccessDetails: ServerAccessDetails;
 

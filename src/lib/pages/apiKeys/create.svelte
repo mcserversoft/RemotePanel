@@ -4,7 +4,6 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { ServerAccessDetails } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { createApiKey } from '$lib/code/api';
 	import { Page, navigateToPage } from '$lib/code/routing';
@@ -14,6 +13,7 @@
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 	import type { INewApiKey } from '$lib/code/apiKey';
+	import { ServerAccessDetails } from '$lib/code/permissions';
 
 	let name: string;
 	let isAdmin: boolean = false;
