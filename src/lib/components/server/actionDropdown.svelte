@@ -2,10 +2,10 @@
 	import { get } from 'svelte/store';
 	import { clickOutside } from '$lib/code/shared';
 	import { postServerAction } from '$lib/code/api';
-	import { ServerAction } from '../../../types';
 	import Icon from '../elements/icon.svelte';
 	import { mdiMenuDown } from '@mdi/js';
 	import { selectedServerId } from '$lib/code/global';
+	import { ServerAction } from '$lib/code/server';
 
 	export let statusName: string;
 

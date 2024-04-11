@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { derived, writable } from 'svelte/store';
 	import { navigateToPage } from '$lib/code/routing';
-	import { postMassServerAction, getServers } from '$lib/code/api';
+	import { postMassServerAction } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
+	import { mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
-	import { Page, Server, ServerAction } from '../../types';
+	import { Page } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 	import { isLoadingServers, selectedServerId, servers } from '$lib/code/global';
 	import { Permission, hasPermission } from '$lib/code/permissions';
+	import { ServerAction, type Server } from '$lib/code/server';
 
 	let selection: any = [];
 	const searchTerm = writable('');

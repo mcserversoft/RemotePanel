@@ -1,6 +1,6 @@
 import { persisted } from 'svelte-local-storage-store';
 import { derived, get, writable } from 'svelte/store';
-import type { IServer, Server } from '../../types';
+import type { IServer, Server } from './server';
 
 // global in-memory store
 export const isOffline = writable(false);

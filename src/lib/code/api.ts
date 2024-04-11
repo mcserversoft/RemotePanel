@@ -36,17 +36,16 @@ import {
     type INewPanelUser,
     type IPanelSettings,
     type IPanelUser,
-    type IServerSettings,
     McssSettingsSection,
     type Memory,
     ServerAccessDetails,
-    type ServerAction,
     type Stats,
 } from '../../types';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
 import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
 import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
 import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
+import type { IServerSettings, ServerAction } from './server';
 
 /*
 *  API Requests

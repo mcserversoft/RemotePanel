@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { mdiAccountMultiple, mdiAlertRhombus, mdiArrowULeftTop, mdiClose, mdiContentSave } from '@mdi/js';
+	import { mdiAccountMultiple, mdiClose, mdiContentSave } from '@mdi/js';
 	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
-	import { Page, type IServerSettings, KeepOnline } from '../../../types';
+	import { Page } from '../../../types';
 	import { getServer, editServer } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
@@ -13,6 +13,7 @@
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import type { IServerSettings, KeepOnline } from '$lib/code/server';
 
 	let loadedServerSettings: IServerSettings;
 	let serverId: string;
