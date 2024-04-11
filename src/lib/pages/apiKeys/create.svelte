@@ -4,7 +4,7 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, ServerAccessDetails, type INewApiKey } from '../../../types';
+	import { Page, ServerAccessDetails } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { createApiKey } from '$lib/code/api';
 	import { navigateToPage } from '$lib/code/routing';
@@ -13,6 +13,7 @@
 	import { Button } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
+	import type { INewApiKey } from '$lib/code/apiKey';
 
 	let name: string;
 	let isAdmin: boolean = false;

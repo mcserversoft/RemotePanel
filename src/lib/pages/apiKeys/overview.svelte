@@ -3,7 +3,7 @@
 	import { deleteApiKey, getApiKeys } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, WarningType, type IApiKey } from '../../../types';
+	import { Page, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { onMount } from 'svelte';
@@ -12,6 +12,7 @@
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
+	import type { IApiKey } from '$lib/code/apiKey';
 
 	let apiKeys: IApiKey[] = [];
 	let isLoading = true;

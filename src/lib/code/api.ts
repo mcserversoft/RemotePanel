@@ -15,7 +15,6 @@ import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 
 import type {
-    ICreateApiKeyRequest,
     ICreateUserRequest,
     IDeleteUserAccountRequest,
     IEditPanelSettingsRequest,
@@ -24,7 +23,6 @@ import type {
     IUserAvatarRequest,
 } from '../../apiRequests';
 import type {
-    IGetApiKeyListResponse,
     IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
     IGetUserDetailsResponse,
     IGetUsersListResponse,
@@ -44,12 +42,11 @@ import {
     ServerAccessDetails,
     type ServerAction,
     type Stats,
-    type IApiKey,
-    type INewApiKey,
 } from '../../types';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
 import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
 import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
+import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
 
 /*
 *  API Requests
