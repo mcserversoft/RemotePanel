@@ -38,62 +38,6 @@ export interface INewSchedulerTask {
 
 export interface IEditSchedulerTask extends INewSchedulerTask { }
 
-export function getTaskEnabledIcon(task: ISchedulerTask): string {
-    if (task == undefined) {
-        return mdiClose;
-    }
-
-    if (task.timing instanceof TimelessTaskTiming) {
-        return mdiMinus;
-    }
-
-    return task.enabled ? mdiCheck : mdiClose;
-}
-
-export function getTaskEnabledIconColor(task: ISchedulerTask): string {
-    if (task == undefined) {
-        return '';
-    }
-
-    if (task.timing instanceof TimelessTaskTiming) {
-        return '';
-    }
-
-    return task.enabled ? 'text-green-400' : 'text-red-400';
-}
-
-/* API */
-export function translateRawSchedulerResponse(data: any): ISchedulerTask {
-    let task: ISchedulerTask = {
-        taskId: data.taskId,
-        enabled: data.enabled,
-        name: data.name,
-        playerRequirement: data.playerRequirement,
-        timing: new TimelessTaskTiming(),
-        job: new EmptyJobTask()
-    }
-
-    if ('interval' in data.timing) {
-        task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
-    } else if ('time' in data.timing) {
-        task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.time);
-    } else {
-        task.timing = new TimelessTaskTiming();
-    }
-
-    if ('commands' in data.job) {
-        task.job = new CommandJobTask(data.job.commands as string[]);
-    } else if ('backupIdentifier' in data.job) {
-        task.job = new BackupJobTask(data.job.backupIdentifier as string);
-    } else if ('action' in data.job) {
-        task.job = new ServerActionJobTask(data.job.action as number);
-    } else {
-        task.job = new EmptyJobTask();
-    }
-
-    return task;
-}
-
 /* Job */
 export interface JobTask { }
 
@@ -189,4 +133,72 @@ export function getTaskTiming(timing: TaskTiming): Timing {
     }
 
     return Timing.timeless;
+}
+
+
+/* API */
+export interface ICreateSchedulerTaskRequest {
+    name: string;
+    enabled: boolean;
+    playerRequirement: number
+    timing: object
+    job: object
+}
+
+export interface IUpdateSchedulerTaskRequest extends ICreateSchedulerTaskRequest { }
+
+export function translateRawSchedulerResponse(data: any): ISchedulerTask {
+    let task: ISchedulerTask = {
+        taskId: data.taskId,
+        enabled: data.enabled,
+        name: data.name,
+        playerRequirement: data.playerRequirement,
+        timing: new TimelessTaskTiming(),
+        job: new EmptyJobTask()
+    }
+
+    if ('interval' in data.timing) {
+        task.timing = new IntervalTaskTiming(data.timing.repeat, data.timing.interval);
+    } else if ('time' in data.timing) {
+        task.timing = new FixedTimeTaskTiming(data.timing.repeat, data.timing.time);
+    } else {
+        task.timing = new TimelessTaskTiming();
+    }
+
+    if ('commands' in data.job) {
+        task.job = new CommandJobTask(data.job.commands as string[]);
+    } else if ('backupIdentifier' in data.job) {
+        task.job = new BackupJobTask(data.job.backupIdentifier as string);
+    } else if ('action' in data.job) {
+        task.job = new ServerActionJobTask(data.job.action as number);
+    } else {
+        task.job = new EmptyJobTask();
+    }
+
+    return task;
+}
+
+/* Helper Methods */
+export function getTaskEnabledIcon(task: ISchedulerTask): string {
+    if (task == undefined) {
+        return mdiClose;
+    }
+
+    if (task.timing instanceof TimelessTaskTiming) {
+        return mdiMinus;
+    }
+
+    return task.enabled ? mdiCheck : mdiClose;
+}
+
+export function getTaskEnabledIconColor(task: ISchedulerTask): string {
+    if (task == undefined) {
+        return '';
+    }
+
+    if (task.timing instanceof TimelessTaskTiming) {
+        return '';
+    }
+
+    return task.enabled ? 'text-green-400' : 'text-red-400';
 }

@@ -104,7 +104,7 @@ export interface ICreateBackupRequest {
     folderBlacklist: any;
 }
 
-/* Helper Methodes */
+/* Helper Methods */
 export function getBackupStatusIcon(status: BackupStatus) {
     switch (status) {
         case BackupStatus.InProgress:

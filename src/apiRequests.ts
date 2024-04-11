@@ -46,13 +46,3 @@ export interface IDeleteUserAccountRequest {
     password: string,
     delete: boolean,
 }
-
-export interface ICreateSchedulerTaskRequest {
-    name: string;
-    enabled: boolean;
-    playerRequirement: number
-    timing: object
-    job: object
-}
-
-export interface IUpdateSchedulerTaskRequest extends ICreateSchedulerTaskRequest { }

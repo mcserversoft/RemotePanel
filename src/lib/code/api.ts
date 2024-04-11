@@ -16,11 +16,9 @@ import { get } from 'svelte/store';
 
 import type {
     ICreateApiKeyRequest,
-    ICreateSchedulerTaskRequest,
     ICreateUserRequest,
     IDeleteUserAccountRequest,
     IEditPanelSettingsRequest,
-    IUpdateSchedulerTaskRequest,
     IUpdateUserAccountRequest,
     IUpdateUserRequest,
     IUserAvatarRequest,
@@ -49,7 +47,7 @@ import {
     type IApiKey,
     type INewApiKey,
 } from '../../types';
-import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
+import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
 import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
 import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
 
