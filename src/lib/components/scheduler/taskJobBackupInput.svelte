@@ -6,8 +6,8 @@
 	import { getBackups } from '$lib/code/api';
 	import { get } from 'svelte/store';
 	import { selectedServerId } from '$lib/code/global';
-	import type { Backup } from '../../../types';
 	import type { BackupJobTask } from '$lib/code/scheduler';
+	import type { Backup } from '$lib/code/backup';
 
 	export let job: any;
 

@@ -4,16 +4,17 @@
 	import { deleteBackup, getBackupStats, getBackups, runBackup } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type Backup, type IBackupStats, WarningType } from '../../../types';
+	import { Page, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import BackupProgressView from '$lib/components/elements/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
-	import { IsEmptyDateTime, getBackupStatusColor, getBackupStatusIcon } from '$lib/code/shared';
+	import { IsEmptyDateTime } from '$lib/code/shared';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import { getBackupStatusIcon, type Backup, type IBackupStats, getBackupStatusColor } from '$lib/code/backup';
 
 	let backups: Backup[] = [];
 	let backupStats: IBackupStats;

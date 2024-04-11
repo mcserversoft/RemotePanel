@@ -4,10 +4,10 @@
 	import { mdiArrowULeftTop, mdiBlockHelper, mdiClose, mdiContentDuplicate, mdiContentSave, mdiPlus } from '@mdi/js';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { BackupFilterListDetails } from '../../../types';
 	import Icon from '../elements/icon.svelte';
 	import Input from '../elements/input.svelte';
 	import Spinner from '../elements/spinner.svelte';
+	import type { BackupFilterListDetails } from '$lib/code/backup';
 
 	export let backupFilterList: BackupFilterListDetails;
 

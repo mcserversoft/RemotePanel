@@ -1,4 +1,4 @@
-import type { BackupCompression, ICustomServerPermission, PanelTheme } from "./types";
+import type { ICustomServerPermission, PanelTheme } from "./types";
 
 export interface ICreateUserRequest {
     username: string;
@@ -45,17 +45,6 @@ export interface IUpdateUserAccountRequest {
 export interface IDeleteUserAccountRequest {
     password: string,
     delete: boolean,
-}
-
-export interface ICreateBackupRequest {
-    name: string;
-    destination: string;
-    suspend: boolean;
-    deleteOldBackups: boolean;
-    compression: BackupCompression;
-    runBackupAfterCreation: boolean;
-    fileBlacklist: any;
-    folderBlacklist: any;
 }
 
 export interface ICreateSchedulerTaskRequest {
