@@ -4,7 +4,6 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { McssSettingsSection } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createBackup, getMcssSettings } from '$lib/code/api';
 	import { Page, navigateToPage } from '$lib/code/routing';
@@ -17,6 +16,7 @@
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { BackupCompression, BackupFilterListDetails, type INewBackup } from '$lib/code/backup';
 	import { WarningType } from '$lib/code/panel';
+	import { McssSettingsSection } from '$lib/code/mcss';
 
 	let name: string = '';
 	let destination: string = '';

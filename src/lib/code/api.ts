@@ -22,7 +22,7 @@ import type { IServerSettings, ServerAction } from './server';
 import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
 import type { Memory, Stats } from './statistics';
 import type { ICreateUserRequest, IDeleteUserAccount, IDeleteUserAccountRequest, IEditPanelUser, IEditUserAccount, IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse, INewPanelUser, IPanelUser, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from './user';
-import type { McssSettingsSection } from '../../types';
+import type { McssSettingsSection } from './mcss';
 
 export enum Filter {
     None,
