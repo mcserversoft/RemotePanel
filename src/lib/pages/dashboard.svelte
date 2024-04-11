@@ -2,13 +2,13 @@
 	import { getServers } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
 	import { mdiRefresh } from '@mdi/js';
-	import { getFriendlyStatusName } from '$lib/code/shared';
 	import { selectedServer } from '$lib/code/global';
 	import ConsoleComponent from '$lib/components/server/console.svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import ActionDropdown from '$lib/components/server/actionDropdown.svelte';
 	import Statistics from '$lib/components/server/statistics.svelte';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
+	import { getFriendlyStatusName } from '$lib/code/panel';
 
 	let consoleComponent: any;
 

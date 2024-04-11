@@ -11,7 +11,6 @@ import {
     Permission,
     ServerAccessDetails,
 } from '$lib/code/permissions';
-import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
@@ -20,7 +19,7 @@ import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackup
 import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
 import type { IServerSettings, ServerAction } from './server';
 import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
-import type { Memory, Stats } from './statistics';
+import { calculateUptime, type Memory, type Stats } from './statistics';
 import type { ICreateUserRequest, IDeleteUserAccount, IDeleteUserAccountRequest, IEditPanelUser, IEditUserAccount, IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse, INewPanelUser, IPanelUser, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from './user';
 import type { McssSettingsSection } from './mcss';
 

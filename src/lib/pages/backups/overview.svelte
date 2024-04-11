@@ -10,7 +10,6 @@
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import BackupProgressView from '$lib/components/backup/backupProgressView.svelte';
 	import Button from '$lib/components/elements/button.svelte';
-	import { IsEmptyDateTime } from '$lib/code/shared';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { getBackupStatusIcon, type Backup, type IBackupStats, getBackupStatusColor } from '$lib/code/backup';
@@ -91,6 +90,10 @@
 				confirm(`Failed to delete backup.`);
 			}
 		});
+	}
+
+	function IsEmptyDateTime(date: Date) {
+		return date.getTime() == -62135597850000;
 	}
 </script>
 

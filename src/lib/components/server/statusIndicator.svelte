@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from '$lib/code/shared';
+	import { getFriendlyStatusName, getStatusBgColor, getStatusTextColor } from "$lib/code/panel";
+
 
 	export let status: number;
 	export let hideTitle: boolean = false;
