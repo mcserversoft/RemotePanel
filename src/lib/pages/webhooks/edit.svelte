@@ -16,6 +16,8 @@
 	import HttpHeaderSelector from '$lib/components/webhooks/httpHeaderSelector.svelte';
 	import TriggerSelector from '$lib/components/webhooks/triggerSelector.svelte';
 
+	//TODO save state & validate headers
+
 	let webhookId: string;
 	let name: string = '';
 	let url: string = '';

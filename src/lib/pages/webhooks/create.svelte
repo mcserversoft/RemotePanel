@@ -13,6 +13,8 @@
 	import HttpHeaderSelector from '$lib/components/webhooks/httpHeaderSelector.svelte';
 	import TriggerSelector from '$lib/components/webhooks/triggerSelector.svelte';
 
+	//TODO save state & validate headers
+
 	let name: string = '';
 	let url: string = '';
 	let messageFormat: number = 0;
