@@ -4,10 +4,10 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, ServerAccessDetails } from '../../../types';
+	import { ServerAccessDetails } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { createApiKey } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';

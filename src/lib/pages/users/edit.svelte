@@ -6,10 +6,10 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, type IPanelUser, ServerAccessDetails, type IEditPanelUser } from '../../../types';
+	import { type IPanelUser, ServerAccessDetails, type IEditPanelUser } from '../../../types';
 	import { getRandomPassword } from '$lib/code/shared';
 	import { editPanelUser, getPanelUser } from '$lib/code/api';
-	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
+	import { Page, navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';

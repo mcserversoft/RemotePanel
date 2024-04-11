@@ -1,4 +1,5 @@
-import type { ICustomServerPermission, PanelTheme } from "./types";
+import type { PanelTheme } from "$lib/code/panel";
+import type { ICustomServerPermission } from "./types";
 
 export interface IGetUserDetailsResponse {
     userId: string;

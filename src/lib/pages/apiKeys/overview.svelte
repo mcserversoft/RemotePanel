@@ -2,8 +2,7 @@
 	import { mdiCheck, mdiClose, mdiKeyChainVariant, mdiKeyVariant, mdiRefresh } from '@mdi/js';
 	import { deleteApiKey, getApiKeys } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page, WarningType } from '../../../types';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import { onMount } from 'svelte';
@@ -13,6 +12,7 @@
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import type { IApiKey } from '$lib/code/apiKey';
+	import { WarningType } from '$lib/code/panel';
 
 	let apiKeys: IApiKey[] = [];
 	let isLoading = true;

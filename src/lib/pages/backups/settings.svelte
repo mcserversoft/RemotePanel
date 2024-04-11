@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mdiArchive, mdiClose, mdiContentSave } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { McssSettingsSection, Page } from '../../../types';
+	import { McssSettingsSection } from '../../../types';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import { Button } from 'flowbite-svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
@@ -12,6 +12,7 @@
 	import { onMount } from 'svelte';
 	import { getMcssSettings, updateMcssSettings } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import { Page } from '$lib/code/routing';
 
 	let zipFileFormat: string;
 	let deleteOldBackupsThreshold: number;

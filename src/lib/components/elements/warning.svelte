@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mdiAlertOctagram, mdiAlertRhombus, mdiCheck, mdiInformation, mdiShieldLock } from '@mdi/js';
 	import Icon from './icon.svelte';
-	import { WarningType } from '../../../types';
+	import { WarningType } from '$lib/code/panel';
 
 	export let message: string = '';
 	export let type: WarningType = WarningType.Error;

@@ -4,10 +4,10 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, McssSettingsSection, WarningType } from '../../../types';
+	import { McssSettingsSection } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createBackup, getMcssSettings } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';

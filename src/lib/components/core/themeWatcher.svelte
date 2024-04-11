@@ -4,7 +4,7 @@
 	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
 	import { getPanelTheme, setPanelTheme } from '$lib/code/theme';
-	import { PanelTheme } from '../../../types';
+	import { PanelTheme } from '$lib/code/panel';
 
 	// listen on panel theme changes
 	$: handleThemeChange.bind($settings.panelTheme)();

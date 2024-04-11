@@ -4,8 +4,7 @@
 	import { mdiCheck, mdiClose, mdiRefresh, mdiWebhook } from '@mdi/js';
 	import { deleteWebhook, getWebhooks } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page } from '../../../types';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';

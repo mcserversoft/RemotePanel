@@ -3,8 +3,8 @@
 	import { deletePanelUser, getPanelUsers, wipeUserSessions } from '$lib/code/api';
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page, type IPanelUser } from '../../../types';
+	import { Page, navigateToPage } from '$lib/code/routing';
+	import { type IPanelUser } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Button from '$lib/components/elements/button.svelte';

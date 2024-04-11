@@ -15,27 +15,6 @@ export interface Memory {
 }
 
 
-
-export enum Filter {
-    None,
-    Minimal,
-    Status
-}
-
-
-export interface PageReference {
-    name: string;
-    page: Page;
-    isActive: boolean;
-    hasPermission: boolean;
-}
-
-export interface BreadcrumbItem {
-    name: string;
-    page: Page;
-    isClickable: boolean;
-}
-
 /**** NEW START ****/
 // start of the final approved/refactored code
 
@@ -45,60 +24,6 @@ export enum McssSettingsSection {
     Backups,
 }
 
-/* Panel */
-export enum Page {
-    Empty,
-    About,
-    Account,
-    Backups,
-    BackupsCreate,
-    BackupsEdit,
-    BackupHistory,
-    BackupSettings,
-    Console,
-    Dashboard,
-    ServerEdit,
-    Servers,
-    Settings,
-    Users,
-    UsersCreate,
-    UsersEdit,
-    Scheduler,
-    SchedulerTaskCreate,
-    SchedulerTaskEdit,
-    SchedulerHistory,
-    ApiKeysOverview,
-    ApiKeysCreate,
-    ApiKeysCreated,
-    Webhooks,
-    WebhooksCreate,
-    WebhooksEdit,
-}
-
-export enum PanelTheme {
-    Dark,
-    Light,
-    System
-}
-
-export interface IPanelSettings {
-    panelTheme: PanelTheme,
-    serverRefreshRate: number,
-    consoleRefreshRate: number,
-    amountOfConsoleLines: number,
-    enableAutomaticConsoleScrolling: boolean,
-    enableConsoleChatMode: boolean,
-    enableDebugging: boolean
-    lastModifiedAt: Date
-}
-
-export enum WarningType {
-    Error,
-    Warning,
-    Permission,
-    Info,
-    Success
-}
 
 /* User */
 export interface IPanelUser {
@@ -124,7 +49,6 @@ export interface IEditPanelUser extends Omit<INewPanelUser, 'username'> {
     userId: string;
 }
 
-export interface IEditPanelSettings extends Omit<IPanelSettings, 'lastModifiedAt'> { }
 
 
 /* User Account */
@@ -286,3 +210,4 @@ export interface ICustomServerPermission {
     deleteSchedulerTasks: boolean;
     triggerSchedulerTask: boolean;
 }
+

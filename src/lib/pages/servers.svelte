@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { derived, writable } from 'svelte/store';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import { postMassServerAction } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
-	import { Page } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 	import { isLoadingServers, selectedServerId, servers } from '$lib/code/global';

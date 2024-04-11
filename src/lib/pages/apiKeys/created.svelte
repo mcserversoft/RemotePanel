@@ -2,15 +2,15 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { Button } from 'flowbite-svelte';
-	import { Page, WarningType } from '../../../types';
 	import { mdiArrowULeftTop, mdiClipboardTextMultiple, mdiKeyChainVariant } from '@mdi/js';
-	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
+	import { Page, navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import Input from '$lib/components/elements/input.svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import { WarningType } from '$lib/code/panel';
 
 	let plainApiKey: string;
 

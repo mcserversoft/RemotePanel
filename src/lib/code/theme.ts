@@ -1,7 +1,6 @@
 import { get } from 'svelte/store';
-
-import { PanelTheme } from '../../types';
 import { settings } from './storage';
+import { PanelTheme } from './panel';
 
 export function getPanelTheme(): PanelTheme {
     const useSystemTheme = get(settings).panelTheme == PanelTheme.System;

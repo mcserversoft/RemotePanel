@@ -3,8 +3,7 @@
 	import Logo from '$lib/components/elements/logo.svelte';
 	import CurrentThemeIcon from '../core/currentThemeIcon.svelte';
 	import UserDropdown from './userDropdown.svelte';
-	import { selectedPage, navigateToPage } from '$lib/code/routing';
-	import { Page } from '../../../types';
+	import { selectedPage, navigateToPage, Page } from '$lib/code/routing';
 	import NavItem from './navItem.svelte';
 	import { Url, getURLToCurrentUserAvatar, getUrl } from '$lib/code/urlLibrary';
 	import { openInNewTab } from '$lib/code/shared';

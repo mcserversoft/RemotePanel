@@ -3,10 +3,9 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createSchedulerTask } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import { Button } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
@@ -20,6 +19,7 @@
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
 	import { jobOptions, timingOptions, type INewSchedulerTask, type JobTask, type TaskTiming, IntervalTaskTiming, FixedTimeTaskTiming, BackupJobTask, CommandJobTask, ServerActionJobTask } from '$lib/code/scheduler';
+	import { WarningType } from '$lib/code/panel';
 
 	let name: string = '';
 	let job: JobTask;

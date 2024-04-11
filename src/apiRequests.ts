@@ -1,4 +1,4 @@
-import type { ICustomServerPermission, PanelTheme } from "./types";
+import type { ICustomServerPermission } from "./types";
 
 export interface ICreateUserRequest {
     username: string;
@@ -15,15 +15,6 @@ export interface IUpdateUserRequest extends Omit<ICreateUserRequest, 'username' 
     passwordRepeat?: string;
 };
 
-export interface IEditPanelSettingsRequest {
-    panelTheme: PanelTheme,
-    serverRefreshRate: number,
-    consoleRefreshRate: number,
-    amountOfConsoleLines: number,
-    enableAutomaticConsoleScrolling: boolean,
-    enableConsoleChatMode: boolean,
-    enableDebugging: boolean
-}
 
 export interface IUserAvatarRequest {
     image: string,

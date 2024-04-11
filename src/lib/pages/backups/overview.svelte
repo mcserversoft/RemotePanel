@@ -3,8 +3,7 @@
 	import { mdiArchive, mdiArchivePlus, mdiCheck, mdiClose, mdiPlay, mdiRefresh } from '@mdi/js';
 	import { deleteBackup, getBackupStats, getBackups, runBackup } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page, WarningType } from '../../../types';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
@@ -15,6 +14,7 @@
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { getBackupStatusIcon, type Backup, type IBackupStats, getBackupStatusColor } from '$lib/code/backup';
+	import { WarningType } from '$lib/code/panel';
 
 	let backups: Backup[] = [];
 	let backupStats: IBackupStats;

@@ -3,7 +3,6 @@
 	import { mdiArchive, mdiArchiveRemove, mdiRefresh } from '@mdi/js';
 	import { deleteBackupHistory, getBackupHistory } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { Page, WarningType } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
@@ -12,6 +11,8 @@
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { getBackupStatusName, type BackupHistory, getBackupStatusIcon, getBackupStatusColor } from '$lib/code/backup';
+	import { Page } from '$lib/code/routing';
+	import { WarningType } from '$lib/code/panel';
 
 	let backups: BackupHistory[] = [];
 	let isLoading = true;

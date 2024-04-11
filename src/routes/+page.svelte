@@ -3,9 +3,8 @@
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
 	import { getServers } from '$lib/code/api';
-	import { selectedPage } from '$lib/code/routing';
+	import { Page, selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
-	import { Page } from '../types';
 	import AboutPage from '$lib/pages/about.svelte';
 	import AccountPage from '$lib/pages/account.svelte';
 	import BackupsCreatePage from '$lib/pages/backups/create.svelte';

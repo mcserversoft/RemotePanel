@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { PageReference } from '$lib/code/panel';
 	import { navigateToPage } from '$lib/code/routing';
 	import { onMount } from 'svelte';
-	import type { PageReference } from '../../../types';
 
 	export let name: string = 'dropdown';
 	export let items: Array<PageReference> = [];

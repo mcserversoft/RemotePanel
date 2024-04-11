@@ -2,8 +2,7 @@
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { mdiAccountMultiple, mdiClose, mdiContentSave } from '@mdi/js';
-	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
-	import { Page } from '../../../types';
+	import { Page, navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import { getServer, editServer } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';

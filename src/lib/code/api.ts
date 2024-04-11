@@ -17,7 +17,6 @@ import { get } from 'svelte/store';
 import type {
     ICreateUserRequest,
     IDeleteUserAccountRequest,
-    IEditPanelSettingsRequest,
     IUpdateUserAccountRequest,
     IUpdateUserRequest,
     IUserAvatarRequest,
@@ -28,13 +27,10 @@ import type {
     IGetUsersListResponse,
 } from '../../apiResponses';
 import {
-    Filter,
     type IDeleteUserAccount,
-    type IEditPanelSettings,
     type IEditPanelUser,
     type IEditUserAccount,
     type INewPanelUser,
-    type IPanelSettings,
     type IPanelUser,
     McssSettingsSection,
     type Memory,
@@ -46,6 +42,13 @@ import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookR
 import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
 import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
 import type { IServerSettings, ServerAction } from './server';
+import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
+
+export enum Filter {
+    None,
+    Minimal,
+    Status
+}
 
 /*
 *  API Requests

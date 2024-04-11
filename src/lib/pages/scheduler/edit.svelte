@@ -5,9 +5,8 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
-	import { navigateToPage, selectedPageProps } from '$lib/code/routing';
+	import { Page, navigateToPage, selectedPageProps } from '$lib/code/routing';
 	import { Button, TabItem, Tabs } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import Input from '$lib/components/elements/input.svelte';
@@ -22,6 +21,7 @@
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
+	import { WarningType } from '$lib/code/panel';
 
 	let taskId: string;
 	let name: string = '';

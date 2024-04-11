@@ -3,8 +3,7 @@
 	import { mdiArchive, mdiPlay, mdiRefresh, mdiTimerPlus } from '@mdi/js';
 	import { deleteSchedulerTask, getSchedulerDetails, getSchedulerTasks, runSchedulerTask } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
-	import { navigateToPage } from '$lib/code/routing';
-	import { Page, WarningType } from '../../../types';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import { selectedServerId } from '$lib/code/global';
 	import ServerSelector from '$lib/components/server/serverSelector.svelte';
@@ -14,6 +13,7 @@
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { getTaskEnabledIcon, getTaskEnabledIconColor, getTaskJob, getTaskTiming, type ISchedulerDetails, type ISchedulerTask } from '$lib/code/scheduler';
 	import SchedulerOverview from '$lib/components/scheduler/schedulerOverview.svelte';
+	import { WarningType } from '$lib/code/panel';
 
 	let tasks: ISchedulerTask[] = [];
 	let schedulerDetails: ISchedulerDetails;
