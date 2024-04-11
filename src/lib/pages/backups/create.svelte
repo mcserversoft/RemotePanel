@@ -95,8 +95,8 @@
 	{#if hasPermission(Permission.createBackup, $selectedServerId)}
 		<form on:submit|preventDefault={createNewBackup}>
 			<BoxedContainer class="space-y-3">
-				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Backup name'} required={true} />
-				<Input bind:value={destination} label={'Destination'} type={'string'} required={true} />
+				<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Backup name'} required={true} />
+				<Input bind:value={destination} label={'Destination'} type={'text'} required={true} />
 
 				<Label>
 					Compression

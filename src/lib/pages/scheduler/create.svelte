@@ -94,7 +94,7 @@
 	{#if hasPermission(Permission.createSchedulerTask, $selectedServerId)}
 		<form on:submit|preventDefault={createNewScheduledTask}>
 			<BoxedContainer class="space-y-3">
-				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Task name'} required={true} />
+				<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Task name'} required={true} />
 			</BoxedContainer>
 			<BoxedContainer class="space-y-3">
 				<span class="space-y-1 text-sm font-medium">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mdiAccountMultipleRemove, mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
+	import { mdiAccountMultiple, mdiAccountMultipleRemove, mdiAccountPlus, mdiCheck, mdiClose, mdiRefresh } from '@mdi/js';
 	import { deletePanelUser, getPanelUsers, wipeUserSessions } from '$lib/code/api';
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
@@ -8,6 +8,7 @@
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Button from '$lib/components/elements/button.svelte';
+	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 
 	let users: IPanelUser[] = [];
 	let isLoading = true;
@@ -76,6 +77,14 @@
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
+	<Breadcrumb
+		icon={mdiAccountMultiple}
+		items={[
+			{ name: 'Users', page: Page.Users, isClickable: true },
+			{ name: 'Overview', page: Page.Empty, isClickable: false }
+		]}
+	/>
+
 	<div class="relative overflow-x-auto">
 		<PageTitleBanner title="Users Overview" caption="All users that are configured to view and use the Remote Panel.">
 			<div class="self-center">

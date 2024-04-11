@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mdiCheck, mdiClose, mdiKeyVariant, mdiRefresh } from '@mdi/js';
+	import { mdiCheck, mdiClose, mdiKeyChainVariant, mdiKeyVariant, mdiRefresh } from '@mdi/js';
 	import { deleteApiKey, getApiKeys } from '$lib/code/api';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { navigateToPage } from '$lib/code/routing';
@@ -11,6 +11,7 @@
 	import Warning from '$lib/components/elements/warning.svelte';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
+	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 
 	let apiKeys: IApiKey[] = [];
 	let isLoading = true;
@@ -60,6 +61,14 @@
 </svelte:head>
 
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 dark:text-white">
+	<Breadcrumb
+		icon={mdiKeyChainVariant}
+		items={[
+			{ name: 'API Keys', page: Page.ApiKeysOverview, isClickable: true },
+			{ name: 'Overview', page: Page.Empty, isClickable: false }
+		]}
+	/>
+
 	<div class="relative overflow-x-auto">
 		<PageTitleBanner title="API Keys" caption="Manage API access with API Keys. These are used to authenticate against the the Remote API.">
 			<div class="self-center">

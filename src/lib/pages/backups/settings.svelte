@@ -92,7 +92,7 @@
 
 	<form on:submit|preventDefault={saveBackupSettings} class="space-y-3">
 		<BoxedContainer>
-			<Input bind:value={zipFileFormat} on:input={handleInputChange} label={'ZIP File Format'} type={'string'} min="1" max="3600" required={true}>
+			<Input bind:value={zipFileFormat} on:input={handleInputChange} label={'ZIP File Format'} type={'text'} min="1" max="3600" required={true}>
 				Provide a custom format for backup ZIP files. If the format is invalid the default will be used.<br />Available parameters: [date] [time] [unix] [backupname] [servername]</Input
 			>
 			<OpenInNewTab url={getUrl(Url.DocumentationCustomZipFileFormat)} text={'More info about custom formats and parameters.'} />
