@@ -33,9 +33,7 @@ import {
     type INewPanelUser,
     type IPanelUser,
     McssSettingsSection,
-    type Memory,
     ServerAccessDetails,
-    type Stats,
 } from '../../types';
 import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
 import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
@@ -43,6 +41,7 @@ import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackup
 import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
 import type { IServerSettings, ServerAction } from './server';
 import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
+import type { Memory, Stats } from './statistics';
 
 export enum Filter {
     None,

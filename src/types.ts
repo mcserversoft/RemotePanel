@@ -1,29 +1,8 @@
-export interface Stats {
-    cpu: number;
-    memory: Memory;
-    playersOnline: number;
-    playerLimit: number;
-    startDateUnix: number;
-    startDate: string;
-    uptime: string;
-}
-
-export interface Memory {
-    current: number;
-    max: number;
-    free: number;
-}
-
-
-/**** NEW START ****/
-// start of the final approved/refactored code
-
 export enum McssSettingsSection {
     InvalidOrEmpty,
     All,
     Backups,
 }
-
 
 /* User */
 export interface IPanelUser {

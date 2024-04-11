@@ -4,11 +4,11 @@
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import { Page, navigateToPage } from '$lib/code/routing';
-	import { type IPanelUser } from '../../../types';
 	import Spinner from '$lib/components/elements/spinner.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Button from '$lib/components/elements/button.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
+	import type { IPanelUser } from '../../../types';
 
 	let users: IPanelUser[] = [];
 	let isLoading = true;

@@ -16,6 +16,7 @@
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { BackupCompression, BackupFilterListDetails, type INewBackup } from '$lib/code/backup';
+	import { WarningType } from '$lib/code/panel';
 
 	let name: string = '';
 	let destination: string = '';

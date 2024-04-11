@@ -3,10 +3,10 @@
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { getServerStatus } from '$lib/code/api';
-	import type { Stats } from '../../../types';
 	import ServerStatistic from './stat.svelte';
 	import { mdiAccountCowboyHat, mdiChartArc, mdiChip, mdiClockTimeEight } from '@mdi/js';
 	import { selectedServerId } from '$lib/code/global';
+	import type { Stats } from '$lib/code/statistics';
 
 	let stats: Stats = {
 		cpu: 0,
