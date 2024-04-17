@@ -12,11 +12,9 @@
 	import Input from '$lib/components/elements/input.svelte';
 	import { editWebhooks as editWebhook, getWebhookDetails } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
-	import { messageFormats, type IEditWebhook, type IWebhook, convertRawHeaderInput, convertToRawHeaderInput } from '$lib/code/webhook';
+	import { messageFormats, type IEditWebhook, type IWebhook, convertRawHeaderInput, convertToRawHeaderInput, isRawHeaderInputValid } from '$lib/code/webhook';
 	import HttpHeaderSelector from '$lib/components/webhooks/httpHeaderSelector.svelte';
 	import TriggerSelector from '$lib/components/webhooks/triggerSelector.svelte';
-
-	//TODO save state & validate headers
 
 	let webhookId: string;
 	let name: string = '';
@@ -62,6 +60,11 @@
 	}
 
 	function updateWebhook() {
+		if (!isRawHeaderInputValid(headersRawInput)) {
+			confirm(`The provided format of the headers are invalid, please check the format and try again.`);
+			return;
+		}
+
 		let updatedWebhook: IEditWebhook = {
 			name: name,
 			url: url,
@@ -113,7 +116,7 @@
 	<form on:submit|preventDefault={updateWebhook} class="space-y-3">
 		<BoxedContainer class="space-y-3">
 			<Input bind:value={name} on:input={handleInputChange} label={'Name'} type={'text'} placeholder={'Webhook name'} required={true} />
-			<Input bind:value={url} on:input={handleInputChange} label={'URL'} type={'text'} required={true} />
+			<Input bind:value={url} on:input={handleInputChange} label={'URL'} type={'url'} required={true} />
 
 			<Label>
 				Message Format
@@ -122,11 +125,11 @@
 		</BoxedContainer>
 
 		<BoxedContainer class="space-y-3">
-			<HttpHeaderSelector bind:headersRawInput {isCollapsed} />
+			<HttpHeaderSelector bind:headersRawInput {isCollapsed} on:update={handleInputChange} />
 		</BoxedContainer>
 
 		<BoxedContainer>
-			<TriggerSelector bind:selectedTriggers={webhookTriggers} />
+			<TriggerSelector bind:selectedTriggers={webhookTriggers} on:update={handleInputChange} />
 		</BoxedContainer>
 
 		<BoxedContainer class="space-y-4">

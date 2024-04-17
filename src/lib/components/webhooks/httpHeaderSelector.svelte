@@ -1,12 +1,21 @@
 <script lang="ts">
 	import { mdiMenuDown, mdiMenuUp } from '@mdi/js';
 	import Icon from '../elements/icon.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let isCollapsed = true;
 	export let headersRawInput: string;
 
+	const dispatch = createEventDispatcher();
+
 	function handleCollapse() {
 		isCollapsed = !isCollapsed;
+	}
+
+	function handleInputChange() {
+		if (headersRawInput) {
+			dispatch('update', { headersRawInput });
+		}
 	}
 </script>
 
@@ -27,6 +36,7 @@
 {#if !isCollapsed}
 	<textarea
 		bind:value={headersRawInput}
+		on:input={(event) => handleInputChange()}
 		class="block w-full h-40 font-consolas md:px-5 px-2 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
 		placeholder="Authentication:Bearer eyJhbGciOiJIUzI1Ni...
 User-Agent:MCSS API"

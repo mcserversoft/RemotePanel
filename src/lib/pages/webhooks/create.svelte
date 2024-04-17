@@ -9,20 +9,23 @@
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
-	import { messageFormats, type INewWebhook, getCustomTriggers, convertRawHeaderInput } from '$lib/code/webhook';
+	import { messageFormats, type INewWebhook, getCustomTriggers, convertRawHeaderInput, isRawHeaderInputValid } from '$lib/code/webhook';
 	import HttpHeaderSelector from '$lib/components/webhooks/httpHeaderSelector.svelte';
 	import TriggerSelector from '$lib/components/webhooks/triggerSelector.svelte';
-
-	//TODO save state & validate headers
 
 	let name: string = '';
 	let url: string = '';
 	let messageFormat: number = 0;
-	let headersRawInput: string;
+	let headersRawInput: string = '';
 	let triggers: string[] = getCustomTriggers();
 	let enabled: boolean = true;
 
 	function createNewWebhook() {
+		if (!isRawHeaderInputValid(headersRawInput)) {
+			confirm(`The provided format of the headers are invalid, please check the format and try again.`);
+			return;
+		}
+
 		let newWebhook: INewWebhook = {
 			name: name,
 			url: url,
@@ -31,7 +34,6 @@
 			webhookTriggers: triggers,
 			optionalHeaders: convertRawHeaderInput(headersRawInput)
 		};
-
 		createWebhook(newWebhook, (wasSuccess: boolean) => {
 			if (wasSuccess) {
 				confirm(`Webhook: '${newWebhook.name}' was successfully created.`);
@@ -65,7 +67,7 @@
 	<form on:submit|preventDefault={createNewWebhook}>
 		<BoxedContainer class="space-y-3">
 			<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Webhook name'} required={true} />
-			<Input bind:value={url} label={'URL'} type={'text'} required={true} />
+			<Input bind:value={url} label={'URL'} type={'url'} required={true} />
 
 			<Label>
 				Message Format

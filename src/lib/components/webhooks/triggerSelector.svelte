@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { getCustomTriggers as getSelectableWebhookTriggers } from '$lib/code/webhook';
+	import { createEventDispatcher } from 'svelte';
 
 	export let selectedTriggers: string[] = [];
 	let areAllTriggersSelected: boolean = false;
+	const dispatch = createEventDispatcher();
 
 	$: if (areAllTriggersSelected) {
 		selectedTriggers = getSelectableWebhookTriggers();
@@ -10,15 +12,22 @@
 
 	function handleSelectAll() {
 		areAllTriggersSelected = true;
+		triggerUpdateIfAllowed();
 	}
 
 	function handleUnselectAll() {
 		areAllTriggersSelected = false;
 		selectedTriggers = [];
+		triggerUpdateIfAllowed();
 	}
 
 	function handleTriggerInput(event: any, trigger: string) {
 		areAllTriggersSelected = selectedTriggers.length >= getSelectableWebhookTriggers().length;
+		triggerUpdateIfAllowed();
+	}
+
+	function triggerUpdateIfAllowed() {
+		dispatch('update', { areAllTriggersSelected });
 	}
 </script>
 

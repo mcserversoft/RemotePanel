@@ -91,3 +91,13 @@ export function convertToRawHeaderInput(headers: { key: string; value: string }[
         .join('\n') ?? '';
 }
 
+
+// Check if the raw header input is matched the "key:value" format, empty lines or lines with spaces are allowed
+export function isRawHeaderInputValid(rawInput: string): boolean {
+    const lines = rawInput.split('\n');
+    const regex = /^[^\s:]+:[^\s:]+$/;
+    return lines.every(line => {
+        line = line.trim();
+        return line === '' || regex.test(line);
+    });
+}
