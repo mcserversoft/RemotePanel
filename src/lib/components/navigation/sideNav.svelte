@@ -145,6 +145,7 @@
 					<!-- <NavItem name="API Keys"> -->
 					<NavItem on:click={() => handleNavigationRequest(Page.ApiKeysOverview)} name="API Keys" isActive={$selectedPage == Page.ApiKeysOverview || $selectedPage == Page.ApiKeysCreate}>
 						<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />
+						<span slot="suffix" class="text-xs font-medium mx-1.5 px-2.5 py-0.5 rounded bg-purple-300 text-gray-800 dark:bg-purple-700 dark:text-gray-300">NEW</span>
 					</NavItem>
 
 					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate || $selectedPage == Page.UsersEdit}>
@@ -153,6 +154,7 @@
 
 					<NavItem on:click={() => handleNavigationRequest(Page.Webhooks)} name="Webhooks" isActive={$selectedPage == Page.Webhooks || $selectedPage == Page.WebhooksCreate || $selectedPage == Page.WebhooksEdit}>
 						<Icon data={mdiWebhook} size={6} class={'text-gray-500 dark:text-gray-400'} />
+						<span slot="suffix" class="text-xs font-medium mx-1.5 px-2.5 py-0.5 rounded bg-purple-300 text-gray-800 dark:bg-purple-700 dark:text-gray-300">NEW</span>
 					</NavItem>
 				{/if}
 
