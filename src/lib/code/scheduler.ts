@@ -1,4 +1,6 @@
 import { mdiCheck, mdiClose, mdiMinus } from "@mdi/js";
+import { Guid } from 'guid-ts';
+
 
 export const jobOptions = [
     { value: 0, name: 'Server Action' },
@@ -11,6 +13,14 @@ export const timingOptions = [
     { value: 1, name: 'Time' },
     { value: 2, name: 'Timeless' }
 ];
+
+// not the same as ServerAction, this starts from 0
+export enum SchedulerServerAction {
+    Stop = 0,
+    Start = 1,
+    Kill = 2,
+    Restart = 3
+}
 
 export interface ISchedulerDetails {
     tasks: number;
@@ -25,7 +35,7 @@ export interface ISchedulerTask {
     enabled: boolean;
     playerRequirement: number;
     timing: TaskTiming;
-    job: JobTask;
+    jobs: JobTask[];
 }
 
 export interface INewSchedulerTask {
@@ -33,45 +43,97 @@ export interface INewSchedulerTask {
     enabled: boolean;
     playerRequirement: number;
     timing: TaskTiming;
-    job: JobTask;
+    jobs: JobTask[];
 }
 
 export interface IEditSchedulerTask extends INewSchedulerTask { }
 
 /* Job */
-export interface JobTask { }
+export interface JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+}
 
 export class CommandJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
     commands: string[];
 
-    constructor(commands: string[]) {
+    constructor(id: Guid, enabled: boolean, order: number, commands: string[]) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
         this.commands = commands;
     }
 }
 
 export class BackupJobTask implements JobTask {
-    BackupIdentifier: string;
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+    backupIdentifier: string;
 
-    constructor(BackupIdentifier: string) {
-        this.BackupIdentifier = BackupIdentifier;
+    constructor(id: Guid, enabled: boolean, order: number, backupIdentifier: string) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
+        this.backupIdentifier = backupIdentifier;
     }
 }
 
 export class ServerActionJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
     action: number;
 
-    constructor(action: number) {
+    constructor(id: Guid, enabled: boolean, order: number, action: number) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
         this.action = action;
     }
 }
 
-export class EmptyJobTask implements JobTask { }
+export class DelayJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+    delay: number;
+
+    constructor(id: Guid, enabled: boolean, order: number, delay: number) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
+        this.delay = delay;
+    }
+}
+
+export class EmptyJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+
+    constructor() {
+        this.jobId = Guid.empty();
+        this.enabled = false;
+        this.order = undefined!;
+    }
+    // constructor(id: string, enabled: boolean, order: number) {
+    //     this.id = id;
+    //     this.enabled = enabled;
+    //     this.order = order;
+    // }
+}
 
 export enum Job {
     empty = "Empty Job",
     backup = "Backup",
     commands = "Command",
     serverAction = "Server Action",
+    delay = "Delay",
 }
 
 export function getTaskJob(job: JobTask): Job {
@@ -85,6 +147,8 @@ export function getTaskJob(job: JobTask): Job {
         return Job.commands;
     } else if (job instanceof ServerActionJobTask) {
         return Job.serverAction;
+    } else if (job instanceof DelayJobTask) {
+        return Job.delay;
     }
 
     return Job.empty;
@@ -97,7 +161,7 @@ export class FixedTimeTaskTiming implements TaskTiming {
     repeat: boolean;
     time: string;
 
-    constructor(repeat: boolean, time: string) {
+      constructor(repeat: boolean, time: string) {
         this.repeat = repeat;
         this.time = time;
     }
@@ -142,7 +206,7 @@ export interface ICreateSchedulerTaskRequest {
     enabled: boolean;
     playerRequirement: number
     timing: object
-    job: object
+    jobs: object[]
 }
 
 export interface IUpdateSchedulerTaskRequest extends ICreateSchedulerTaskRequest { }
@@ -154,7 +218,7 @@ export function translateRawSchedulerResponse(data: any): ISchedulerTask {
         name: data.name,
         playerRequirement: data.playerRequirement,
         timing: new TimelessTaskTiming(),
-        job: new EmptyJobTask()
+        jobs: new Array()
     }
 
     if ('interval' in data.timing) {
@@ -165,14 +229,19 @@ export function translateRawSchedulerResponse(data: any): ISchedulerTask {
         task.timing = new TimelessTaskTiming();
     }
 
-    if ('commands' in data.job) {
-        task.job = new CommandJobTask(data.job.commands as string[]);
-    } else if ('backupIdentifier' in data.job) {
-        task.job = new BackupJobTask(data.job.backupIdentifier as string);
-    } else if ('action' in data.job) {
-        task.job = new ServerActionJobTask(data.job.action as number);
-    } else {
-        task.job = new EmptyJobTask();
+
+    for (let job of data.jobs) {
+        if ('commands' in job) {
+            task.jobs.push(new CommandJobTask(job.guid, job.enabled, job.order, job.commands as string[]));
+        } else if ('backupIdentifier' in job) {
+            task.jobs.push(new BackupJobTask(job.guid, job.enabled, job.order, job.backupIdentifier as string));
+        } else if ('action' in job) {
+            task.jobs.push(new ServerActionJobTask(job.guid, job.enabled, job.order, job.action as number));
+        } else if ('delay' in job) {
+            task.jobs.push(new DelayJobTask(job.guid, job.enabled, job.order, job.delay as number));
+        } else {
+            task.jobs.push(new EmptyJobTask());
+        }
     }
 
     return task;

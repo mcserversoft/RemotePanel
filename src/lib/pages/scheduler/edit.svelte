@@ -13,20 +13,19 @@
 	import { editSchedulerTask, getSchedulerTaskDetails } from '$lib/code/api';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
-	import { jobOptions, type ISchedulerTask, timingOptions, type JobTask, type TaskTiming, ServerActionJobTask, CommandJobTask, BackupJobTask, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming, type IEditSchedulerTask } from '$lib/code/scheduler';
-	import TaskJobServerActionInput from '$lib/components/scheduler/taskJobServerActionInput.svelte';
-	import TaskJobCommandsInput from '$lib/components/scheduler/taskJobCommandsInput.svelte';
-	import TaskJobBackupInput from '$lib/components/scheduler/taskJobBackupInput.svelte';
+	import { type ISchedulerTask, timingOptions, type JobTask, type TaskTiming, IntervalTaskTiming, FixedTimeTaskTiming, TimelessTaskTiming, type IEditSchedulerTask } from '$lib/code/scheduler';
 	import TaskTimingIntervalInput from '$lib/components/scheduler/taskTimingIntervalInput.svelte';
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { WarningType } from '$lib/code/panel';
+	import JobsList from '$lib/components/scheduler/jobsList.svelte';
 
 	let taskId: string;
 	let name: string = '';
 	let enabled: boolean = true;
-	let job: JobTask;
+	let jobs: Array<JobTask> = [];
+
 	let timing: TaskTiming;
 	let playerRequirement: number;
 
@@ -54,7 +53,7 @@
 			} else {
 				name = taskDetails.name;
 				enabled = taskDetails.enabled;
-				job = taskDetails.job;
+				jobs = taskDetails.jobs;
 				timing = taskDetails.timing;
 				playerRequirement = taskDetails.playerRequirement;
 
@@ -67,7 +66,7 @@
 		let updatedTask: IEditSchedulerTask = {
 			name: name,
 			enabled: enabled,
-			job: job,
+			jobs: jobs,
 			timing: timing,
 			playerRequirement: playerRequirement
 		};
@@ -83,22 +82,12 @@
 		});
 	}
 
+	function handleJobsInputChange(updatedJobs: any) {
+		jobs = updatedJobs.detail;
+		handleInputChange();
+	}
+
 	function handleInputChange() {
-		areButtonsDisabled = false;
-	}
-
-	function handleTaskJobServerActionInput(event: any) {
-		job = new ServerActionJobTask(event.detail);
-		areButtonsDisabled = false;
-	}
-
-	function handleTaskJobCommandsInput(event: any) {
-		job = new CommandJobTask(event.detail);
-		areButtonsDisabled = false;
-	}
-
-	function handleTaskJobBackupInput(event: any) {
-		job = new BackupJobTask(event.detail);
 		areButtonsDisabled = false;
 	}
 
@@ -149,25 +138,7 @@
 				<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Task name'} required={true} on:input={handleInputChange} />
 			</BoxedContainer>
 			<BoxedContainer class="space-y-3">
-				<span class="space-y-1 text-sm font-medium">
-					<p class="">Job</p>
-					<p class="text-gray-400">Choose what this task should do.</p>
-				</span>
-
-				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" open={job instanceof ServerActionJobTask ? true : false} disabled={job instanceof ServerActionJobTask ? false : true} activeClasses={tabItemStyle}>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
-						<TaskJobServerActionInput {job} on:update={handleTaskJobServerActionInput} />
-					</TabItem>
-					<TabItem class="w-full" open={job instanceof CommandJobTask ? true : false} disabled={job instanceof CommandJobTask ? false : true} activeClasses={tabItemStyle}>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
-						<TaskJobCommandsInput {job} on:update={handleTaskJobCommandsInput} />
-					</TabItem>
-					<TabItem class="w-full" open={job instanceof BackupJobTask ? true : false} disabled={job instanceof BackupJobTask ? false : true} activeClasses={tabItemStyle}>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
-						<TaskJobBackupInput {job} on:update={handleTaskJobBackupInput} />
-					</TabItem>
-				</Tabs>
+				<JobsList {jobs} on:update={handleJobsInputChange} />
 			</BoxedContainer>
 			<BoxedContainer class="space-y-3">
 				<span class="space-y-1 text-sm font-medium">

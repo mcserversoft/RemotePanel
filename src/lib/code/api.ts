@@ -874,7 +874,7 @@ export function getSchedulerTasks(serverId: string, report: (backups: IScheduler
         })
 }
 
-export function getSchedulerDetails(serverId: string, report: (stats: ISchedulerDetails) => void, completed: (wasSuccess: boolean) => void): void {
+export function getSchedulerDetails(serverId: string, report: (details: ISchedulerDetails) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getSchedulerDetails");
     axiosClient().get(`/api/v2/servers/${serverId}/scheduler`)
         .then((response) => {
@@ -886,8 +886,8 @@ export function getSchedulerDetails(serverId: string, report: (stats: IScheduler
             log(response?.data);
             return response?.data ?? [];
         })
-        .then((stats) => {
-            report(stats);
+        .then((details) => {
+            report(details);
             completed(true);
         })
         .catch((error) => {
@@ -928,7 +928,7 @@ export function editSchedulerTask(serverId: string, taskId: string, updatedTask:
         enabled: updatedTask.enabled,
         playerRequirement: updatedTask.playerRequirement,
         timing: updatedTask.timing,
-        job: updatedTask.job
+        jobs: updatedTask.jobs
     }
 
     axiosClient().put(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`, JSON.stringify(updatedTask))
@@ -968,7 +968,7 @@ export function runSchedulerTask(serverId: string, taskId: string, completed: (w
 }
 
 export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask, completed: (wasSuccess: boolean) => void) {
-    log("API Request: createBackup");
+    log("API Request: createSchedulerTask");
 
     //formulate proper request
     var requestBody: ICreateSchedulerTaskRequest = {
@@ -976,7 +976,7 @@ export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask
         enabled: newTask.enabled,
         playerRequirement: newTask.playerRequirement,
         timing: newTask.timing,
-        job: newTask.job
+        jobs: newTask.jobs
     }
 
     axiosClient().post(`/api/v2/servers/${serverId}/scheduler/tasks`, JSON.stringify(requestBody))
@@ -1124,7 +1124,6 @@ export function getWebhooks(report: (webhooks: IWebhook[]) => void, completed: (
         .then((rawData) => {
             let webhooks: IWebhook[] = [];
             rawData.forEach((data: any) => {
-                // webhooks.push(translateRawSchedulerResponse(data));
                 webhooks.push(data);
             });
 

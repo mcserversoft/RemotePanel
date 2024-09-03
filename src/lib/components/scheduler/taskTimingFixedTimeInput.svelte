@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import Input from '../elements/input.svelte';
 	import Toggle from '../elements/toggle.svelte';
-	import type { FixedTimeTaskTiming } from '$lib/code/scheduler';
+	import { FixedTimeTaskTiming } from '$lib/code/scheduler';
 
 	export let timing: any;
 

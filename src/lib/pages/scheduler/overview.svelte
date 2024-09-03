@@ -11,7 +11,7 @@
 	import Button from '$lib/components/elements/button.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
-	import { getTaskEnabledIcon, getTaskEnabledIconColor, getTaskJob, getTaskTiming, type ISchedulerDetails, type ISchedulerTask } from '$lib/code/scheduler';
+	import { getTaskEnabledIcon, getTaskEnabledIconColor, getTaskTiming, type ISchedulerDetails, type ISchedulerTask } from '$lib/code/scheduler';
 	import SchedulerOverview from '$lib/components/scheduler/schedulerOverview.svelte';
 	import { WarningType } from '$lib/code/panel';
 
@@ -139,7 +139,7 @@
 					<thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
 						<tr>
 							<th scope="col" class="px-6 py-3">Name</th>
-							<th scope="col" class="px-6 py-3">Type</th>
+							<th scope="col" class="px-6 py-3">Jobs</th>
 							<th scope="col" class="px-6 py-3">Timing</th>
 							<th scope="col" class="px-6 py-3">Enabled</th>
 							<th scope="col" class="px-6 py-3">{hasPermission(Permission.triggerSchedulerTask, $selectedServerId) ? 'Trigger' : ''} </th>
@@ -151,7 +151,7 @@
 						{#each tasks as task}
 							<tr class="bg-white dark:bg-gray-800">
 								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{task.name}</td>
-								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{getTaskJob(task.job)}</td>
+								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{task.jobs.length}</td>
 								<td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-white">{getTaskTiming(task.timing)}</td>
 
 								<td class="px-6 py-4">
