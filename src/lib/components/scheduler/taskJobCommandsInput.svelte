@@ -19,11 +19,13 @@
 		}
 
 		commands.push(inputCommand);
+
 		//HACK update state
 		commands = commands;
-
+		job.commands = commands;
 		inputCommand = '';
-		dispatch('update', commands);
+
+		dispatch('update', job);
 	}
 
 	function handleDuplicateCommand(command: string) {
@@ -32,9 +34,12 @@
 
 	function handleRemoveCommand(index: number) {
 		commands.splice(index, 1);
+
 		//HACK update state
 		commands = commands;
-		dispatch('update', commands);
+		job.command = commands;
+
+		dispatch('update', job);
 	}
 </script>
 

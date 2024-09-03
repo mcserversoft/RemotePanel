@@ -1,9 +1,9 @@
 import { persisted } from 'svelte-local-storage-store'
 import { get } from 'svelte/store';
-import { baseUrl, navigateToPage } from '$lib/code/routing';
+import { Page, baseUrl, navigateToPage } from '$lib/code/routing';
 import { settings } from '$lib/code/storage';
 import { getPanelUserSettings } from './api';
-import { PanelTheme, type IPanelSettings, Page } from '../../types';
+import { PanelTheme, type IPanelSettings } from './panel';
 
 export enum LoginFailureReason {
     Unauthorized,

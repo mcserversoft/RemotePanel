@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { IBackupStats } from '../../../types';
-	import ColoredDot from './coloredDot.svelte';
+	import type { IBackupStats } from '$lib/code/backup';
+	import ColoredDot from '../elements/coloredDot.svelte';
 
 	export let stats: IBackupStats = { canceled: 0, completed: 0, failed: 0, scheduled: 0 };
 

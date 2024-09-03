@@ -4,17 +4,18 @@
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
 	import ServerPermSelector from '$lib/components/server/serverPermSelector.svelte';
-	import { Page, type INewPanelUser, ServerAccessDetails } from '../../../types';
 	import { Url, getUrl } from '$lib/code/urlLibrary';
 	import { getRandomPassword } from '$lib/code/shared';
 	import { createPanelUser } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import OpenInNewTab from '$lib/components/elements/openInNewTab.svelte';
+	import type { INewPanelUser } from '$lib/code/user';
+	import { ServerAccessDetails } from '$lib/code/permissions';
 
 	let username: string;
 	let password: string;
@@ -64,7 +65,7 @@
 		]}
 	/>
 
-	<PageTitleBanner title="Add User" caption="Create a new user for the remote web panel." />
+	<PageTitleBanner title="Add User" caption="Create a new user for the Remote Web Panel." />
 
 	<form on:submit|preventDefault={createUser} class="space-y-3">
 		<BoxedContainer class="space-y-3">

@@ -2,11 +2,12 @@
 	import { mdiChevronRight, mdiHome } from '@mdi/js';
 
 	import Icon from '../elements/icon.svelte';
-	import type { BreadcrumbItem, Page } from '../../../types';
 	import { navigateToPage } from '$lib/code/routing';
+	import type { BreadcrumbItem } from 'flowbite-svelte';
 
 	export let icon: string = mdiHome;
-	export let items = new Array<BreadcrumbItem>();
+	export let items = new Array<any>();
+	// export let items = new Array<BreadcrumbItem>();
 </script>
 
 <nav class="flex mb-3" aria-label="Breadcrumb">

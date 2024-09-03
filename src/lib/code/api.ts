@@ -9,50 +9,25 @@ import { log } from '$lib/code/logger';
 import {
     hasPermission,
     Permission,
+    ServerAccessDetails,
 } from '$lib/code/permissions';
-import { calculateUptime } from '$lib/code/shared';
 import { settings } from '$lib/code/storage';
 import { get } from 'svelte/store';
+import { type ISchedulerTask, type ISchedulerDetails, translateRawSchedulerResponse, type INewSchedulerTask, type IEditSchedulerTask, type IUpdateSchedulerTaskRequest, type ICreateSchedulerTaskRequest } from './scheduler';
+import { WebhookTrigger, convertWebhookHeaderArrayToObject, type ICreateWebhookRequest, type IEditWebhook, type INewWebhook, type IRawGetWebhookListResponse, type IRawGetWebhookResponse, type IUpdateWebhookRequest, type IWebhook } from './webhook';
+import type { Backup, BackupHistory, IBackupDetails, IBackupStats, ICreateBackupRequest, IEditBackup, INewBackup } from './backup';
+import type { IApiKey, ICreateApiKeyRequest, IGetApiKeyListResponse, INewApiKey } from './apiKey';
+import type { IServerSettings, ServerAction } from './server';
+import type { IEditPanelSettings, IEditPanelSettingsRequest, IPanelSettings } from './panel';
+import { calculateUptime, type Memory, type Stats } from './statistics';
+import type { ICreateUserRequest, IDeleteUserAccount, IDeleteUserAccountRequest, IEditPanelUser, IEditUserAccount, IGetPanelUserSettingsResponse, IGetUserDetailsResponse, IGetUsersListResponse, INewPanelUser, IPanelUser, IUpdateUserAccountRequest, IUpdateUserRequest, IUserAvatarRequest } from './user';
+import type { McssSettingsSection } from './mcss';
 
-import type {
-    ICreateBackupRequest,
-    ICreateSchedulerTaskRequest,
-    ICreateUserRequest,
-    IDeleteUserAccountRequest,
-    IEditPanelSettingsRequest,
-    IUpdateSchedulerTaskRequest,
-    IUpdateUserAccountRequest,
-    IUpdateUserRequest,
-    IUserAvatarRequest,
-} from '../../apiRequests';
-import type {
-    IGetPanelUserSettingsResponse as IGetPanelSettingsResponse,
-    IGetUserDetailsResponse,
-    IGetUsersListResponse,
-} from '../../apiResponses';
-import {
-    type Backup,
-    type BackupHistory,
-    type IBackupStats,
-    Filter,
-    type IBackupDetails,
-    type IDeleteUserAccount,
-    type IEditBackup,
-    type IEditPanelSettings,
-    type IEditPanelUser,
-    type IEditUserAccount,
-    type INewBackup,
-    type INewPanelUser,
-    type IPanelSettings,
-    type IPanelUser,
-    type IServerSettings,
-    McssSettingsSection,
-    type Memory,
-    ServerAccessDetails,
-    type ServerAction,
-    type Stats,
-} from '../../types';
-import { type ISchedulerTask, type ISchedulerDetails, translateRawResponse, type INewSchedulerTask, type IEditSchedulerTask } from './scheduler';
+export enum Filter {
+    None,
+    Minimal,
+    Status
+}
 
 /*
 *  API Requests
@@ -440,14 +415,7 @@ export function createPanelUser(newUser: INewPanelUser, completed: (wasSuccess: 
         customServerPermissions: {}
     }
 
-    Object.entries(newUser.serverAccessDetails.serverPermissions).forEach((perms) => {
-        requestBody.customServerPermissions[perms[1].serverId] = {
-            viewStats: perms[1]?.permissions.viewStats ?? false,
-            viewConsole: perms[1]?.permissions.viewConsole ?? false,
-            useConsole: perms[1]?.permissions.useConsole ?? false,
-            useServerActions: perms[1]?.permissions.useServerActions ?? false,
-        }
-    });
+    ServerAccessDetails.UpdatePermissionTargetObject(newUser.serverAccessDetails, requestBody);
 
     log("API Request: createPanelUser");
     axiosClient().post(`/api/v2/users`, JSON.stringify(requestBody))
@@ -478,14 +446,7 @@ export function editPanelUser(updatedUser: IEditPanelUser, completed: (wasSucces
         customServerPermissions: {}
     }
 
-    Object.entries(updatedUser.serverAccessDetails.serverPermissions).forEach((perms) => {
-        requestBody.customServerPermissions[perms[1].serverId] = {
-            viewStats: perms[1]?.permissions.viewStats ?? false,
-            viewConsole: perms[1]?.permissions.viewConsole ?? false,
-            useConsole: perms[1]?.permissions.useConsole ?? false,
-            useServerActions: perms[1]?.permissions.useServerActions ?? false,
-        }
-    });
+    ServerAccessDetails.UpdatePermissionTargetObject(updatedUser.serverAccessDetails, requestBody);
 
     log("API Request: editPanelUser");
     axiosClient().put(`/api/v2/users/${updatedUser.userId}`, JSON.stringify(requestBody))
@@ -575,6 +536,25 @@ export function deleteUserAccount(deleteUserAccount: IDeleteUserAccount, complet
         })
 }
 
+export function wipeUserSessions(completed: (wasSuccess: boolean) => void) {
+    log("API Request: wipeUserSessions");
+    axiosClient().post(`/api/v2/users/wipe/sessions`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to wipe user sessions Error: ${error}`)
+            completed(false);
+        })
+}
+
 export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSettings: IPanelSettings) => void) {
     log("API Request: getPanelUserSettings");
     axiosClient().get(`/api/v2/users/current/settings`)
@@ -588,7 +568,7 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
             return response?.data ?? [];
         })
         .then((rawResponse) => {
-            return rawResponse as IGetPanelSettingsResponse;
+            return rawResponse as IGetPanelUserSettingsResponse;
         })
         .then((data) => {
             let userSettings: IPanelSettings = {
@@ -882,7 +862,7 @@ export function getSchedulerTasks(serverId: string, report: (backups: IScheduler
         .then((rawData) => {
             let tasks: ISchedulerTask[] = [];
             rawData.forEach((data: any) => {
-                tasks.push(translateRawResponse(data));
+                tasks.push(translateRawSchedulerResponse(data));
             });
 
             report(tasks);
@@ -894,7 +874,7 @@ export function getSchedulerTasks(serverId: string, report: (backups: IScheduler
         })
 }
 
-export function getSchedulerDetails(serverId: string, report: (stats: ISchedulerDetails) => void, completed: (wasSuccess: boolean) => void): void {
+export function getSchedulerDetails(serverId: string, report: (details: ISchedulerDetails) => void, completed: (wasSuccess: boolean) => void): void {
     log("API Request: getSchedulerDetails");
     axiosClient().get(`/api/v2/servers/${serverId}/scheduler`)
         .then((response) => {
@@ -906,8 +886,8 @@ export function getSchedulerDetails(serverId: string, report: (stats: IScheduler
             log(response?.data);
             return response?.data ?? [];
         })
-        .then((stats) => {
-            report(stats);
+        .then((details) => {
+            report(details);
             completed(true);
         })
         .catch((error) => {
@@ -929,7 +909,7 @@ export function getSchedulerTaskDetails(serverId: string, taskId: string, report
             return response?.data ?? [];
         })
         .then((rawData) => {
-            report(true, translateRawResponse(rawData));
+            report(true, translateRawSchedulerResponse(rawData));
         })
 
         .catch((error) => {
@@ -948,7 +928,7 @@ export function editSchedulerTask(serverId: string, taskId: string, updatedTask:
         enabled: updatedTask.enabled,
         playerRequirement: updatedTask.playerRequirement,
         timing: updatedTask.timing,
-        job: updatedTask.job
+        jobs: updatedTask.jobs
     }
 
     axiosClient().put(`/api/v2/servers/${serverId}/scheduler/tasks/${taskId}`, JSON.stringify(updatedTask))
@@ -988,7 +968,7 @@ export function runSchedulerTask(serverId: string, taskId: string, completed: (w
 }
 
 export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask, completed: (wasSuccess: boolean) => void) {
-    log("API Request: createBackup");
+    log("API Request: createSchedulerTask");
 
     //formulate proper request
     var requestBody: ICreateSchedulerTaskRequest = {
@@ -996,7 +976,7 @@ export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask
         enabled: newTask.enabled,
         playerRequirement: newTask.playerRequirement,
         timing: newTask.timing,
-        job: newTask.job
+        jobs: newTask.jobs
     }
 
     axiosClient().post(`/api/v2/servers/${serverId}/scheduler/tasks`, JSON.stringify(requestBody))
@@ -1031,6 +1011,245 @@ export function deleteSchedulerTask(serverId: string, taskId: string, completed:
 
         .catch((error) => {
             console.error(`Failed to delete scheduler task with Error: ${error} `)
+            completed(false);
+        })
+}
+
+export function getApiKeys(report: (apiKey: IApiKey[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getApiKeys");
+    axiosClient().get(`/api/v2/keys`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IGetApiKeyListResponse;
+        })
+        .then((data) => {
+            let apiKeys: IApiKey[] = [];
+            data.forEach((data: any) => {
+                let apiKey: IApiKey = {
+                    apiKeyId: data.apiKeyId,
+                    name: data.name,
+                    isAdmin: data.isAdmin,
+                    hasAccessToAllServers: data.hasAccessToAllServers,
+                    serverAccessDetails: new ServerAccessDetails(),
+                    createdAt: data.createdAt,
+                }
+                apiKey.serverAccessDetails.init(data.hasAccessToAllServers, data.customServerPermissions);
+                apiKeys.push(apiKey);
+            });
+
+            report(apiKeys);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch API Keys with error: ${error}`)
+            completed(false);
+        })
+}
+
+export function createApiKey(newApiKey: INewApiKey, completed: (wasSuccess: boolean, plainTextApiKey: string) => void) {
+    //formulate proper request
+    var requestBody: ICreateApiKeyRequest = {
+        name: newApiKey.name,
+        isAdmin: newApiKey.isAdmin,
+        hasAccessToAllServers: newApiKey.serverAccessDetails.hasAccessToAllServers,
+        customServerPermissions: {}
+    }
+
+    ServerAccessDetails.UpdatePermissionTargetObject(newApiKey.serverAccessDetails, requestBody);
+
+    log("API Request: createApiKey");
+    axiosClient().post(`/api/v2/keys`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            // don't log the key!
+            // log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawData) => {
+            completed(true, rawData.apiKey);
+        })
+        .catch((error) => {
+            console.error(`Failed to create API Key: ${newApiKey.name} Error: ${error}`)
+            completed(false, "");
+        })
+}
+
+export function deleteApiKey(apiKeyId: string, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: deleteApiKey");
+    axiosClient().delete(`/api/v2/keys/${apiKeyId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete API Key with id ${apiKeyId} Error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getWebhooks(report: (webhooks: IWebhook[]) => void, completed: (wasSuccess: boolean) => void): void {
+    log("API Request: getWebhooks");
+    axiosClient().get(`/api/v2/webhooks`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawResponse) => {
+            return rawResponse as IRawGetWebhookListResponse;
+        })
+        .then((rawData) => {
+            let webhooks: IWebhook[] = [];
+            rawData.forEach((data: any) => {
+                webhooks.push(data);
+            });
+
+            report(webhooks);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to fetch API Keys with error: ${error}`)
+            completed(false);
+        })
+}
+
+export function getWebhookDetails(WebhookId: string, report: (wasSuccess: boolean, webhook: IWebhook) => void) {
+    log("API Request: getWebhookDetails");
+    axiosClient().get(`/api/v2/webhooks/${WebhookId}`)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((response) => {
+            return response as IRawGetWebhookResponse;
+        })
+        .then((rawResponse) => {
+            let webhook: IWebhook = {
+                webhookId: rawResponse.webhookId,
+                name: rawResponse.name,
+                url: rawResponse.url,
+                enabled: rawResponse.enabled,
+                messageFormat: rawResponse.messageFormat,
+                optionalHeaders: rawResponse.optionalHeaders,
+                webhookTriggers: rawResponse.webhookTriggers.map((key: number) => WebhookTrigger[key]),
+                createdAt: rawResponse.createdAt,
+                lastModifiedAt: rawResponse.lastModifiedAt,
+            };
+
+            report(true, webhook);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to get webhook with id: ${WebhookId} Error: ${error}`)
+            //@ts-ignore 
+            report(false, null);
+        })
+}
+
+export function createWebhook(newWebhook: INewWebhook, completed: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: ICreateWebhookRequest = {
+        name: newWebhook.name,
+        url: newWebhook.url,
+        enabled: newWebhook.enabled,
+        messageFormat: newWebhook.messageFormat,
+        webhookTriggers: newWebhook.webhookTriggers,
+        optionalHeaders: convertWebhookHeaderArrayToObject(newWebhook.optionalHeaders),
+    }
+
+    log("API Request: createWebhook");
+    axiosClient().post(`/api/v2/webhooks`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 201) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            return response?.data ?? [];
+        })
+        .then((rawData) => {
+            completed(true);
+        })
+        .catch((error) => {
+            console.error(`Failed to create Webhook: ${newWebhook.name} Error: ${error}`)
+            completed(false);
+        })
+}
+
+
+export function editWebhooks(webhookId: string, editedWebhook: IEditWebhook, report: (wasSuccess: boolean) => void) {
+    //formulate proper request
+    var requestBody: IUpdateWebhookRequest = {
+        name: editedWebhook.name,
+        url: editedWebhook.url,
+        enabled: editedWebhook.enabled,
+        messageFormat: editedWebhook.messageFormat,
+        webhookTriggers: editedWebhook.webhookTriggers,
+        optionalHeaders: convertWebhookHeaderArrayToObject(editedWebhook.optionalHeaders),
+    }
+
+    log("API Request: editWebhooks");
+    axiosClient().put(`/api/v2/webhooks/${webhookId}`, JSON.stringify(requestBody))
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+            log(response?.status);
+            log(response?.data);
+            report(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to save settings of webhook with id: ${webhookId} Error: ${error}`)
+            report(false);
+        })
+}
+
+export function deleteWebhook(webhookId: string, completed: (wasSuccess: boolean) => void) {
+    log("API Request: deleteWebhook");
+    axiosClient().delete(`/api/v2/webhooks/${webhookId}`,)
+        .then((response) => {
+            if (response?.status !== 200) {
+                return Promise.reject(response);
+            }
+
+            log(response?.status);
+            log(response?.data);
+            completed(true);
+        })
+
+        .catch((error) => {
+            console.error(`Failed to delete webhook with Error: ${error} `)
             completed(false);
         })
 }

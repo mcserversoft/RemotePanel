@@ -1,6 +1,6 @@
 import { persisted } from 'svelte-local-storage-store';
 import { derived, get, writable } from 'svelte/store';
-import type { IServer, Server } from '../../types';
+import type { IServer, Server } from './server';
 
 // global in-memory store
 export const isOffline = writable(false);
@@ -21,7 +21,9 @@ export function getServer(serverId: any) {
         description: '',
         type: '',
         status: 0,
-        permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
+        permissions: {
+            viewStats: false, viewConsole: false, useConsole: false, editServer: false, useServerActions: false, viewSchedulerTasks: false, createSchedulerTasks: false, editSchedulerTask: false, deleteSchedulerTasks: false, triggerSchedulerTask: false
+        },
     };
 }
 
@@ -34,6 +36,6 @@ export const selectedServer = derived([servers, selectedServerId], ([$servers, $
         name: '',
         description: '',
         status: 0,
-        permissions: { viewStats: false, viewConsole: false, useConsole: false, useServerActions: false },
+        permissions: { viewStats: false, viewConsole: false, useConsole: false, editServer: false, useServerActions: false, viewSchedulerTasks: false, createSchedulerTasks: false, editSchedulerTask: false, deleteSchedulerTasks: false, triggerSchedulerTask: false },
     };
 })

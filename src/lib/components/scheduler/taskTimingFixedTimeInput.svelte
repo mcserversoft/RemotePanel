@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import Input from '../elements/input.svelte';
 	import Toggle from '../elements/toggle.svelte';
-	import type { FixedTimeTaskTiming } from '$lib/code/scheduler';
+	import { FixedTimeTaskTiming } from '$lib/code/scheduler';
 
 	export let timing: any;
 
@@ -23,7 +23,7 @@ Single-digit hours, minutes and seconds (0-9).
 Double-digit hours from 00 to 23.
 Double-digit minutes and seconds from 00 to 59.
  -->
-<Input bind:value={fixedTime} label={''} type={'string'} placeholder={'HH:mm:ss'} pattern="(?:[0-9]|0[0-9]|1[0-9]|2[0-3]):(?:[0-5][0-9]|[0-9]):(?:[0-5][0-9]|[0-9])" required={true} on:input={handleInputChange}>
+<Input bind:value={fixedTime} label={''} type={'text'} placeholder={'HH:mm:ss'} pattern="(?:[0-9]|0[0-9]|1[0-9]|2[0-3]):(?:[0-5][0-9]|[0-9]):(?:[0-5][0-9]|[0-9])" required={true} on:input={handleInputChange}>
 	Define a <b>time</b> in the 24h format. E.g. 13:05:00
 </Input>
 

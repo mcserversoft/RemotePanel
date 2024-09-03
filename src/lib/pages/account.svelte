@@ -4,7 +4,6 @@
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiPencil, mdiRefreshCircle, mdiLoading, mdiClose } from '@mdi/js';
-	import type { IDeleteUserAccount, IEditUserAccount } from '../../types';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import { getRandomPassword, getShortDateSince } from '$lib/code/shared';
 	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
@@ -12,6 +11,7 @@
 	import AvatarPicker from '$lib/components/elements/avatarPicker.svelte';
 	import { getURLToCurrentUserAvatar as getURLToCurrentUserAvatar } from '$lib/code/urlLibrary';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
+	import type { IDeleteUserAccount, IEditUserAccount } from '$lib/code/user';
 
 	let password: string = '';
 	let newPassword: string = '';

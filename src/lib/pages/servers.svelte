@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { derived, writable } from 'svelte/store';
-	import { navigateToPage } from '$lib/code/routing';
-	import { postMassServerAction, getServers } from '$lib/code/api';
+	import { Page, navigateToPage } from '$lib/code/routing';
+	import { postMassServerAction } from '$lib/code/api';
 	import Spinner from '$lib/components/elements/spinner.svelte';
-	import { mdiRefresh, mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
+	import { mdiMagnify, mdiChevronDown, mdiPencil } from '@mdi/js';
 	import Icon from '$lib/components/elements/icon.svelte';
 	import Dropdown from '$lib/components/elements/dropdown.svelte';
 	import { Button, DropdownItem } from 'flowbite-svelte';
-	import { Page, Server, ServerAction } from '../../types';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import StatusIndicator from '$lib/components/server/statusIndicator.svelte';
 	import { isLoadingServers, selectedServerId, servers } from '$lib/code/global';
 	import { Permission, hasPermission } from '$lib/code/permissions';
+	import { ServerAction, type Server } from '$lib/code/server';
 
 	let selection: any = [];
 	const searchTerm = writable('');
@@ -193,9 +193,10 @@
 										<DropdownItem class="block lg:hidden text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Dashboard))}>View Dashboard</DropdownItem>
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Console))}>View Console</DropdownItem>
 										<!--TODO other pages-->
-										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Settings</DropdownItem> -->
+										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.ServerEdit, serverId))}>View Settings</DropdownItem> -->
 										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Backups))}>View Backups</DropdownItem>
-										<!-- <DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.WIP))}>View Scheduler</DropdownItem> -->
+										<DropdownItem class="text-xs xl:text-sm" on:click={() => (changeSelectedServer(serverId), navigateToPage(Page.Scheduler))}>View Scheduler</DropdownItem>
+										<!--TODO this is glitched in small list-->
 									</Dropdown>
 								</div>
 							</td>

@@ -3,26 +3,24 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createSchedulerTask } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import { Button } from 'flowbite-svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
 	import { Tabs, TabItem } from 'flowbite-svelte';
-	import TaskJobCommandsInput from '$lib/components/scheduler/taskJobCommandsInput.svelte';
-	import TaskJobBackupInput from '$lib/components/scheduler/taskJobBackupInput.svelte';
-	import TaskJobServerActionInput from '$lib/components/scheduler/taskJobServerActionInput.svelte';
 	import TaskTimingIntervalInput from '$lib/components/scheduler/taskTimingIntervalInput.svelte';
 	import TaskTimingFixedTimeInput from '$lib/components/scheduler/taskTimingFixedTimeInput.svelte';
 	import TaskPlayerRequirementInput from '$lib/components/scheduler/taskPlayerRequirementInput.svelte';
-	import { jobOptions, timingOptions, type INewSchedulerTask, type JobTask, type TaskTiming, IntervalTaskTiming, FixedTimeTaskTiming, BackupJobTask, CommandJobTask, ServerActionJobTask } from '$lib/code/scheduler';
+	import { timingOptions, type INewSchedulerTask, type JobTask, type TaskTiming, IntervalTaskTiming, FixedTimeTaskTiming } from '$lib/code/scheduler';
+	import { WarningType } from '$lib/code/panel';
+	import JobsList from '$lib/components/scheduler/jobsList.svelte';
 
 	let name: string = '';
-	let job: JobTask;
+	let jobs: Array<JobTask> = [];
 	let timing: TaskTiming;
 	let playerRequirement: number;
 
@@ -32,7 +30,7 @@
 		let newTask: INewSchedulerTask = {
 			name: name,
 			enabled: true,
-			job: job,
+			jobs: jobs,
 			timing: timing,
 			playerRequirement: playerRequirement
 		};
@@ -47,16 +45,8 @@
 		});
 	}
 
-	function handleTaskJobServerActionInput(event: any) {
-		job = new ServerActionJobTask(event.detail);
-	}
-
-	function handleTaskJobCommandsInput(event: any) {
-		job = new CommandJobTask(event.detail);
-	}
-
-	function handleTaskJobBackupInput(event: any) {
-		job = new BackupJobTask(event.detail);
+	function handleJobsInputChange(updatedJobs: any) {
+		jobs = updatedJobs.detail;
 	}
 
 	function handleTaskTimingIntervalInput(event: any) {
@@ -94,28 +84,10 @@
 	{#if hasPermission(Permission.createSchedulerTask, $selectedServerId)}
 		<form on:submit|preventDefault={createNewScheduledTask}>
 			<BoxedContainer class="space-y-3">
-				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Task name'} required={true} />
+				<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Task name'} required={true} />
 			</BoxedContainer>
 			<BoxedContainer class="space-y-3">
-				<span class="space-y-1 text-sm font-medium">
-					<p class="">Job</p>
-					<p class="text-gray-400">Choose what this task should do.</p>
-				</span>
-
-				<Tabs style="full" defaultClass="flex rounded-lg divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700" contentClass="bg-inherit pt-2">
-					<TabItem class="w-full" activeClasses={tabItemStyle} open>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
-						<TaskJobServerActionInput job={new ServerActionJobTask(0)} on:update={handleTaskJobServerActionInput} />
-					</TabItem>
-					<TabItem class="w-full" activeClasses={tabItemStyle}>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
-						<TaskJobCommandsInput job={new CommandJobTask([])} on:update={handleTaskJobCommandsInput} />
-					</TabItem>
-					<TabItem class="w-full" activeClasses={tabItemStyle}>
-						<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
-						<TaskJobBackupInput job={new BackupJobTask('')} on:update={handleTaskJobBackupInput} />
-					</TabItem>
-				</Tabs>
+				<JobsList {jobs} on:update={handleJobsInputChange} />
 			</BoxedContainer>
 			<BoxedContainer class="space-y-3">
 				<span class="space-y-1 text-sm font-medium">

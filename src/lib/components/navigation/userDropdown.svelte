@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { clickOutside, getGreeting } from '$lib/code/shared';
+	import { clickOutside } from '$lib/code/shared';
 	import { auth } from '$lib/code/auth';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import { logout } from '$lib/code/auth';
-	import { Page } from '../../../types';
+	import { getGreeting } from '$lib/code/panel';
 
 	let isOpen = false;
 

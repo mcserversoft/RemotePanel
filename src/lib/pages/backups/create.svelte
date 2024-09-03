@@ -4,10 +4,9 @@
 	import Icon from '$lib/components/elements/icon.svelte';
 	import PageTitleBanner from '$lib/components/page/pageTitleBanner.svelte';
 	import Breadcrumb from '$lib/components/navigation/breadcrumb.svelte';
-	import { Page, BackupCompression, type INewBackup, McssSettingsSection, BackupFilterListDetails, WarningType } from '../../../types';
 	import { getServer, selectedServerId } from '$lib/code/global';
 	import { createBackup, getMcssSettings } from '$lib/code/api';
-	import { navigateToPage } from '$lib/code/routing';
+	import { Page, navigateToPage } from '$lib/code/routing';
 	import Input from '$lib/components/elements/input.svelte';
 	import Toggle from '$lib/components/elements/toggle.svelte';
 	import { Button, Label, Select } from 'flowbite-svelte';
@@ -15,6 +14,9 @@
 	import BackupDenyListSelector from '$lib/components/backup/backupFilterListSelector.svelte';
 	import { Permission, hasPermission } from '$lib/code/permissions';
 	import Warning from '$lib/components/elements/warning.svelte';
+	import { BackupCompression, BackupFilterListDetails, type INewBackup } from '$lib/code/backup';
+	import { WarningType } from '$lib/code/panel';
+	import { McssSettingsSection } from '$lib/code/mcss';
 
 	let name: string = '';
 	let destination: string = '';
@@ -95,8 +97,8 @@
 	{#if hasPermission(Permission.createBackup, $selectedServerId)}
 		<form on:submit|preventDefault={createNewBackup}>
 			<BoxedContainer class="space-y-3">
-				<Input bind:value={name} label={'Name'} type={'string'} placeholder={'Backup name'} required={true} />
-				<Input bind:value={destination} label={'Destination'} type={'string'} required={true} />
+				<Input bind:value={name} label={'Name'} type={'text'} placeholder={'Backup name'} required={true} />
+				<Input bind:value={destination} label={'Destination'} type={'text'} required={true} />
 
 				<Label>
 					Compression

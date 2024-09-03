@@ -3,9 +3,8 @@
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
 	import { getServers } from '$lib/code/api';
-	import { selectedPage } from '$lib/code/routing';
+	import { Page, selectedPage } from '$lib/code/routing';
 	import { settings } from '$lib/code/storage';
-	import { Page } from '../types';
 	import AboutPage from '$lib/pages/about.svelte';
 	import AccountPage from '$lib/pages/account.svelte';
 	import BackupsCreatePage from '$lib/pages/backups/create.svelte';
@@ -27,6 +26,12 @@
 	import SchedulerPage from '$lib/pages/scheduler/overview.svelte';
 	import SchedulerTaskCreatePage from '$lib/pages/scheduler/create.svelte';
 	import SchedulerTaskEditPage from '$lib/pages/scheduler/edit.svelte';
+	import ApiKeysOverviewPage from '$lib/pages/apiKeys/overview.svelte';
+	import ApiKeysCreatePage from '$lib/pages/apiKeys/create.svelte';
+	import ApiKeysCreatedPage from '$lib/pages/apiKeys/created.svelte';
+	import WebhooksPage from '$lib/pages/webhooks/overview.svelte';
+	import WebhooksCreatePage from '$lib/pages/webhooks/create.svelte';
+	import WebhooksEditPage from '$lib/pages/webhooks/edit.svelte';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
@@ -100,6 +105,18 @@
 				<UsersEditPage />
 			{:else if $selectedPage == Page.Users}
 				<UsersOverviewPage />
+			{:else if $selectedPage == Page.ApiKeysOverview}
+				<ApiKeysOverviewPage />
+			{:else if $selectedPage == Page.ApiKeysCreate}
+				<ApiKeysCreatePage />
+			{:else if $selectedPage == Page.ApiKeysCreated}
+				<ApiKeysCreatedPage />
+			{:else if $selectedPage == Page.Webhooks}
+				<WebhooksPage />
+			{:else if $selectedPage == Page.WebhooksCreate}
+				<WebhooksCreatePage />
+			{:else if $selectedPage == Page.WebhooksEdit}
+				<WebhooksEditPage />
 			{/if}
 		</div>
 

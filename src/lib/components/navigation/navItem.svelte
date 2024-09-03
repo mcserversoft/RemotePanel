@@ -16,5 +16,6 @@
 		{#if isExternal}
 			<Icon data={mdiOpenInNew} size={5} />
 		{/if}
+		<slot name="suffix" />
 	</button>
 </li>

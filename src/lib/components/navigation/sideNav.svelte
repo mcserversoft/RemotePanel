@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { togglePanelTheme } from '$lib/code/theme';
 	import Logo from '$lib/components/elements/logo.svelte';
-	import CurrentThemeIcon from '../core/currentThemeIcon.svelte';
+	import CurrentThemeIcon from '../theme/currentThemeIcon.svelte';
 	import UserDropdown from './userDropdown.svelte';
-	import { selectedPage, navigateToPage } from '$lib/code/routing';
-	import { Page } from '../../../types';
+	import { selectedPage, navigateToPage, Page, openInNewTab } from '$lib/code/routing';
 	import NavItem from './navItem.svelte';
 	import { Url, getURLToCurrentUserAvatar, getUrl } from '$lib/code/urlLibrary';
-	import { openInNewTab } from '$lib/code/shared';
 	import Icon from '../elements/icon.svelte';
-	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiNotebook, mdiPoll } from '@mdi/js';
+	import { mdiAccountMultiple, mdiArchive, mdiCalendarClock, mdiCardsHeart, mdiKeyChainVariant, mdiLayers, mdiNotebook, mdiPoll, mdiText, mdiWebhook } from '@mdi/js';
 	import { get } from 'svelte/store';
 	import { auth } from '$lib/code/auth';
 	import NavDropdown from './navDropdown.svelte';
@@ -78,7 +76,7 @@
 	<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-gray-50 border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
 		<div class="h-full px-3 pb-4 overflow-y-auto">
 			<ul class="space-y-2 font-medium">
-				<NavItem on:click={() => handleNavigationRequest(Page.Servers)} name="Servers" isActive={$selectedPage == Page.Servers}>
+				<NavItem on:click={() => handleNavigationRequest(Page.Servers)} name="Servers" isActive={$selectedPage == Page.Servers || $selectedPage == Page.ServerEdit}>
 					<Icon data={mdiLayers} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 			</ul>
@@ -88,13 +86,17 @@
 					<Icon data={mdiPoll} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 
+				<NavItem on:click={() => handleNavigationRequest(Page.Console)} name="Console" isActive={$selectedPage == Page.Console}>
+					<Icon data={mdiText} size={6} class={'text-gray-500 dark:text-gray-400'} />
+				</NavItem>
+
 				<NavDropdown
 					name="Backups"
 					items={[
 						{
 							name: 'Overview',
 							page: Page.Backups,
-							isActive: $selectedPage == Page.Backups,
+							isActive: $selectedPage == Page.Backups || $selectedPage == Page.BackupsCreate || $selectedPage == Page.BackupsEdit,
 							hasPermission: true
 						},
 						{
@@ -114,7 +116,7 @@
 					<Icon data={mdiArchive} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown>
 
-				<NavItem on:click={() => handleNavigationRequest(Page.Scheduler)} name="Scheduler" isActive={$selectedPage == Page.Scheduler}>
+				<NavItem on:click={() => handleNavigationRequest(Page.Scheduler)} name="Scheduler" isActive={$selectedPage == Page.Scheduler || $selectedPage == Page.SchedulerTaskCreate || $selectedPage == Page.SchedulerTaskEdit}>
 					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavItem>
 				<!-- <NavDropdown
@@ -136,31 +138,36 @@
 				>
 					<Icon data={mdiCalendarClock} size={6} class={'text-gray-500 dark:text-gray-400'} />
 				</NavDropdown> -->
-
-				{#if get(auth).showAdminFeatures}
-					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate}>
-						<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
-					</NavItem>
-				{/if}
-				<!--TODO other pages-->
-				<!-- 
-				<NavItem name="API Keys">
-					<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />
-				</NavItem> 
-				-->
 			</ul>
 
 			<ul class="absolute bottom-0 left-0 w-full p-3 space-y-2 font-medium border-t border-gray-200 text-gray-500 dark:text-gray-400 dark:border-gray-700">
+				{#if get(auth).showAdminFeatures}
+					<!-- <NavItem name="API Keys"> -->
+					<NavItem on:click={() => handleNavigationRequest(Page.ApiKeysOverview)} name="API Keys" isActive={$selectedPage == Page.ApiKeysOverview || $selectedPage == Page.ApiKeysCreate}>
+						<Icon data={mdiKeyChainVariant} size={6} class={'text-gray-500 dark:text-gray-400'} />
+						<span slot="suffix" class="text-xs font-medium mx-1.5 px-2.5 py-0.5 rounded bg-purple-300 text-gray-800 dark:bg-purple-700 dark:text-gray-300">NEW</span>
+					</NavItem>
+
+					<NavItem on:click={() => handleNavigationRequest(Page.Users)} name="Users" isActive={$selectedPage == Page.Users || $selectedPage == Page.UsersCreate || $selectedPage == Page.UsersEdit}>
+						<Icon data={mdiAccountMultiple} size={6} class={'text-gray-500 dark:text-gray-400'} />
+					</NavItem>
+
+					<NavItem on:click={() => handleNavigationRequest(Page.Webhooks)} name="Webhooks" isActive={$selectedPage == Page.Webhooks || $selectedPage == Page.WebhooksCreate || $selectedPage == Page.WebhooksEdit}>
+						<Icon data={mdiWebhook} size={6} class={'text-gray-500 dark:text-gray-400'} />
+						<span slot="suffix" class="text-xs font-medium mx-1.5 px-2.5 py-0.5 rounded bg-purple-300 text-gray-800 dark:bg-purple-700 dark:text-gray-300">NEW</span>
+					</NavItem>
+				{/if}
+
+				<NavItem on:click={togglePanelTheme} name="Switch Theme">
+					<CurrentThemeIcon class="text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" />
+				</NavItem>
+
 				<NavItem on:click={() => openInNewTab(getUrl(Url.Contribute))} name="Contribute" isExternal={true}>
 					<Icon data={mdiCardsHeart} size={6} />
 				</NavItem>
 
 				<NavItem on:click={() => openInNewTab(getUrl(Url.DocumentationPanel))} name="Documentation" isExternal={true}>
 					<Icon data={mdiNotebook} size={6} class={''} />
-				</NavItem>
-
-				<NavItem on:click={togglePanelTheme} name="Switch Theme">
-					<CurrentThemeIcon class="text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" />
 				</NavItem>
 				<li>
 					<p class="mt-3 text-sm text-center text-gray-500 dark:text-gray-500">Panel v{version}</p>
