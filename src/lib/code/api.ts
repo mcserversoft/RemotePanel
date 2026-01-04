@@ -575,7 +575,6 @@ export function getPanelUserSettings(report: (wasSuccess: boolean, panelUserSett
                 amountOfConsoleLines: data.amountOfConsoleLines,
                 consoleRefreshRate: data.consoleRefreshRate,
                 panelTheme: data.panelTheme,
-                serverRefreshRate: data.serverRefreshRate,
                 enableAutomaticConsoleScrolling: data.enableAutomaticConsoleScrolling,
                 enableConsoleChatMode: data.enableConsoleChatMode,
                 enableDebugging: data.enableDebugging,
@@ -598,7 +597,6 @@ export function editPanelSettings(updatedSettings: IEditPanelSettings, completed
         amountOfConsoleLines: updatedSettings.amountOfConsoleLines,
         consoleRefreshRate: updatedSettings.consoleRefreshRate,
         panelTheme: updatedSettings.panelTheme,
-        serverRefreshRate: updatedSettings.serverRefreshRate,
         enableAutomaticConsoleScrolling: updatedSettings.enableAutomaticConsoleScrolling,
         enableConsoleChatMode: updatedSettings.enableConsoleChatMode,
         enableDebugging: updatedSettings.enableDebugging

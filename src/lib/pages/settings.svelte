@@ -6,7 +6,6 @@
 	import { Select, Label, Button } from 'flowbite-svelte';
 	import { mdiContentSave, mdiClose } from '@mdi/js';
 	import { editPanelSettings } from '$lib/code/api';
-	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 	import { onMount } from 'svelte';
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import { PanelTheme, type IEditPanelSettings } from '$lib/code/panel';

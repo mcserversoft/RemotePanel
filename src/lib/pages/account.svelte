@@ -6,7 +6,6 @@
 	import { mdiContentSave, mdiPencil, mdiRefreshCircle, mdiLoading, mdiClose } from '@mdi/js';
 	import PeekableInput from '$lib/components/elements/peekableInput.svelte';
 	import { getRandomPassword, getShortDateSince } from '$lib/code/shared';
-	import NewIndicator from '$lib/components/elements/newIndicator.svelte';
 	import { deleteUserAccount, editUserAccount, uploadUserAvatar } from '$lib/code/api';
 	import AvatarPicker from '$lib/components/elements/avatarPicker.svelte';
 	import { getURLToCurrentUserAvatar as getURLToCurrentUserAvatar } from '$lib/code/urlLibrary';
@@ -128,7 +127,7 @@
 <section class="h-[calc(100vh-56px)] overflow-auto p-6 dark:bg-gray-900 py-12">
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Account Settings</h1>
-		<p class="italic">View or adjust your avatar and other account-related details. <NewIndicator /></p>
+		<p class="italic">View or adjust your avatar and other account-related details.</p>
 	</div>
 
 	<form on:submit|preventDefault={isFlaggedForDeletion ? handleDeleteAccount : handleUpdateAccount} class="max-w-3xl mx-auto my-6">

@@ -86,7 +86,6 @@ export interface IGetUsersListResponse extends Array<IGetUserDetailsResponse> { 
 
 export interface IGetPanelUserSettingsResponse {
     panelTheme: PanelTheme,
-    serverRefreshRate: number,
     consoleRefreshRate: number,
     amountOfConsoleLines: number,
     enableAutomaticConsoleScrolling: boolean,

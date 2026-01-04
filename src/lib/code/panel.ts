@@ -43,7 +43,6 @@ export interface IEditPanelSettings extends Omit<IPanelSettings, 'lastModifiedAt
 /* API */
 export interface IEditPanelSettingsRequest {
     panelTheme: PanelTheme,
-    serverRefreshRate: number,
     consoleRefreshRate: number,
     amountOfConsoleLines: number,
     enableAutomaticConsoleScrolling: boolean,
