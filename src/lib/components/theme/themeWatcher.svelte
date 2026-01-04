@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
 	import { getPanelTheme, setPanelTheme } from '$lib/code/theme';
 	import { PanelTheme } from '$lib/code/panel';
@@ -23,9 +22,6 @@
 	});
 
 	function updateDocument() {
-		if (!browser) {
-			return;
-		}
 		const theme = getPanelTheme();
 		switch (theme) {
 			case PanelTheme.Dark:

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
 	import { getServers } from '$lib/code/api';
 	import { Page, selectedPage } from '$lib/code/routing';
@@ -41,51 +40,53 @@
 
 	let sseClient: SSE;
 
-	if (browser) {
-		const unsubscribeAuth = auth.subscribe((updatedAuth) => {
-			// apiKey validation occurs with API requests, this just handles the UI
-			if (updatedAuth.apiKey) {
-				isAuthenticated = true;
+	const unsubscribeAuth = auth.subscribe((updatedAuth) => {
+		// apiKey validation occurs with API requests, this just handles the UI
+		if (updatedAuth.apiKey) {
+			isAuthenticated = true;
 
-				// quickly load servers upon page refresh & login
-				getServers();
-			} else {
-				isAuthenticated = false;
-			}
+			// quickly load servers upon page refresh & login
+			getServers();
+			console.log('login');
+			subscribeSse();
+		} else {
+			isAuthenticated = false;
+		}
 
-			isPageLoadedYet = true;
+		isPageLoadedYet = true;
+	});
+
+	onDestroy(unsubscribeAuth);
+
+	async function subscribeSse() {
+		if (!isAuthenticated) return;
+
+		console.log('Subscribing from Mcss event stream.');
+
+		sseClient = GetMcssEvents();
+		sseClient.addEventListener('ServerStatusChange', function (e: any) {
+			var jsonPayload = JSON.parse(e.data);
+
+			servers.update((outdatedServer) => {
+				const server = outdatedServer.find((s: IServer) => s.serverId == jsonPayload.ServerId);
+				if (server) {
+					server.status = jsonPayload.Status;
+				}
+				return outdatedServer;
+			});
 		});
 
-		onDestroy(unsubscribeAuth);
-
-		async function subscribeSse() {
-			console.log('Subscribing from Mcss event stream.');
-
-			sseClient = GetMcssEvents();
-			sseClient.addEventListener('ServerStatusChange', function (e: any) {
-				var jsonPayload = JSON.parse(e.data);
-
-				servers.update((outdatedServer) => {
-					const server = outdatedServer.find((s: IServer) => s.serverId == jsonPayload.ServerId);
-					if (server) {
-						server.status = jsonPayload.Status;
-					}
-					return outdatedServer;
-				});
-			});
-
-			sseClient.addEventListener('abort', function (e: any) {
-				console.warn('Mcss event stream closed.');
-			});
-		}
-		function unsubscribeSse() {
-			console.log('Unsubscribing from Mcss event stream.');
-			sseClient?.close();
-		}
-
-		onMount(subscribeSse);
-		onDestroy(unsubscribeSse);
+		sseClient.addEventListener('abort', function (e: any) {
+			console.warn('Mcss event stream closed.');
+		});
 	}
+	function unsubscribeSse() {
+		console.log('Unsubscribing from Mcss event stream.');
+		sseClient?.close();
+	}
+
+	onMount(subscribeSse);
+	onDestroy(unsubscribeSse);
 </script>
 
 <!-- isPageLoadedYet prevents page ghosting on F5 -->

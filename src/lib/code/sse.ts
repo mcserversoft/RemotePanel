@@ -11,7 +11,7 @@ export function GetMcssEvents(): SSE {
     return new SSE(`${baseUrl}/events`, {
         headers: { apiKey: get(auth)?.apiKey },
         autoReconnect: true,
-        reconnectDelay: 5000,
+        reconnectDelay: 3000,
         maxRetries: 10,
     });
 }

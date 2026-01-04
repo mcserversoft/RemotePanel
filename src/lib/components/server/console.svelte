@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onDestroy, beforeUpdate, afterUpdate } from 'svelte';
 	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
 	import { settings } from '$lib/code/storage';
 	import { getServerConsole, getIsServerConsoleOutdated, postServerCommand } from '$lib/code/api';
 	import { hasPermission, Permission } from '$lib/code/permissions';
@@ -23,21 +22,19 @@
 	let textarea: HTMLTextAreaElement;
 	let consoleRequiresUpdate: boolean;
 
-	if (browser) {
-		const unsubscribe = selectedServerId.subscribe((newServerId) => {
-			reloadConsole(newServerId);
-		});
+	const unsubscribe = selectedServerId.subscribe((newServerId) => {
+		reloadConsole(newServerId);
+	});
 
-		const updateConsole = setInterval(
-			() => {
-				updateConsoleIfNeeded();
-			},
-			$settings.consoleRefreshRate * 1000 ?? 5000
-		);
+	const updateConsole = setInterval(
+		() => {
+			updateConsoleIfNeeded();
+		},
+		$settings.consoleRefreshRate * 1000 ?? 5000
+	);
 
-		onDestroy(unsubscribe);
-		onDestroy(() => clearInterval(updateConsole));
-	}
+	onDestroy(unsubscribe);
+	onDestroy(() => clearInterval(updateConsole));
 
 	beforeUpdate(() => {
 		consoleRequiresUpdate = textarea && textarea.offsetHeight + textarea.scrollTop > textarea.scrollHeight - 20;

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
-	import { browser } from '$app/environment';
 	import { getServerStatus } from '$lib/code/api';
 	import ServerStatistic from './stat.svelte';
 	import { mdiAccountCowboyHat, mdiChartArc, mdiChip, mdiClockTimeEight } from '@mdi/js';
@@ -20,19 +19,17 @@
 
 	let isLoadingStats: boolean = true;
 
-	if (browser) {
-		const unsubscribe = selectedServerId.subscribe((newServerId) => {
-			isLoadingStats = true;
-			updateServerStats();
-		});
+	const unsubscribe = selectedServerId.subscribe((newServerId) => {
+		isLoadingStats = true;
+		updateServerStats();
+	});
 
-		const updateConsole = setInterval(() => {
-			updateServerStats();
-		}, 2000);
+	const updateConsole = setInterval(() => {
+		updateServerStats();
+	}, 2000);
 
-		onDestroy(unsubscribe);
-		onDestroy(() => clearInterval(updateConsole));
-	}
+	onDestroy(unsubscribe);
+	onDestroy(() => clearInterval(updateConsole));
 
 	async function updateServerStats() {
 		const serverId = get(selectedServerId);
