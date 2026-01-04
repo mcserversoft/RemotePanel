@@ -2,7 +2,6 @@ import { persisted } from 'svelte-local-storage-store'
 import { PanelTheme } from './panel'
 
 export const settings = persisted('settings', {
-    serversRefreshRate: 5,
     consoleRefreshRate: 5,
     autoScrollConsole: true,
     chatModeConsole: false,

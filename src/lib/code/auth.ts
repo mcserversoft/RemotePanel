@@ -53,7 +53,6 @@ export function login(username: string, password: string, report: (failureReason
                         setDefaultSettings();
                     } else {
                         settings.set({
-                            serversRefreshRate: fetchedSettings.serverRefreshRate,
                             consoleRefreshRate: fetchedSettings.consoleRefreshRate,
                             autoScrollConsole: fetchedSettings.enableAutomaticConsoleScrolling,
                             chatModeConsole: fetchedSettings.enableConsoleChatMode,
@@ -98,7 +97,6 @@ export function logout() {
 
 function setDefaultSettings() {
     settings.set({
-        serversRefreshRate: 5,
         consoleRefreshRate: 5,
         autoScrollConsole: true,
         chatModeConsole: false,

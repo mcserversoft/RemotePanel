@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/code/auth';
 	import { getServers } from '$lib/code/api';
 	import { Page, selectedPage } from '$lib/code/routing';
-	import { settings } from '$lib/code/storage';
 	import AboutPage from '$lib/pages/about.svelte';
 	import AccountPage from '$lib/pages/account.svelte';
 	import BackupsCreatePage from '$lib/pages/backups/create.svelte';
@@ -32,23 +31,19 @@
 	import WebhooksPage from '$lib/pages/webhooks/overview.svelte';
 	import WebhooksCreatePage from '$lib/pages/webhooks/create.svelte';
 	import WebhooksEditPage from '$lib/pages/webhooks/edit.svelte';
+	import { SSE } from 'sse.js';
+	import { servers } from '$lib/code/global';
+	import { type IServer } from '$lib/code/server';
+	import { GetMcssEvents } from '$lib/code/sse';
 
 	let isAuthenticated: boolean = false;
 	let isPageLoadedYet: boolean = false;
 
-	if (browser) {
-		const updateServers = setInterval(
-			() => {
-				if (isAuthenticated) {
-					getServers();
-				}
-			},
-			$settings.serversRefreshRate * 1000 ?? 5000
-		);
-		onDestroy(() => clearInterval(updateServers));
+	let sseClient: SSE;
 
-		const unsubscribe = auth.subscribe((updatedAuth) => {
-			// apiKey validation occurs with API requests
+	if (browser) {
+		const unsubscribeAuth = auth.subscribe((updatedAuth) => {
+			// apiKey validation occurs with API requests, this just handles the UI
 			if (updatedAuth.apiKey) {
 				isAuthenticated = true;
 
@@ -60,7 +55,36 @@
 
 			isPageLoadedYet = true;
 		});
-		onDestroy(unsubscribe);
+
+		onDestroy(unsubscribeAuth);
+
+		async function subscribeSse() {
+			console.log('Subscribing from Mcss event stream.');
+
+			sseClient = GetMcssEvents();
+			sseClient.addEventListener('ServerStatusChange', function (e: any) {
+				var jsonPayload = JSON.parse(e.data);
+
+				servers.update((outdatedServer) => {
+					const server = outdatedServer.find((s: IServer) => s.serverId == jsonPayload.ServerId);
+					if (server) {
+						server.status = jsonPayload.Status;
+					}
+					return outdatedServer;
+				});
+			});
+
+			sseClient.addEventListener('abort', function (e: any) {
+				console.warn('Mcss event stream closed.');
+			});
+		}
+		function unsubscribeSse() {
+			console.log('Unsubscribing from Mcss event stream.');
+			sseClient?.close();
+		}
+
+		onMount(subscribeSse);
+		onDestroy(unsubscribeSse);
 	}
 </script>
 

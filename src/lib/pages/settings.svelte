@@ -11,14 +11,12 @@
 	import BoxedContainer from '$lib/components/elements/boxedContainer.svelte';
 	import { PanelTheme, type IEditPanelSettings } from '$lib/code/panel';
 
-	let serversRefreshRate: number;
 	let consoleRefreshRate: number;
 	let amountOfConsoleLines: number;
 	let autoScrollConsole: boolean;
 	let chatModeConsole: boolean;
 	let debugging: boolean;
 
-	let inputErrorServersRefreshRate: boolean;
 	let inputErrorConsoleRefreshRate: boolean;
 	let inputErrorAmountOfConsoleLines: boolean;
 	let areButtonsDisabled: boolean = true;
@@ -36,7 +34,6 @@
 	});
 
 	function load() {
-		serversRefreshRate = $settings.serversRefreshRate;
 		consoleRefreshRate = $settings.consoleRefreshRate;
 		amountOfConsoleLines = $settings.amountOfConsoleLines;
 		autoScrollConsole = $settings.autoScrollConsole;
@@ -53,14 +50,12 @@
 	}
 
 	function handleInputChange() {
-		inputErrorServersRefreshRate = !(serversRefreshRate >= 1 && serversRefreshRate <= 3600);
 		inputErrorConsoleRefreshRate = !(consoleRefreshRate >= 1 && consoleRefreshRate <= 3600);
 		inputErrorAmountOfConsoleLines = !(amountOfConsoleLines >= 1 && amountOfConsoleLines <= 1000);
 		areButtonsDisabled = false;
 	}
 
 	function handleFormReset() {
-		serversRefreshRate = $settings.serversRefreshRate;
 		consoleRefreshRate = $settings.consoleRefreshRate;
 		amountOfConsoleLines = $settings.amountOfConsoleLines;
 		autoScrollConsole = $settings.autoScrollConsole;
@@ -74,7 +69,6 @@
 			amountOfConsoleLines: amountOfConsoleLines,
 			consoleRefreshRate: consoleRefreshRate,
 			panelTheme: selectedTheme,
-			serverRefreshRate: serversRefreshRate,
 			enableAutomaticConsoleScrolling: autoScrollConsole,
 			enableConsoleChatMode: chatModeConsole,
 			enableDebugging: debugging
@@ -82,7 +76,6 @@
 
 		editPanelSettings(updatedSettings, (wasSuccess: boolean) => {
 			if (wasSuccess) {
-				$settings.serversRefreshRate = serversRefreshRate;
 				$settings.consoleRefreshRate = consoleRefreshRate;
 				$settings.amountOfConsoleLines = amountOfConsoleLines;
 
@@ -114,7 +107,6 @@
 	<div class="text-center">
 		<h1 class="text-3xl font-bold pb-1">Settings</h1>
 		<p>Control how the panel interacts with the MCSS API.</p>
-		<p class="italic">These settings are now saved to mcss. <NewIndicator /></p>
 
 		<!-- FUTURE check if failed to load at login, if so provide a way to refetch here -->
 	</div>
@@ -127,10 +119,6 @@
 					<Select bind:value={selectedTheme} on:input={handleInputChange} items={themeOptions} class="mt-2" />
 				</Label>
 				<p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Choose between light or dark. You can also use the theme defined by your system.</p>
-			</BoxedContainer>
-
-			<BoxedContainer>
-				<Input bind:value={serversRefreshRate} on:input={handleInputChange} error={inputErrorServersRefreshRate} label={'Server Refresh Rate'} type={'number'} min="1" max="3600" required={true}>Value between 1 and 3600 seconds.</Input>
 			</BoxedContainer>
 
 			<BoxedContainer>

@@ -22,7 +22,6 @@ export enum PanelTheme {
 
 export interface IPanelSettings {
     panelTheme: PanelTheme,
-    serverRefreshRate: number,
     consoleRefreshRate: number,
     amountOfConsoleLines: number,
     enableAutomaticConsoleScrolling: boolean,
