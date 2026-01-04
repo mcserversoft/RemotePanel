@@ -2,6 +2,7 @@
 	import type { ISchedulerDetails } from '$lib/code/scheduler';
 	import ColoredDot from '../elements/coloredDot.svelte';
 
+	// export let stats: ISchedulerDetails = { tasks: 0, triggers: { interval: 0, fixedTime: 0, timeless: 0 } };
 	export let stats: ISchedulerDetails = { tasks: 0, interval: 0, fixedTime: 0, timeless: 0 };
 </script>
 

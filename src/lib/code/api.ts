@@ -927,7 +927,7 @@ export function editSchedulerTask(serverId: string, taskId: string, updatedTask:
         name: updatedTask.name,
         enabled: updatedTask.enabled,
         playerRequirement: updatedTask.playerRequirement,
-        timing: updatedTask.timing,
+        trigger: updatedTask.trigger,
         jobs: updatedTask.jobs
     }
 
@@ -975,7 +975,7 @@ export function createSchedulerTask(serverId: string, newTask: INewSchedulerTask
         name: newTask.name,
         enabled: newTask.enabled,
         playerRequirement: newTask.playerRequirement,
-        timing: newTask.timing,
+        trigger: newTask.trigger,
         jobs: newTask.jobs
     }
 
