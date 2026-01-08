@@ -5,7 +5,9 @@ import { Guid } from 'guid-ts';
 export const jobOptions = [
     { value: 0, name: 'Server Action' },
     { value: 1, name: 'Run Commands' },
-    { value: 2, name: 'Start Backup' }
+    { value: 2, name: 'Start Backup' },
+    { value: 3, name: 'Run CMD Command' },
+    { value: 4, name: 'Run PowerShell Command' }
 ];
 
 export const triggerOptions = [
@@ -27,14 +29,7 @@ export interface ISchedulerDetails {
     interval: number;
     fixedTime: number;
     timeless: number;
-    // triggers: ITriggerDetails;
 }
-
-// export interface ITriggerDetails {
-//     interval: number;
-//     fixedTime: number;
-//     timeless: number;
-// }
 
 export interface ISchedulerTask {
     taskId: string;
@@ -104,6 +99,38 @@ export class ServerActionJobTask implements JobTask {
     }
 }
 
+export class CmdJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+    command: string;
+    hideWindow: boolean;
+
+    constructor(id: Guid, enabled: boolean, order: number, command: string, hideWindow: boolean) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
+        this.command = command;
+        this.hideWindow = hideWindow;
+    }
+}
+
+export class PowerShellJobTask implements JobTask {
+    jobId: Guid;
+    enabled: boolean;
+    order: number;
+    shellCommand: string;
+    hideWindow: boolean;
+
+    constructor(id: Guid, enabled: boolean, order: number, shellCommand: string, hideWindow: boolean) {
+        this.jobId = id;
+        this.enabled = enabled;
+        this.order = order;
+        this.shellCommand = shellCommand;
+        this.hideWindow = hideWindow;
+    }
+}
+
 export class DelayJobTask implements JobTask {
     jobId: Guid;
     enabled: boolean;
@@ -141,6 +168,8 @@ export enum Job {
     commands = "Command",
     serverAction = "Server Action",
     delay = "Delay",
+    cmdCommand = "CMD Command",
+    powershellCommand = "PowerShell Command",
 }
 
 export function getTaskJob(job: JobTask): Job {
@@ -152,6 +181,10 @@ export function getTaskJob(job: JobTask): Job {
         return Job.backup;
     } else if (job instanceof CommandJobTask) {
         return Job.commands;
+    } else if (job instanceof CmdJobTask) {
+        return Job.cmdCommand;
+    } else if (job instanceof PowerShellJobTask) {
+        return Job.powershellCommand;
     } else if (job instanceof ServerActionJobTask) {
         return Job.serverAction;
     } else if (job instanceof DelayJobTask) {
@@ -244,6 +277,10 @@ export function translateRawSchedulerResponse(data: any): ISchedulerTask {
             task.jobs.push(new BackupJobTask(job.guid, job.enabled, job.order, job.backupIdentifier as string));
         } else if ('action' in job) {
             task.jobs.push(new ServerActionJobTask(job.guid, job.enabled, job.order, job.action as number));
+        } else if ('command' in job) {
+            task.jobs.push(new CmdJobTask(job.guid, job.enabled, job.order, job.command, job.hideWindow));
+        } else if ('shellCommand' in job) {
+            task.jobs.push(new PowerShellJobTask(job.guid, job.enabled, job.order, job.shellCommand, job.hideWindow));
         } else if ('delay' in job) {
             task.jobs.push(new DelayJobTask(job.guid, job.enabled, job.order, job.delay as number));
         } else {

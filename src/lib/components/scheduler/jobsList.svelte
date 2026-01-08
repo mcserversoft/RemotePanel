@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { isLoadingServers } from '$lib/code/global';
-	import { mdiArrowULeftTop, mdiClose, mdiContentSave, mdiDelete, mdiPlus, mdiPencil, mdiChevronDoubleDown, mdiChevronDoubleUp, mdiTimerPlus } from '@mdi/js';
-	import { Button, Modal, TabItem, Tabs } from 'flowbite-svelte';
+	import { mdiArrowULeftTop, mdiClose, mdiContentSave, mdiDelete, mdiPlus, mdiPencil, mdiChevronDoubleDown, mdiChevronDoubleUp, mdiTimerPlus, mdiChevronDownBoxOutline, mdiChevronRight, mdiChevronDown } from '@mdi/js';
+	import { Button, ButtonGroup, Dropdown, DropdownItem, Label, Modal, Select } from 'flowbite-svelte';
 	import Icon from '../elements/icon.svelte';
 	import Spinner from '../elements/spinner.svelte';
-	import { BackupJobTask, CommandJobTask, ServerActionJobTask, type JobTask, jobOptions, EmptyJobTask, SchedulerServerAction, DelayJobTask } from '$lib/code/scheduler';
+	import { BackupJobTask, CommandJobTask, ServerActionJobTask, type JobTask, jobOptions, EmptyJobTask, SchedulerServerAction, DelayJobTask, CmdJobTask, PowerShellJobTask } from '$lib/code/scheduler';
 	import TaskJobServerActionInput from './taskJobServerActionInput.svelte';
 	import TaskJobCommandsInput from './taskJobCommandsInput.svelte';
 	import TaskJobBackupInput from './taskJobBackupInput.svelte';
 	import TaskDelayInput from './taskDelayInput.svelte';
 	import { Guid } from 'guid-ts';
+	import TaskJobCmdInput from './taskJobCmdInput.svelte';
+	import TaskJobPowerShellInput from './taskJobPowerShellInput.svelte';
 
 	export let jobs: Array<JobTask> = [];
 
@@ -19,13 +21,14 @@
 	let jobToCreateOrEdit: JobTask = new EmptyJobTask();
 	let isCreatingJob: boolean = true;
 
-	let taskJobServerActionInput: any;
-	let taskJobCommandsInput: any;
-	let taskJobBackupInput: any;
-	let taskJobDelayInput: any;
-	const tabItemStyle = 'inline-block text-sm font-medium text-center disabled:cursor-not-allowed p-4 w-full group-first:rounded-l-lg group-last:rounded-r-lg text-white bg-blue-500 focus:outline-none dark:bg-blue-700 dark:text-white';
-	const inactiveTabItemStyle =
-		'inline-block text-sm font-medium text-center disabled:cursor-not-allowed p-4 w-full group-first:rounded-l-lg group-last:rounded-r-lg text-gray-500 dark:text-gray-400 bg-gray-100 hover:text-gray-700 hover:bg-gray-50  focus:outline-none dark:hover:text-white dark:bg-gray-700 dark:hover:bg-gray-700';
+	let jobOption: number;
+
+	let taskJobServerActionInput: ServerActionJobTask = new ServerActionJobTask(undefined!, true, 0, undefined!);
+	let taskJobCommandsInput: CommandJobTask = new CommandJobTask(undefined!, true, 0, []);
+	let taskJobBackupInput: BackupJobTask = new BackupJobTask(undefined!, true, 0, '');
+	let taskJobDelayInput: DelayJobTask = new DelayJobTask(undefined!, true, 0, 0);
+	let taskJobCmdCommandInput: CmdJobTask = new CmdJobTask(undefined!, true, 0, '', true);
+	let taskJobPowerShellCommandInput: PowerShellJobTask = new PowerShellJobTask(undefined!, true, 0, '', true);
 
 	const dispatch = createEventDispatcher();
 
@@ -39,7 +42,10 @@
 			taskJobCommandsInput = new CommandJobTask(undefined!, true, 0, []);
 			taskJobBackupInput = new BackupJobTask(undefined!, true, 0, '');
 			taskJobDelayInput = new DelayJobTask(undefined!, true, 0, 0);
+			taskJobCmdCommandInput = new CmdJobTask(undefined!, true, 0, '', true);
+			taskJobPowerShellCommandInput = new PowerShellJobTask(undefined!, true, 0, '', true);
 		} else {
+			jobOption = -1;
 			if (jobToCreateOrEdit instanceof ServerActionJobTask) {
 				taskJobServerActionInput = jobToCreateOrEdit;
 			} else if (jobToCreateOrEdit instanceof CommandJobTask) {
@@ -48,6 +54,10 @@
 				taskJobBackupInput = jobToCreateOrEdit;
 			} else if (jobToCreateOrEdit instanceof DelayJobTask) {
 				taskJobDelayInput = jobToCreateOrEdit;
+			} else if (jobToCreateOrEdit instanceof CmdJobTask) {
+				taskJobCmdCommandInput = jobToCreateOrEdit;
+			} else if (jobToCreateOrEdit instanceof PowerShellJobTask) {
+				taskJobPowerShellCommandInput = jobToCreateOrEdit;
 			}
 		}
 	}
@@ -79,6 +89,10 @@
 			jobs.push(new BackupJobTask(jobToCreateOrEdit.jobId, jobToCreateOrEdit.enabled, jobs.length, jobToCreateOrEdit.backupIdentifier));
 		} else if (jobToCreateOrEdit instanceof DelayJobTask) {
 			jobs.push(new DelayJobTask(jobToCreateOrEdit.jobId, jobToCreateOrEdit.enabled, jobs.length, jobToCreateOrEdit.delay));
+		} else if (jobToCreateOrEdit instanceof CmdJobTask) {
+			jobs.push(new CmdJobTask(jobToCreateOrEdit.jobId, jobToCreateOrEdit.enabled, jobs.length, jobToCreateOrEdit.command, jobToCreateOrEdit.hideWindow));
+		} else if (jobToCreateOrEdit instanceof PowerShellJobTask) {
+			jobs.push(new PowerShellJobTask(jobToCreateOrEdit.jobId, jobToCreateOrEdit.enabled, jobs.length, jobToCreateOrEdit.shellCommand, jobToCreateOrEdit.hideWindow));
 		}
 
 		showCreateJobModal = false;
@@ -148,19 +162,40 @@
 		jobToCreateOrEdit = new DelayJobTask(event.detail.id, event.detail.enabled, event.detail.order, event.detail.delay);
 		areModalButtonsDisabled = event.detail.delay > 0 && event.detail.delay <= 600 ? false : true;
 	}
+
+	function handleTaskJobCmdInput(event: any) {
+		jobToCreateOrEdit = new CmdJobTask(event.detail.id, event.detail.enabled, event.detail.order, event.detail.command, event.detail.hideWindow);
+		areModalButtonsDisabled = false;
+	}
+	function handleTaskJobPowerShellInput(event: any) {
+		jobToCreateOrEdit = new PowerShellJobTask(event.detail.id, event.detail.enabled, event.detail.order, event.detail.shellCommand, event.detail.hideWindow);
+		areModalButtonsDisabled = false;
+	}
 </script>
 
-<!-- FUTURE this has a weird white line in dark mode -->
 <div class="flex space-x-2 items-center">
 	<span class="grow text-sm font-medium">
 		<p class="">Jobs</p>
 		<p class="text-gray-400">Jobs are executed one at a time and in order.</p>
 	</span>
+
 	<form on:submit|preventDefault={() => handleShowCreateJobModal(true)}>
-		<Button type="submit" on:click={() => (jobToCreateOrEdit = new EmptyJobTask())} color="blue">
-			<Icon data={mdiPlus} class="-mx-2" />
-			<span class="hidden lg:block ml-3">Add Job</span>
-		</Button>
+		<ButtonGroup>
+			<Button color="blue" type="submit" on:click={() => ((jobOption = 0), (jobToCreateOrEdit = new EmptyJobTask()))}>
+				<Icon data={mdiPlus} class="-mx-2 m-0.5" />
+				<span class="hidden lg:block ml-3">Add Job</span>
+			</Button>
+			<Button color="blue" class={'!bg-blue-700'}>
+				<Icon data={mdiChevronDown} class={'-mr-2'} />
+			</Button>
+			<Dropdown>
+				<DropdownItem type="submit" on:click={() => ((jobOption = 0), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[0].name}</DropdownItem>
+				<DropdownItem type="submit" on:click={() => ((jobOption = 1), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[1].name}</DropdownItem>
+				<DropdownItem type="submit" on:click={() => ((jobOption = 2), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[2].name}</DropdownItem>
+				<DropdownItem type="submit" on:click={() => ((jobOption = 3), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[3].name}</DropdownItem>
+				<DropdownItem type="submit" on:click={() => ((jobOption = 4), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[4].name}</DropdownItem>
+			</Dropdown>
+		</ButtonGroup>
 	</form>
 	<form on:submit|preventDefault={() => handleShowCreateJobModal(true)}>
 		<Button type="submit" on:click={() => (jobToCreateOrEdit = new DelayJobTask(Guid.empty(), true, 0, 0))} color="blue">
@@ -188,6 +223,10 @@
 					<span class="grow">Start backup</span>
 				{:else if job instanceof DelayJobTask}
 					<span class="grow">Delay {job.delay} seconds</span>
+				{:else if job instanceof CmdJobTask}
+					<span class="grow">Run a CMD command</span>
+				{:else if job instanceof PowerShellJobTask}
+					<span class="grow">Run a PowerShell command</span>
 				{:else}
 					<span class="grow">Unknown Job</span>
 				{/if}
@@ -217,25 +256,30 @@
 	</ul>
 </div>
 
-<!-- FUTURE this has a weird white line in dark mode -->
-<Modal bind:open={showCreateJobModal} title="Add a {jobToCreateOrEdit instanceof DelayJobTask ? 'Delay' : 'Job'}" class="overflow-hidden my-0 sm:my-20">
+<Modal bind:open={showCreateJobModal} title="{jobOption < 0 ? 'Edit' : 'Add'} a {jobToCreateOrEdit instanceof DelayJobTask ? 'Delay' : 'Job'}" class="overflow-hidden my-0 sm:my-20">
 	{#if jobToCreateOrEdit instanceof DelayJobTask}
 		<TaskDelayInput job={taskJobDelayInput} on:update={handleDelayTaskInput} />
 	{:else}
-		<Tabs style="full" defaultClass="flex rounded-lg mb-2 divide-x rtl:divide-x-reverse divide-gray-200 shadow dark:divide-gray-700 " contentClass=" pt-2">
-			<TabItem class="w-full" activeClasses={tabItemStyle} inactiveClasses={inactiveTabItemStyle} open={jobToCreateOrEdit instanceof ServerActionJobTask ? true : false || jobToCreateOrEdit instanceof EmptyJobTask ? true : false}>
-				<span class="text-xs sm:text-sm" slot="title">{jobOptions[0].name}</span>
+		{#if jobOption != -1}
+			<Label>
+				Job
+				<Select items={jobOptions} bind:value={jobOption} required={true} class="mt-2" placeholder={jobOptions[0].name} />
+			</Label>
+		{/if}
+
+		{#key jobOption}
+			{#if jobOption == 0 || jobToCreateOrEdit instanceof ServerActionJobTask}
 				<TaskJobServerActionInput job={taskJobServerActionInput} on:update={handleTaskJobServerActionInput} />
-			</TabItem>
-			<TabItem class="w-full" activeClasses={tabItemStyle} inactiveClasses={inactiveTabItemStyle} open={jobToCreateOrEdit instanceof CommandJobTask ? true : false}>
-				<span class="text-xs sm:text-sm" slot="title">{jobOptions[1].name}</span>
+			{:else if jobOption == 1 || jobToCreateOrEdit instanceof CommandJobTask}
 				<TaskJobCommandsInput job={taskJobCommandsInput} on:update={handleTaskJobCommandsInput} />
-			</TabItem>
-			<TabItem class=" w-full" activeClasses={tabItemStyle} inactiveClasses={inactiveTabItemStyle} open={jobToCreateOrEdit instanceof BackupJobTask ? true : false}>
-				<span class="text-xs sm:text-sm" slot="title">{jobOptions[2].name}</span>
+			{:else if jobOption == 2 || jobToCreateOrEdit instanceof BackupJobTask}
 				<TaskJobBackupInput job={taskJobBackupInput} on:update={handleTaskJobBackupInput} />
-			</TabItem>
-		</Tabs>
+			{:else if jobOption == 3 || jobToCreateOrEdit instanceof CmdJobTask}
+				<TaskJobCmdInput job={taskJobCmdCommandInput} on:update={handleTaskJobCmdInput} />
+			{:else if jobOption == 4 || jobToCreateOrEdit instanceof PowerShellJobTask}
+				<TaskJobPowerShellInput job={taskJobPowerShellCommandInput} on:update={handleTaskJobPowerShellInput} />
+			{/if}
+		{/key}
 	{/if}
 
 	<svelte:fragment slot="footer">

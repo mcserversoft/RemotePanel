@@ -134,7 +134,6 @@
 	</form>
 </div>
 
-<!-- FUTURE this has a weird white line in dark mode -->
 <Modal bind:open={showCustomServersModal} title="File & Folder Filter" class="overflow-hidden my-0 sm:my-20">
 	<div bind:this={modalContainingElement}>
 		<form on:submit|preventDefault={() => handleAddFile()}>

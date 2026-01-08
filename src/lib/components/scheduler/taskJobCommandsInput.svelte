@@ -4,6 +4,7 @@
 	import Icon from '../elements/icon.svelte';
 	import Input from '../elements/input.svelte';
 	import type { CommandJobTask } from '$lib/code/scheduler';
+	import { Label } from 'flowbite-svelte';
 
 	export let job: any;
 
@@ -43,6 +44,19 @@
 	}
 </script>
 
+<form on:submit|preventDefault={() => handleAddCommand()} class="mt-2">
+	<Label>
+		Commands
+		<div class="flex items-end mt-2">
+			<Input bind:value={inputCommand} label={''} placeholder={'Enter a server command, leading slashes (/) will be ignored when triggering.'} type={'text'} required={true} class={'grow '} />
+
+			<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
+				<Icon data={mdiPlus} size={5} /> <span class="sr-only">Add Command</span>
+			</button>
+		</div>
+	</Label>
+</form>
+
 <div class="rounded-xl px-3 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
 	<ul>
 		{#each [...commands] || [] as command, index}
@@ -63,13 +77,3 @@
 		{/each}
 	</ul>
 </div>
-
-<form on:submit|preventDefault={() => handleAddCommand()} class="mb-2">
-	<div class="flex items-end">
-		<Input bind:value={inputCommand} label={''} placeholder={'Enter a server command, leading slashes (/) will be ignored when triggering.'} type={'text'} required={true} class={'grow'} />
-
-		<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500">
-			<Icon data={mdiPlus} size={5} /> <span class="sr-only">Add Command</span>
-		</button>
-	</div>
-</form>

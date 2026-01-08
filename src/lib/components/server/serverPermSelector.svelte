@@ -100,7 +100,6 @@
 	</div>
 </div>
 
-<!-- FUTURE this has a weird white line in dark mode -->
 <Modal bind:open={showCustomServersModal} title="Custom Server Access & Permissions" class="overflow-hidden my-0 sm:my-20">
 	<ul class="space-y-3">
 		{#each $servers || [] as { serverId, name, description }, index}

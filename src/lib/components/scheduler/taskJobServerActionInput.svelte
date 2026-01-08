@@ -25,5 +25,6 @@
 </script>
 
 <Label>
-	<Select bind:value={selectedServerAction} items={serverActions} on:change={handleChange} required={true} />
+	Action
+	<Select bind:value={selectedServerAction} items={serverActions} on:change={handleChange} required={true} class="mt-2" />
 </Label>
