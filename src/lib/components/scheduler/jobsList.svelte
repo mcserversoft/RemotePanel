@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { isLoadingServers } from '$lib/code/global';
-	import { mdiArrowULeftTop, mdiClose, mdiContentSave, mdiDelete, mdiPlus, mdiPencil, mdiChevronDoubleDown, mdiChevronDoubleUp, mdiTimerPlus, mdiChevronDownBoxOutline, mdiChevronRight, mdiChevronDown } from '@mdi/js';
+	import { mdiArrowULeftTop, mdiClose, mdiContentSave, mdiContentCopy, mdiDelete, mdiPlus, mdiPencil, mdiChevronDoubleDown, mdiChevronDoubleUp, mdiTimerPlus, mdiChevronDownBoxOutline, mdiChevronRight, mdiChevronDown } from '@mdi/js';
 	import { Button, ButtonGroup, Dropdown, DropdownItem, Label, Modal, Select } from 'flowbite-svelte';
 	import Icon from '../elements/icon.svelte';
 	import Spinner from '../elements/spinner.svelte';
@@ -128,6 +128,35 @@
 		handleInputChange();
 	}
 
+	function handleDuplicateJob(task: JobTask) {
+		const index = jobs.indexOf(task);
+		let duplicatedJob: JobTask;
+
+		if (task instanceof ServerActionJobTask) {
+			duplicatedJob = new ServerActionJobTask(undefined!, task.enabled, index + 1, task.action);
+		} else if (task instanceof CommandJobTask) {
+			duplicatedJob = new CommandJobTask(undefined!, task.enabled, index + 1, task.commands);
+		} else if (task instanceof BackupJobTask) {
+			duplicatedJob = new BackupJobTask(undefined!, task.enabled, index + 1, task.backupIdentifier);
+		} else if (task instanceof DelayJobTask) {
+			duplicatedJob = new DelayJobTask(undefined!, task.enabled, index + 1, task.delay);
+		} else if (task instanceof CmdJobTask) {
+			duplicatedJob = new CmdJobTask(undefined!, task.enabled, index + 1, task.command, task.hideWindow);
+		} else if (task instanceof PowerShellJobTask) {
+			duplicatedJob = new PowerShellJobTask(undefined!, task.enabled, index + 1, task.shellCommand, task.hideWindow);
+		} else {
+			return;
+		}
+
+		jobs.splice(index + 1, 0, duplicatedJob);
+		// Update order for all subsequent jobs
+		for (let i = index + 2; i < jobs.length; i++) {
+			jobs[i].order = i;
+		}
+		jobs = jobs;
+		handleInputChange();
+	}
+
 	function handleEditJob(task: JobTask) {
 		jobToCreateOrEdit = task;
 		handleShowCreateJobModal(false);
@@ -189,11 +218,9 @@
 				<Icon data={mdiChevronDown} class={'-mr-2'} />
 			</Button>
 			<Dropdown>
-				<DropdownItem type="submit" on:click={() => ((jobOption = 0), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[0].name}</DropdownItem>
-				<DropdownItem type="submit" on:click={() => ((jobOption = 1), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[1].name}</DropdownItem>
-				<DropdownItem type="submit" on:click={() => ((jobOption = 2), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[2].name}</DropdownItem>
-				<DropdownItem type="submit" on:click={() => ((jobOption = 3), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[3].name}</DropdownItem>
-				<DropdownItem type="submit" on:click={() => ((jobOption = 4), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {jobOptions[4].name}</DropdownItem>
+				{#each jobOptions as option, i}
+					<DropdownItem type="submit" on:click={() => ((jobOption = i), (jobToCreateOrEdit = new EmptyJobTask()))}>+ {option.name}</DropdownItem>
+				{/each}
 			</Dropdown>
 		</ButtonGroup>
 	</form>
@@ -236,6 +263,9 @@
 				</form>
 				<form on:submit|preventDefault={() => handleMoveJobUp(job)} class={jobs.length <= 1 ? 'hidden' : 'block'}>
 					<button type="submit" class="pt-1 mr-6" aria-label="Move job up"><Icon data={mdiChevronDoubleUp} size={5} class={'text-yellow-500'} /></button>
+				</form>
+				<form on:submit|preventDefault={() => handleDuplicateJob(job)}>
+					<button type="submit" class="pt-1 mr-2" aria-label="Duplicate job"><Icon data={mdiContentCopy} size={5} class={'text-blue-500'} /></button>
 				</form>
 				<form on:submit|preventDefault={() => handleEditJob(job)}>
 					<button type="submit" class="pt-1 mr-2" aria-label="Edit job"><Icon data={mdiPencil} size={5} class={'text-blue-500'} /></button>
